@@ -1,0 +1,72 @@
+<Residues>
+ <Residue name="HOH">
+  <Atom name="O" type="spce-O"/>
+  <Atom name="H1" type="spce-H"/>
+  <Atom name="H2" type="spce-H"/>
+  <Bond from="O" to="H1"/>
+  <Bond from="O" to="H2"/>
+ </Residue>
+ <Residue name="BF4">
+  <Atom name="B" type="BF4-B"/>
+  <Atom name="F1" type="BF4-F1"/>
+  <Atom name="F2" type="BF4-F2"/>
+  <Atom name="F3" type="BF4-F3"/>
+  <Atom name="F4" type="BF4-F4"/>
+  <Bond from="B" to="F1"/>
+  <Bond from="B" to="F2"/>
+  <Bond from="B" to="F3"/>
+  <Bond from="B" to="F4"/>
+ </Residue>
+ <Residue name="BMIM">
+  <Atom name="N1" type="BMIM-N1"/>
+  <Atom name="N11" type="BMIM-N11"/>
+  <Atom name="C1" type="BMIM-C1"/>
+  <Atom name="H1" type="BMIM-H1"/>
+  <Atom name="C2" type="BMIM-C2"/>
+  <Atom name="H2" type="BMIM-H2"/>
+  <Atom name="C21" type="BMIM-C21"/>
+  <Atom name="H21" type="BMIM-H21"/>
+  <Atom name="C3" type="BMIM-C3"/>
+  <Atom name="H3" type="BMIM-H3"/>
+  <Atom name="H31" type="BMIM-H31"/>
+  <Atom name="H32" type="BMIM-H32"/>
+  <Atom name="C4" type="BMIM-C4"/>
+  <Atom name="H4" type="BMIM-H4"/>
+  <Atom name="H41" type="BMIM-H41"/>
+  <Atom name="C5" type="BMIM-C5"/>
+  <Atom name="H5" type="BMIM-H5"/>
+  <Atom name="H51" type="BMIM-H51"/>
+  <Atom name="C51" type="BMIM-C51"/>
+  <Atom name="H52" type="BMIM-H52"/>
+  <Atom name="H53" type="BMIM-H53"/>
+  <Atom name="C6" type="BMIM-C6"/>
+  <Atom name="H6" type="BMIM-H6"/>
+  <Atom name="H61" type="BMIM-H61"/>
+  <Atom name="H62" type="BMIM-H62"/>
+  <Bond from="N1" to="C1"/>
+  <Bond from="N1" to="C2"/>
+  <Bond from="N1" to="C3"/>
+  <Bond from="N11" to="C1"/>
+  <Bond from="N11" to="C21"/>
+  <Bond from="N11" to="C4"/>
+  <Bond from="C1" to="H1"/>
+  <Bond from="C2" to="H2"/>
+  <Bond from="C2" to="C21"/>
+  <Bond from="C21" to="H21"/>
+  <Bond from="C3" to="H3"/>
+  <Bond from="C3" to="H31"/>
+  <Bond from="C3" to="H32"/>
+  <Bond from="C4" to="H4"/>
+  <Bond from="C4" to="H41"/>
+  <Bond from="C4" to="C5"/>
+  <Bond from="C5" to="H5"/>
+  <Bond from="C5" to="H51"/>
+  <Bond from="C5" to="C51"/>
+  <Bond from="C51" to="H52"/>
+  <Bond from="C51" to="H53"/>
+  <Bond from="C51" to="C6"/>
+  <Bond from="C6" to="H6"/>
+  <Bond from="C6" to="H61"/>
+  <Bond from="C6" to="H62"/>
+ </Residue>
+</Residues>

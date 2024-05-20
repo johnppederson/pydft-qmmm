@@ -1,0 +1,274 @@
+<ForceField>
+  <!--                               README                                                 -->
+  <!--                                                                                      -->
+  <!-- 1) Some of these systems require additional exclusions to be defined. This is        -->
+  <!-- controlled in the accompanying sapt_exclusions.py file which should be called        -->
+  <!-- by any OpenMM simulation script that uses these force fields                         -->
+  <!--                                                                                      -->
+  <!-- 2) PC and Choline force fields should be considered "experimental", as we've noticed -->
+  <!-- unphysical intra-molecular distortions.  Before production-ready use, greater care   -->
+  <!-- should be taken to parameterize the intra-molecular flexibility of these molecules   -->
+ <Info>
+  <Source>sapt.itp bmim.itp TF2N.itp</Source>
+  <DateGenerated>Tue Jul 25 11:12:55 2017</DateGenerated>
+  <Reference></Reference>
+ </Info>
+ <AtomTypes>
+  <Type name="spce-O" class="OW" element="O" mass="15.99943"/>
+  <Type name="spce-H" class="HW" element="H" mass="1.007947"/>
+  <Type name="BMIM-N1" class="NI1" element="N" mass="14.007"/>
+  <Type name="BMIM-N11" class="NI" element="N" mass="14.007"/>
+  <Type name="BMIM-C1" class="CI" element="C" mass="12.011"/>
+  <Type name="BMIM-H1" class="HI" element="H" mass="1.008"/>
+  <Type name="BMIM-C2" class="CWI" element="C" mass="12.011"/>
+  <Type name="BMIM-H2" class="HWI" element="H" mass="1.008"/>
+  <Type name="BMIM-C21" class="CWI1" element="C" mass="12.011"/>
+  <Type name="BMIM-H21" class="HWI1" element="H" mass="1.008"/>
+  <Type name="BMIM-C3" class="CMI" element="C" mass="12.011"/>
+  <Type name="BMIM-H3" class="HMI" element="H" mass="1.008"/>
+  <Type name="BMIM-H31" class="HMI" element="H" mass="1.008"/>
+  <Type name="BMIM-H32" class="HMI" element="H" mass="1.008"/>
+  <Type name="BMIM-C4" class="CAI" element="C" mass="12.011"/>
+  <Type name="BMIM-H4" class="HAI" element="H" mass="1.008"/>
+  <Type name="BMIM-H41" class="HAI" element="H" mass="1.008"/>
+  <Type name="BMIM-C5" class="CSI" element="C" mass="12.011"/>
+  <Type name="BMIM-H5" class="HSI" element="H" mass="1.008"/>
+  <Type name="BMIM-H51" class="HSI" element="H" mass="1.008"/>
+  <Type name="BMIM-C51" class="CSI" element="C" mass="12.011"/>
+  <Type name="BMIM-H52" class="HSI" element="H" mass="1.008"/>
+  <Type name="BMIM-H53" class="HSI" element="H" mass="1.008"/>
+  <Type name="BMIM-C6" class="CTI" element="C" mass="12.011"/>
+  <Type name="BMIM-H6" class="HTI" element="H" mass="1.008"/>
+  <Type name="BMIM-H61" class="HTI" element="H" mass="1.008"/>
+  <Type name="BMIM-H62" class="HTI" element="H" mass="1.008"/>
+  <Type name="BF4-B" class="B" element="B" mass="10.811"/>
+  <Type name="BF4-F1" class="FI" element="F" mass="18.998"/>
+  <Type name="BF4-F2" class="FI" element="F" mass="18.998"/>
+  <Type name="BF4-F3" class="FI" element="F" mass="18.998"/>
+  <Type name="BF4-F4" class="FI" element="F" mass="18.998"/>
+ </AtomTypes>
+ <Residues>
+  <Residue name="HOH">
+   <Atom name="O" type="spce-O"/>
+   <Atom name="H1" type="spce-H"/>
+   <Atom name="H2" type="spce-H"/>
+   <Bond atomName1="O" atomName2="H1"/>
+   <Bond atomName1="O" atomName2="H2"/>
+  </Residue>
+  <Residue name="BF4">
+   <Atom name="B" type="BF4-B"/>
+   <Atom name="F1" type="BF4-F1"/>
+   <Atom name="F2" type="BF4-F2"/>
+   <Atom name="F3" type="BF4-F3"/>
+   <Atom name="F4" type="BF4-F4"/>
+   <Bond from="0" to="1"/>
+   <Bond from="0" to="2"/>
+   <Bond from="0" to="3"/>
+   <Bond from="0" to="4"/>
+  </Residue>
+  <Residue name="BMIM">
+   <Atom name="N1" type="BMIM-N1"/>
+   <Atom name="N11" type="BMIM-N11"/>
+   <Atom name="C1" type="BMIM-C1"/>
+   <Atom name="H1" type="BMIM-H1"/>
+   <Atom name="C2" type="BMIM-C2"/>
+   <Atom name="H2" type="BMIM-H2"/>
+   <Atom name="C21" type="BMIM-C21"/>
+   <Atom name="H21" type="BMIM-H21"/>
+   <Atom name="C3" type="BMIM-C3"/>
+   <Atom name="H3" type="BMIM-H3"/>
+   <Atom name="H31" type="BMIM-H31"/>
+   <Atom name="H32" type="BMIM-H32"/>
+   <Atom name="C4" type="BMIM-C4"/>
+   <Atom name="H4" type="BMIM-H4"/>
+   <Atom name="H41" type="BMIM-H41"/>
+   <Atom name="C5" type="BMIM-C5"/>
+   <Atom name="H5" type="BMIM-H5"/>
+   <Atom name="H51" type="BMIM-H51"/>
+   <Atom name="C51" type="BMIM-C51"/>
+   <Atom name="H52" type="BMIM-H52"/>
+   <Atom name="H53" type="BMIM-H53"/>
+   <Atom name="C6" type="BMIM-C6"/>
+   <Atom name="H6" type="BMIM-H6"/>
+   <Atom name="H61" type="BMIM-H61"/>
+   <Atom name="H62" type="BMIM-H62"/>
+   <Bond from="0" to="2"/>
+   <Bond from="0" to="4"/>
+   <Bond from="0" to="8"/>
+   <Bond from="1" to="2"/>
+   <Bond from="1" to="6"/>
+   <Bond from="1" to="12"/>
+   <Bond from="2" to="3"/>
+   <Bond from="4" to="5"/>
+   <Bond from="4" to="6"/>
+   <Bond from="6" to="7"/>
+   <Bond from="8" to="9"/>
+   <Bond from="8" to="10"/>
+   <Bond from="8" to="11"/>
+   <Bond from="12" to="13"/>
+   <Bond from="12" to="14"/>
+   <Bond from="12" to="15"/>
+   <Bond from="15" to="16"/>
+   <Bond from="15" to="17"/>
+   <Bond from="15" to="18"/>
+   <Bond from="18" to="19"/>
+   <Bond from="18" to="20"/>
+   <Bond from="18" to="21"/>
+   <Bond from="21" to="22"/>
+   <Bond from="21" to="23"/>
+   <Bond from="21" to="24"/>
+  </Residue>
+ </Residues>
+ <HarmonicBondForce>
+  <Bond class1="OW" class2="HW" length="0.1" k="462750.4"/>
+  <Bond class1="CI" class2="NI" length="0.1315" k="399153.6"/>
+  <Bond class1="CWI1" class2="NI" length="0.1378" k="357313.6"/>
+  <Bond class1="CAI" class2="NI" length="0.1476" k="282001.6"/>
+  <Bond class1="CI" class2="NI1" length="0.1315" k="399153.6"/>
+  <Bond class1="CWI" class2="NI1" length="0.1378" k="357313.6"/>
+  <Bond class1="CMI" class2="NI1" length="0.1465" k="282001.6"/>
+  <Bond class1="CI" class2="HI" length="0.1069" k="307105.6"/>
+  <Bond class1="CWI" class2="HWI" length="0.1068" k="307105.6"/>
+  <Bond class1="CWI" class2="CWI1" length="0.1336" k="435136.0"/>
+  <Bond class1="CWI1" class2="HWI1" length="0.1068" k="307105.6"/>
+  <Bond class1="CMI" class2="HMI" length="0.1080" k="284512.0"/>
+  <Bond class1="CAI" class2="HAI" length="0.1080" k="284512.0"/>
+  <Bond class1="CAI" class2="CSI" length="0.1526" k="224262.4"/>
+  <Bond class1="CSI" class2="HSI" length="0.1087" k="284512.0"/>
+  <Bond class1="CSI" class2="CSI" length="0.1531" k="224262.4"/>
+  <Bond class1="CTI" class2="CSI" length="0.1528" k="224262.4"/>
+  <Bond class1="CTI" class2="HTI" length="0.1084" k="284512.0"/>
+  <Bond class1="B" class2="FI" length="0.1394" k="323500.0"/>
+ </HarmonicBondForce>
+ <HarmonicAngleForce>
+  <Angle class1="HW" class2="OW" class3="HW" angle="1.91061193216" k="836.8"/>
+  <Angle class1="NI" class2="CI" class3="NI1" angle="1.91637151869" k="585.76"/>
+  <Angle class1="NI" class2="CI" class3="HI" angle="2.18340689424" k="292.88"/>
+  <Angle class1="NI" class2="CWI1" class3="HWI1" angle="2.12930168743" k="292.88"/>
+  <Angle class1="NI" class2="CWI1" class3="CWI" angle="1.86924762889" k="585.76"/>
+  <Angle class1="NI" class2="CAI" class3="HAI" angle="1.87622894589" k="313.80"/>
+  <Angle class1="NI" class2="CAI" class3="CSI" angle="1.97222205475" k="488.27"/>
+  <Angle class1="NI1" class2="CI" class3="HI" angle="2.18340689424" k="292.88"/>
+  <Angle class1="NI1" class2="CWI" class3="CWI1" angle="1.86924762889" k="585.76"/>
+  <Angle class1="NI1" class2="CWI" class3="HWI" angle="2.12930168743" k="292.88"/>
+  <Angle class1="NI1" class2="CMI" class3="HMI" angle="1.90589954318" k="313.80"/>
+  <Angle class1="CWI1" class2="NI" class3="CI" angle="1.8832102629" k="585.76"/>
+  <Angle class1="CWI1" class2="CWI" class3="HWI" angle="2.28463599086" k="292.88"/>
+  <Angle class1="CWI" class2="NI1" class3="CI" angle="1.8832102629" k="585.76"/>
+  <Angle class1="CWI" class2="CWI1" class3="HWI1" angle="2.28463599086" k="292.88"/>
+  <Angle class1="CMI" class2="NI1" class3="CI" angle="2.20609617452" k="585.76"/>
+  <Angle class1="CMI" class2="NI1" class3="CW" angle="2.1921335405" k="585.76"/>
+  <Angle class1="HMI" class2="CMI" class3="HMI" angle="1.91637151869" k="276.14"/>
+  <Angle class1="CAI" class2="NI" class3="CI" angle="2.21307749153" k="585.76"/>
+  <Angle class1="CAI" class2="NI" class3="CWI1" angle="2.18689755275" k="585.76"/>
+  <Angle class1="CAI" class2="CSI" class3="HSI" angle="1.89542756767" k="313.80"/>
+  <Angle class1="CAI" class2="CSI" class3="CSI" angle="1.97745804251" k="488.27"/>
+  <Angle class1="HAI" class2="CAI" class3="HAI" angle="1.90066355542" k="276.14"/>
+  <Angle class1="HAI" class2="CAI" class3="CSI" angle="1.93906079897" k="313.80"/>
+  <Angle class1="CSI" class2="CSI" class3="HSI" angle="1.91288086019" k="313.80"/>
+  <Angle class1="CSI" class2="CSI" class3="CTI" angle="1.96000474999" k="488.27"/>
+  <Angle class1="HSI" class2="CSI" class3="HSI" angle="1.86226631188" k="276.14"/>
+  <Angle class1="CSI" class2="CTI" class3="HTI" angle="1.93906079897" k="313.80"/>
+  <Angle class1="CTI" class2="CSI" class3="HSI" angle="1.91462618944" k="313.80"/>
+  <Angle class1="HTI" class2="CTI" class3="HTI" angle="1.8832102629" k="276.14"/>
+  <Angle class1="FI" class2="B" class3="FI" angle="1.91061193216" k="669.5"/>
+ </HarmonicAngleForce>
+ <RBTorsionForce>
+  <Proper class1="NI" class2="CWI1" class3="CWI" class4="NI1" c0="0." c1="44.980" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="NI" class2="CWI1" class3="CWI" class4="HWI" c0="0." c1="44.980" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="NI" class2="CAI" class3="CSI" class4="CSI" c0="-3.297" c1="3.347" c2="1.674" c3="0." c4="0." c5="0."/>
+  <Proper class1="CI" class2="NI" class3="CWI1" class4="HWI1" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CI" class2="NI" class3="CWI1" class4="CWI" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CI" class2="NI" class3="CAI" class4="CSI" c0="-0.665" c1="0.397" c2="-0.042" c3="0." c4="0." c5="0."/>
+  <Proper class1="CI" class2="NI1" class3="CWI" class4="CWI1" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CI" class2="NI1" class3="CWI" class4="HWI" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CWI1" class2="NI" class3="CI" class4="NI1" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CWI1" class2="NI" class3="CI" class4="HI" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CWI1" class2="NI" class3="CAI" class4="HAI" c0="-11.297" c1="-23.640" c2="1.485" c3="0." c4="0." c5="0."/>
+  <Proper class1="CWI1" class2="NI" class3="CAI" class4="CSI" c0="-8.828" c1="-20.920" c2="1.443" c3="0." c4="0." c5="0."/>
+  <Proper class1="HWI1" class2="CWI1" class3="CWI" class4="NI1" c0="0." c1="44.978" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="HWI1" class2="CWI1" class3="CWI" class4="HWI" c0="0." c1="44.978" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CWI" class2="NI1" class3="CI" class4="NI" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CWI" class2="NI1" class3="CI" class4="HI" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CWI" class2="NI1" class3="CMI" class4="HMI" c0="0." c1="0." c2="0.519" c3="0." c4="0." c5="0."/>
+  <Proper class1="CMI" class2="NI1" class3="CI" class4="NI" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CMI" class2="NI1" class3="CI" class4="HI" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CMI" class2="NI1" class3="CWI" class4="CWI1" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CMI" class2="NI1" class3="CWI" class4="HWI" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CAI" class2="NI" class3="CI" class4="NI1" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CAI" class2="NI" class3="CI" class4="HI" c0="0." c1="19.460" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CAI" class2="NI" class3="CWI1" class4="HWI1" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CAI" class2="NI" class3="CWI1" class4="CWI" c0="0." c1="12.552" c2="0." c3="0." c4="0." c5="0."/>
+  <Proper class1="CAI" class2="CSI" class3="CSI" class4="HSI" c0="0." c1="0." c2="1.531" c3="0." c4="0." c5="0."/>
+  <Proper class1="CAI" class2="CSI" class3="CSI" class4="CTI" c0="5.439" c1="-0.209" c2="0.837" c3="0." c4="0." c5="0."/>
+  <Proper class1="HAI" class2="CAI" class3="CSI" class4="HSI" c0="0." c1="-0.628" c2="2.167" c3="0." c4="0." c5="0."/>
+  <Proper class1="HAI" class2="CAI" class3="CSI" class4="CSI" c0="0." c1="0." c2="1.531" c3="0." c4="0." c5="0."/>
+  <Proper class1="CSI" class2="CSI" class3="CTI" class4="HTI" c0="0." c1="0." c2="1.531" c3="0." c4="0." c5="0."/>
+  <Proper class1="HSI" class2="CSI" class3="CSI" class4="HSI" c0="0." c1="0." c2="1.331" c3="0." c4="0." c5="0."/>
+  <Proper class1="HSI" class2="CSI" class3="CSI" class4="CTI" c0="0." c1="0." c2="1.531" c3="0." c4="0." c5="0."/>
+  <Proper class1="HSI" class2="CSI" class3="CTI" class4="HTI" c0="0." c1="0." c2="1.331" c3="0." c4="0." c5="0."/>
+  <Improper class1="NI1" class2="CMI" class3="CWI" class4="CI" c0="0." c1="8.368" c2="0." c3="0." c4="0." c5="0."/>
+  <Improper class1="NI" class2="CAI" class3="CWI1" class4="CI" c0="0." c1="8.368" c2="0." c3="0." c4="0." c5="0."/>
+  <Improper class1="CWI1" class2="NI" class3="HWI1" class4="CWI" c0="0." c1="9.205" c2="0." c3="0." c4="0." c5="0."/>
+  <Improper class1="CWI" class2="NI1" class3="HWI" class4="CWI1" c0="0." c1="9.205" c2="0." c3="0." c4="0." c5="0."/>
+  <Improper class1="CI" class2="NI1" class3="NI" class4="HI" c0="0." c1="9.205" c2="0." c3="0." c4="0." c5="0."/>
+ </RBTorsionForce>
+ <NonbondedForce coulomb14scale="0.5" lj14scale="0.5">
+  <Atom type="spce-O" charge="-0.8476" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="spce-H" charge="0.4238" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-N1" charge="0.1760" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-N11" charge="0.1760" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C1" charge="-0.0720" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H1" charge="0.1680" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C2" charge="-0.1920" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H2" charge="0.2160" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C21" charge="-0.1920" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H21" charge="0.2160" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C3" charge="-0.2800" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H3" charge="0.1440" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H31" charge="0.1440" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H32" charge="0.1440" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C4" charge="-0.1360" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H4" charge="0.1440" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H41" charge="0.1440" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C5" charge="-0.0960" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H5" charge="0.0480" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H51" charge="0.0480" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C51" charge="-0.0960" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H52" charge="0.0480" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H53" charge="0.0480" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-C6" charge="-0.1920" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H6" charge="0.0640" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H61" charge="0.0640" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BMIM-H62" charge="0.0640" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BF4-B" charge="0.6620" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BF4-F1" charge="-0.3655" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BF4-F2" charge="-0.3655" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BF4-F3" charge="-0.3655" sigma="1.00000" epsilon="0.00000"/>
+  <Atom type="BF4-F4" charge="-0.3655" sigma="1.00000" epsilon="0.00000"/>
+ </NonbondedForce>
+ <CustomNonbondedForce energy="4*E*((S/r)^12-(S/r)^6); E=sqrt(eps1*eps2); S=sqrt(sig1*sig2)" bondCutoff="3" coulomb14scale="0.0" lj14scale="0.5">
+ <PerParticleParameter name="sig" />
+ <PerParticleParameter name="eps" />
+  <Atom class="HW" sig="1.000" eps="0.000000"/>
+  <Atom class="OW" sig="0.31657" eps="0.64978"/>
+  <Atom class="NI" sig="0.325" eps="0.711280"/>
+  <Atom class="NI1" sig="0.325" eps="0.711280"/>
+  <Atom class="CI" sig="0.355" eps="0.292880"/>
+  <Atom class="HI" sig="0.242" eps="0.125520"/>
+  <Atom class="CWI" sig="0.355" eps="0.292880"/>
+  <Atom class="HWI" sig="0.242" eps="0.125520"/>
+  <Atom class="CWI1" sig="0.355" eps="0.292880"/>
+  <Atom class="HWI1" sig="0.242" eps="0.125520"/>
+  <Atom class="CMI" sig="0.350" eps="0.276144"/>
+  <Atom class="HMI" sig="0.250" eps="0.125520"/>
+  <Atom class="CAI" sig="0.350" eps="0.276144"/>
+  <Atom class="HAI" sig="0.250" eps="0.125520"/>
+  <Atom class="CSI" sig="0.350" eps="0.276144"/>
+  <Atom class="HSI" sig="0.250" eps="0.125520"/>
+  <Atom class="CTI" sig="0.350" eps="0.276144"/>
+  <Atom class="HTI" sig="0.250" eps="0.125520"/>
+  <Atom class="B" sig="0.35814" eps="0.39748"/>
+  <Atom class="FI" sig="0.31181" eps="0.25104"/>
+ </CustomNonbondedForce>
+</ForceField>
