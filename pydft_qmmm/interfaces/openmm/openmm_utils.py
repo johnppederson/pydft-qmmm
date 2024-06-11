@@ -12,7 +12,7 @@ def _generate_state(
         context: openmm.Context,
         groups: set[int] | int | None = -1,
 ) -> openmm.State:
-    if not groups:
+    if groups is None:
         groups = -1
     return context.getState(getEnergy=True, getForces=True, groups=groups)
 
@@ -169,7 +169,7 @@ def _real_electrostatic(
     forces = []
     for force in nonbonded_forces:
         new_force = openmm.CustomNonbondedForce(
-            f"""{const}*138.937714126*nn*qq/r;
+            f"""{const}*138.935459977*nn*qq/r;
             qq=q1*q2;
             nn=n1*n2""",
         )

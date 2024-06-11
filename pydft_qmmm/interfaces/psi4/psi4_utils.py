@@ -55,7 +55,7 @@ class Psi4Context:
         :return: The Psi4 Geometry object.
         """
         geometrystring = """\n"""
-        for atom in self.atoms:
+        for atom in sorted(self.atoms):
             position = self.positions[atom]
             element = self.elements[atom]
             geometrystring = (
@@ -77,7 +77,7 @@ class Psi4Context:
         :return: The Psi4 Geometry object.
         """
         external_potential = []
-        for i in self.embedding:
+        for i in sorted(self.embedding):
             external_potential.append(
                 [
                     self.charges[i],

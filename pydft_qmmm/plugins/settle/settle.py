@@ -12,8 +12,8 @@ from numpy.typing import NDArray
 
 from .settle_utils import settle_positions
 from .settle_utils import settle_velocities
-from pydft_qmmm.plugins.plugin import IntegratorPlugin
 from pydft_qmmm.common import Subsystem
+from pydft_qmmm.plugins.plugin import IntegratorPlugin
 
 if TYPE_CHECKING:
     from pydft_qmmm.integrator import Integrator
@@ -54,7 +54,7 @@ class SETTLE(IntegratorPlugin):
             integrator.compute_kinetic_energy,
         )
 
-    def constrain_velocities(system: System) -> NDArray[np.float64]:
+    def constrain_velocities(self, system: System) -> NDArray[np.float64]:
         residues = self._get_hoh_residues(system)
         velocities = settle_velocities(
             residues,
@@ -65,11 +65,13 @@ class SETTLE(IntegratorPlugin):
         return velocities
 
     def _get_hoh_residues(self, system: System) -> list[list[int]]:
-        residue_indices = list({atom.molecule for atom in system
-                                if atom.molecule_name == self.hoh_residue
-                                and atom.subsystem != Subsystem.I})
+        residue_indices = list({
+            atom.molecule for atom in system
+            if atom.molecule_name == self.hoh_residue
+            and atom.subsystem != Subsystem.I
+        })
         residue_indices.sort()
-        residues = [[] for _ in residue_indices]
+        residues: list[list[int]] = [[] for _ in residue_indices]
         for i, atom in enumerate(system):
             if atom.molecule in residue_indices:
                 residues[residue_indices.index(atom.molecule)].append(i)

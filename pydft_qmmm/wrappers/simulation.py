@@ -71,14 +71,14 @@ class Simulation:
         if Subsystem.I in self.system.subsystems:
             self.center_positions()
             self._procedure.append(self.center_positions)
+        self.wrap_positions()
+        self._procedure.append(self.wrap_positions)
         if isinstance(self.hamiltonian, CompositeHamiltonian):
             for hamiltonian in self.hamiltonian.hamiltonians:
                 if isinstance(hamiltonian, QMMMHamiltonian):
                     self.embedding_cutoff = hamiltonian.embedding_cutoff
                     self.generate_embedding()
                     self._procedure.append(self.generate_embedding)
-        self.wrap_positions()
-        self._procedure.append(self.wrap_positions)
         self.calculate_energy_forces()
 
     def run_dynamics(self, steps: int) -> None:

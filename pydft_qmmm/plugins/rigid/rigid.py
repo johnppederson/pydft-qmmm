@@ -19,19 +19,26 @@ if TYPE_CHECKING:
     from pydft_qmmm import System
 
 
-def _make_residue_method(self, type_):
+def _make_residue_method(
+        self: Stationary,
+        type_: type,
+) -> Callable[[System], list[int]]:
     if type_ is int:
-        def inner(system: System):
-            residue_indices = list({atom.molecule for atom in system
-                                    if atom.molecule in self.stationary_residues
-                                    and atom.subsystem != Subsystem.I})
+        def inner(system: System) -> list[int]:
+            residue_indices = list({
+                int(atom.molecule) for atom in system
+                if atom.molecule in self.stationary_residues
+                and atom.subsystem != Subsystem.I
+            })
             residue_indices.sort()
             return residue_indices
     elif type_ is str:
-        def inner(system: System):
-            residue_indices = list({atom.molecule for atom in system
-                                    if atom.molecule_name in self.stationary_residues
-                                    and atom.subsystem != Subsystem.I})
+        def inner(system: System) -> list[int]:
+            residue_indices = list({
+                int(atom.molecule) for atom in system
+                if atom.molecule_name in self.stationary_residues
+                and atom.subsystem != Subsystem.I
+            })
             residue_indices.sort()
             return residue_indices
     return inner
@@ -83,15 +90,15 @@ class Stationary(IntegratorPlugin):
 
     def _get_stat_residues(self, system: System) -> list[list[int]]:
         residue_indices = self._get_residue_indices(system)
-        residues = [[] for _ in residue_indices]
+        residues: list[list[int]] = [[] for _ in residue_indices]
         for i, atom in enumerate(system):
             if atom.molecule in residue_indices:
-                residues[residue_indices.index(atom.molecule)].append(i)
+                residues[residue_indices.index(int(atom.molecule))].append(i)
         return residues
 
     def _modify_integrate(
             self,
-            integrate: Callable[[System], Returns]
+            integrate: Callable[[System], Returns],
     ) -> Callable[[System], Returns]:
         """Modify the integrate call in the :class:`Integrator` to
         make the positions of a subset of residues constant and their

@@ -23,7 +23,7 @@ if TYPE_CHECKING:
     from .psi4_utils import Psi4Options
 
 psi4.core.be_quiet()
-psi4.set_num_threads(8)
+psi4.set_num_threads(1)
 
 
 class Psi4Interface(QMInterface):

@@ -47,17 +47,22 @@ class OpenMMInterface(MMInterface):
         self._ixn_context = ixn_context
         self._ixn_energy_group: set[int] = set()
         self._ixn_forces_group: set[int] = set()
-        self._ixn_force_mask = np.ones(
-            (self._base_context.getSystem().getNumParticles(), 3),
-        )
+        self._ixn_force_mask = [
+            np.ones(
+                (self._base_context.getSystem().getNumParticles(), 3),
+            ), np.ones(
+                (self._base_context.getSystem().getNumParticles(), 3),
+            ),
+        ]
 
     def compute_energy(self) -> float:
         base_state = _generate_state(self._base_context)
         energy = base_state.getPotentialEnergy() / kilojoule_per_mole
-        ixn_state = _generate_state(
-            self._ixn_context, groups=self._ixn_energy_group,
-        )
-        energy += ixn_state.getPotentialEnergy() / kilojoule_per_mole
+        if self._ixn_energy_group:
+            ixn_state = _generate_state(
+                self._ixn_context, groups=self._ixn_energy_group,
+            )
+            energy += ixn_state.getPotentialEnergy() / kilojoule_per_mole
         return energy
 
     def compute_forces(self) -> NDArray[np.float64]:
@@ -66,16 +71,22 @@ class OpenMMInterface(MMInterface):
             self._base_force_mask * base_state.getForces(asNumpy=True)
             / kilojoule_per_mole * angstrom
         )
-        ixn_state = _generate_state(self._ixn_context, self._ixn_energy_group)
-        forces += (
-            ixn_state.getForces(asNumpy=True)
-            / kilojoule_per_mole * angstrom
-        )
-        ixn_state = _generate_state(self._ixn_context, self._ixn_forces_group)
-        forces += (
-            self._ixn_force_mask * ixn_state.getForces(asNumpy=True)
-            / kilojoule_per_mole * angstrom
-        )
+        if self._ixn_energy_group:
+            ixn_state = _generate_state(
+                self._ixn_context, self._ixn_energy_group,
+            )
+            forces += (
+                self._ixn_force_mask[0] * ixn_state.getForces(asNumpy=True)
+                / kilojoule_per_mole * angstrom
+            )
+        if self._ixn_forces_group:
+            ixn_state = _generate_state(
+                self._ixn_context, self._ixn_forces_group,
+            )
+            forces += (
+                self._ixn_force_mask[1] * ixn_state.getForces(asNumpy=True)
+                / kilojoule_per_mole * angstrom
+            )
         return forces
 
     def compute_components(self) -> dict[str, float]:
@@ -118,6 +129,7 @@ class OpenMMInterface(MMInterface):
         for i in atoms:
             for j in range(3):
                 self._base_force_mask[i, j] = 0
+                self._ixn_force_mask[0][i, j] = 0
 
     def add_real_elst(
             self,
@@ -139,7 +151,7 @@ class OpenMMInterface(MMInterface):
             self._ixn_energy_group.update(indices)
         else:
             self._ixn_forces_group.update(indices)
-            self._ixn_force_mask = inclusion
+            self._ixn_force_mask[1] = inclusion
         state = self._base_context.getState(getPositions=True)
         positions = state.getPositions()
         self._ixn_context.reinitialize()
@@ -164,7 +176,7 @@ class OpenMMInterface(MMInterface):
             self._ixn_energy_group.update(indices)
         else:
             self._ixn_forces_group.update(indices)
-            self._ixn_force_mask = inclusion
+            self._ixn_force_mask[1] = inclusion
         state = self._base_context.getState(getPositions=True)
         positions = state.getPositions()
         self._ixn_context.reinitialize()

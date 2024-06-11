@@ -12,6 +12,7 @@ from .utils import align_dict
 from .utils import Components
 from .utils import compute_lattice_constants
 from .utils import compute_least_mirror
+from .utils import generate_velocities
 from .utils import Results
 from .utils import Subsystem
 from .utils import TheoryLevel
