@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pydft_qmmm.interfaces.psi4 package &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <section id="pydft-qmmm-interfaces-psi4-package">
+<h1>pydft_qmmm.interfaces.psi4 package<a class="headerlink" href="#pydft-qmmm-interfaces-psi4-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pydft_qmmm.interfaces.psi4.psi4_interface">
+<span id="pydft-qmmm-interfaces-psi4-psi4-interface-module"></span><h2>pydft_qmmm.interfaces.psi4.psi4_interface module<a class="headerlink" href="#module-pydft_qmmm.interfaces.psi4.psi4_interface" title="Link to this heading">¶</a></h2>
+<p>The basic Psi4 software interface.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.psi4.psi4_interface.</span></span><span class="sig-name descname"><span class="pre">Psi4Interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.QMInterface" title="pydft_qmmm.interfaces.interface.QMInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">QMInterface</span></code></a></p>
+<p>A software interface wrapping Psi4 functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>settings</strong> (<a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.QMSettings" title="pydft_qmmm.interfaces.interface.QMSettings"><em>QMSettings</em></a>) – The settings used to build the Psi4 interface.</p></li>
+<li><p><strong>options</strong> (<a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options" title="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options"><em>Psi4Options</em></a>) – The Psi4 global options derived from the settings.</p></li>
+<li><p><strong>functional</strong> (<em>str</em>) – The name of the functional to use for
+exchange-correlation calculations.</p></li>
+<li><p><strong>context</strong> (<a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context" title="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context"><em>Psi4Context</em></a>) – An object which holds system information to feed into
+Psi4.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_components">
+<span class="sig-name descname"><span class="pre">compute_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.compute_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_components" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the components of energy using OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The components of the energy (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}}\)</span>)
+of the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_energy">
+<span class="sig-name descname"><span class="pre">compute_energy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.compute_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_energy" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the energy of the system using Psi4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The energy (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}}\)</span>) of the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_forces">
+<span class="sig-name descname"><span class="pre">compute_forces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.compute_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_forces" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the forces on the system using Psi4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forces (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}\)</span>) acting
+on atoms in the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ndarray</em>[<em>Any</em>, <em>dtype</em>[<em>float64</em>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.disable_embedding">
+<span class="sig-name descname"><span class="pre">disable_embedding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.disable_embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.disable_embedding" title="Link to this definition">¶</a></dt>
+<dd><p>Disable electrostatic embedding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_charges">
+<span class="sig-name descname"><span class="pre">update_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.update_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_charges" title="Link to this definition">¶</a></dt>
+<dd><p>Set the atomic partial charges used by Psi4 for embedding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>charges</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) – The partial charges (<span class="math notranslate nohighlight">\(e\)</span>) of the atoms.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_memory">
+<span class="sig-name descname"><span class="pre">update_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.update_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_memory" title="Link to this definition">¶</a></dt>
+<dd><p>Set the amount of memory used by OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>memory</strong> (<em>str</em>) – The amount of memory to utilize.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Set the atomic positions used by Psi4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>positions</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) – The positions (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the atoms
+within the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_subsystems">
+<span class="sig-name descname"><span class="pre">update_subsystems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsystems</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.update_subsystems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_subsystems" title="Link to this definition">¶</a></dt>
+<dd><p>Adjust which atoms are embedded by subsystem membership.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subsystems</strong> (<em>np.ndarray</em><em>[</em><em>Any</em><em>, </em><em>np.dtype</em><em>[</em><em>np.object_</em><em>]</em><em>]</em>) – The subsystems of which the atoms are a part.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_threads">
+<span class="sig-name descname"><span class="pre">update_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_interface.html#Psi4Interface.update_threads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_threads" title="Link to this definition">¶</a></dt>
+<dd><p>Set the number of threads used by Psi4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>threads</strong> (<em>int</em>) – The number of threads to utilize.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.interfaces.psi4.psi4_utils">
+<span id="pydft-qmmm-interfaces-psi4-psi4-utils-module"></span><h2>pydft_qmmm.interfaces.psi4.psi4_utils module<a class="headerlink" href="#module-pydft_qmmm.interfaces.psi4.psi4_utils" title="Link to this heading">¶</a></h2>
+<p>Functionality for building the Psi4 interface and some helper classes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.psi4.psi4_utils.</span></span><span class="sig-name descname"><span class="pre">Psi4Context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elements</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#Psi4Context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A wrapper class for managing Psi4 Geometry object generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms</strong> (<em>set</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms that are treated at the QM level
+of theory.</p></li>
+<li><p><strong>embedding</strong> (<em>set</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms that are electrostatically
+embedded.</p></li>
+<li><p><strong>elements</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The element symbols of the atoms in the system.</p></li>
+<li><p><strong>positions</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The positions (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the atoms
+within the system.</p></li>
+<li><p><strong>charges</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The partial charges (<span class="math notranslate nohighlight">\(e\)</span>) of the atoms in the
+system.</p></li>
+<li><p><strong>charge</strong> (<em>int</em>) – The net charge (<span class="math notranslate nohighlight">\(e\)</span>) of the system represented
+at the QM level of theory.</p></li>
+<li><p><strong>spin</strong> (<em>int</em>) – The net spin of the system represented by the QM
+level of theory.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.generate_external_potential">
+<span class="sig-name descname"><span class="pre">generate_external_potential</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#Psi4Context.generate_external_potential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.generate_external_potential" title="Link to this definition">¶</a></dt>
+<dd><p>Create the data structures read by Psi4 to perform embedding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The list of coordinates (<span class="math notranslate nohighlight">\(\mathrm{a.u.}\)</span>) and charges
+(<span class="math notranslate nohighlight">\(e\)</span>) that will be read by Psi4 during calculations
+and electrostatically embedded.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[list[int | list[int]]] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.generate_molecule">
+<span class="sig-name descname"><span class="pre">generate_molecule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#Psi4Context.generate_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.generate_molecule" title="Link to this definition">¶</a></dt>
+<dd><p>Create the Geometry object for Psi4 calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Psi4 Geometry object, which contains the positions,
+net charge, and net spin of atoms treated at the QM level
+of theory.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Molecule</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.update_charges">
+<span class="sig-name descname"><span class="pre">update_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#Psi4Context.update_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.update_charges" title="Link to this definition">¶</a></dt>
+<dd><p>Set the atomic partial charges used by Psi4 for embedding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>charges</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) – The partial charges (<span class="math notranslate nohighlight">\(e\)</span>) of the atoms.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.update_embedding">
+<span class="sig-name descname"><span class="pre">update_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embedding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#Psi4Context.update_embedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.update_embedding" title="Link to this definition">¶</a></dt>
+<dd><p>Set the atoms are electrostatically embedded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>embedding</strong> (<em>set</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms that are electrostatically
+embedded.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#Psi4Context.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Context.update_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Set the atomic positions used by Psi4.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>positions</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) – The positions (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the atoms
+within the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.psi4.psi4_utils.</span></span><span class="sig-name descname"><span class="pre">Psi4Options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dft_spherical_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dft_radial_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scf_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scf__reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scf__guess</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#Psi4Options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An immutable wrapper class for storing Psi4 global options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basis</strong> (<em>str</em>) – The name of the basis set to be used by Psi4.</p></li>
+<li><p><strong>dft_spherical_points</strong> (<em>int</em>) – The number of spherical Lebedev points
+to use in the DFT quadrature.</p></li>
+<li><p><strong>dft_radial_points</strong> (<em>int</em>) – The number of radial points to use in the
+DFT quadrature.</p></li>
+<li><p><strong>scf_type</strong> (<em>str</em>) – The name of the type of SCF to perform, as in
+the JK build algorithms as in Psi4.</p></li>
+<li><p><strong>scf__reference</strong> (<em>str</em>) – The name of the reference to use, including
+restricted Kohn-Sham or unrestricted Kohn-Sham.</p></li>
+<li><p><strong>scf__guess</strong> (<em>str</em>) – The name of the algorithm used to generate the
+initial guess at the start of an SCF procedure.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.basis">
+<span class="sig-name descname"><span class="pre">basis</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.basis" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.dft_radial_points">
+<span class="sig-name descname"><span class="pre">dft_radial_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.dft_radial_points" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.dft_spherical_points">
+<span class="sig-name descname"><span class="pre">dft_spherical_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.dft_spherical_points" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.scf__guess">
+<span class="sig-name descname"><span class="pre">scf__guess</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.scf__guess" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.scf__reference">
+<span class="sig-name descname"><span class="pre">scf__reference</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.scf__reference" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.scf_type">
+<span class="sig-name descname"><span class="pre">scf_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.Psi4Options.scf_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_utils.psi4_interface_factory">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.psi4.psi4_utils.</span></span><span class="sig-name descname"><span class="pre">psi4_interface_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/psi4/psi4_utils.html#psi4_interface_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_utils.psi4_interface_factory" title="Link to this definition">¶</a></dt>
+<dd><p>Build the interface to Psi4 given the settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>settings</strong> (<a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.QMSettings" title="pydft_qmmm.interfaces.interface.QMSettings"><em>QMSettings</em></a>) – The settings used to build the Psi4 interface.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Psi4 interface.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface" title="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface">Psi4Interface</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.interfaces.psi4">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pydft_qmmm.interfaces.psi4" title="Link to this heading">¶</a></h2>
+<p>A sub-package for interfacing with Psi4.</p>
+</section>
+</section>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+      |
+      <a href="_sources/pydft_qmmm.interfaces.psi4.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+
+
+
+  </body>
+</html>

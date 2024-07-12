@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pydft_qmmm.hamiltonians package &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <section id="pydft-qmmm-hamiltonians-package">
+<h1>pydft_qmmm.hamiltonians package<a class="headerlink" href="#pydft-qmmm-hamiltonians-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pydft_qmmm.hamiltonians.hamiltonian">
+<span id="pydft-qmmm-hamiltonians-hamiltonian-module"></span><h2>pydft_qmmm.hamiltonians.hamiltonian module<a class="headerlink" href="#module-pydft_qmmm.hamiltonians.hamiltonian" title="Link to this heading">¶</a></h2>
+<p>Hamiltonian base and derived classes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.hamiltonian.</span></span><span class="sig-name descname"><span class="pre">CalculatorHamiltonian</span></span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#CalculatorHamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hamiltonian</span></code></a></p>
+<p>An abstract Hamiltonian base class for creating calculators.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian.atoms">
+<span class="sig-name descname"><span class="pre">atoms</span></span><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian.atoms" title="Link to this definition">¶</a></dt>
+<dd><p>Indices corresponding to the atoms for which the
+Hamiltonian is applicable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[int | slice]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian.theory_level">
+<span class="sig-name descname"><span class="pre">theory_level</span></span><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian.theory_level" title="Link to this definition">¶</a></dt>
+<dd><p>The level of theory of the Hamiltonian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel">pydft_qmmm.common.utils.TheoryLevel</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">atoms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">slice</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian.build_calculator">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">build_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#CalculatorHamiltonian.build_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian.build_calculator" title="Link to this definition">¶</a></dt>
+<dd><p>Build the calculator corresponding to the Hamiltonian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to calculate the
+calculator.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculator which is defined by the system and the
+Hamiltonian.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator">Calculator</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">theory_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel"><span class="pre">TheoryLevel</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'No</span> <span class="pre">level</span> <span class="pre">of</span> <span class="pre">theory</span> <span class="pre">(a</span> <span class="pre">default).'</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.hamiltonian.</span></span><span class="sig-name descname"><span class="pre">CompositeHamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">hamiltonians</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#CompositeHamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hamiltonian</span></code></a></p>
+<p>An abstract Hamiltonian base class for combining Hamiltonians.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hamiltonians</strong> (<a class="reference internal" href="#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian"><em>Hamiltonian</em></a>) – A set of Hamiltonians belonging to the composite
+Hamiltonian.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.build_calculator">
+<span class="sig-name descname"><span class="pre">build_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#CompositeHamiltonian.build_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.build_calculator" title="Link to this definition">¶</a></dt>
+<dd><p>Build the calculator corresponding to the Hamiltonian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to calculate the
+calculator.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculator which is defined by the system and the
+Hamiltonian.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator">Calculator</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.hamiltonian.</span></span><span class="sig-name descname"><span class="pre">CouplingHamiltonian</span></span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#CouplingHamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hamiltonian</span></code></a></p>
+<p>An abstract Hamiltonian base class for coupling Hamiltonians.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.force_matrix">
+<span class="sig-name descname"><span class="pre">force_matrix</span></span><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.force_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>A matrix representing the gradient of potential
+expressions representing interactions between differing
+subsystems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[<a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.Subsystem" title="pydft_qmmm.common.utils.Subsystem">pydft_qmmm.common.utils.Subsystem</a>, dict[<a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.Subsystem" title="pydft_qmmm.common.utils.Subsystem">pydft_qmmm.common.utils.Subsystem</a>, <a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel">pydft_qmmm.common.utils.TheoryLevel</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">force_matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.Subsystem" title="pydft_qmmm.common.utils.Subsystem"><span class="pre">Subsystem</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.Subsystem" title="pydft_qmmm.common.utils.Subsystem"><span class="pre">Subsystem</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel"><span class="pre">TheoryLevel</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.modify_calculator">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modify_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calculator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#CouplingHamiltonian.modify_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.modify_calculator" title="Link to this definition">¶</a></dt>
+<dd><p>Modify a calculator to represent the coupling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calculator</strong> (<a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><em>Calculator</em></a>) – A calculator which is defined in part by the
+system.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to modify the
+calculator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.modify_composite">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modify_composite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calculator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#CouplingHamiltonian.modify_composite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.modify_composite" title="Link to this definition">¶</a></dt>
+<dd><p>Modify a composite calculator to represent the coupling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calculator</strong> (<a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculator" title="pydft_qmmm.calculators.composite_calculator.CompositeCalculator"><em>CompositeCalculator</em></a>) – A composite calculator which is defined in part
+by the system.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to modify the
+calculator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.hamiltonian.</span></span><span class="sig-name descname"><span class="pre">Hamiltonian</span></span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/hamiltonian.html#Hamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>The abstract Hamiltonian base class.</p>
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.hamiltonians.mm_hamiltonian">
+<span id="pydft-qmmm-hamiltonians-mm-hamiltonian-module"></span><h2>pydft_qmmm.hamiltonians.mm_hamiltonian module<a class="headerlink" href="#module-pydft_qmmm.hamiltonians.mm_hamiltonian" title="Link to this heading">¶</a></h2>
+<p>A Hamiltonian representing the MM level of theory.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.mm_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">MMHamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">forcefield_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonbonded_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PME'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonbonded_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pme_gridnumber</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pme_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/mm_hamiltonian.html#MMHamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalculatorHamiltonian</span></code></a></p>
+<p>A Hamiltonian representing the MM level of theory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>forcefield_file</strong> (<em>str</em><em> | </em><em>list</em><em>[</em><em>str</em><em>]</em>) – The FF XML file containing forcefield data
+for the system.</p></li>
+<li><p><strong>topology_file</strong> (<em>str</em><em> | </em><em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – The FF XML file containing topology data for
+the system.</p></li>
+<li><p><strong>nonbonded_method</strong> (<em>str</em>) – The method for treating non-bonded
+interactions, as in OpenMM.</p></li>
+<li><p><strong>nonbonded_cutoff</strong> (<em>float</em><em> | </em><em>int</em>) – The distance at which to truncate close-range
+non-bonded interactions.</p></li>
+<li><p><strong>pme_gridnumber</strong> (<em>int</em><em> | </em><em>None</em>) – The number of grid points to include along each
+lattice edge in PME summation.</p></li>
+<li><p><strong>pme_alpha</strong> (<em>float</em><em> | </em><em>int</em><em> | </em><em>None</em>) – The Gaussian width parameter in Ewald summation
+(<span class="math notranslate nohighlight">\(\mathrm{nm^{-1}}\)</span>).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.build_calculator">
+<span class="sig-name descname"><span class="pre">build_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/mm_hamiltonian.html#MMHamiltonian.build_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.build_calculator" title="Link to this definition">¶</a></dt>
+<dd><p>Build the calculator corresponding to the Hamiltonian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to calculate the
+calculator.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculator which is defined by the system and the
+Hamiltonian.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.interface_calculator.InterfaceCalculator" title="pydft_qmmm.calculators.interface_calculator.InterfaceCalculator">InterfaceCalculator</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.forcefield_file">
+<span class="sig-name descname"><span class="pre">forcefield_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.forcefield_file" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.nonbonded_cutoff">
+<span class="sig-name descname"><span class="pre">nonbonded_cutoff</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14.0</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.nonbonded_cutoff" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.nonbonded_method">
+<span class="sig-name descname"><span class="pre">nonbonded_method</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PME'</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.nonbonded_method" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.pme_alpha">
+<span class="sig-name descname"><span class="pre">pme_alpha</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.pme_alpha" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.pme_gridnumber">
+<span class="sig-name descname"><span class="pre">pme_gridnumber</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.pme_gridnumber" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.topology_file">
+<span class="sig-name descname"><span class="pre">topology_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.topology_file" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.hamiltonians.qm_hamiltonian">
+<span id="pydft-qmmm-hamiltonians-qm-hamiltonian-module"></span><h2>pydft_qmmm.hamiltonians.qm_hamiltonian module<a class="headerlink" href="#module-pydft_qmmm.hamiltonians.qm_hamiltonian" title="Link to this heading">¶</a></h2>
+<p>A Hamiltonian representing the QM level of theory.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.qm_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">QMHamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_spherical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">302</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quadrature_radial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scf_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'df'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_guess</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/qm_hamiltonian.html#QMHamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.CalculatorHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalculatorHamiltonian</span></code></a></p>
+<p>A Hamiltonian representing the QM level of theory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basis_set</strong> (<em>str</em>) – The name of the basis set to be used in QM
+calculations.</p></li>
+<li><p><strong>functional</strong> (<em>str</em>) – The name of the functional set to be used in QM
+calculations.</p></li>
+<li><p><strong>charge</strong> (<em>int</em>) – The net charge (<span class="math notranslate nohighlight">\(e\)</span>) of the system represented by
+the QM Hamiltonian.</p></li>
+<li><p><strong>spin</strong> (<em>int</em>) – The net spin of the system represented by the QM
+Hamiltonian</p></li>
+<li><p><strong>quadrature_spherical</strong> (<em>int</em>) – The number of spherical Lebedev points
+to use in the DFT quadrature.</p></li>
+<li><p><strong>quadrature_radial</strong> (<em>int</em>) – The number of radial points to use in the
+DFT quadrature.</p></li>
+<li><p><strong>scf_type</strong> (<em>str</em>) – The name of the type of SCF to perform, relating to
+the JK build algorithms as in Psi4.</p></li>
+<li><p><strong>read_guess</strong> (<em>bool</em>) – Whether or not to reuse previous wavefunctions as
+initial guesses in subsequent QM calculations.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.basis_set">
+<span class="sig-name descname"><span class="pre">basis_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.basis_set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.build_calculator">
+<span class="sig-name descname"><span class="pre">build_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/qm_hamiltonian.html#QMHamiltonian.build_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.build_calculator" title="Link to this definition">¶</a></dt>
+<dd><p>Build the calculator corresponding to the Hamiltonian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to calculate the
+calculator.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculator which is defined by the system and the
+Hamiltonian.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.interface_calculator.InterfaceCalculator" title="pydft_qmmm.calculators.interface_calculator.InterfaceCalculator">InterfaceCalculator</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.charge">
+<span class="sig-name descname"><span class="pre">charge</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.charge" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.functional">
+<span class="sig-name descname"><span class="pre">functional</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.functional" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.quadrature_radial">
+<span class="sig-name descname"><span class="pre">quadrature_radial</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">75</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.quadrature_radial" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.quadrature_spherical">
+<span class="sig-name descname"><span class="pre">quadrature_spherical</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">302</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.quadrature_spherical" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.read_guess">
+<span class="sig-name descname"><span class="pre">read_guess</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.read_guess" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.scf_type">
+<span class="sig-name descname"><span class="pre">scf_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'df'</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.scf_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.spin">
+<span class="sig-name descname"><span class="pre">spin</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.spin" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.hamiltonians.qmmm_hamiltonian">
+<span id="pydft-qmmm-hamiltonians-qmmm-hamiltonian-module"></span><h2>pydft_qmmm.hamiltonians.qmmm_hamiltonian module<a class="headerlink" href="#module-pydft_qmmm.hamiltonians.qmmm_hamiltonian" title="Link to this heading">¶</a></h2>
+<p>A Hamiltonian defining the inter-subsystem coupling in QM/MM.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian._DEFAULT_FORCE_MATRIX">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.qmmm_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">_DEFAULT_FORCE_MATRIX</span></span><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian._DEFAULT_FORCE_MATRIX" title="Link to this definition">¶</a></dt>
+<dd><p>The default force matrix, which has no
+level of theory coupling subsystem I to subsystems II and III.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian._CLOSE_EMBEDDING">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.qmmm_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">_CLOSE_EMBEDDING</span></span><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian._CLOSE_EMBEDDING" title="Link to this definition">¶</a></dt>
+<dd><p>The levels of theory for I-II and II-I forces for
+different close-range embedding schemes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian._LONG_EMBEDDING">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.qmmm_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">_LONG_EMBEDDING</span></span><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian._LONG_EMBEDDING" title="Link to this definition">¶</a></dt>
+<dd><p>The levels of theory for I-III and III-I forces for
+different long-range embedding schemes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian._SUPPORTED_EMBEDDING">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.qmmm_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">_SUPPORTED_EMBEDDING</span></span><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian._SUPPORTED_EMBEDDING" title="Link to this definition">¶</a></dt>
+<dd><p>Allowed pairs of close-range and long-range
+embedding schemes.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.hamiltonians.qmmm_hamiltonian.</span></span><span class="sig-name descname"><span class="pre">QMMMHamiltonian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">close_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'electrostatic'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cutoff'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/qmmm_hamiltonian.html#QMMMHamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">CouplingHamiltonian</span></code></a></p>
+<p>A Hamiltonian defining inter-subsystem coupling in QM/MM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>close_range</strong> (<em>str</em>) – The name of the embedding procedure for
+close-range (I-II) interactions.</p></li>
+<li><p><strong>long_range</strong> (<em>str</em>) – The name of the embedding procedure for
+long-range (I-III) interactions.</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em><em> | </em><em>int</em>) – The cutoff distance (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) at
+which to partition a system into subsystems II and III.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.close_range">
+<span class="sig-name descname"><span class="pre">close_range</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'electrostatic'</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.close_range" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.cutoff">
+<span class="sig-name descname"><span class="pre">cutoff</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14.0</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.cutoff" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.long_range">
+<span class="sig-name descname"><span class="pre">long_range</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cutoff'</span></em><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.long_range" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_calculator">
+<span class="sig-name descname"><span class="pre">modify_calculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calculator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/qmmm_hamiltonian.html#QMMMHamiltonian.modify_calculator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_calculator" title="Link to this definition">¶</a></dt>
+<dd><p>Modify a calculator to represent the coupling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calculator</strong> (<a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><em>Calculator</em></a>) – A calculator which is defined in part by the
+system.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to modify the
+calculator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_composite">
+<span class="sig-name descname"><span class="pre">modify_composite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calculator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/qmmm_hamiltonian.html#QMMMHamiltonian.modify_composite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_composite" title="Link to this definition">¶</a></dt>
+<dd><p>Modify a composite calculator to represent the coupling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calculator</strong> (<a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculator" title="pydft_qmmm.calculators.composite_calculator.CompositeCalculator"><em>CompositeCalculator</em></a>) – A composite calculator which is defined in part
+by the system.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to modify the
+calculator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_mm_interface">
+<span class="sig-name descname"><span class="pre">modify_mm_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/qmmm_hamiltonian.html#QMMMHamiltonian.modify_mm_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_mm_interface" title="Link to this definition">¶</a></dt>
+<dd><p>Modify an MM interface to reflect the selected embedding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interface</strong> (<a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface" title="pydft_qmmm.interfaces.interface.MMInterface"><em>MMInterface</em></a>) – The MM interface representing part of the system.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to modify the
+interface.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_qm_interface">
+<span class="sig-name descname"><span class="pre">modify_qm_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">interface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/hamiltonians/qmmm_hamiltonian.html#QMMMHamiltonian.modify_qm_interface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_qm_interface" title="Link to this definition">¶</a></dt>
+<dd><p>Modify a QM interface to reflect the selected embedding.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>interface</strong> (<a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.QMInterface" title="pydft_qmmm.interfaces.interface.QMInterface"><em>QMInterface</em></a>) – The QM interface representing part of the system.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system that will be used to modify the
+interface.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.hamiltonians">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pydft_qmmm.hamiltonians" title="Link to this heading">¶</a></h2>
+<p>A sub-package containing the Hamiltonian API.</p>
+</section>
+</section>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+      |
+      <a href="_sources/pydft_qmmm.hamiltonians.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+
+
+
+  </body>
+</html>

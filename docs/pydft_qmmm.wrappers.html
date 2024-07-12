@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pydft_qmmm.wrappers package &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <section id="pydft-qmmm-wrappers-package">
+<h1>pydft_qmmm.wrappers package<a class="headerlink" href="#pydft-qmmm-wrappers-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pydft_qmmm.wrappers.logger">
+<span id="pydft-qmmm-wrappers-logger-module"></span><h2>pydft_qmmm.wrappers.logger module<a class="headerlink" href="#module-pydft_qmmm.wrappers.logger" title="Link to this heading">¶</a></h2>
+<p>Centralized logging classes based on context management.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.wrappers.logger.</span></span><span class="sig-name descname"><span class="pre">Logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal_places</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_write_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to_csv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">csv_write_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to_dcd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dcd_write_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to_pdb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/logger.html#Logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Logger for recording system and simulation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> – The directory where records are written.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system whose data will be reported.</p></li>
+<li><p><strong>write_to_log</strong> (<em>bool</em>) – Whether or not to write energies to a tree-like
+log file.</p></li>
+<li><p><strong>decimal_places</strong> (<em>int</em>) – Number of decimal places to write energies in
+the log file before truncation.</p></li>
+<li><p><strong>log_write_interval</strong> (<em>int</em>) – The interval between successive log
+writes, in simulation steps.</p></li>
+<li><p><strong>write_to_csv</strong> (<em>bool</em>) – Whether or not to write energies to a CSV file.</p></li>
+<li><p><strong>csv_write_interval</strong> (<em>int</em>) – The interval between successive CSV
+writes, in simulation steps.</p></li>
+<li><p><strong>write_to_dcd</strong> (<em>bool</em>) – Whether or not to write atom positions to a
+DCD file.</p></li>
+<li><p><strong>dcd_write_interval</strong> (<em>int</em>) – The interval between successive DCD
+writes, in simulation steps.</p></li>
+<li><p><strong>write_to_pdb</strong> (<em>bool</em>) – Whether or not to write atom positions to a
+PDB file at the end of a simulation.</p></li>
+<li><p><strong>output_directory</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.csv_write_interval">
+<span class="sig-name descname"><span class="pre">csv_write_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.csv_write_interval" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.dcd_write_interval">
+<span class="sig-name descname"><span class="pre">dcd_write_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.dcd_write_interval" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.decimal_places">
+<span class="sig-name descname"><span class="pre">decimal_places</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.decimal_places" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.log_write_interval">
+<span class="sig-name descname"><span class="pre">log_write_interval</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.log_write_interval" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.output_directory">
+<span class="sig-name descname"><span class="pre">output_directory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.output_directory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.record">
+<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/logger.html#Logger.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.record" title="Link to this definition">¶</a></dt>
+<dd><p>Record simulation data into the log files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>simulation</strong> (<a class="reference internal" href="#pydft_qmmm.wrappers.simulation.Simulation" title="pydft_qmmm.wrappers.simulation.Simulation"><em>Simulation</em></a>) – The simulation whose data will be recorded by
+the logger.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.system">
+<span class="sig-name descname"><span class="pre">system</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><span class="pre">System</span></a></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.system" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.write_to_csv">
+<span class="sig-name descname"><span class="pre">write_to_csv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.write_to_csv" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.write_to_dcd">
+<span class="sig-name descname"><span class="pre">write_to_dcd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.write_to_dcd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.write_to_log">
+<span class="sig-name descname"><span class="pre">write_to_log</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.write_to_log" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.Logger.write_to_pdb">
+<span class="sig-name descname"><span class="pre">write_to_pdb</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pydft_qmmm.wrappers.logger.Logger.write_to_pdb" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.NullLogger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.wrappers.logger.</span></span><span class="sig-name descname"><span class="pre">NullLogger</span></span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/logger.html#NullLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.logger.NullLogger" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A default logger class which does not perform logging.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.logger.NullLogger.record">
+<span class="sig-name descname"><span class="pre">record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/logger.html#NullLogger.record"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.logger.NullLogger.record" title="Link to this definition">¶</a></dt>
+<dd><p>Default record call, which does nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>simulation</strong> (<a class="reference internal" href="#pydft_qmmm.wrappers.simulation.Simulation" title="pydft_qmmm.wrappers.simulation.Simulation"><em>Simulation</em></a>) – The simulation whose data will be recorded by
+the logger.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.wrappers.simulation">
+<span id="pydft-qmmm-wrappers-simulation-module"></span><h2>pydft_qmmm.wrappers.simulation module<a class="headerlink" href="#module-pydft_qmmm.wrappers.simulation" title="Link to this heading">¶</a></h2>
+<p>The core object which organizes simulations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.simulation.Simulation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.wrappers.simulation.</span></span><span class="sig-name descname"><span class="pre">Simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integrator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hamiltonian=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculator=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plugins=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger=&lt;class</span> <span class="pre">'pydft_qmmm.wrappers.logger.NullLogger'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/simulation.html#Simulation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.simulation.Simulation" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages and performs simulations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system to simulate.</p></li>
+<li><p><strong>integrator</strong> (<a class="reference internal" href="pydft_qmmm.integrators.html#pydft_qmmm.integrators.integrator.Integrator" title="pydft_qmmm.integrators.integrator.Integrator"><em>Integrator</em></a>) – The integrator defining how the system evolves.</p></li>
+<li><p><strong>hamiltonian</strong> (<a class="reference internal" href="pydft_qmmm.hamiltonians.html#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian"><em>Hamiltonian</em></a><em> | </em><em>None</em>) – The Hamiltonian defining how calculations will be
+performed.</p></li>
+<li><p><strong>calculator</strong> (<a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><em>Calculator</em></a><em> | </em><em>None</em>) – A user-defined calculator, which may be provided in
+place of a Hamiltonian object.</p></li>
+<li><p><strong>plugins</strong> (<em>list</em><em>[</em><a class="reference internal" href="pydft_qmmm.plugins.html#pydft_qmmm.plugins.plugin.Plugin" title="pydft_qmmm.plugins.plugin.Plugin"><em>Plugin</em></a><em>] </em><em>| </em><em>None</em>) – A list of plugins to apply to the calculator or
+integrator objects before simulation.</p></li>
+<li><p><strong>logger</strong> (<em>Any</em>) – A logger to record data generated during the
+simulation.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.simulation.Simulation._frame">
+<span class="sig-name descname"><span class="pre">_frame</span></span><a class="headerlink" href="#pydft_qmmm.wrappers.simulation.Simulation._frame" title="Link to this definition">¶</a></dt>
+<dd><p>The current frame of the simulation, defaults to zero
+upon instantiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.simulation.Simulation.calculate_energy_forces">
+<span class="sig-name descname"><span class="pre">calculate_energy_forces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/simulation.html#Simulation.calculate_energy_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.simulation.Simulation.calculate_energy_forces" title="Link to this definition">¶</a></dt>
+<dd><p>Update total system energy and forces on atoms in the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.simulation.Simulation.run_dynamics">
+<span class="sig-name descname"><span class="pre">run_dynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/simulation.html#Simulation.run_dynamics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.simulation.Simulation.run_dynamics" title="Link to this definition">¶</a></dt>
+<dd><p>Perform a number of simulation steps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>steps</strong> (<em>int</em>) – The number of steps to take.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.simulation.Simulation.set_memory">
+<span class="sig-name descname"><span class="pre">set_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/simulation.html#Simulation.set_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.simulation.Simulation.set_memory" title="Link to this definition">¶</a></dt>
+<dd><p>Set the amount of memory that calculators can use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>memory</strong> (<em>str</em>) – The amount of memory to utilize.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.wrappers.simulation.Simulation.set_threads">
+<span class="sig-name descname"><span class="pre">set_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/wrappers/simulation.html#Simulation.set_threads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.wrappers.simulation.Simulation.set_threads" title="Link to this definition">¶</a></dt>
+<dd><p>Set the number of threads that calculators can use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>threads</strong> (<em>int</em>) – The number of threads to utilize.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.wrappers">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pydft_qmmm.wrappers" title="Link to this heading">¶</a></h2>
+<p>A sub-package containing wrapper classes for the end user.</p>
+</section>
+</section>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+      |
+      <a href="_sources/pydft_qmmm.wrappers.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pydft_qmmm.interfaces.interface &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <h1>Source code for pydft_qmmm.interfaces.interface</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Base classes for software interfaces and settings.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">TheoryLevel</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pydft_qmmm</span> <span class="kn">import</span> <span class="n">System</span>
+    <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SoftwareSettings">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareSettings">[docs]</a>
+<span class="k">class</span> <span class="nc">SoftwareSettings</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The abstract software settings base class.</span>
+
+<span class="sd">    .. note:: This currently doesn&#39;t do anything.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="MMSettings">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMSettings">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">MMSettings</span><span class="p">(</span><span class="n">SoftwareSettings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Immutable container which holds settings for an MM interface.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        system: The system which will be tied to the MM interface.</span>
+<span class="sd">        forcefield_file: The FF XML file containing forcefield data</span>
+<span class="sd">            for the system.</span>
+<span class="sd">        topology_file: The FF XML file containing topology data for</span>
+<span class="sd">            the system.</span>
+<span class="sd">        nonbonded_method: The method for treating non-bonded</span>
+<span class="sd">            interactions, as in OpenMM.</span>
+<span class="sd">        nonbonded_cutoff: The distance at which to truncate close-range</span>
+<span class="sd">            non-bonded interactions.</span>
+<span class="sd">        pme_gridnumber: The number of grid points to include along each</span>
+<span class="sd">            lattice edge in PME summation.</span>
+<span class="sd">        pme_alpha: The Gaussian width parameter in Ewald summation</span>
+<span class="sd">            (:math:`\mathrm{nm^{-1}}`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span>
+    <span class="n">forcefield_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">topology_file</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">nonbonded_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PME&quot;</span>
+    <span class="n">nonbonded_cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">14.</span>
+    <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">pme_alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="QMSettings">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.QMSettings">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">QMSettings</span><span class="p">(</span><span class="n">SoftwareSettings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Immutable container which holds settings for an QM interface.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        system: The system which will be tied to the QM interface.</span>
+<span class="sd">        basis_set: The name of the basis set to be used in QM</span>
+<span class="sd">            calculations.</span>
+<span class="sd">        functional: The name of the functional set to be used in QM</span>
+<span class="sd">            calculations.</span>
+<span class="sd">        charge: The net charge (:math:`e`) of the system represented by</span>
+<span class="sd">            the QM Hamiltonian.</span>
+<span class="sd">        spin: The net spin of the system represented by the QM</span>
+<span class="sd">            Hamiltonian</span>
+<span class="sd">        quadrature_spherical: The number of spherical Lebedev points</span>
+<span class="sd">            to use in the DFT quadrature.</span>
+<span class="sd">        quadrature_radial: The number of radial points to use in the</span>
+<span class="sd">            DFT quadrature.</span>
+<span class="sd">        scf_type: The name of the type of SCF to perform, relating to</span>
+<span class="sd">            the JK build algorithms as in Psi4.</span>
+<span class="sd">        read_guess: Whether or not to reuse previous wavefunctions as</span>
+<span class="sd">            initial guesses in subsequent QM calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span>
+    <span class="n">basis_set</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">functional</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">spin</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">quadrature_spherical</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">302</span>
+    <span class="n">quadrature_radial</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">75</span>
+    <span class="n">scf_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;df&quot;</span>
+    <span class="n">read_guess</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="SoftwareInterface">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface">[docs]</a>
+<span class="k">class</span> <span class="nc">SoftwareInterface</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The abstract software interface base class.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        theory_level: The level of theory that the software applies in</span>
+<span class="sd">            energy and force calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">theory_level</span><span class="p">:</span> <span class="n">TheoryLevel</span>
+
+<div class="viewcode-block" id="SoftwareInterface.compute_energy">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.compute_energy">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the energy of the system using the external software.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SoftwareInterface.compute_forces">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.compute_forces">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the forces on the system using the external software.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
+<span class="sd">            on atoms in the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SoftwareInterface.compute_components">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.compute_components">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the components of energy using the external software.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)</span>
+<span class="sd">            of the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SoftwareInterface.update_threads">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.update_threads">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">update_threads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the number of threads used by the external software.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            threads: The number of threads to utilize.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SoftwareInterface.update_memory">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.update_memory">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">update_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the amount of memory used by the external software.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            memory: The amount of memory to utilize.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MMInterface">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface">[docs]</a>
+<span class="k">class</span> <span class="nc">MMInterface</span><span class="p">(</span><span class="n">SoftwareInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The abstract MM interface base class.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        theory_level: The level of theory that the software applies in</span>
+<span class="sd">            energy and force calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">theory_level</span> <span class="o">=</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span>
+
+<div class="viewcode-block" id="MMInterface.zero_intramolecular">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface.zero_intramolecular">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">zero_intramolecular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove intra-molecular interactions for the specified atoms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            atoms: The indices of atoms to remove intra-molecular</span>
+<span class="sd">                interactions from.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MMInterface.zero_charges">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface.zero_charges">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">zero_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove charges from the specified atoms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            atoms: The indices of atoms to remove charges from.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MMInterface.zero_intermolecular">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface.zero_intermolecular">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">zero_intermolecular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove inter-molecular interactions for the specified atoms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            atoms: The indices of atoms to remove inter-molecular</span>
+<span class="sd">                interactions from.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MMInterface.zero_forces">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface.zero_forces">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">zero_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Zero forces on the specified atoms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            atoms: The indices of atoms to zero forces for.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MMInterface.add_real_elst">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface.add_real_elst">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">add_real_elst</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">const</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">inclusion</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Coulomb interaction for the specified atoms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            atoms: The indices of atoms to add a Coulomb interaction</span>
+<span class="sd">                for.</span>
+<span class="sd">            const: A constant to multiply at the beginning of the</span>
+<span class="sd">                coulomb expression.</span>
+<span class="sd">            inclusion: An Nx3 array with values that will be applied to</span>
+<span class="sd">                the forces of the Coulomb interaction through</span>
+<span class="sd">                element-wise multiplication.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MMInterface.add_non_elst">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface.add_non_elst">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">add_non_elst</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+            <span class="n">inclusion</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a non-electrostatic interaction for the specified atoms.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            atoms: The indices of atoms to add a non-electrostatic,</span>
+<span class="sd">                non-bonded interaction for.</span>
+<span class="sd">            inclusion: An Nx3 array with values that will be applied to</span>
+<span class="sd">                the forces of the non-electrostatic interaction through</span>
+<span class="sd">                element-wise multiplication.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="QMInterface">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.QMInterface">[docs]</a>
+<span class="k">class</span> <span class="nc">QMInterface</span><span class="p">(</span><span class="n">SoftwareInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The abstract QM interface base class.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        theory_level: The level of theory that the software applies in</span>
+<span class="sd">            energy and force calculations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">theory_level</span> <span class="o">=</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span>
+
+<div class="viewcode-block" id="QMInterface.disable_embedding">
+<a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.QMInterface.disable_embedding">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">disable_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Disable electrostatic embedding.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+    </div>
+
+
+
+
+  </body>
+</html>

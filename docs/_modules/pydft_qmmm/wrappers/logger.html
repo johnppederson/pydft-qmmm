@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pydft_qmmm.wrappers.logger &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <h1>Source code for pydft_qmmm.wrappers.logger</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Centralized logging classes based on context management.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">align_dict</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">FileManager</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+    <span class="kn">from</span> <span class="nn">pydft_qmmm.system</span> <span class="kn">import</span> <span class="n">System</span>
+    <span class="kn">from</span> <span class="nn">.simulation</span> <span class="kn">import</span> <span class="n">Simulation</span>
+
+
+<div class="viewcode-block" id="NullLogger">
+<a class="viewcode-back" href="../../../pydft_qmmm.wrappers.html#pydft_qmmm.wrappers.logger.NullLogger">[docs]</a>
+<span class="k">class</span> <span class="nc">NullLogger</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A default logger class which does not perform logging.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NullLogger</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Begin managing the logging context.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A null logger for context management.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exit the managed context.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            type_: The type of exception raised by the context.</span>
+<span class="sd">            value: The value of the exception raised by the context.</span>
+<span class="sd">            traceback: The traceback from an exception.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="NullLogger.record">
+<a class="viewcode-back" href="../../../pydft_qmmm.wrappers.html#pydft_qmmm.wrappers.logger.NullLogger.record">[docs]</a>
+    <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Default record call, which does nothing.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            simulation: The simulation whose data will be recorded by</span>
+<span class="sd">                the logger.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Logger">
+<a class="viewcode-back" href="../../../pydft_qmmm.wrappers.html#pydft_qmmm.wrappers.logger.Logger">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Logger</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logger for recording system and simulation data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output_dir: The directory where records are written.</span>
+<span class="sd">        system: The system whose data will be reported.</span>
+<span class="sd">        write_to_log: Whether or not to write energies to a tree-like</span>
+<span class="sd">            log file.</span>
+<span class="sd">        decimal_places: Number of decimal places to write energies in</span>
+<span class="sd">            the log file before truncation.</span>
+<span class="sd">        log_write_interval: The interval between successive log</span>
+<span class="sd">            writes, in simulation steps.</span>
+<span class="sd">        write_to_csv: Whether or not to write energies to a CSV file.</span>
+<span class="sd">        csv_write_interval: The interval between successive CSV</span>
+<span class="sd">            writes, in simulation steps.</span>
+<span class="sd">        write_to_dcd: Whether or not to write atom positions to a</span>
+<span class="sd">            DCD file.</span>
+<span class="sd">        dcd_write_interval: The interval between successive DCD</span>
+<span class="sd">            writes, in simulation steps.</span>
+<span class="sd">        write_to_pdb: Whether or not to write atom positions to a</span>
+<span class="sd">            PDB file at the end of a simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">System</span>
+    <span class="n">write_to_log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">log_write_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">write_to_csv</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">csv_write_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">write_to_dcd</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">dcd_write_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">write_to_pdb</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Logger</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Begin managing the logging context.</span>
+
+<span class="sd">        This largely entails creating the files which will be logged.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A logger for context management with access to all necessary</span>
+<span class="sd">            files in the output directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span> <span class="o">=</span> <span class="n">FileManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_log</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span> <span class="o">=</span> <span class="s2">&quot;output.log&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">start_log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_csv</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">csv</span> <span class="o">=</span> <span class="s2">&quot;output.csv&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">start_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csv</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_dcd</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dcd</span> <span class="o">=</span> <span class="s2">&quot;output.dcd&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">start_dcd</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dcd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dcd_write_interval</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">traceback</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Exit the managed context.</span>
+
+<span class="sd">        This entails terminating and closing the logging files.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            type_: The type of exception raised by the context.</span>
+<span class="sd">            value: The value of the exception raised by the context.</span>
+<span class="sd">            traceback: The traceback from an exception.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_log</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">end_log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_pdb</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">write_to_pdb</span><span class="p">(</span>
+                <span class="s2">&quot;output.pdb&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">residues</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">residue_names</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">elements</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">names</span><span class="p">,</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="Logger.record">
+<a class="viewcode-back" href="../../../pydft_qmmm.wrappers.html#pydft_qmmm.wrappers.logger.Logger.record">[docs]</a>
+    <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simulation</span><span class="p">:</span> <span class="n">Simulation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Record simulation data into the log files.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            simulation: The simulation whose data will be recorded by</span>
+<span class="sd">                the logger.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_log</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">write_to_log</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_unwrap_energy</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">energy</span><span class="p">),</span>
+                <span class="n">simulation</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_csv</span><span class="p">:</span>
+            <span class="n">flat_dict</span> <span class="o">=</span> <span class="n">align_dict</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">simulation</span><span class="o">.</span><span class="n">_frame</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">write_to_csv</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">csv</span><span class="p">,</span>
+                    <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">val</span>
+                        <span class="ow">in</span> <span class="n">flat_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">write_to_csv</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">csv</span><span class="p">,</span>
+                    <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">val</span>
+                        <span class="ow">in</span> <span class="n">flat_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                    <span class="p">),</span>
+                    <span class="n">header</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">key</span>
+                        <span class="ow">in</span> <span class="n">flat_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_to_dcd</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_manager</span><span class="o">.</span><span class="n">write_to_dcd</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dcd</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dcd_write_interval</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">),</span>
+                <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span>
+                <span class="n">simulation</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+                <span class="n">simulation</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_unwrap_energy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">energy</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+            <span class="n">spaces</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">cont</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a log file string from an energy dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            energy: The energy component dictionary.</span>
+<span class="sd">            spaces: The number of spaces to indent the line.</span>
+<span class="sd">            cont: A list to keep track of sub-component continuation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The tree-like string of energies to write to the log file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unwrap_energy</span><span class="p">(</span>
+                    <span class="n">val</span><span class="p">,</span> <span class="n">spaces</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+                        <span class="n">cont</span><span class="o">+</span><span class="p">[</span><span class="n">spaces</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">cont</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decimal_places</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> kJ/mol</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">spaces</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="s2">&quot;| &quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cont</span> <span class="k">else</span> <span class="s2">&quot;  &quot;</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spaces</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="p">)</span><span class="o">+</span><span class="s2">&quot;|_&quot;</span><span class="o">+</span><span class="n">key</span>
+                <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2"> &gt;</span><span class="si">{</span><span class="mi">72</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">string</span></div>
+
+</pre></div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+    </div>
+
+
+
+
+  </body>
+</html>

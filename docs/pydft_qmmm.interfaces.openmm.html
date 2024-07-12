@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pydft_qmmm.interfaces.openmm package &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <section id="pydft-qmmm-interfaces-openmm-package">
+<h1>pydft_qmmm.interfaces.openmm package<a class="headerlink" href="#pydft-qmmm-interfaces-openmm-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pydft_qmmm.interfaces.openmm.openmm_factory">
+<span id="pydft-qmmm-interfaces-openmm-openmm-factory-module"></span><h2>pydft_qmmm.interfaces.openmm.openmm_factory module<a class="headerlink" href="#module-pydft_qmmm.interfaces.openmm.openmm_factory" title="Link to this heading">¶</a></h2>
+<p>Functionality for building the OpenMM interface.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_factory.SUPPORTED_FORCES">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.openmm.openmm_factory.</span></span><span class="sig-name descname"><span class="pre">SUPPORTED_FORCES</span></span><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_factory.SUPPORTED_FORCES" title="Link to this definition">¶</a></dt>
+<dd><p>OpenMM force classes which can be processed by
+PyDFT-QMMM currently.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_factory.openmm_interface_factory">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.openmm.openmm_factory.</span></span><span class="sig-name descname"><span class="pre">openmm_interface_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_factory.html#openmm_interface_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_factory.openmm_interface_factory" title="Link to this definition">¶</a></dt>
+<dd><p>Build the interface to OpenMM given the settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>settings</strong> (<a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMSettings" title="pydft_qmmm.interfaces.interface.MMSettings"><em>MMSettings</em></a>) – The settings used to build the OpenMM interface.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The OpenMM interface.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface" title="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface"><em>OpenMMInterface</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.interfaces.openmm.openmm_interface">
+<span id="pydft-qmmm-interfaces-openmm-openmm-interface-module"></span><h2>pydft_qmmm.interfaces.openmm.openmm_interface module<a class="headerlink" href="#module-pydft_qmmm.interfaces.openmm.openmm_interface" title="Link to this heading">¶</a></h2>
+<p>The basic OpenMM software interface.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.openmm.openmm_interface.</span></span><span class="sig-name descname"><span class="pre">OpenMMInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ixn_context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMInterface" title="pydft_qmmm.interfaces.interface.MMInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">MMInterface</span></code></a></p>
+<p>A software interface wrapping OpenMM functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>settings</strong> (<a class="reference internal" href="pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMSettings" title="pydft_qmmm.interfaces.interface.MMSettings"><em>MMSettings</em></a>) – The settings used to build the OpenMM interface.</p></li>
+<li><p><strong>base_context</strong> (<em>openmm.Context</em>) – The OpenMM Context object for the interface,
+comprising interactions of the entire system.</p></li>
+<li><p><strong>ixn_context</strong> (<em>openmm.Context</em>) – The OpenMM Context object for the interface,
+comprising interactions that may be required by QM/MM
+embedding procedures.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.add_non_elst">
+<span class="sig-name descname"><span class="pre">add_non_elst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inclusion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.add_non_elst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.add_non_elst" title="Link to this definition">¶</a></dt>
+<dd><p>Add a non-electrostatic interaction for the specified atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms to add a non-electrostatic,
+non-bonded interaction for.</p></li>
+<li><p><strong>inclusion</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>] </em><em>| </em><em>None</em>) – An Nx3 array with values that will be applied to
+the forces of the non-electrostatic interaction through
+element-wise multiplication.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.add_real_elst">
+<span class="sig-name descname"><span class="pre">add_real_elst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">const</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inclusion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.add_real_elst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.add_real_elst" title="Link to this definition">¶</a></dt>
+<dd><p>Add Coulomb interaction for the specified atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms to add a Coulomb interaction
+for.</p></li>
+<li><p><strong>const</strong> (<em>float</em><em> | </em><em>int</em>) – A constant to multiply at the beginning of the
+coulomb expression.</p></li>
+<li><p><strong>inclusion</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>] </em><em>| </em><em>None</em>) – An Nx3 array with values that will be applied to
+the forces of the Coulomb interaction through
+element-wise multiplication.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.compute_components">
+<span class="sig-name descname"><span class="pre">compute_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.compute_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.compute_components" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the components of energy using OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The components of the energy (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}}\)</span>)
+of the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.compute_energy">
+<span class="sig-name descname"><span class="pre">compute_energy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.compute_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.compute_energy" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the energy of the system using OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The energy (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}}\)</span>) of the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.compute_forces">
+<span class="sig-name descname"><span class="pre">compute_forces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.compute_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.compute_forces" title="Link to this definition">¶</a></dt>
+<dd><p>Compute the forces on the system using OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The forces (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}\)</span>) acting
+on atoms in the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_box">
+<span class="sig-name descname"><span class="pre">update_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.update_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_box" title="Link to this definition">¶</a></dt>
+<dd><p>Set the lattice vectors used by OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>box</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The lattice vectors (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the box
+containing the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_charges">
+<span class="sig-name descname"><span class="pre">update_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.update_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_charges" title="Link to this definition">¶</a></dt>
+<dd><p>Set the atomic partial charges used by OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>charges</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The partial charges (<span class="math notranslate nohighlight">\(e\)</span>) of the atoms.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_memory">
+<span class="sig-name descname"><span class="pre">update_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.update_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_memory" title="Link to this definition">¶</a></dt>
+<dd><p>Set the amount of memory used by OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>memory</strong> (<em>str</em>) – The amount of memory to utilize.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_positions">
+<span class="sig-name descname"><span class="pre">update_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.update_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Set the atomic positions used by OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>positions</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The positions (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the atoms
+within the system.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_subsystems">
+<span class="sig-name descname"><span class="pre">update_subsystems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsystems</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.update_subsystems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_subsystems" title="Link to this definition">¶</a></dt>
+<dd><p>Adjust embedding-related values by subsystem membership.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subsystems</strong> (<em>np.ndarray</em><em>[</em><em>Any</em><em>, </em><em>np.dtype</em><em>[</em><em>np.object_</em><em>]</em><em>]</em>) – The subsystems of which the atoms are a part.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_threads">
+<span class="sig-name descname"><span class="pre">update_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threads</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.update_threads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_threads" title="Link to this definition">¶</a></dt>
+<dd><p>Set the number of threads used by OpenMM.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>threads</strong> (<em>int</em>) – The number of threads to utilize.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_charges">
+<span class="sig-name descname"><span class="pre">zero_charges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.zero_charges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_charges" title="Link to this definition">¶</a></dt>
+<dd><p>Remove charges from the specified atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms to remove charges from.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_forces">
+<span class="sig-name descname"><span class="pre">zero_forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.zero_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_forces" title="Link to this definition">¶</a></dt>
+<dd><p>Zero forces on the specified atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms to zero forces for.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intermolecular">
+<span class="sig-name descname"><span class="pre">zero_intermolecular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.zero_intermolecular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intermolecular" title="Link to this definition">¶</a></dt>
+<dd><p>Remove inter-molecular interactions for the specified atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms to remove inter-molecular
+interactions from.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intramolecular">
+<span class="sig-name descname"><span class="pre">zero_intramolecular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/openmm/openmm_interface.html#OpenMMInterface.zero_intramolecular"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intramolecular" title="Link to this definition">¶</a></dt>
+<dd><p>Remove intra-molecular interactions for the specified atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The indices of atoms to remove intra-molecular
+interactions from.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.interfaces.openmm.openmm_utils">
+<span id="pydft-qmmm-interfaces-openmm-openmm-utils-module"></span><h2>pydft_qmmm.interfaces.openmm.openmm_utils module<a class="headerlink" href="#module-pydft_qmmm.interfaces.openmm.openmm_utils" title="Link to this heading">¶</a></h2>
+<p>Functionality for performing exclusions and generating State objects.</p>
+</section>
+<section id="module-pydft_qmmm.interfaces.openmm">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pydft_qmmm.interfaces.openmm" title="Link to this heading">¶</a></h2>
+<p>A sub-package for interfacing with OpenMM.</p>
+</section>
+</section>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+      |
+      <a href="_sources/pydft_qmmm.interfaces.openmm.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+
+
+
+  </body>
+</html>

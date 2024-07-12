@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pydft_qmmm.interfaces.psi4.psi4_interface &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <h1>Source code for pydft_qmmm.interfaces.psi4.psi4_interface</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;The basic Psi4 software interface.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">psi4.core</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
+
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">Subsystem</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common.units</span> <span class="kn">import</span> <span class="n">BOHR_PER_ANGSTROM</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common.units</span> <span class="kn">import</span> <span class="n">KJMOL_PER_EH</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces</span> <span class="kn">import</span> <span class="n">QMInterface</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+    <span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces</span> <span class="kn">import</span> <span class="n">QMSettings</span>
+    <span class="kn">from</span> <span class="nn">.psi4_utils</span> <span class="kn">import</span> <span class="n">Psi4Context</span>
+    <span class="kn">from</span> <span class="nn">.psi4_utils</span> <span class="kn">import</span> <span class="n">Psi4Options</span>
+
+<span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">be_quiet</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Psi4Interface">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface">[docs]</a>
+<span class="k">class</span> <span class="nc">Psi4Interface</span><span class="p">(</span><span class="n">QMInterface</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A software interface wrapping Psi4 functionality.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        settings: The settings used to build the Psi4 interface.</span>
+<span class="sd">        options: The Psi4 global options derived from the settings.</span>
+<span class="sd">        functional: The name of the functional to use for</span>
+<span class="sd">            exchange-correlation calculations.</span>
+<span class="sd">        context: An object which holds system information to feed into</span>
+<span class="sd">            Psi4.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">settings</span><span class="p">:</span> <span class="n">QMSettings</span><span class="p">,</span>
+            <span class="n">options</span><span class="p">:</span> <span class="n">Psi4Options</span><span class="p">,</span>
+            <span class="n">functional</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">context</span><span class="p">:</span> <span class="n">Psi4Context</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span> <span class="o">=</span> <span class="n">functional</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span> <span class="o">=</span> <span class="n">context</span>
+
+<div class="viewcode-block" id="Psi4Interface.compute_energy">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_energy">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the energy of the system using Psi4.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="p">()</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">energy</span><span class="p">()</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">KJMOL_PER_EH</span>
+        <span class="k">return</span> <span class="n">energy</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.compute_forces">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_forces">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the forces on the system using Psi4.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
+<span class="sd">            on atoms in the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="p">()</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">))</span>
+        <span class="n">forces</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="p">,</span>
+            <span class="n">ref_wfn</span><span class="o">=</span><span class="n">wfn</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">forces</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
+        <span class="n">forces_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">qm_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">qm_indices</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">forces_temp</span><span class="p">[</span><span class="n">qm_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">forces</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">generate_external_potential</span><span class="p">():</span>
+            <span class="n">embed_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">embedding</span><span class="p">)</span>
+            <span class="n">embed_indices</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">gradient_on_charges</span><span class="p">()</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
+                <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
+            <span class="p">)</span>
+            <span class="n">forces_temp</span><span class="p">[</span><span class="n">embed_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">forces</span>
+        <span class="n">forces</span> <span class="o">=</span> <span class="n">forces_temp</span>
+        <span class="k">return</span> <span class="n">forces</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.compute_components">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.compute_components">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the components of energy using OpenMM.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)</span>
+<span class="sd">            of the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">components</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">components</span></div>
+
+
+    <span class="nd">@lru_cache</span>
+    <span class="k">def</span> <span class="nf">_generate_wavefunction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the Psi4 Wavefunction object for use by Psi4.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Psi4 Wavefunction object, which contains the energy</span>
+<span class="sd">            and coefficients determined through SCF.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">generate_molecule</span><span class="p">()</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="p">))</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">energy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="p">,</span>
+            <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">molecule</span><span class="o">=</span><span class="n">molecule</span><span class="p">,</span>
+            <span class="n">external_potentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">generate_external_potential</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">wfn</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span>
+            <span class="n">wfn</span><span class="o">.</span><span class="n">get_scratch_filename</span><span class="p">(</span><span class="mi">180</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">wfn</span>
+
+<div class="viewcode-block" id="Psi4Interface.disable_embedding">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.disable_embedding">[docs]</a>
+    <span class="k">def</span> <span class="nf">disable_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Disable electrostatic embedding.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">do_embedding</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.update_positions">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_positions">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the atomic positions used by Psi4.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the atoms</span>
+<span class="sd">                within the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">update_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.update_charges">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_charges">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">charges</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the atomic partial charges used by Psi4 for embedding.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            charges: The partial charges (:math:`e`) of the atoms.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">update_charges</span><span class="p">(</span><span class="n">charges</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.update_subsystems">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_subsystems">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_subsystems</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">subsystems</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">object_</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adjust which atoms are embedded by subsystem membership.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subsystems: The subsystems of which the atoms are a part.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">embedding</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subsystems</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">Subsystem</span><span class="o">.</span><span class="n">II</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_context</span><span class="o">.</span><span class="n">update_embedding</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.update_threads">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_threads">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_threads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the number of threads used by Psi4.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            threads: The number of threads to utilize.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_num_threads</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.update_memory">
+<a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.psi4.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_memory">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memory</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the amount of memory used by OpenMM.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            memory: The amount of memory to utilize.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">psi4</span><span class="o">.</span><span class="n">set_memory</span><span class="p">(</span><span class="n">memory</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+    </div>
+
+
+
+
+  </body>
+</html>

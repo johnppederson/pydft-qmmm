@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pydft_qmmm.plugins.atom_partition.atom_partition &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <h1>Source code for pydft_qmmm.plugins.atom_partition.atom_partition</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;A plugin for performing atom-by-atom system partitioning.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">Subsystem</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.plugins.plugin</span> <span class="kn">import</span> <span class="n">PartitionPlugin</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pydft_qmmm.calculators</span> <span class="kn">import</span> <span class="n">CompositeCalculator</span>
+    <span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">Results</span>
+    <span class="kn">import</span> <span class="nn">mypy_extensions</span>
+    <span class="n">CalculateMethod</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="n">mypy_extensions</span><span class="o">.</span><span class="n">DefaultArg</span><span class="p">(</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;return_forces&#39;</span><span class="p">),</span>
+            <span class="n">mypy_extensions</span><span class="o">.</span><span class="n">DefaultArg</span><span class="p">(</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;return_components&#39;</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">Results</span><span class="p">,</span>
+    <span class="p">]</span>
+
+
+<div class="viewcode-block" id="AtomPartition">
+<a class="viewcode-back" href="../../../../pydft_qmmm.plugins.atom_partition.html#pydft_qmmm.plugins.atom_partition.atom_partition.AtomPartition">[docs]</a>
+<span class="k">class</span> <span class="nc">AtomPartition</span><span class="p">(</span><span class="n">PartitionPlugin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Partition subsystems atom-by-atom.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        query: The VMD-like query representing the group of atoms whose</span>
+<span class="sd">            subsystem membership will be determined on an atom-by-atom</span>
+<span class="sd">            basis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
+
+<div class="viewcode-block" id="AtomPartition.modify">
+<a class="viewcode-back" href="../../../../pydft_qmmm.plugins.atom_partition.html#pydft_qmmm.plugins.atom_partition.atom_partition.AtomPartition.modify">[docs]</a>
+    <span class="k">def</span> <span class="nf">modify</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">calculator</span><span class="p">:</span> <span class="n">CompositeCalculator</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the functionality of a calculator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            calculator: The calculator whose functionality will be</span>
+<span class="sd">                modified by the plugin.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modifieds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">calculator</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">system</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">cutoff</span>
+        <span class="n">calculator</span><span class="o">.</span><span class="n">calculate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modify_calculate</span><span class="p">(</span>
+            <span class="n">calculator</span><span class="o">.</span><span class="n">calculate</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_modify_calculate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">calculate</span><span class="p">:</span> <span class="n">CalculateMethod</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CalculateMethod</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the calculate routine to perform atom-wise partitioning.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            calculate: The calculation routine to modify.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The modified calculation routine which implements atom-wise</span>
+<span class="sd">            partitioning before calculation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span>
+                <span class="n">return_forces</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="n">return_components</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generate_partition</span><span class="p">()</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="n">calculate</span><span class="p">(</span><span class="n">return_forces</span><span class="p">,</span> <span class="n">return_components</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">results</span>
+        <span class="k">return</span> <span class="n">inner</span>
+
+<div class="viewcode-block" id="AtomPartition.generate_partition">
+<a class="viewcode-back" href="../../../../pydft_qmmm.plugins.atom_partition.html#pydft_qmmm.plugins.atom_partition.atom_partition.AtomPartition.generate_partition">[docs]</a>
+    <span class="k">def</span> <span class="nf">generate_partition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the atom-wise system partitioning.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">qm_region</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">qm_region</span><span class="p">)</span>
+        <span class="n">qm_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">qm_region</span><span class="p">,</span> <span class="p">:],</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">region_ii</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">selection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">)):</span>
+            <span class="n">atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">frozenset</span><span class="p">((</span><span class="n">atom</span><span class="p">,))</span> <span class="o">&amp;</span> <span class="n">selection</span><span class="p">)</span>
+            <span class="n">not_qm</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">qm_region</span><span class="p">)</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="nb">set</span><span class="p">((</span><span class="n">atoms</span><span class="p">,)))</span>
+            <span class="k">if</span> <span class="n">not_qm</span> <span class="ow">and</span> <span class="n">atoms</span><span class="p">:</span>
+                <span class="n">nth_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:],</span>
+                    <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">r_vector</span> <span class="o">=</span> <span class="n">nth_centroid</span> <span class="o">-</span> <span class="n">qm_centroid</span>
+                <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r_vector</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+                <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span><span class="p">:</span>
+                    <span class="n">region_ii</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="c1"># Update the topology with the current embedding atoms.</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">III</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Subsystem</span><span class="o">.</span><span class="n">II</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">region_ii</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Subsystem</span><span class="o">.</span><span class="n">I</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">qm_region</span> <span class="k">else</span> <span class="n">x</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">subsystems</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+    </div>
+
+
+
+
+  </body>
+</html>
