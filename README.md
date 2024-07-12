@@ -1,5 +1,5 @@
 <p align="center">
-<img width=12.5% src="https://github.com/johnppederson/pydft-qmmm/blob/master/docs/media/pydft_qmmm.svg">
+<img width=75% src="https://github.com/johnppederson/pydft-qmmm/blob/master/docs/media/pydft_qmmm.svg">
 </p>
 
 PyDFT-QMMM: A Modular Framework for DFT-QM/MM Simulation
@@ -30,13 +30,13 @@ Requirements
 
 ### Optional
 
-## Requirements for QM/MM/PME
+#### Requirements for QM/MM/PME
 
 * numba (used by QM/MM/PME utilities)
 * [Psi4](https://github.com/johnppederson/psi4) (Psi4 implementing QM/MM/PME, must compile from source)
 * [OpenMM](https://github.com/johnppederson/openmm) (OpenMM implementing QM/MM/PME, must compile from source)
 
-## Requirements for Plumed Plugin
+#### Requirements for Plumed Plugin
 
 * plumed (used for enhanced sampling simulations)
 
