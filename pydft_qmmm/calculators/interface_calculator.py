@@ -1,12 +1,8 @@
-#! /usr/bin/env python3
-"""A module defining the :class:`Calculator` base class and derived
-non-multiscale classes.
+"""A calculator utilizing external software.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
-from dataclasses import field
-from typing import Any
 from typing import TYPE_CHECKING
 
 from .calculator import Calculator
@@ -19,22 +15,19 @@ if TYPE_CHECKING:
 
 @dataclass
 class InterfaceCalculator(Calculator):
-    """A :class:`Calculator` class, defining the procedure for
-    standalone QM or MM calculations.
+    """A calculator utilizing external software.
 
-    :param system: |system| to perform calculations on.
-    :param interface: |interface| to perform calculations with.
-    :param options: Options to provide to the
-        :class:`SoftwareInterface`.
+    Args:
+        system: The system whose atom positions, atom identities, and
+            geometry will be used to calculate energies and forces.
+        interface: The interface to an external software that will
+            be used to calculate energies and forces.
     """
     system: System
     interface: SoftwareInterface
-    options: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        """Send notifier functions from the interface to the respective
-        state or topology variable for monitoring, immediately after
-        initialization.
+        """Set level of theory and calculator name.
         """
         self.theory_level = self.interface.theory_level
         self.name = str(self.interface.theory_level).split(".")[1]
@@ -44,12 +37,25 @@ class InterfaceCalculator(Calculator):
             return_forces: bool | None = True,
             return_components: bool | None = True,
     ) -> Results:
-        energy = self.interface.compute_energy(**self.options)
+        r"""Calculate energies and forces.
+
+        Args:
+            return_forces: Whether or not to return forces.
+            return_components: Whether or not to return the components of
+                the energy.
+
+        Returns:
+            The energy (:math:`\mathrm{kJ\;mol^{-1}}`), forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`), and energy
+            components (:math:`\mathrm{kJ\;mol^{-1}}`) of the
+            calculation.
+        """
+        energy = self.interface.compute_energy()
         results = Results(energy)
         if return_forces:
-            forces = self.interface.compute_forces(**self.options)
+            forces = self.interface.compute_forces()
             results.forces = forces
         if return_components:
-            components = self.interface.compute_components(**self.options)
+            components = self.interface.compute_components()
             results.components = components
         return results

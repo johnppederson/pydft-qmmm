@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A sub-package for interfacing to OpenMM.
+"""A sub-package for interfacing with OpenMM.
 """
 from __future__ import annotations
 __author__ = "John Pederson"

@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module for defining the :class:`Integrator` base class.
+"""The integrator base class.
 """
 from __future__ import annotations
 
@@ -18,26 +17,51 @@ Returns = tuple[NDArray[np.float64], NDArray[np.float64]]
 
 
 class Integrator(ABC):
-    """An abstract :class:`Integrator` base class for interfacing with
-    plugins.
+    r"""The abstract integrator base class.
+
+    Attributes:
+        _plugins: (class attribute) The list of plugin names that have
+            been registered to the integrator.
+        timestep: (class attribute) The timestep (:math:`\mathrm{fs}`)
+            used to perform integrations.
     """
     _plugins: list[str] = []
     timestep: float | int
 
     @abstractmethod
     def integrate(self, system: System) -> Returns:
-        """Integrate forces from the :class:`System` into new positions
-        and velocities.
+        r"""Integrate forces into new positions and velocities.
 
-        :return: The new positions and velocities of the
-            :class:`System`, in Angstroms and Angstroms per
-            femtosecond, respectively.
+        Args:
+            system: The system whose forces
+                (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and existing
+                positions (:math:`\mathrm{\mathring{A}}`) and velocities
+                (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) will be used to
+                determine new positions and velocities.
 
-        .. note:: Based on the implementation of the integrator
-            kernels from OpenMM.
+        Returns:
+            New positions (:math:`\mathrm{\mathring{A}}`) and velocities
+            (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) integrated from the forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and existing
+            positions and velocities of the system.
         """
 
     def compute_kinetic_energy(self, system: System) -> float:
+        r"""Calculate kinetic energy via leapfrog algorithm.
+
+        Args:
+            system: The system whose forces
+                (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and existing
+                velocities (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) will be used
+                to calculate the kinetic energy of the system.
+
+        Returns:
+            The kinetic energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the
+            system.
+
+        .. note:: Based on the implementation of the kinetic energy
+            kernels from OpenMM.
+        """
         masses = system.masses.reshape(-1, 1)
         velocities = (
             system.velocities
@@ -50,10 +74,11 @@ class Integrator(ABC):
         return kinetic_energy
 
     def register_plugin(self, plugin: IntegratorPlugin) -> None:
-        """Register a :class:`Plugin` modifying an :class:`Integrator`
-        routine.
+        """Record plugin name and apply the plugin to the integrator.
 
-        :param plugin: An :class:`IntegratorPlugin` object.
+        Args:
+            plugin: A plugin that will modify the behavior of one or
+                more integrator routines.
         """
         self._plugins.append(type(plugin).__name__)
         plugin.modify(self)
@@ -61,7 +86,7 @@ class Integrator(ABC):
     def active_plugins(self) -> list[str]:
         """Get the current list of active plugins.
 
-        :return: A list of the active plugins being employed by the
-            :class:`Integrator`.
+        Returns:
+            A list of the active plugins registered by the integrator.
         """
         return self._plugins

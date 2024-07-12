@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module to define the :class:`OpenMMInterface` class.
+"""The basic OpenMM software interface.
 """
 from __future__ import annotations
 
@@ -27,10 +26,15 @@ if TYPE_CHECKING:
 
 
 class OpenMMInterface(MMInterface):
-    """A :class:`SoftwareInterface` class which wraps the functional
-    components of OpenMM.
+    """A software interface wrapping OpenMM functionality.
 
-    :param context: The OpenMM Context object for the interface.
+    Args:
+        settings: The settings used to build the OpenMM interface.
+        base_context: The OpenMM Context object for the interface,
+            comprising interactions of the entire system.
+        ixn_context: The OpenMM Context object for the interface,
+            comprising interactions that may be required by QM/MM
+            embedding procedures.
     """
 
     def __init__(
@@ -56,6 +60,11 @@ class OpenMMInterface(MMInterface):
         ]
 
     def compute_energy(self) -> float:
+        r"""Compute the energy of the system using OpenMM.
+
+        Returns:
+            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the system.
+        """
         base_state = _generate_state(self._base_context)
         energy = base_state.getPotentialEnergy() / kilojoule_per_mole
         if self._ixn_energy_group:
@@ -66,6 +75,12 @@ class OpenMMInterface(MMInterface):
         return energy
 
     def compute_forces(self) -> NDArray[np.float64]:
+        r"""Compute the forces on the system using OpenMM.
+
+        Returns:
+            The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting
+            on atoms in the system.
+        """
         base_state = _generate_state(self._base_context)
         forces = (
             self._base_force_mask * base_state.getForces(asNumpy=True)
@@ -90,6 +105,12 @@ class OpenMMInterface(MMInterface):
         return forces
 
     def compute_components(self) -> dict[str, float]:
+        r"""Compute the components of energy using OpenMM.
+
+        Returns:
+            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)
+            of the system.
+        """
         components = {}
         for force in range(self._base_context.getSystem().getNumForces()):
             key = type(
@@ -114,7 +135,11 @@ class OpenMMInterface(MMInterface):
         return components
 
     def zero_intramolecular(self, atoms: frozenset[int]) -> None:
-        """
+        """Remove intra-molecular interactions for the specified atoms.
+
+        Args:
+            atoms: The indices of atoms to remove intra-molecular
+                interactions from.
         """
         system = self._base_context.getSystem()
         _exclude_intramolecular(system, atoms)
@@ -124,7 +149,10 @@ class OpenMMInterface(MMInterface):
         self._base_context.setPositions(positions)
 
     def zero_forces(self, atoms: frozenset[int]) -> None:
-        """
+        """Zero forces on the specified atoms.
+
+        Args:
+            atoms: The indices of atoms to zero forces for.
         """
         for i in atoms:
             for j in range(3):
@@ -137,7 +165,16 @@ class OpenMMInterface(MMInterface):
             const: float | int = 1,
             inclusion: NDArray[np.float64] | None = None,
     ) -> None:
-        """
+        """Add Coulomb interaction for the specified atoms.
+
+        Args:
+            atoms: The indices of atoms to add a Coulomb interaction
+                for.
+            const: A constant to multiply at the beginning of the
+                coulomb expression.
+            inclusion: An Nx3 array with values that will be applied to
+                the forces of the Coulomb interaction through
+                element-wise multiplication.
         """
         system = self._base_context.getSystem()
         forces = _real_electrostatic(system, atoms, const)
@@ -162,7 +199,14 @@ class OpenMMInterface(MMInterface):
             atoms: frozenset[int],
             inclusion: NDArray[np.float64] | None = None,
     ) -> None:
-        """
+        """Add a non-electrostatic interaction for the specified atoms.
+
+        Args:
+            atoms: The indices of atoms to add a non-electrostatic,
+                non-bonded interaction for.
+            inclusion: An Nx3 array with values that will be applied to
+                the forces of the non-electrostatic interaction through
+                element-wise multiplication.
         """
         system = self._base_context.getSystem()
         forces = _non_electrostatic(system, atoms)
@@ -183,7 +227,10 @@ class OpenMMInterface(MMInterface):
         self._ixn_context.setPositions(positions)
 
     def zero_charges(self, atoms: frozenset[int]) -> None:
-        """
+        """Remove charges from the specified atoms.
+
+        Args:
+            atoms: The indices of atoms to remove charges from.
         """
         system = self._base_context.getSystem()
         _exclude_electrostatic(system, atoms)
@@ -193,7 +240,11 @@ class OpenMMInterface(MMInterface):
         self._base_context.setPositions(positions)
 
     def zero_intermolecular(self, atoms: frozenset[int]) -> None:
-        """
+        """Remove inter-molecular interactions for the specified atoms.
+
+        Args:
+            atoms: The indices of atoms to remove inter-molecular
+                interactions from.
         """
         system = self._base_context.getSystem()
         _exclude_intermolecular(system, atoms)
@@ -203,9 +254,10 @@ class OpenMMInterface(MMInterface):
         self._base_context.setPositions(positions)
 
     def update_charges(self, charges: NDArray[np.float64]) -> None:
-        """Update the atom charges for OpenMM.
+        """Set the atomic partial charges used by OpenMM.
 
-        :param charges: |charges|
+        Args:
+            charges: The partial charges (:math:`e`) of the atoms.
         """
         nonbonded_forces = [
             force for force in self._base_context.getSystem().getForces()
@@ -228,9 +280,11 @@ class OpenMMInterface(MMInterface):
                 force.updateParametersInContext(self._ixn_context)
 
     def update_positions(self, positions: NDArray[np.float64]) -> None:
-        """Update the atom positions for OpenMM.
+        r"""Set the atomic positions used by OpenMM.
 
-        :param positions: |positions|
+        Args:
+            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the
+                atoms within the system.
         """
         positions_temp = []
         for i in range(len(positions)):
@@ -245,18 +299,22 @@ class OpenMMInterface(MMInterface):
         self._ixn_context.setPositions(positions_temp)
 
     def update_box(self, box: NDArray[np.float64]) -> None:
-        """Update the box vectors for OpenMM.
+        r"""Set the lattice vectors used by OpenMM.
 
-        :param box: |box|
-
-        .. warning:: This method is not currently implemented.
+        Args:
+            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the box
+                containing the system.
         """
+        pass
 
     def update_subsystems(
             self,
             subsystems: np.ndarray[Any, np.dtype[np.object_]],
     ) -> None:
-        """Update the box vectors for OpenMM.
+        """Adjust embedding-related values by subsystem membership.
+
+        Args:
+            subsystems: The subsystems of which the atoms are a part.
         """
         custom_nonbonded_forces = [
             force for force in self._ixn_context.getSystem().getForces()
@@ -271,3 +329,29 @@ class OpenMMInterface(MMInterface):
                     else:
                         force.setParticleParameters(i, [q, 1])
                 force.updateParametersInContext(self._ixn_context)
+
+    def update_threads(self, threads: int) -> None:
+        """Set the number of threads used by OpenMM.
+
+        Args:
+            threads: The number of threads to utilize.
+        """
+        platform = openmm.Platform.getPlatformByName("CPU")
+        platform.setPropertyValue(
+            self._base_context,
+            "Threads",
+            str(threads),
+        )
+        platform.setPropertyValue(
+            self._ixn_context,
+            "Threads",
+            str(threads),
+        )
+
+    def update_memory(self, memory: str) -> None:
+        """Set the amount of memory used by OpenMM.
+
+        Args:
+            memory: The amount of memory to utilize.
+        """
+        pass

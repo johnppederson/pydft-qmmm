@@ -1,6 +1,4 @@
-#! /usr/bin/env python3
-"""A module defining the class and functions needed to load and write
-files.
+"""A utility for reading and writing files.
 """
 from __future__ import annotations
 
@@ -24,9 +22,10 @@ if TYPE_CHECKING:
 
 
 class FileManager:
-    """A class to load and generate inputs and outputs.
+    """A utility for reading and writing files.
 
-    :param working_directory: The current working directory.
+    Args:
+        working_directory: The current working directory.
     """
 
     def __init__(self, working_directory: str = "./") -> None:
@@ -50,10 +49,15 @@ class FileManager:
     ]:
         """Load files necessary to generate a system.
 
-        :param pdb_list: |pdb_list|
-        :param forcefield_list: |forcefield_list|
-        :return: Data for the :class:`State` and :class:`Topology`
-            record classes.
+        Args:
+            pdb_file: The directory or list of directories containing
+                PDB files with position, element, name, residue, residue
+                name, and lattice vector data.
+            forcefield_file: The directory or list of directories
+                containing FF XML files with mass and charge data.
+
+        Returns:
+            Data required to create a System object.
         """
         # Check the file extensions and add them to the :class:`Files`
         # record.
@@ -87,13 +91,24 @@ class FileManager:
             name: str,
             positions: NDArray[np.float64] | ObservedArray[Any, array_float],
             box: NDArray[np.float64] | ObservedArray[Any, array_float],
-            molecules: list[int] | ObservedArray[Any, array_int],
-            molecule_names: list[str] | ObservedArray[Any, array_str],
+            residues: list[int] | ObservedArray[Any, array_int],
+            residue_names: list[str] | ObservedArray[Any, array_str],
             elements: list[str] | ObservedArray[Any, array_str],
             names: list[str] | ObservedArray[Any, array_str],
     ) -> None:
-        """Utility to write PDB files with :class:`State` current
-        coordinates.
+        r"""Write system to PDB file.
+
+        Args:
+            name: The directory and filename to write the PDB file to.
+            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the
+                atoms within the system.
+            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the box
+                containing the system.
+            residues: The indices of residues to which the atoms belong.
+            residue_names: The names of the residues to which the atom
+                belongs.
+            elements: The element symbols of the atoms.
+            names: The names (type) of the atoms, as in a PDB file.
 
         .. note:: Based on PDB writer from OpenMM.
         """
@@ -113,9 +128,9 @@ class FileManager:
             for i, atom in enumerate(names):
                 line = "HETATM"
                 line += f"{i+1:5d}  "
-                line += f"{name:4s}"
-                line += f"{molecule_names[i]:4s}"
-                line += f"A{molecules[i]+1:4d}    "
+                line += f"{names[i]:4s}"
+                line += f"{residue_names[i]:4s}"
+                line += f"A{residues[i]+1:4d}    "
                 line += f"{positions[i,0]:8.3f}"
                 line += f"{positions[i,1]:8.3f}"
                 line += f"{positions[i,2]:8.3f}"
@@ -131,14 +146,15 @@ class FileManager:
             num_particles: int,
             timestep: int | float,
     ) -> None:
-        """Utility to start writing a DCD file.
+        r"""Start writing to a DCD file.
 
-        :param name: The directory/name of DCD file to be written.
-        :param write_interval: The interval between successive writes
-            to the DCD file.
-        :param num_particles: The number of particles in the
-            :class:`System`.
-        :param timestep: |timestep|
+        Args:
+            name: The directory and filename to write the DCD file to.
+            write_interval: The interval between successive DCD
+                writes, in simulation steps.
+            num_particles: The number of atoms in the system.
+            timestep: The timestep (:math:`\mathrm{fs}`) used to perform
+                simulation.
 
         .. note:: Based on DCD writer from OpenMM.
         """
@@ -166,16 +182,18 @@ class FileManager:
             box: NDArray[np.float64] | ObservedArray[Any, array_float],
             frame: int,
     ) -> None:
-        """Write data to an existing DCD file.
+        r"""Write data to an existing DCD file.
 
-        :param name: The directory/name of DCD file to be written.
-        :param write_interval: The interval between successive writes
-            to the DCD file.
-        :param num_particles: The number of particles in the
-            :class:`System`.
-        :param positions: |positions|
-        :param box: |box|
-        :param frame: |frame|
+        Args:
+            name: The directory and filename to write the DCD file to.
+            write_interval: The interval between successive DCD
+                writes, in simulation steps.
+            num_particles: The number of atoms in the system.
+            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the
+                atoms within the system.
+            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the box
+                containing the system.
+            frame: The current frame of the simulation.
 
         .. note:: Based on DCD writer from OpenMM.
         """
@@ -210,9 +228,10 @@ class FileManager:
             self,
             name: str,
     ) -> None:
-        """Utility to start writing a log file.
+        """Start writing to a log file.
 
-        :param name: The directory/name of log file to be written.
+        Args:
+            name: The directory and filename to write the log file to.
         """
         filename = self._parse_name(name, ext="log")
         with open(filename, "w") as fh:
@@ -226,9 +245,11 @@ class FileManager:
     ) -> None:
         """Write data to an existing log file.
 
-        :param name: The directory/name of log file to be written.
-        :param lines: The lines to be written to the log file.
-        :param frame: |frame|
+        Args:
+            name: The directory and filename to write the log file to.
+            lines: A multi-line string which will be written to the
+                log file.
+            frame: The current frame of the simulation.
         """
         filename = self._parse_name(name, ext="log")
         with open(filename, "a") as fh:
@@ -242,7 +263,8 @@ class FileManager:
     ) -> None:
         """Terminate an existing log file.
 
-        :param name: The directory/name of log file to be terminated.
+        Args:
+            name: The directory and filename to write the log file to.
         """
         filename = self._parse_name(name, ext="log")
         with open(filename, "a") as fh:
@@ -253,10 +275,11 @@ class FileManager:
             name: str,
             header: str,
     ) -> None:
-        """Utility to start writing a CSV file.
+        """Start writing to a CSV file.
 
-        :param name: The directory/name of CSV file to be written.
-        :param header: The header for the CSV file.
+        Args:
+            name: The directory and filename to write the CSV file to.
+            header: The header for the CSV file.
         """
         filename = self._parse_name(name, ext="csv")
         with open(filename, "w") as fh:
@@ -270,8 +293,10 @@ class FileManager:
     ) -> None:
         """Write data to an existing CSV file.
 
-        :param name: The directory/name of CSV file to be written.
-        :param lines: The lines to be written to the CSV file.
+        Args:
+            name: The directory and filename to write the CSV file to.
+            line: A string which will be written to the CSV file.
+            header: The header for the CSV file.
         """
         filename = self._parse_name(name, ext="csv")
         if header:
@@ -285,11 +310,14 @@ class FileManager:
             fh.flush()
 
     def _parse_name(self, name: str, ext: str = "") -> str:
-        """Ensure that the given name has the correct directory path
-        and extension.
+        """Check file name for correct directory path and extension.
 
-        :param name: The directory/name of the file to be written.
-        :param ext: The desired extension of the file to be written.
+        Args:
+            name: The directory/name of the file.
+            ext: The desired extension of the file.
+
+        Returns:
+            The full path of the file.
         """
         filename = ""
         if not name.startswith(self._working_directory):
@@ -301,10 +329,11 @@ class FileManager:
 
 
 def _check_ext(filename: str, ext: str) -> None:
-    """Ensure that the given filename has the correct extension.
+    """Ensure that a filename has the correct extension.
 
-    :param filename: The name of the file.
-    :param ext: The desired extension.
+    Args:
+        filename: The name of the file.
+        ext: The desired extension of the file.
     """
     if not filename.endswith(ext):
         bad_ext = filename.split(".")[-1]
@@ -329,20 +358,23 @@ def _get_atom_data(
     list[float],
     list[list[float]],
 ]:
-    """Extract :class:`State` and :class:`Topology` data from PDB and
-    XML files using OpenMM.
+    """Extract system data from PDB and FF XML files.
 
-    :param pdb_list: |pdb_list|
-    :param topology_list: |topology_list|
-    :param forcefield_list: |forcefield_list|
-    :return: Data for the :class:`State` and :class:`Topology`
-        record classes.
+    Args:
+        pdb_file: The directory or list of directories containing
+            PDB files with position, element, name, residue, residue
+            name, and lattice vector data.
+        forcefield_file: The directory or list of directories
+            containing FF XML files with mass and charge data.
+
+    Returns:
+        Data required to create a System object.
     """
     positions = []
-    molecules: list[int] = []
+    residues: list[int] = []
     elements = []
     names = []
-    molecule_names = []
+    residue_names = []
     box = [[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]
     for pdb in pdb_list:
         with open(pdb) as fh:
@@ -355,13 +387,13 @@ def _get_atom_data(
                 box[2][2] = float(line[24:33].strip())
             if line.startswith("ATOM") or line.startswith("HETATM"):
                 names.append(line[12:16].strip())
-                molecule_names.append(line[17:21].strip())
+                residue_names.append(line[17:21].strip())
                 number = int(line[22:26].strip()) + offset
-                if len(molecules) > 0:
-                    if number < molecules[-1]:
-                        offset += molecules[-1] - number + 1
-                        number += molecules[-1] - number + 1
-                molecules.append(number)
+                if len(residues) > 0:
+                    if number < residues[-1]:
+                        offset += residues[-1] - number + 1
+                        number += residues[-1] - number + 1
+                residues.append(number)
                 positions.append(
                     [
                         float(line[30:38].strip()),
@@ -378,10 +410,10 @@ def _get_atom_data(
         tree = ET.parse(xml)
         root = tree.getroot()
         for i, name in enumerate(names):
-            residues = root.find("Residues")
-            if not isinstance(residues, ET.Element):
+            file_residues = root.find("Residues")
+            if not isinstance(file_residues, ET.Element):
                 raise OSError
-            atom = residues.find(f".//Atom[@name='{name}']")
+            atom = file_residues.find(f".//Atom[@name='{name}']")
             if not isinstance(atom, ET.Element):
                 raise OSError
             type_ = atom.attrib["type"]
@@ -398,6 +430,6 @@ def _get_atom_data(
             if isinstance(atom, ET.Element):
                 charges[i] = float(atom.attrib["charge"])
     return (
-        positions, molecules, elements, names,
-        molecule_names, masses, charges, box,
+        positions, residues, elements, names,
+        residue_names, masses, charges, box,
     )

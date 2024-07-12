@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module to define the :class:`Psi4Interface` class.
+"""The basic Psi4 software interface.
 """
 from __future__ import annotations
 
@@ -23,16 +22,18 @@ if TYPE_CHECKING:
     from .psi4_utils import Psi4Options
 
 psi4.core.be_quiet()
-psi4.set_num_threads(1)
 
 
 class Psi4Interface(QMInterface):
-    """A :class:`SoftwareInterface` class which wraps the functional
-    components of Psi4.
+    """A software interface wrapping Psi4 functionality.
 
-    :param options: The :class:`Psi4Options` object for the interface.
-    :param functional: |functional|
-    :param context: The :class:`Psi4Context` object for the interface.
+    Args:
+        settings: The settings used to build the Psi4 interface.
+        options: The Psi4 global options derived from the settings.
+        functional: The name of the functional to use for
+            exchange-correlation calculations.
+        context: An object which holds system information to feed into
+            Psi4.
     """
 
     def __init__(
@@ -48,12 +49,23 @@ class Psi4Interface(QMInterface):
         self._context = context
 
     def compute_energy(self) -> float:
+        r"""Compute the energy of the system using Psi4.
+
+        Returns:
+            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the system.
+        """
         wfn = self._generate_wavefunction()
         energy = wfn.energy()
         energy = energy * KJMOL_PER_EH
         return energy
 
     def compute_forces(self) -> NDArray[np.float64]:
+        r"""Compute the forces on the system using Psi4.
+
+        Returns:
+            The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting
+            on atoms in the system.
+        """
         wfn = self._generate_wavefunction()
         psi4.set_options(asdict(self._options))
         forces = psi4.gradient(
@@ -77,15 +89,22 @@ class Psi4Interface(QMInterface):
         return forces
 
     def compute_components(self) -> dict[str, float]:
+        r"""Compute the components of energy using OpenMM.
+
+        Returns:
+            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)
+            of the system.
+        """
         components: dict[str, float] = {}
         return components
 
     @lru_cache
     def _generate_wavefunction(self) -> psi4.core.Wavefunction:
-        """Generate the Psi4 Wavefunction object for use in Psi4
-        calculations.
+        """Generate the Psi4 Wavefunction object for use by Psi4.
 
-        :return: The Psi4 Wavefunction object.
+        Returns:
+            The Psi4 Wavefunction object, which contains the energy
+            and coefficients determined through SCF.
         """
         molecule = self._context.generate_molecule()
         psi4.set_options(asdict(self._options))
@@ -101,20 +120,25 @@ class Psi4Interface(QMInterface):
         return wfn
 
     def disable_embedding(self) -> None:
+        """Disable electrostatic embedding.
+        """
         self._context.do_embedding = False
 
     def update_positions(self, positions: NDArray[np.float64]) -> None:
-        """Update the atom positions for Psi4.
+        r"""Set the atomic positions used by Psi4.
 
-        :param positions: |positions|
+        Args:
+            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the
+                atoms within the system.
         """
         self._context.update_positions(positions)
         self._generate_wavefunction.cache_clear()
 
     def update_charges(self, charges: NDArray[np.float64]) -> None:
-        """Update the atom positions for Psi4.
+        """Set the atomic partial charges used by Psi4 for embedding.
 
-        :param positions: |positions|
+        Args:
+            charges: The partial charges (:math:`e`) of the atoms.
         """
         self._context.update_charges(charges)
         self._generate_wavefunction.cache_clear()
@@ -123,24 +147,27 @@ class Psi4Interface(QMInterface):
             self,
             subsystems: np.ndarray[Any, np.dtype[np.object_]],
     ) -> None:
-        """Update the analytic embedding atoms for Psi4.
+        """Adjust which atoms are embedded by subsystem membership.
 
-        :param embedding: |ae_atoms|
+        Args:
+            subsystems: The subsystems of which the atoms are a part.
         """
         embedding = {i for i, s in enumerate(subsystems) if s == Subsystem.II}
         self._context.update_embedding(embedding)
         self._generate_wavefunction.cache_clear()
 
-    def update_num_threads(self, num_threads: int) -> None:
-        """Update the number of threads for Psi4 to use.
+    def update_threads(self, threads: int) -> None:
+        """Set the number of threads used by Psi4.
 
-        :param num_threads: The number of threads for Psi4 to use.
+        Args:
+            threads: The number of threads to utilize.
         """
-        psi4.set_num_threads(num_threads)
+        psi4.set_num_threads(threads)
 
     def update_memory(self, memory: str) -> None:
-        """Update the amount of memory for Psi4 to use.
+        """Set the amount of memory used by OpenMM.
 
-        :param memory: The amount of memory for Psi4 to use.
+        Args:
+            memory: The amount of memory to utilize.
         """
         psi4.set_memory(memory)

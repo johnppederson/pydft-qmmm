@@ -1,63 +1,140 @@
-#! /usr/bin/env python3
-"""A module for handling software interface imports.
+"""Functionality for importing package and external interfaces.
 
-.. warning:: MyPy is not currently happy with this module.
+Attributes:
+    MODULE_PATH: The directory where the PyDFT-QMMM interfaces
+        sub-package is installed.
+    DISCOVERED_INTERFACES: A list of entry points into the interface
+        architecture of PyDFT-QMMM within installed package metadata.
 """
 from __future__ import annotations
 
 from configparser import ConfigParser
 from importlib import import_module
+from importlib.metadata import entry_points
 from importlib.resources import files
 from os import listdir
 from typing import Callable
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from importlib.metadata import EntryPoint
     from .interface import SoftwareSettings, SoftwareInterface
-    from types import ModuleType
     Factory = Callable[[SoftwareSettings], SoftwareInterface]
 
 MODULE_PATH = files("pydft_qmmm") / "interfaces"
+DISCOVERED_INTERFACES: list[EntryPoint] = entry_points().get(
+    "pydft_qmmm.interfaces", [],
+)
 
 
-def _import(module_name: str) -> ModuleType:
-    """Import an module from the pydft_qmmm.interfaces subpackage.
+class _Checked:
+    """Whether or not default settings have been checked."""
+    CHECKED = False
 
-    :param module_name: The name of the interfaces module to import.
-    :return: The imported module.
+
+def _get_factory(module_name: str, package_name: str) -> Factory:
+    """Get a software interface factory method from a package/module.
+
+    Args:
+        module_name: The name of the interface module to load the
+            factory method from.
+        package_name: The name of the package containing an interface
+            module.
+
+    Returns:
+        A factory method which builds a software interface from the
+        specified package and module.
     """
     module = import_module(
-        ".interfaces." + module_name.split(".")[0], package="pydft_qmmm",
+        module_name, package=package_name,
     )
-    return module
+    return getattr(module, "FACTORY")
 
 
-def _get_factory(module_name: str) -> Factory:
-    """Get the FACTORY dictionary from a module in the
-    pydft_qmmm.interfaces subpackage.
-
-    :param module_name: The name of the interfaces module to extract the
-        FACTORY dictionary from.
-    :return: The FACTORY dictionary from the specified module.
-    """
-    return getattr(_import(module_name), "FACTORY")
-
-
-def get_software_factory(field: str) -> Factory:
-    """Get the FACTORY dictionary for the specified field of the
-    interfaces configuration file.  Fields include 'MMSoftware' or
-    'QMSoftware'.
-
-    :param field: The field of the interfaces configuration file to
-        extract a FACTORY dictionary for.
-    :return: The FACTORY dictionary for the specified field of the
-        interfaces configuration file.
+def _check_settings() -> None:
+    """Check the default interfaces and set them to active.
     """
     config = ConfigParser()
     config.read(str(MODULE_PATH / "interfaces.conf"))
-    software_name = config["DEFAULT"][field].lower()
-    file_names = listdir(str(MODULE_PATH))
-    for name in file_names:
-        if software_name in name:
-            factory = _get_factory(name)
+    qm_interface = config["DEFAULT"]["QMSoftware"].lower()
+    mm_interface = config["DEFAULT"]["MMSoftware"].lower()
+    config.set("ACTIVE", "QMSoftware", qm_interface)
+    config.set("ACTIVE", "MMSoftware", mm_interface)
+    with open(str(MODULE_PATH / "interfaces.conf"), "w") as fh:
+        config.write(fh)
+
+
+def get_software_factory(field: str) -> Factory:
+    """Get a factory method according to the interfaces in ``interfaces.conf``.
+
+    Fields include 'MMSoftware' or 'QMSoftware'.
+
+    Args:
+        field: The field of the interfaces configuration file to
+            extract a factory method for.
+
+    Returns:
+        A factory method which builds a software interface for the
+        specified field.
+    """
+    if not _Checked.CHECKED:
+        _check_settings()
+        _Checked.CHECKED = True
+    config = ConfigParser()
+    config.read(str(MODULE_PATH / "interfaces.conf"))
+    software_name = config["ACTIVE"][field].lower()
+    local_names = listdir(str(MODULE_PATH))
+    package_names = [point.name for point in DISCOVERED_INTERFACES]
+    found = False
+    for name in local_names:
+        if found:
+            break
+        if software_name == name:
+            factory = _get_factory(
+                ".interfaces." + name.split(".")[0], "pydft_qmmm",
+            )
+            found = True
+    for name in package_names:
+        if found:
+            break
+        if software_name == name:
+            factory = _get_factory(name, name)
+            found = True
     return factory
+
+
+def set_interfaces(
+        qm_interface: str | None = "Psi4",
+        mm_interface: str | None = "OpenMM",
+) -> None:
+    """Set the active QM and MM interfaces in ``interfaces.conf``.
+
+    Args:
+        qm_interface: The name of the QM interface to use.
+        mm_interface: The name of the MM interface to use.
+    """
+    config = ConfigParser()
+    config.read(str(MODULE_PATH / "interfaces.conf"))
+    config.set("ACTIVE", "QMSoftware", qm_interface)
+    config.set("ACTIVE", "MMSoftware", mm_interface)
+    with open(str(MODULE_PATH / "interfaces.conf"), "w") as fh:
+        config.write(fh)
+
+
+def set_default_interfaces(
+        qm_interface: str | None = "Psi4",
+        mm_interface: str | None = "OpenMM",
+) -> None:
+    """Set the default QM and MM interfaces in ``interfaces.conf``.
+
+    Args:
+        qm_interface: The name of the new default QM interface.
+        mm_interface: The name of the new default MM interface.
+    """
+    config = ConfigParser()
+    config.read(str(MODULE_PATH / "interfaces.conf"))
+    config.set("DEFAULT", "QMSoftware", qm_interface)
+    config.set("DEFAULT", "MMSoftware", mm_interface)
+    with open(str(MODULE_PATH / "interfaces.conf"), "w") as fh:
+        config.write(fh)
+    _check_settings()

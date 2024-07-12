@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module defining the :class:`LangevinIntegrator` class.
+"""An integrator implementing the Langevin algorithm.
 """
 from __future__ import annotations
 
@@ -18,16 +17,39 @@ if TYPE_CHECKING:
 
 @dataclass
 class LangevinIntegrator(Integrator):
-    """An :class:`Integrator` based on Langevin dynamics.
+    r"""An integrator implementing the Leapfrog Verlet algorithm.
 
-    :param temperature: |temperature|
-    :param friction: |friction|
+    Args:
+        timestep: The timestep (:math:`\mathrm{fs}`) used to perform
+            integrations.
+        temperature: The temperature (:math:`\mathrm{K}`) of the bath
+            used to couple to the system.
+        friction: The friction (:math:`\mathrm{fs^{-1}}`) experienced
+            by particles in the system.
     """
     timestep: float | int
     temperature: int | float
     friction: int | float
 
     def integrate(self, system: System) -> Returns:
+        r"""Integrate forces into new positions and velocities.
+
+        Args:
+            system: The system whose forces
+                (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and existing
+                positions (:math:`\mathrm{\mathring{A}}`) and velocities
+                (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) will be used to
+                determine new positions and velocities.
+
+        Returns:
+            New positions (:math:`\mathrm{\mathring{A}}`) and velocities
+            (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) integrated from the forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and existing
+            positions and velocities of the system.
+
+        .. note:: Based on the implementation of the integrator
+            kernels from OpenMM.
+        """
         masses = system.masses.reshape((-1, 1))
         vel_scale = np.exp(-self.timestep*self.friction)
         frc_scale = (

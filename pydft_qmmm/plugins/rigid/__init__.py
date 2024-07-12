@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 """A sub-package for performing rigid body simulations.
 """
 from __future__ import annotations

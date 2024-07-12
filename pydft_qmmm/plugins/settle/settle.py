@@ -1,6 +1,4 @@
-#! /usr/bin/env python3
-"""A module defining the pluggable implementation of the SETTLE
-algorithm for the |package| repository.
+"""Plugin for applying SETTLE to select residues after integration.
 """
 from __future__ import annotations
 
@@ -12,7 +10,6 @@ from numpy.typing import NDArray
 
 from .settle_utils import settle_positions
 from .settle_utils import settle_velocities
-from pydft_qmmm.common import Subsystem
 from pydft_qmmm.plugins.plugin import IntegratorPlugin
 
 if TYPE_CHECKING:
@@ -22,31 +19,37 @@ if TYPE_CHECKING:
 
 
 class SETTLE(IntegratorPlugin):
-    """A :class:`Plugin` which implements the SETTLE algorithm for
-    positions and velocities.
+    r"""Apply the SETTLE algorithm to water residues after integration.
 
-    :param oh_distance: The distance between the oxygen and hydrogen, in
-        Angstroms.
-    :param hh_distance: The distance between the hydrogens, in
-        Angstroms.
-    :param hoh_residue: The name of the water residues in the
-        :class:`System`.
+    Args:
+        query: The VMD-like selection query which should correspond to
+            water residues.
+        oh_distance: The distance between the oxygen and hydrogens
+            (:math:`\mathrm{\mathring{A}}`).
+        hh_distance: The distance between the hydrogens
+            (:math:`\mathrm{\mathring{A}}`).
     """
 
     def __init__(
             self,
+            query: str = "resname HOH",
             oh_distance: float | int = 1.,
             hh_distance: float | int = 1.632981,
-            hoh_residue: str = "HOH",
     ) -> None:
+        self.query = "(" + query + ") and not subsystem I"
         self.oh_distance = oh_distance
         self.hh_distance = hh_distance
-        self.hoh_residue = hoh_residue
 
     def modify(
             self,
             integrator: Integrator,
     ) -> None:
+        """Modify the functionality of an integrator.
+
+        Args:
+            integrator: The integrator whose functionality will be
+                modified by the plugin.
+        """
         self._modifieds.append(type(integrator).__name__)
         self.integrator = integrator
         integrator.integrate = self._modify_integrate(integrator.integrate)
@@ -55,6 +58,15 @@ class SETTLE(IntegratorPlugin):
         )
 
     def constrain_velocities(self, system: System) -> NDArray[np.float64]:
+        """Apply the SETTLE algorithm to system velocities.
+
+        Args:
+            system: The system whose velocities will be SETTLEd.
+
+        Returns:
+            New velocities which result from the application of the
+            SETTLE algorithm to system velocities.
+        """
         residues = self._get_hoh_residues(system)
         velocities = settle_velocities(
             residues,
@@ -65,28 +77,38 @@ class SETTLE(IntegratorPlugin):
         return velocities
 
     def _get_hoh_residues(self, system: System) -> list[list[int]]:
-        residue_indices = list({
-            atom.molecule for atom in system
-            if atom.molecule_name == self.hoh_residue
-            and atom.subsystem != Subsystem.I
+        """Get the water residues from the system.
+
+        Args:
+            system: The system with water residues.
+
+        Returns:
+            A list of list of atom indices, representing the all water
+            residues in the system.
+        """
+        residue_indices = sorted({
+            system[i].residue for i in system.select(self.query)
         })
-        residue_indices.sort()
         residues: list[list[int]] = [[] for _ in residue_indices]
         for i, atom in enumerate(system):
-            if atom.molecule in residue_indices:
-                residues[residue_indices.index(atom.molecule)].append(i)
+            if atom.residue in residue_indices:
+                residues[residue_indices.index(atom.residue)].append(i)
+        if any([len(residue) != 3 for residue in residues]):
+            raise ValueError("Some SETTLE residues do not have 3 atoms")
         return residues
 
     def _modify_integrate(
             self,
             integrate: Callable[[System], Returns],
     ) -> Callable[[System], Returns]:
-        """Modify the integrate call in the :class:`Integrator` to
-        hold H-O and H-H distances constant for water residues.
+        """Modify the integrate routine to perform SETTLE afterward.
 
-        :param integrate: The default integrate method of the
-            :class:`Integrator`.
-        :return: The modified integrate method.
+        Args:
+            integrate: The integration routine to modify.
+
+        Returns:
+            The modified integration routine which implements the SETTLE
+            algorithm after integration.
         """
         def inner(system: System) -> Returns:
             positions, velocities = integrate(system)
@@ -112,13 +134,15 @@ class SETTLE(IntegratorPlugin):
             self,
             compute_kinetic_energy: Callable[[System], float],
     ) -> Callable[[System], float]:
-        """Modify the compute_kinetic_energy call in the
-        :class:`Integrator` to keep water residues rigid when evaluating
-        velocities.
+        """Modify the kinetic energy computation to use SETTLE.
 
-        :param compute_kinetic_energy: The default
-            compute_kinetic_energy method of the :class:`Integrator`.
-        :return: The modified compute_kinetic_energy method.
+        Args:
+            compute_kinetic_energy: The kinetic energy routine to
+                modify.
+
+        Returns:
+            The modified kinetic energy routine which applies the SETTLE
+            algorithm to velocities.
         """
         def inner(system: System) -> float:
             masses = system.masses.reshape(-1, 1)

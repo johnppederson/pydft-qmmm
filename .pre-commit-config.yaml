@@ -39,6 +39,7 @@ repos:
     -   id: flake8
         additional_dependencies: [flake8-typing-imports==1.14.0]
 -   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.9.0
+    rev: v1.8.0
     hooks:
     -   id: mypy
+        exclude: (tests/|example/|docs/|templates/|pydft_qmmm/__main__\.py)

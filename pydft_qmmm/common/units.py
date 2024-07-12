@@ -1,7 +1,10 @@
-#! /usr/bin/env python3
 """A module containing unit conversions and constants.
 
-.. warning:: This module may be deprecated in the near future.
+Attributes:
+    BOHR_PER_ANGSTROM: The number of atomic length units per Angstrom.
+    KJMOL_PER_EH: The amount of energy in kilojoules per mole per
+        Hartree.
+    KB: The Boltzmann constant in kilojoules per mole per Kelvin.
 """
 from __future__ import annotations
 

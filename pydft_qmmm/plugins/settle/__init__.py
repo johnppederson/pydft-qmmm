@@ -1,6 +1,4 @@
-#! /usr/bin/env python3
-"""A sub-package for performing the SETTLE algorithm during the
-integration procedure.
+"""A sub-package for using SETTLE constraints during integration.
 """
 from __future__ import annotations
 __author__ = "John Pederson"

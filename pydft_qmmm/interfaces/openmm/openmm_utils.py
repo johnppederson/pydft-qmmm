@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module to define the :class:`OpenMMInterface` class.
+"""Functionality for performing exclusions and generating State objects.
 """
 from __future__ import annotations
 
@@ -12,6 +11,19 @@ def _generate_state(
         context: openmm.Context,
         groups: set[int] | int | None = -1,
 ) -> openmm.State:
+    """Generate an OpenMM State in order to collect energies and forces.
+
+    Args:
+        context: An OpenMM Context object containing a representation
+            of the system and appropriate forces.
+        groups: The force groups of the context to include in the
+            State evaluation.
+
+    Return:
+        An OpenMM State object containing the energies and forces of
+        the current state of the system represented within the Context
+        object for the specified groups of forces.
+    """
     if groups is None:
         groups = -1
     return context.getState(getEnergy=True, getForces=True, groups=groups)
@@ -21,11 +33,13 @@ def _exclude_intramolecular(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM Force exclusions for the non-MM atoms.
+    """Remove intramolecular interactions for a set of atoms.
 
-    :param settings: The :class:`MMSettings` object to make exclusions
-        with.
-    :param system: The OpenMM System object to make exclusions on.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove intra-molecular
+            interactions from.
     """
     # Remove double-counted intramolecular interactions for QM atoms.
     # This doesn't currently generalize to residues which are part MM
@@ -64,12 +78,13 @@ def _exclude_harmonic_bond(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM HarmonicBondForce exclusions for a given set of
-    atoms.
+    """Remove harmonic bond interactions for a set of atoms.
 
-    :param system: The OpenMM System object to make exclusions on.
-    :param atoms: The atoms to exlcude from HarmonicBondForce
-        calculations.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove harmonic bond
+            interactions from.
     """
     harmonic_bond_forces = [
         force for force in system.getForces()
@@ -87,12 +102,13 @@ def _exclude_harmonic_angle(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM HarmonicAngleForce exclusions for a given set of
-    atoms.
+    """Remove harmonic angle interactions for a set of atoms.
 
-    :param system: The OpenMM System object to make exclusions on.
-    :param atoms: The atoms to exlcude from HarmonicAngleForce
-        calculations.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove harmonic angle
+            interactions from.
     """
     harmonic_angle_forces = [
         force for force in system.getForces()
@@ -110,12 +126,13 @@ def _exclude_periodic_torsion(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM PeriodicTorsionForce exclusions for a given set
-    of atoms.
+    """Remove periodic torsion interactions for a set of atoms.
 
-    :param system: The OpenMM System object to make exclusions on.
-    :param atoms: The atoms to exlcude from PeriodicTorsionForce
-        calculations.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove periodic torsion
+            interactions from.
     """
     periodic_torsion_forces = [
         force for force in system.getForces()
@@ -133,12 +150,13 @@ def _exclude_rb_torsion(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM RBTorsionForce exclusions for a given set of
-    atoms.
+    """Remove Ryckaert-Bellemans torsion interactions for a set of atoms.
 
-    :param system: The OpenMM System object to make exclusions on.
-    :param atoms: The atoms to exlcude from RBTorsionForce
-        calculations.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove Ryckaert-Bellemans torsion
+            interactions from.
     """
     rb_torsion_forces = [
         force for force in system.getForces()
@@ -159,7 +177,15 @@ def _real_electrostatic(
         atoms: frozenset[int],
         const: int | float,
 ) -> list[openmm.customNonbondedForce]:
-    """
+    """Add Coulomb interactions for a set of atoms.
+
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to add a Coulomb interaction
+            for.
+        const: A constant to multiply at the beginning of the
+            coulomb expression.
     """
     other_atoms = {i for i in range(system.getNumParticles())} - atoms
     nonbonded_forces = [
@@ -209,7 +235,13 @@ def _non_electrostatic(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> list[openmm.customNonbondedForce]:
-    """
+    """Add a non-electrostatic interactions for a set of atoms.
+
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to add a non-electrostatic,
+            non-bonded interaction for.
     """
     other_atoms = {i for i in range(system.getNumParticles())} - atoms
     nonbonded_forces = [
@@ -264,11 +296,13 @@ def _exclude_intermolecular(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM Force exclusions for the non-MM atoms.
+    """Remove inter-molecular interactions for a set of atoms.
 
-    :param settings: The :class:`MMSettings` object to make exclusions
-        with.
-    :param system: The OpenMM System object to make exclusions on.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove inter-molecular
+            interactions from.
     """
     _exclude_electrostatic(system, atoms)
     _exclude_lennard_jones(system, atoms)
@@ -279,11 +313,13 @@ def _exclude_electrostatic(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM Force exclusions for the non-MM atoms.
+    """Remove electrostatic interactions for a set of atoms.
 
-    :param settings: The :class:`MMSettings` object to make exclusions
-        with.
-    :param system: The OpenMM System object to make exclusions on.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove electrostatic
+            interactions from.
     """
     nonbonded_forces = [
         force for force in system.getForces()
@@ -300,12 +336,13 @@ def _exclude_lennard_jones(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM Nonbonded exclusions for a given set of
-    atoms.
+    """Remove Lennard-Jones interactions for a set of atoms.
 
-    :param system: The OpenMM System object to make exclusions on.
-    :param atoms: The atoms to exlcude from NonbondedForce
-        calculations.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove Lennard-Jones
+            interactions from.
     """
     nonbonded_forces = [
         force for force in system.getForces()
@@ -323,12 +360,13 @@ def _exclude_custom_nonbonded(
         system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Generate OpenMM CustomNonbonded exclusions for a given set of
-    atoms.
+    """Remove user-defined non-bonded interactions for a set of atoms.
 
-    :param system: The OpenMM System object to make exclusions on.
-    :param atoms: The atoms to exlcude from CustomNonbondedForce
-        calculations.
+    Args:
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        atoms: The indices of atoms to remove user-defined non-bonded
+            interactions from.
     """
     custom_nonbonded_forces = [
         force for force in system.getForces()

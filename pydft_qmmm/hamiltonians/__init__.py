@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module to define the Hamiltonian API.
+"""A sub-package containing the Hamiltonian API.
 """
 from __future__ import annotations
 

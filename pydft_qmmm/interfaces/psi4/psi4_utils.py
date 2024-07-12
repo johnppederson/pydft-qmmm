@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module to define the :class:`Psi4Interface` class.
+"""Functionality for building the Psi4 interface and some helper classes.
 """
 from __future__ import annotations
 
@@ -19,14 +18,22 @@ if TYPE_CHECKING:
 
 
 class Psi4Context:
-    """A wrapper class for managing Psi4 Geometry object generation.
+    r"""A wrapper class for managing Psi4 Geometry object generation.
 
-    :param atoms: |qm_atoms|
-    :param embedding: |ae_atoms|
-    :param elements: |elements|
-    :param positions: |positions|
-    :param charge: |charge|
-    :param spin: |spin|
+    Args:
+        atoms: The indices of atoms that are treated at the QM level
+            of theory.
+        embedding: The indices of atoms that are electrostatically
+            embedded.
+        elements: The element symbols of the atoms in the system.
+        positions: The positions (:math:`\mathrm{\mathring{A}}`) of the atoms
+            within the system.
+        charges: The partial charges (:math:`e`) of the atoms in the
+            system.
+        charge: The net charge (:math:`e`) of the system represented
+            at the QM level of theory.
+        spin: The net spin of the system represented by the QM
+            level of theory.
     """
 
     def __init__(
@@ -52,7 +59,10 @@ class Psi4Context:
     def generate_molecule(self) -> psi4.core.Molecule:
         """Create the Geometry object for Psi4 calculations.
 
-        :return: The Psi4 Geometry object.
+        Returns:
+            The Psi4 Geometry object, which contains the positions,
+            net charge, and net spin of atoms treated at the QM level
+            of theory.
         """
         geometrystring = """\n"""
         for atom in sorted(self.atoms):
@@ -72,9 +82,12 @@ class Psi4Context:
         return psi4.geometry(geometrystring)
 
     def generate_external_potential(self) -> list[list[int | list[int]]] | None:
-        """Create the Geometry object for Psi4 calculations.
+        r"""Create the data structures read by Psi4 to perform embedding.
 
-        :return: The Psi4 Geometry object.
+        Returns:
+            The list of coordinates (:math:`\mathrm{a.u.}`) and charges
+            (:math:`e`) that will be read by Psi4 during calculations
+            and electrostatically embedded.
         """
         external_potential = []
         for i in sorted(self.embedding):
@@ -95,25 +108,30 @@ class Psi4Context:
         return external_potential
 
     def update_positions(self, positions: NDArray[np.float64]) -> None:
-        """Update the atom positions for Psi4.
+        r"""Set the atomic positions used by Psi4.
 
-        :param positions: |positions|
+        Args:
+            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the
+                atoms within the system.
         """
         self.positions = positions
         self.generate_molecule.cache_clear()
 
     def update_charges(self, charges: NDArray[np.float64]) -> None:
-        """Update the atom positions for Psi4.
+        """Set the atomic partial charges used by Psi4 for embedding.
 
-        :param positions: |positions|
+        Args:
+            charges: The partial charges (:math:`e`) of the atoms.
         """
         self.charges = charges
         self.generate_molecule.cache_clear()
 
     def update_embedding(self, embedding: set[int]) -> None:
-        """Update the analytic embedding atoms for Psi4.
+        """Set the atoms are electrostatically embedded.
 
-        :param embedding: |ae_atoms|
+        Args:
+            embedding: The indices of atoms that are electrostatically
+                embedded.
         """
         self.embedding = embedding
 
@@ -122,13 +140,18 @@ class Psi4Context:
 class Psi4Options:
     """An immutable wrapper class for storing Psi4 global options.
 
-    :param basis: |basis_set|
-    :param dft_spherical_points: |quadrature_spherical|
-    :param dft_radial_points: |quadrature_radial|
-    :param scf_type: |scf_type|
-    :param scf__reference: The restricted or unrestricted Kohn-Sham SCF.
-    :param scf__guess: The type of guess to use for the Psi4.
-        calculation.
+    Args:
+        basis: The name of the basis set to be used by Psi4.
+        dft_spherical_points: The number of spherical Lebedev points
+            to use in the DFT quadrature.
+        dft_radial_points: The number of radial points to use in the
+            DFT quadrature.
+        scf_type: The name of the type of SCF to perform, as in
+            the JK build algorithms as in Psi4.
+        scf__reference: The name of the reference to use, including
+            restricted Kohn-Sham or unrestricted Kohn-Sham.
+        scf__guess: The name of the algorithm used to generate the
+            initial guess at the start of an SCF procedure.
     """
     basis: str
     dft_spherical_points: int
@@ -139,12 +162,13 @@ class Psi4Options:
 
 
 def psi4_interface_factory(settings: QMSettings) -> Psi4Interface:
-    """A function which constructs the :class:`Psi4Interface` for a QM
-    system.
+    """Build the interface to Psi4 given the settings.
 
-    :param settings: The :class:`QMSettings` object to build the
-        QM system interface from.
-    :return: The :class:`Psi4Interface` for the QM system.
+    Args:
+        settings: The settings used to build the Psi4 interface.
+
+    Returns:
+        The Psi4 interface.
     """
     options = _build_options(settings)
     functional = settings.functional
@@ -160,11 +184,13 @@ def psi4_interface_factory(settings: QMSettings) -> Psi4Interface:
 
 
 def _build_options(settings: QMSettings) -> Psi4Options:
-    """Build the :class:`Psi4Options` object.
+    """Build the Psi4Options object.
 
-    :param settings: The :class:`QMSettings` object to build from.
-    :return: The :class:`Psi4Options` object built from the given
-        settings.
+    Args:
+        settings: The settings used to build the Psi4 interface.
+
+    Returns:
+        The global options used by Psi4 in each calculation.
     """
     options = Psi4Options(
         settings.basis_set,
@@ -178,11 +204,13 @@ def _build_options(settings: QMSettings) -> Psi4Options:
 
 
 def _build_context(settings: QMSettings) -> Psi4Context:
-    """Build the :class:`Psi4Context` object.
+    """Build the Psi4Context object.
 
-    :param settings: The :class:`QMSettings` object to build from.
-    :return: The :class:`Psi4Context` object built from the given
-        settings.
+    Args:
+        settings: The settings used to build the Psi4 interface.
+
+    Returns:
+        The geometry and embedding manager for Psi4.
     """
     context = Psi4Context(
         set(settings.system.qm_region),

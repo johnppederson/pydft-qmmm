@@ -1,5 +1,8 @@
-#! /usr/bin/env python3
-"""A module to define the :class:`OpenMMInterface` class.
+"""Functionality for building the OpenMM interface.
+
+Attributes:
+    SUPPORTED_FORCES: OpenMM force classes which can be processed by
+        PyDFT-QMMM currently.
 """
 from __future__ import annotations
 
@@ -28,12 +31,13 @@ SUPPORTED_FORCES = [
 
 
 def openmm_interface_factory(settings: MMSettings) -> OpenMMInterface:
-    """A function which constructs the :class:`OpenMMInterface` for a
-    standalone MM system.
+    """Build the interface to OpenMM given the settings.
 
-    :param settings: The :class:`MMSettings` object to build the
-        standalone MM system interface from.
-    :return: The :class:`OpenMMInterface` for the standalone MM system.
+    Args:
+        settings: The settings used to build the OpenMM interface.
+
+    Returns:
+        The OpenMM interface.
     """
     topology = _build_topology(settings)
     modeller = _build_modeller(settings, topology)
@@ -52,10 +56,13 @@ def openmm_interface_factory(settings: MMSettings) -> OpenMMInterface:
 
 
 def _build_topology(settings: MMSettings) -> Topology:
-    """Build the OpenMM PDBFile object.
+    """Build the OpenMM Topology object.
 
-    :param settings: The :class:`MMSettings` object to build from.
-    :return: The OpenMM PDBFile object built from the given settings.
+    Args:
+        settings: The settings used to build the OpenMM interface.
+
+    Returns:
+        The internal representation of system topology for OpenMM.
     """
     if (x := settings.topology_file):
         if isinstance(x, list):
@@ -67,12 +74,12 @@ def _build_topology(settings: MMSettings) -> Topology:
             raise TypeError("...")
     topology = Topology()
     chain = topology.addChain()
-    molecule_map = settings.system.molecule_map
-    for i in molecule_map.keys():
-        atoms = list(molecule_map[i])
+    residue_map = settings.system.residue_map
+    for i in residue_map.keys():
+        atoms = list(residue_map[i])
         atoms.sort()
         residue = topology.addResidue(
-            settings.system.molecule_names[atoms[0]],
+            settings.system.residue_names[atoms[0]],
             chain,
         )
         for j in atoms:
@@ -88,8 +95,13 @@ def _build_topology(settings: MMSettings) -> Topology:
 def _build_modeller(settings: MMSettings, topology: Topology) -> Modeller:
     """Build the OpenMM Modeller object.
 
-    :param pdb: The OpenMM PDBFile object to build from.
-    :return: The OpenMM Modeller object built from the given pdb.
+    Args:
+        settings: The settings used to build the OpenMM interface.
+        topology: The OpenMM representation of system topology.
+
+    Returns:
+        The internal representation of the system OpenMM, integrating
+        the topology and atomic positions.
     """
     temp = []
     for position in settings.system.positions:
@@ -107,10 +119,12 @@ def _build_modeller(settings: MMSettings, topology: Topology) -> Modeller:
 def _build_forcefield(settings: MMSettings, modeller: Modeller) -> ForceField:
     """Build the OpenMM ForceField object.
 
-    :param settings: The :class:`MMSettings` object to build from.
-    :param modeller: The OpenMM Modeller object to build from.
-    :return: The OpenMM ForceField object built from the given settings
-        and modeller.
+    Args:
+        settings: The settings used to build the OpenMM interface.
+        modeller: The OpenMM representation of the system.
+
+    Returns:
+        The internal representation of the force field for OpenMM.
     """
     if isinstance(settings.forcefield_file, str):
         forcefield = ForceField(settings.forcefield_file)
@@ -127,10 +141,13 @@ def _build_system(
 ) -> openmm.System:
     """Build the OpenMM System object.
 
-    :param forcefield: The OpenMM ForceField object to build from.
-    :param modeller: The OpenMM Modeller object to build from.
-    :return: The OpenMM System object built from the given settings,
-        forcefield, and modeller.
+    Args:
+        forcefield: The OpenMM representation of the forcefield.
+        modeller: The OpenMM representation of the system.
+
+    Returns:
+        The internal representation of forces, constraints, and
+        particles for OpenMM.
     """
     system = forcefield.createSystem(
         modeller.topology,
@@ -140,6 +157,15 @@ def _build_system(
 
 
 def _empty_system(settings: MMSettings) -> openmm.System:
+    """Build an empty OpenMM System object.
+
+    Args:
+        settings: The settings used to build the OpenMM interface.
+
+    Returns:
+        An internal representation of forces, constraints, and
+        particles in OpenMM for a system with no forces or constraints.
+    """
     system = openmm.System()
     for i in range(len(settings.system)):
         system.addParticle(0.)
@@ -147,10 +173,12 @@ def _empty_system(settings: MMSettings) -> openmm.System:
 
 
 def _adjust_forces(settings: MMSettings, system: openmm.System) -> None:
-    """Adjust the OpenMM Nonbonded forces.
+    """Adjust the OpenMM Nonbonded forces with appropriate settings.
 
-    :param settings: The :class:`MMSettings` object to adjust with.
-    :param system: The OpenMM System object to adjust.
+    Args:
+        settings: The settings used to build the OpenMM interface.
+        system: The OpenMM representation of forces, constraints, and
+            particles.
     """
     temp = []
     for box_vec in settings.system.box:
@@ -170,8 +198,21 @@ def _adjust_forces(settings: MMSettings, system: openmm.System) -> None:
         if isinstance(force, openmm.NonbondedForce):
             force.setNonbondedMethod(openmm.NonbondedForce.PME)
             force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
+            if (
+                settings.nonbonded_method == "PME"
+                and settings.pme_gridnumber
+                and settings.pme_alpha
+            ):
+                force.setPMEParameters(
+                    settings.pme_alpha,
+                    settings.pme_gridnumber,
+                    settings.pme_gridnumber,
+                    settings.pme_gridnumber,
+                )
         if isinstance(force, openmm.CustomNonbondedForce):
-            force.setNonbondedMethod(openmm.CustomNonbondedForce.CutoffPeriodic)
+            force.setNonbondedMethod(
+                openmm.CustomNonbondedForce.CutoffPeriodic,
+            )
             force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
 
 
@@ -180,11 +221,16 @@ def _build_context(
 ) -> openmm.Context:
     """Build the OpenMM Context object.
 
-    :param settings: The :class:`MMSettings` object to build from.
-    :param system: The OpenMM System object to build from.
-    :param modeller: The OpenMM Modeller object to build from.
-    :return: The OpenMM System object built from the given settings,
-        system, and modeller.
+    Args:
+        settings: The settings used to build the OpenMM interface.
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+        modeller: The OpenMM representation of the system.
+
+    Returns:
+        The OpenMM machinery required to perform energy and force
+        calculations, containing the System object and the specific
+        platform to use, which is currently just the CPU platform.
     """
     integrator = openmm.VerletIntegrator(1. * femtosecond)
     platform = openmm.Platform.getPlatformByName("CPU")

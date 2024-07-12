@@ -1,7 +1,4 @@
-#! /usr/bin/env python3
-"""A sub-package to define records kept by the :class:`System`, which
-include data pertaining to input files and the state and topology of
-atoms and residues.
+"""A sub-package for managing system data.
 """
 from __future__ import annotations
 

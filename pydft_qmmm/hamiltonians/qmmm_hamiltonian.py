@@ -1,15 +1,26 @@
-#! /usr/bin/env python3
-"""A module defining the :class:`QMMMHamiltonian` class.
+"""A Hamiltonian defining the inter-subsystem coupling in QM/MM.
+
+Attributes:
+    _DEFAULT_FORCE_MATRIX: The default force matrix, which has no
+        level of theory coupling subsystem I to subsystems II and III.
+    _CLOSE_EMBEDDING: The levels of theory for I-II and II-I forces for
+        different close-range embedding schemes.
+    _LONG_EMBEDDING: The levels of theory for I-III and III-I forces for
+        different long-range embedding schemes.
+    _SUPPORTED_EMBEDDING: Allowed pairs of close-range and long-range
+        embedding schemes.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
+from warnings import warn
 
 import numpy as np
 
 from .hamiltonian import CouplingHamiltonian
 from pydft_qmmm.calculators import InterfaceCalculator
+from pydft_qmmm.common import lazy_load
 from pydft_qmmm.common import Subsystem
 from pydft_qmmm.common import TheoryLevel
 from pydft_qmmm.interfaces import MMInterface
@@ -19,6 +30,7 @@ from pydft_qmmm.interfaces import QMInterface
 if TYPE_CHECKING:
     from pydft_qmmm import System
     from pydft_qmmm.calculators import Calculator
+    from pydft_qmmm.calculators import CompositeCalculator
 
 
 _DEFAULT_FORCE_MATRIX = {
@@ -69,19 +81,23 @@ _SUPPORTED_EMBEDDING = [
 
 @dataclass
 class QMMMHamiltonian(CouplingHamiltonian):
-    """A wrapper class storing settings for QMMM calculations.
+    r"""A Hamiltonian defining inter-subsystem coupling in QM/MM.
 
-    :param qm_hamiltonian: |hamiltonian| for calculations on the QM
-        subsystem.
-    :param mm_hamiltonian: |hamiltonian| for calculations on the MM
-        subsystem.
-    :param embedding_cutoff: |embedding_cutoff|
+    Args:
+        close_range: The name of the embedding procedure for
+            close-range (I-II) interactions.
+        long_range: The name of the embedding procedure for
+            long-range (I-III) interactions.
+        cutoff: The cutoff distance (:math:`\mathrm{\mathring{A}}`) at
+            which to partition a system into subsystems II and III.
     """
     close_range: str = "electrostatic"
     long_range: str = "cutoff"
-    embedding_cutoff: float | int = 14.
+    cutoff: float | int = 14.
 
     def __post_init__(self) -> None:
+        """Generate the force matrix for the selected embedding scheme.
+        """
         if (self.close_range, self.long_range) not in _SUPPORTED_EMBEDDING:
             raise TypeError("...")
         self.force_matrix = _DEFAULT_FORCE_MATRIX.copy()
@@ -99,17 +115,53 @@ class QMMMHamiltonian(CouplingHamiltonian):
             calculator: Calculator,
             system: System,
     ) -> None:
+        """Modify a calculator to represent the coupling.
+
+        Args:
+            calculator: A calculator which is defined in part by the
+                system.
+            system: The system that will be used to modify the
+                calculator.
+        """
         if isinstance(calculator, InterfaceCalculator):
             if isinstance(calculator.interface, MMInterface):
                 self.modify_mm_interface(calculator.interface, system)
             if isinstance(calculator.interface, QMInterface):
                 self.modify_qm_interface(calculator.interface, system)
 
+    def modify_composite(
+            self,
+            calculator: CompositeCalculator,
+            system: System,
+    ) -> None:
+        """Modify a composite calculator to represent the coupling.
+
+        Args:
+            calculator: A composite calculator which is defined in part
+                by the system.
+            system: The system that will be used to modify the
+                calculator.
+        """
+        calculator.cutoff = self.cutoff
+        if (
+            self.force_matrix[Subsystem.I][Subsystem.III]
+            == TheoryLevel.QM
+        ):
+            plugin = lazy_load("pydft_qmmm.plugins.pme")
+            calculator.register_plugin(plugin.PME())
+
     def modify_mm_interface(
             self,
             interface: MMInterface,
             system: System,
     ) -> None:
+        """Modify an MM interface to reflect the selected embedding.
+
+        Args:
+            interface: The MM interface representing part of the system.
+            system: The system that will be used to modify the
+                interface.
+        """
         qm_atoms = system.qm_region
         mm_atoms = system.mm_region
         atoms = qm_atoms.union(mm_atoms)
@@ -132,6 +184,13 @@ class QMMMHamiltonian(CouplingHamiltonian):
                     == TheoryLevel.MM
                 ):
                     interface.add_real_elst(qm_atoms)
+                    warn(
+                        (
+                            "I-II Mechanical with I-III None embedding is "
+                            + "known to produce unstable trajectories."
+                        ),
+                        RuntimeWarning,
+                    )
                 interface.zero_charges(qm_atoms)
             elif (
                 self.force_matrix[Subsystem.I][Subsystem.III]
@@ -168,7 +227,6 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 == TheoryLevel.QM
             ):
                 interface.add_real_elst(qm_atoms, -1)
-                ...
             else:
                 raise TypeError("...")
 
@@ -177,6 +235,13 @@ class QMMMHamiltonian(CouplingHamiltonian):
             interface: QMInterface,
             system: System,
     ) -> None:
+        """Modify a QM interface to reflect the selected embedding.
+
+        Args:
+            interface: The QM interface representing part of the system.
+            system: The system that will be used to modify the
+                interface.
+        """
         if (
             self.force_matrix[Subsystem.I][Subsystem.II] == TheoryLevel.QM
             or self.force_matrix[Subsystem.II][Subsystem.I] == TheoryLevel.QM
@@ -185,11 +250,10 @@ class QMMMHamiltonian(CouplingHamiltonian):
         else:
             interface.disable_embedding()
 
-    # def __or__(self, other: Any) -> Hamiltonian:
-    #    if not isinstance(other, (int, float)):
-    #        raise TypeError("...")
-    #    self.embedding_cutoff = other
-    #    return self
-
     def __str__(self) -> str:
+        """Create a LATEX string representation of the Hamiltonian.
+
+        Returns:
+            The string representation of the Hamiltonian.
+        """
         return "H^{QM/MM}"

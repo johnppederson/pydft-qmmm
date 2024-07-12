@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A sub-package to define integrators.
+"""A sub-package to define integrators of the simulation engine.
 """
 from __future__ import annotations
 

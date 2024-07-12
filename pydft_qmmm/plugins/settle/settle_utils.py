@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-"""A module containing the core functionality of the SETTLE algorithm.
+"""Core functionality for SETTLE algorithm application.
 """
 from __future__ import annotations
 
@@ -15,19 +14,25 @@ def settle_positions(
         oh_distance: int | float = 1.,
         hh_distance: int | float = 1.632981,
 ) -> NDArray[np.float64]:
-    """A utility to perform the SETTLE algorithm on a set of positions.
+    r"""A utility to perform the SETTLE algorithm on a set of positions.
 
-    :param residues: The name of the water residues in the
-        :class:`System`.
-    :param positions_i: The initial positions of the :class:`System`, in
-        Angstroms.
-    :param positions_f: The final positions of the :class:`System`, in
-        Angstroms.
-    :param masses: |masses|
-    :param oh_distance: The distance between the oxygen and hydrogen, in
-        Angstroms.
-    :param hh_distance: The distance between the hydrogens, in
-        Angstroms.
+    Args:
+        residues: The list of list of atom indices corresponding to the
+            list of water residues in a system.
+        positions_i: The initial positions (:math:`\mathrm{\mathring{A}}`) of
+            the system.
+        positions_f: The final positions (:math:`\mathrm{\mathring{A}}`) of
+            the system.
+        masses: The masses (:math:`\mathrm{AMU}`) of atoms in the
+            system.
+        oh_distance: The distance between the oxygen and hydrogens
+            (:math:`\mathrm{\mathring{A}}`).
+        hh_distance: The distance between the hydrogens
+            (:math:`\mathrm{\mathring{A}}`).
+
+    Returns:
+        The new positions with SETTLE applied to the positions of water
+        residues.
 
     .. note:: Based on the SETTLE kernel in OpenMM.
     """
@@ -185,15 +190,21 @@ def settle_velocities(
         velocities_i: NDArray[np.float64],
         masses: NDArray[np.float64],
 ) -> NDArray[np.float64]:
-    """A utility to perform the SETTLE algorithm on a set of velocities.
+    r"""A utility to perform the SETTLE algorithm on a set of velocities.
 
-    :param residues: The name of the water residues in the
-        :class:`System`.
-    :param positions_i: The initial positions of the :class:`System`, in
-        Angstroms.
-    :param velocities_f: The initial velocities of the :class:`System`,
-        in Angstroms per femtosecond.
-    :param masses: |masses|
+    Args:
+        residues: The list of list of atom indices corresponding to the
+            list of water residues in a system.
+        positions_i: The initial positions (:math:`\mathrm{\mathring{A}}`) of
+            the system.
+        velocities_i: The initial velocities
+            (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) of the system.
+        masses: The masses (:math:`\mathrm{AMU}`) of atoms in the
+            system.
+
+    Returns:
+        The new velocities with SETTLE applied to the velocities of
+        water residues.
 
     .. note:: Based on the SETTLE kernel in OpenMM.
     """
