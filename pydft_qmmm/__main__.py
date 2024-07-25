@@ -57,7 +57,19 @@ def main() -> int:
         key: value for key, value
         in input_file["System"].items()
     }
-    system = pydft_qmmm.System.load(**system_args)
+    if system_args.get("velocities_temperature"):
+        temperature = float(system_args.pop("velocities_temperature"))
+        velocity_args = [temperature]
+        if system_args.get("velocities_seed"):
+            seed = int(system_args.pop("velocities_seed"))
+            velocity_args.append(seed)
+        system = pydft_qmmm.System.load(**system_args)
+        velocity_args.insert(0, system.masses)
+        system.velocities = pydft_qmmm.generate_velocities(
+            *velocity_args,
+        )
+    else:
+        system = pydft_qmmm.System.load(**system_args)
     simulation_args = {"system": system}
 
     # Create Integrator object.
@@ -96,7 +108,10 @@ def main() -> int:
             key: _parse_input(value) for key, value
             in input_file[section].items()
         }
-        qm_region = qmmm_args.pop("region_i")
+        try:
+            qm_region = qmmm_args.pop("region_i")
+        except KeyError:
+            raise OSError("QMMMHamiltonian field requires region_i defined.")
         qmmm_hamiltonian = getattr(pydft_qmmm, section)(**qmmm_args)
         if qm_region.start:
             hamiltonian = (

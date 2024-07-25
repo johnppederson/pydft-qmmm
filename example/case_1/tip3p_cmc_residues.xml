@@ -1,0 +1,22 @@
+<Residues>
+  <Residue name="HOH">
+   <Atom name="O"  type="OW"/>
+   <Atom name="H1" type="HW"/>
+   <Atom name="H2" type="HW"/>
+   <Bond from="O"  to="H1"/>
+   <Bond from="O"  to="H2"/>
+  </Residue>
+  <Residue name="MCL">
+   <Atom name="CT"   type="MC_C" />
+   <Atom name="Cl1" type="MC_Cl"/>
+   <Atom name="Cl2" type="MC_Cl"/>
+   <Atom name="H1"  type="MC_H" />
+   <Atom name="H2"  type="MC_H" />
+   <Atom name="H3"  type="MC_H" />
+   <Bond from="CT"   to="Cl1"/>
+   <Bond from="CT"   to="Cl2"/>
+   <Bond from="CT"   to="H1" />
+   <Bond from="CT"   to="H2" />
+   <Bond from="CT"   to="H3" />
+  </Residue>
+</Residues>

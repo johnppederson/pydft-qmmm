@@ -8,11 +8,25 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from pydft_qmmm.common import lazy_load
-from pydft_qmmm.common import Results
 from pydft_qmmm.plugins.plugin import CalculatorPlugin
 
 if TYPE_CHECKING:
     from qmmm_pme.calculators import Calculator
+    from pydft_qmmm.common import Results
+    import mypy_extensions
+    CalculateMethod = Callable[
+        [
+            mypy_extensions.DefaultArg(
+                bool | None,
+                "return_forces",  # noqa: F821
+            ),
+            mypy_extensions.DefaultArg(
+                bool | None,
+                "return_components",  # noqa: F821
+            ),
+        ],
+        Results,
+    ]
 
 
 class Plumed(CalculatorPlugin):
@@ -62,8 +76,8 @@ class Plumed(CalculatorPlugin):
 
     def _modify_calculate(
             self,
-            calculate: Callable[..., Results],
-    ) -> Callable[..., Results]:
+            calculate: CalculateMethod,
+    ) -> CalculateMethod:
         """Modify the calculate routine to perform biasing afterward.
 
         Args:
@@ -74,8 +88,11 @@ class Plumed(CalculatorPlugin):
             enhanced sampling after performing the unbiased calculation
             routine.
         """
-        def inner(**kwargs: bool) -> Results:
-            results = calculate(**kwargs)
+        def inner(
+                return_forces: bool | None = True,
+                return_components: bool | None = True,
+        ) -> Results:
+            results = calculate(return_forces, return_components)
             self.plumed.cmd("setStep", self.frame)
             self.frame += 1
             self.plumed.cmd("setBox", self.system.box)
@@ -90,10 +107,10 @@ class Plumed(CalculatorPlugin):
             self.plumed.cmd("performCalc")
             biased_energy = np.zeros((1,))
             self.plumed.cmd("getBias", biased_energy)
-            results.energy += biased_energy
+            results.energy += biased_energy[0]
             results.forces += biased_forces
             results.components.update(
-                {"Plumed Bias Energy": biased_energy},
+                {"Plumed Bias Energy": biased_energy[0]},
             )
             return results
         return inner

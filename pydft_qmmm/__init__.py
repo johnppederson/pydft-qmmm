@@ -13,6 +13,7 @@ Todo:
 from __future__ import annotations
 
 from . import _version
+from .common import generate_velocities
 from .hamiltonians import MMHamiltonian
 from .hamiltonians import QMHamiltonian
 from .hamiltonians import QMMMHamiltonian

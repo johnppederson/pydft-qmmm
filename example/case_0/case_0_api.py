@@ -1,22 +1,19 @@
-#! /usr/bin/env python3
-"""
-QM/MM, a method to perform single-point QM/MM calculations using the
-QM/MM/PME direct electrostatic QM/MM embedding method.
-"""
 from __future__ import annotations
 
-import json
-import os
-import sys
-
-import numpy as np
-from qmmm_pme import *
-from qmmm_pme.plugins import SETTLE
+from pydft_qmmm import *
+from pydft_qmmm.plugins import SETTLE
 
 # Load system first.
-system = System(
-    "../data/spce.pdb",
-    "../data/spce.xml",
+system = System.load(
+    "spce.pdb",
+    "spce.xml",
+)
+
+# Generate velocities.
+system.velocities = generate_velocities(
+    system.masses,
+    300,
+    10101,
 )
 
 # Define QM Hamiltonian.
@@ -29,8 +26,11 @@ qm = QMHamiltonian(
 
 # Define MM Hamiltonian.
 mm = MMHamiltonian(
-    "../data/spce.xml",
-    "../data/spce_residues.xml",
+    "spce.xml",
+    "spce_residues.xml",
+    nonbonded_method="PME",
+    pme_gridnumber=30,
+    pme_alpha=5.0,
 )
 
 # Define IXN Hamiltonian.
@@ -43,7 +43,7 @@ total = qm[:3] + mm[3:] + qmmm
 integrator = VerletIntegrator(1)
 
 # Define the logger.
-logger = Logger("./output/", system, dcd_write_interval=1, decimal_places=6)
+logger = Logger("output_api/", system, decimal_places=6)
 
 # Define plugins.
 settle = SETTLE()
@@ -51,8 +51,8 @@ settle = SETTLE()
 # Define simulation.
 simulation = Simulation(
     system=system,
-    hamiltonian=qmmm,
-    dynamics=dynamics,
+    hamiltonian=total,
+    integrator=integrator,
     logger=logger,
     plugins=[settle],
 )
