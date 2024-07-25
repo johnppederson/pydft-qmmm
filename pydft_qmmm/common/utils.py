@@ -526,6 +526,7 @@ def numerical_gradient(
         calculator: Calculator,
         atoms: frozenset[int],
         dist: int | float = 0.0025,
+        component: str | None = None,
 ) -> NDArray[np.float64]:
     r"""Calculate the numerical energy gradients for a set of atoms.
 
@@ -534,6 +535,8 @@ def numerical_gradient(
         atoms: The atoms to perform numerical gradients on.
         dist: The displacement for central differencing
             (:math:`\mathrm{\mathring{A}}`).
+        component: The component of the energy dictionary to use in
+            central differencing calculations.
 
     Returns:
         The numerical gradients of the energy
@@ -544,10 +547,17 @@ def numerical_gradient(
         for j in range(3):
             # Perform first finite difference displacement.
             calculator.system.positions[atom, j] += dist
-            ref_1 = calculator.calculate().energy
+            if component:
+                ref_1 = calculator.calculate().components[component]
+            else:
+                ref_1 = calculator.calculate().energy
             # Perform second finite difference displacement.
             calculator.system.positions[atom, j] -= 2*dist
             ref_0 = calculator.calculate().energy
+            if component:
+                ref_0 = calculator.calculate().components[component]
+            else:
+                ref_0 = calculator.calculate().energy
             grad[i, j] = (ref_1 - ref_0) / (2*dist)
             calculator.system.positions[atom, j] += dist
     return grad

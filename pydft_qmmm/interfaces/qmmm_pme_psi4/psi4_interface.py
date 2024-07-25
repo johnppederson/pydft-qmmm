@@ -19,8 +19,7 @@ if TYPE_CHECKING:
     from pydft_qmmm.interfaces.psi4.psi4_utils import Psi4Context
     from .psi4_utils import PMEPsi4Options
 
-# psi4.set_num_threads(8)
-psi4.core.be_quiet()
+# psi4.core.be_quiet()
 
 
 class PMEPsi4Interface(Psi4Interface):
@@ -126,8 +125,15 @@ class PMEPsi4Interface(Psi4Interface):
             self._functional,
             True,
         )[0]
+        c1_molecule = molecule.clone()
+        c1_molecule._initial_cartesian = molecule._initial_cartesian.clone()
+        c1_molecule.set_geometry(c1_molecule._initial_cartesian)
+        c1_molecule.reset_point_group("c1")
+        c1_molecule.fix_orientation(True)
+        c1_molecule.fix_com(True)
+        c1_molecule.update_geometry()
         basis = psi4.core.BasisSet.build(
-            molecule,
+            c1_molecule,
             "ORBITAL",
             self._options.basis,
         )
@@ -150,6 +156,7 @@ class PMEPsi4Interface(Psi4Interface):
                 evaluated at the quadrature grid points.
         """
         self._quad_extd_pot = quad_extd_pot
+        self._generate_wavefunction.cache_clear()
 
     def update_nuc_extd_pot(self, nuc_extd_pot: NDArray[np.float64]) -> None:
         r"""Update the external potential at the nuclear coordinates.
@@ -159,6 +166,7 @@ class PMEPsi4Interface(Psi4Interface):
                 evaluated at the nuclear coordinates.
         """
         self._nuc_extd_pot = nuc_extd_pot
+        self._generate_wavefunction.cache_clear()
 
     def update_nuc_extd_grad(self, nuc_extd_grad: NDArray[np.float64]) -> None:
         r"""Update the gradient of the external potential at the nuclei.
@@ -169,3 +177,4 @@ class PMEPsi4Interface(Psi4Interface):
                 evaluated at the nuclear coordinates.
         """
         self._nuc_extd_grad = nuc_extd_grad
+        self._generate_wavefunction.cache_clear()

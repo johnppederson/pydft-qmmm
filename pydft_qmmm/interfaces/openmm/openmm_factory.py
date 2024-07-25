@@ -76,8 +76,7 @@ def _build_topology(settings: MMSettings) -> Topology:
     chain = topology.addChain()
     residue_map = settings.system.residue_map
     for i in residue_map.keys():
-        atoms = list(residue_map[i])
-        atoms.sort()
+        atoms = sorted(residue_map[i])
         residue = topology.addResidue(
             settings.system.residue_names[atoms[0]],
             chain,

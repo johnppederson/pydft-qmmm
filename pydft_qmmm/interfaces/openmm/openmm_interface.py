@@ -336,17 +336,7 @@ class OpenMMInterface(MMInterface):
         Args:
             threads: The number of threads to utilize.
         """
-        platform = openmm.Platform.getPlatformByName("CPU")
-        platform.setPropertyValue(
-            self._base_context,
-            "Threads",
-            str(threads),
-        )
-        platform.setPropertyValue(
-            self._ixn_context,
-            "Threads",
-            str(threads),
-        )
+        pass
 
     def update_memory(self, memory: str) -> None:
         """Set the amount of memory used by OpenMM.

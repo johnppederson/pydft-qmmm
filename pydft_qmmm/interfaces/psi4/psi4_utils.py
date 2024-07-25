@@ -77,7 +77,7 @@ class Psi4Context:
             )
         geometrystring += str(self.charge) + " "
         geometrystring += str(self.spin) + "\n"
-        geometrystring += "symmetry c1\n"
+        # geometrystring += "symmetry c1\n"
         geometrystring += "noreorient\nnocom\n"
         return psi4.geometry(geometrystring)
 
@@ -213,7 +213,7 @@ def _build_context(settings: QMSettings) -> Psi4Context:
         The geometry and embedding manager for Psi4.
     """
     context = Psi4Context(
-        set(settings.system.qm_region),
+        set(settings.system.select("subsystem I")),
         set(),
         list(settings.system.elements),
         settings.system.positions,

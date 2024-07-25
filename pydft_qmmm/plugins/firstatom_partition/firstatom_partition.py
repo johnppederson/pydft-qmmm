@@ -87,7 +87,7 @@ class FirstAtomPartition(PartitionPlugin):
     def generate_partition(self) -> None:
         """Perform the residue-wise system partitioning.
         """
-        qm_region = sorted(self.system.qm_region)
+        qm_region = sorted(self.system.select("subsystem I"))
         qm_centroid = np.average(
             self.system.positions[qm_region, :],
             axis=0,

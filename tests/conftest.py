@@ -58,6 +58,16 @@ def mm_spce():
 
 
 @pytest.fixture
+def mm_spce_no_lj():
+    return MMHamiltonian(
+        "tests/data/spce_no_lj.xml",
+        "tests/data/spce_residues.xml",
+        pme_gridnumber=30,
+        pme_alpha=5.0,
+    )
+
+
+@pytest.fixture
 def spce_plugins():
     return [SETTLE()]
 

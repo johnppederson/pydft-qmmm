@@ -263,11 +263,14 @@ class CompositeHamiltonian(Hamiltonian):
         standalone = self._calculator_hamiltonians()
         coupling = self._coupling_hamiltonians()
         calculators = []
+        # Build first.
         for hamiltonian in standalone:
             calculator = hamiltonian.build_calculator(system)
+            calculators.append(calculator)
+        # Then modify build calculators
+        for calculator in calculators:
             for coupler in coupling:
                 coupler.modify_calculator(calculator, system)
-            calculators.append(calculator)
         calculator = CompositeCalculator(
             system=system,
             calculators=calculators,

@@ -13,7 +13,6 @@ import scipy.interpolate
 
 from pydft_qmmm.common import BOHR_PER_ANGSTROM
 from pydft_qmmm.common import KJMOL_PER_EH
-from pydft_qmmm.common import Subsystem
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -50,30 +49,30 @@ def pme_components(
         nuclear coordinates.
     """
     # Create necessary objects.
-    qm_atoms = sorted(system.subsystem_map[Subsystem.I])
+    qm_atoms = sorted(system.select("subsystem I"))
     nuclei = (
-        system.positions[qm_atoms, :]
+        system.positions.base[qm_atoms, :]
         * BOHR_PER_ANGSTROM
     )
     indices = np.array(list(range(-1, pme_gridnumber+1)))
     grid = (indices,) * 3
     inverse_box = np.linalg.inv(
-        system.box * BOHR_PER_ANGSTROM,
+        system.box.base * BOHR_PER_ANGSTROM,
     )
-    ae_atoms = sorted(system.subsystem_map[Subsystem.II])
+    ae_atoms = sorted(system.select("subsystem II"))
     atoms = qm_atoms + ae_atoms  # + qm_drudes
     # Gather relevant State data.
-    positions = system.positions[atoms] * BOHR_PER_ANGSTROM
-    charges = system.charges[atoms]
+    positions = system.positions.base[atoms] * BOHR_PER_ANGSTROM
+    charges = system.charges.base[atoms]
     # Determine and apply exclusions.
     pme_xyz, pme_exclusions = _compute_pme_exclusions(
-        system.box,
+        system.box.base,
         inverse_box,
         quadrature,
         pme_gridnumber,
     )
     _apply_pme_exclusions(
-        system.box,
+        system.box.base,
         atoms,
         positions,
         charges,
@@ -121,7 +120,7 @@ def pme_components(
         sum(
             (
                 -v*q*KJMOL_PER_EH for v, q in
-                zip(pme_results[1], system.charges[qm_atoms])
+                zip(pme_results[1], system.charges.base[qm_atoms])
             ),
         ),
     )

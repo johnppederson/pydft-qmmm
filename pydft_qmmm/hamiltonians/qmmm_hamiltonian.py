@@ -162,9 +162,9 @@ class QMMMHamiltonian(CouplingHamiltonian):
             system: The system that will be used to modify the
                 interface.
         """
-        qm_atoms = system.qm_region
-        mm_atoms = system.mm_region
-        atoms = qm_atoms.union(mm_atoms)
+        qm_atoms = system.select("subsystem I")
+        mm_atoms = system.select("subsystem II or subsystem III")
+        atoms = qm_atoms | mm_atoms
         interface.zero_intramolecular(qm_atoms)
         if (
             self.force_matrix[Subsystem.I][Subsystem.III]
@@ -206,7 +206,7 @@ class QMMMHamiltonian(CouplingHamiltonian):
         else:
             interface.zero_forces(qm_atoms)
             inclusion = np.zeros((len(atoms), 3))
-            inclusion[list(qm_atoms), :] = 1
+            inclusion[sorted(qm_atoms), :] = 1
             interface.add_non_elst(qm_atoms, inclusion=inclusion)
             if (
                 self.force_matrix[Subsystem.I][Subsystem.III]

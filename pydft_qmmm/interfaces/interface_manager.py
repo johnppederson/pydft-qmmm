@@ -17,14 +17,20 @@ from typing import Callable
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from importlib.metadata import EntryPoint
     from .interface import SoftwareSettings, SoftwareInterface
     Factory = Callable[[SoftwareSettings], SoftwareInterface]
 
 MODULE_PATH = files("pydft_qmmm") / "interfaces"
-DISCOVERED_INTERFACES: list[EntryPoint] = entry_points().get(
-    "pydft_qmmm.interfaces", [],
-)
+
+try:
+    DISCOVERED_INTERFACES: set[str] = {
+        point.name for point
+        in entry_points().get("pydft_qmmm.interfaces", [])
+    }
+except AttributeError:
+    DISCOVERED_INTERFACES = entry_points(
+        group="pydft_qmmm.interfaces",
+    ).names
 
 
 class _Checked:
@@ -84,7 +90,7 @@ def get_software_factory(field: str) -> Factory:
     config.read(str(MODULE_PATH / "interfaces.conf"))
     software_name = config["ACTIVE"][field].lower()
     local_names = listdir(str(MODULE_PATH))
-    package_names = [point.name for point in DISCOVERED_INTERFACES]
+    package_names = [name for name in DISCOVERED_INTERFACES]
     found = False
     for name in local_names:
         if found:

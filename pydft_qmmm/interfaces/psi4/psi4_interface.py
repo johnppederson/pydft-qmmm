@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from .psi4_utils import Psi4Context
     from .psi4_utils import Psi4Options
 
-psi4.core.be_quiet()
+# psi4.core.be_quiet()
 
 
 class Psi4Interface(QMInterface):
@@ -74,12 +74,10 @@ class Psi4Interface(QMInterface):
         )
         forces = forces.to_array() * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
         forces_temp = np.zeros(self._context.positions.shape)
-        qm_indices = list(self._context.atoms)
-        qm_indices.sort()
+        qm_indices = sorted(self._context.atoms)
         forces_temp[qm_indices, :] = forces
         if self._context.generate_external_potential():
-            embed_indices = list(self._context.embedding)
-            embed_indices.sort()
+            embed_indices = sorted(self._context.embedding)
             forces = (
                 wfn.external_pot().gradient_on_charges().to_array()
                 * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
@@ -165,7 +163,7 @@ class Psi4Interface(QMInterface):
         psi4.set_num_threads(threads)
 
     def update_memory(self, memory: str) -> None:
-        """Set the amount of memory used by OpenMM.
+        """Set the amount of memory used by Psi4.
 
         Args:
             memory: The amount of memory to utilize.

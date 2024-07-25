@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from functools import cached_property
+from functools import lru_cache
 from typing import overload
 from typing import TYPE_CHECKING
 
@@ -15,17 +17,30 @@ from .variable import ObservedArray
 from pydft_qmmm.common import decompose
 from pydft_qmmm.common import FileManager
 from pydft_qmmm.common import interpret
-from pydft_qmmm.common import Subsystem
 
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
     from typing import Any
+    from typing import Callable
     from numpy.typing import NDArray
     from .variable import array_float
     from .variable import array_int
     from .variable import array_str
     from .variable import array_obj
+
+
+def _clear_select_method(self: System) -> Callable[[Any], None]:
+    def wrapper(value: Any) -> None:
+        self.select.cache_clear()
+    return wrapper
+
+
+def _del_residue_map(self: System) -> Callable[[Any], None]:
+    def wrapper(value: Any) -> None:
+        if hasattr(self, "residue_map"):
+            delattr(self, "residue_map")
+    return wrapper
 
 
 class System(Sequence[_SystemAtom]):
@@ -74,6 +89,12 @@ class System(Sequence[_SystemAtom]):
         self._atoms = atoms
         self._system_atoms = self._aggregate(atoms)
         self._box = ObservedArray(box)
+        self.residues.register_notifier(_del_residue_map(self))
+        self.residues.register_notifier(_clear_select_method(self))
+        self.elements.register_notifier(_clear_select_method(self))
+        self.names.register_notifier(_clear_select_method(self))
+        self.residue_names.register_notifier(_clear_select_method(self))
+        self.subsystems.register_notifier(_clear_select_method(self))
 
     def __len__(self) -> int:
         """Get the number of atoms in the system.
@@ -248,6 +269,7 @@ class System(Sequence[_SystemAtom]):
             )
         return System(atoms, box)
 
+    @lru_cache
     def select(self, query: str) -> frozenset[int]:
         """Convert a VMD-like selection query into a set of atom indices.
 
@@ -381,41 +403,14 @@ class System(Sequence[_SystemAtom]):
     ) -> None:
         self._subsystems[:] = subsystems
 
-    @property
+    @cached_property
     def residue_map(self) -> dict[int, frozenset[int]]:
         """The set of atom indices corresponding to a residue index."""
-        return {
-            i: frozenset({j for j, m in enumerate(self._residues) if m == i})
-            for i in set(self._residues)
-        }
-
-    @property
-    def subsystem_map(self) -> dict[Subsystem, frozenset[int]]:
-        """The set of atom indices corresponding to a subsystem."""
-        return {
-            i: frozenset({j for j, s in enumerate(self._subsystems) if s == i})
-            for i in (Subsystem.I, Subsystem.II, Subsystem.III)
-        }
-
-    @property
-    def qm_region(self) -> frozenset[int]:
-        """The set of atom indices with membership in Subsystem I."""
-        return frozenset(
-            {
-                j for j, s in enumerate(self._subsystems)
-                if s == Subsystem.I
-            },
-        )
-
-    @property
-    def mm_region(self) -> frozenset[int]:
-        """The set of atom indices with membership in Subsystems II & III."""
-        return frozenset(
-            {
-                j for j, s in enumerate(self._subsystems)
-                if s in (Subsystem.II, Subsystem.III)
-            },
-        )
+        residue_map: dict[int, frozenset[int]] = {}
+        for i, atom in enumerate(self):
+            residue = residue_map.get(int(atom.residue), frozenset())
+            residue_map[int(atom.residue)] = residue | {i}
+        return residue_map
 
     # def count(self, atom: Atom) -> int:
 
