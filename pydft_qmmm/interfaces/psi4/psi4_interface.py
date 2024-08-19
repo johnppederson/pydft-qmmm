@@ -10,9 +10,9 @@ import numpy as np
 import psi4.core
 from numpy.typing import NDArray
 
+from pydft_qmmm.common import BOHR_PER_ANGSTROM
+from pydft_qmmm.common import KJMOL_PER_EH
 from pydft_qmmm.common import Subsystem
-from pydft_qmmm.common.units import BOHR_PER_ANGSTROM
-from pydft_qmmm.common.units import KJMOL_PER_EH
 from pydft_qmmm.interfaces import QMInterface
 
 if TYPE_CHECKING:

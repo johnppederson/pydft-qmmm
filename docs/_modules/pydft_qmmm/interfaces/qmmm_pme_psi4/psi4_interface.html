@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
@@ -30,8 +30,7 @@
           <div class="body" role="main">
 
   <h1>Source code for pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;The QM/MM/PME-hacked Psi4 software interface.</span>
+<span></span><span class="sd">&quot;&quot;&quot;The QM/MM/PME-hacked Psi4 software interface.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -43,19 +42,16 @@
 <span class="kn">import</span> <span class="nn">psi4.core</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">NDArray</span>
 
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">BOHR_PER_ANGSTROM</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">KJMOL_PER_EH</span>
 <span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces.psi4.psi4_interface</span> <span class="kn">import</span> <span class="n">Psi4Interface</span>
-<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">TheoryLevel</span>
-<span class="kn">from</span> <span class="nn">pydft_qmmm.common.units</span> <span class="kn">import</span> <span class="n">BOHR_PER_ANGSTROM</span>
-<span class="kn">from</span> <span class="nn">pydft_qmmm.common.units</span> <span class="kn">import</span> <span class="n">KJMOL_PER_EH</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
     <span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces</span> <span class="kn">import</span> <span class="n">QMSettings</span>
     <span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces.psi4.psi4_utils</span> <span class="kn">import</span> <span class="n">Psi4Context</span>
     <span class="kn">from</span> <span class="nn">.psi4_utils</span> <span class="kn">import</span> <span class="n">PMEPsi4Options</span>
 
-<span class="c1">#psi4.set_num_threads(8)</span>
-<span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">be_quiet</span><span class="p">()</span>
+<span class="c1"># psi4.core.be_quiet()</span>
 
 
 <div class="viewcode-block" id="PMEPsi4Interface">
@@ -90,7 +86,7 @@
 <div class="viewcode-block" id="PMEPsi4Interface.compute_forces">
 <a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.qmmm_pme_psi4.html#pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface.PMEPsi4Interface.compute_forces">[docs]</a>
     <span class="k">def</span> <span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the forces on the system using Psi4.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the forces on the system using Psi4.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
@@ -168,15 +164,25 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_functional</span><span class="p">,</span>
             <span class="kc">True</span><span class="p">,</span>
         <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">c1_molecule</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">c1_molecule</span><span class="o">.</span><span class="n">_initial_cartesian</span> <span class="o">=</span> <span class="n">molecule</span><span class="o">.</span><span class="n">_initial_cartesian</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">c1_molecule</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">c1_molecule</span><span class="o">.</span><span class="n">_initial_cartesian</span><span class="p">)</span>
+        <span class="n">c1_molecule</span><span class="o">.</span><span class="n">reset_point_group</span><span class="p">(</span><span class="s2">&quot;c1&quot;</span><span class="p">)</span>
+        <span class="n">c1_molecule</span><span class="o">.</span><span class="n">fix_orientation</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">c1_molecule</span><span class="o">.</span><span class="n">fix_com</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">c1_molecule</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
         <span class="n">basis</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
-            <span class="n">molecule</span><span class="p">,</span>
+            <span class="n">c1_molecule</span><span class="p">,</span>
             <span class="s2">&quot;ORBITAL&quot;</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">basis</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">vbase</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">VBase</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="n">sup_func</span><span class="p">,</span> <span class="s2">&quot;RV&quot;</span><span class="p">)</span>
         <span class="n">vbase</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
         <span class="n">quadrature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-            <span class="nb">tuple</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">vbase</span><span class="o">.</span><span class="n">get_np_xyzw</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]]),</span>
+            <span class="nb">tuple</span><span class="p">([</span>
+                <span class="n">coord</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">vbase</span><span class="o">.</span><span class="n">get_np_xyzw</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="p">]),</span>
             <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">quadrature</span></div>
@@ -185,38 +191,41 @@
 <div class="viewcode-block" id="PMEPsi4Interface.update_quad_extd_pot">
 <a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.qmmm_pme_psi4.html#pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface.PMEPsi4Interface.update_quad_extd_pot">[docs]</a>
     <span class="k">def</span> <span class="nf">update_quad_extd_pot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quad_extd_pot</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the external potential at the quadrature grid points.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Update the external potential at the quadrature grid points.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            quad_ext_pot: A potential (:math:`\mathrm{a.u.}\;e^{-1}`)</span>
 <span class="sd">                evaluated at the quadrature grid points.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_quad_extd_pot</span> <span class="o">=</span> <span class="n">quad_extd_pot</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quad_extd_pot</span> <span class="o">=</span> <span class="n">quad_extd_pot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="PMEPsi4Interface.update_nuc_extd_pot">
 <a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.qmmm_pme_psi4.html#pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface.PMEPsi4Interface.update_nuc_extd_pot">[docs]</a>
     <span class="k">def</span> <span class="nf">update_nuc_extd_pot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nuc_extd_pot</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the external potential at the nuclear coordinates.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Update the external potential at the nuclear coordinates.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            nuc_ext_pot: A potential (:math:`\mathrm{a.u.}\;e^{-1}`)</span>
 <span class="sd">                evaluated at the nuclear coordinates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_nuc_extd_pot</span> <span class="o">=</span> <span class="n">nuc_extd_pot</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nuc_extd_pot</span> <span class="o">=</span> <span class="n">nuc_extd_pot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="PMEPsi4Interface.update_nuc_extd_grad">
 <a class="viewcode-back" href="../../../../pydft_qmmm.interfaces.qmmm_pme_psi4.html#pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface.PMEPsi4Interface.update_nuc_extd_grad">[docs]</a>
     <span class="k">def</span> <span class="nf">update_nuc_extd_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nuc_extd_grad</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the gradient of the external potential at the nuclei.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Update the gradient of the external potential at the nuclei.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            nuc_ext_pot: A gradient of the potential</span>
 <span class="sd">                (:math:`\mathrm{a.u.}\;e^{-1}\;\mathrm{Bohr^{-1}}`)</span>
 <span class="sd">                evaluated at the nuclear coordinates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_nuc_extd_grad</span> <span class="o">=</span> <span class="n">nuc_extd_grad</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nuc_extd_grad</span> <span class="o">=</span> <span class="n">nuc_extd_grad</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span></div>
 </div>
 
 </pre></div>

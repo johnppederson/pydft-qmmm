@@ -3,10 +3,10 @@
 <html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>pydft_qmmm.interfaces package &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
     <script src="_static/documentation_options.js?v=2709fde1"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
@@ -172,7 +172,7 @@
 energy and force calculations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel">pydft_qmmm.common.utils.TheoryLevel</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.constants.TheoryLevel" title="pydft_qmmm.common.constants.TheoryLevel">pydft_qmmm.common.constants.TheoryLevel</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -221,7 +221,7 @@ element-wise multiplication.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">theory_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel"><span class="pre">TheoryLevel</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'The</span> <span class="pre">molecular</span> <span class="pre">mechanical</span> <span class="pre">(forcefield)</span> <span class="pre">level</span> <span class="pre">of</span> <span class="pre">theory.'</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">theory_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.constants.TheoryLevel" title="pydft_qmmm.common.constants.TheoryLevel"><span class="pre">TheoryLevel</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'The</span> <span class="pre">molecular</span> <span class="pre">mechanical</span> <span class="pre">(forcefield)</span> <span class="pre">level</span> <span class="pre">of</span> <span class="pre">theory.'</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -286,22 +286,20 @@ interactions from.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pydft_qmmm.interfaces.interface.MMSettings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.interface.</span></span><span class="sig-name descname"><span class="pre">MMSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forcefield_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topology_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonbonded_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PME'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonbonded_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pme_gridnumber</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pme_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/interface.html#MMSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.interfaces.interface.</span></span><span class="sig-name descname"><span class="pre">MMSettings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forcefield</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonbonded_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'PME'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonbonded_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pme_gridnumber</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pme_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/interfaces/interface.html#MMSettings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pydft_qmmm.interfaces.interface.SoftwareSettings" title="pydft_qmmm.interfaces.interface.SoftwareSettings"><code class="xref py py-class docutils literal notranslate"><span class="pre">SoftwareSettings</span></code></a></p>
 <p>Immutable container which holds settings for an MM interface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system which will be tied to the MM interface.</p></li>
-<li><p><strong>forcefield_file</strong> (<em>str</em><em> | </em><em>list</em><em>[</em><em>str</em><em>]</em>) – The FF XML file containing forcefield data
-for the system.</p></li>
-<li><p><strong>topology_file</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – The FF XML file containing topology data for
-the system.</p></li>
+<li><p><strong>forcefield</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The files containing forcefield  and topology
+data for the system.</p></li>
 <li><p><strong>nonbonded_method</strong> (<em>str</em>) – The method for treating non-bonded
 interactions, as in OpenMM.</p></li>
 <li><p><strong>nonbonded_cutoff</strong> (<em>float</em><em> | </em><em>int</em>) – The distance at which to truncate close-range
 non-bonded interactions.</p></li>
-<li><p><strong>pme_gridnumber</strong> (<em>int</em><em> | </em><em>None</em>) – The number of grid points to include along each
+<li><p><strong>pme_gridnumber</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>] </em><em>| </em><em>None</em>) – The number of grid points to include along each
 lattice edge in PME summation.</p></li>
 <li><p><strong>pme_alpha</strong> (<em>float</em><em> | </em><em>int</em><em> | </em><em>None</em>) – The Gaussian width parameter in Ewald summation
 (<span class="math notranslate nohighlight">\(\mathrm{nm^{-1}}\)</span>).</p></li>
@@ -309,8 +307,8 @@ lattice edge in PME summation.</p></li>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pydft_qmmm.interfaces.interface.MMSettings.forcefield_file">
-<span class="sig-name descname"><span class="pre">forcefield_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings.forcefield_file" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.interface.MMSettings.forcefield">
+<span class="sig-name descname"><span class="pre">forcefield</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings.forcefield" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -330,17 +328,12 @@ lattice edge in PME summation.</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydft_qmmm.interfaces.interface.MMSettings.pme_gridnumber">
-<span class="sig-name descname"><span class="pre">pme_gridnumber</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings.pme_gridnumber" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pme_gridnumber</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings.pme_gridnumber" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pydft_qmmm.interfaces.interface.MMSettings.system">
 <span class="sig-name descname"><span class="pre">system</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><span class="pre">System</span></a></em><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings.system" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pydft_qmmm.interfaces.interface.MMSettings.topology_file">
-<span class="sig-name descname"><span class="pre">topology_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pydft_qmmm.interfaces.interface.MMSettings.topology_file" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -357,7 +350,7 @@ lattice edge in PME summation.</p></li>
 energy and force calculations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel">pydft_qmmm.common.utils.TheoryLevel</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.constants.TheoryLevel" title="pydft_qmmm.common.constants.TheoryLevel">pydft_qmmm.common.constants.TheoryLevel</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -375,7 +368,7 @@ energy and force calculations.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">theory_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel"><span class="pre">TheoryLevel</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'The</span> <span class="pre">quantum</span> <span class="pre">mechanical</span> <span class="pre">(DFT)</span> <span class="pre">level</span> <span class="pre">of</span> <span class="pre">theory.'</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">theory_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.constants.TheoryLevel" title="pydft_qmmm.common.constants.TheoryLevel"><span class="pre">TheoryLevel</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'The</span> <span class="pre">quantum</span> <span class="pre">mechanical</span> <span class="pre">(DFT)</span> <span class="pre">level</span> <span class="pre">of</span> <span class="pre">theory.'</span></em><a class="headerlink" href="#id1" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -467,7 +460,7 @@ initial guesses in subsequent QM calculations.</p></li>
 energy and force calculations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel">pydft_qmmm.common.utils.TheoryLevel</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.constants.TheoryLevel" title="pydft_qmmm.common.constants.TheoryLevel">pydft_qmmm.common.constants.TheoryLevel</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -518,7 +511,7 @@ on atoms in the system.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">theory_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.utils.TheoryLevel" title="pydft_qmmm.common.utils.TheoryLevel"><span class="pre">TheoryLevel</span></a></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">theory_level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pydft_qmmm.common.html#pydft_qmmm.common.constants.TheoryLevel" title="pydft_qmmm.common.constants.TheoryLevel"><span class="pre">TheoryLevel</span></a></em><a class="headerlink" href="#id2" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

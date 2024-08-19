@@ -5,327 +5,40 @@ from __future__ import annotations
 import array
 import os
 import struct
-import xml.etree.ElementTree as ET
 from typing import TYPE_CHECKING
 
 import numpy as np
 
+from .atom import Atom
+from .constants import ELEMENT_TO_MASS
 from .utils import compute_lattice_constants
+from .utils import compute_lattice_vectors
 
 if TYPE_CHECKING:
-    from typing import Any
     from numpy.typing import NDArray
-    from pydft_qmmm.system import ObservedArray
-    from pydft_qmmm.system import array_float
-    from pydft_qmmm.system import array_int
-    from pydft_qmmm.system import array_str
+    from pydft_qmmm import System
 
 
-class FileManager:
-    """A utility for reading and writing files.
+_WORKING_DIRECTORY = os.getcwd() + "/"
+
+
+def _parse_name(name: str, ext: str = "") -> str:
+    """Check file name for correct directory path and extension.
 
     Args:
-        working_directory: The current working directory.
+        name: The directory/name of the file.
+        ext: The desired extension of the file.
+
+    Returns:
+        The full path of the file.
     """
-
-    def __init__(self, working_directory: str = "./") -> None:
-        self._working_directory = working_directory
-        if not os.path.isdir(working_directory):
-            os.makedirs(working_directory)
-
-    def load(
-            self,
-            pdb_file: list[str] | str,
-            forcefield_file: list[str] | str | None = None,
-    ) -> tuple[
-        list[list[float]],
-        list[int],
-        list[str],
-        list[str],
-        list[str],
-        list[float],
-        list[float],
-        list[list[float]],
-    ]:
-        """Load files necessary to generate a system.
-
-        Args:
-            pdb_file: The directory or list of directories containing
-                PDB files with position, element, name, residue, residue
-                name, and lattice vector data.
-            forcefield_file: The directory or list of directories
-                containing FF XML files with mass and charge data.
-
-        Returns:
-            Data required to create a System object.
-        """
-        # Check the file extensions and add them to the :class:`Files`
-        # record.
-        if isinstance(pdb_file, str):
-            _check_ext(pdb_file, "pdb")
-            pdb_list = [pdb_file]
-        elif isinstance(pdb_file, list):
-            for fh in pdb_file:
-                _check_ext(fh, "pdb")
-            pdb_list = pdb_file
-        else:
-            raise TypeError
-        if isinstance(forcefield_file, str):
-            _check_ext(forcefield_file, "xml")
-            forcefield_list = [forcefield_file]
-        elif isinstance(forcefield_file, list):
-            for fh in forcefield_file:
-                _check_ext(fh, "xml")
-            forcefield_list = forcefield_file
-        else:
-            raise TypeError
-        # Generate and return :class:`System` data using OpenMM.
-        system_info = _get_atom_data(
-            pdb_list,
-            forcefield_list,
-        )
-        return system_info
-
-    def write_to_pdb(
-            self,
-            name: str,
-            positions: NDArray[np.float64] | ObservedArray[Any, array_float],
-            box: NDArray[np.float64] | ObservedArray[Any, array_float],
-            residues: list[int] | ObservedArray[Any, array_int],
-            residue_names: list[str] | ObservedArray[Any, array_str],
-            elements: list[str] | ObservedArray[Any, array_str],
-            names: list[str] | ObservedArray[Any, array_str],
-    ) -> None:
-        r"""Write system to PDB file.
-
-        Args:
-            name: The directory and filename to write the PDB file to.
-            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the
-                atoms within the system.
-            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the box
-                containing the system.
-            residues: The indices of residues to which the atoms belong.
-            residue_names: The names of the residues to which the atom
-                belongs.
-            elements: The element symbols of the atoms.
-            names: The names (type) of the atoms, as in a PDB file.
-
-        .. note:: Based on PDB writer from OpenMM.
-        """
-        filename = self._parse_name(name, ext="pdb")
-        (
-            len_a, len_b, len_c,
-            alpha, beta, gamma,
-        ) = compute_lattice_constants(box)
-        with open(filename, "w") as fh:
-            fh.write(
-                (
-                    f"CRYST1{len_a:9.3f}{len_b:9.3f}{len_c:9.3f}"
-                    + f"{alpha:7.2f}{beta:7.2f}"
-                    + f"{gamma:7.2f} P 1           1 \n"
-                ),
-            )
-            for i, atom in enumerate(names):
-                line = "HETATM"
-                line += f"{i+1:5d}  "
-                line += f"{names[i]:4s}"
-                line += f"{residue_names[i]:4s}"
-                line += f"A{residues[i]+1:4d}    "
-                line += f"{positions[i,0]:8.3f}"
-                line += f"{positions[i,1]:8.3f}"
-                line += f"{positions[i,2]:8.3f}"
-                line += "  1.00  0.00           "
-                line += f"{elements[i]:2s}  \n"
-                fh.write(line)
-            fh.write("END")
-
-    def start_dcd(
-            self,
-            name: str,
-            write_interval: int,
-            num_particles: int,
-            timestep: int | float,
-    ) -> None:
-        r"""Start writing to a DCD file.
-
-        Args:
-            name: The directory and filename to write the DCD file to.
-            write_interval: The interval between successive DCD
-                writes, in simulation steps.
-            num_particles: The number of atoms in the system.
-            timestep: The timestep (:math:`\mathrm{fs}`) used to perform
-                simulation.
-
-        .. note:: Based on DCD writer from OpenMM.
-        """
-        filename = self._parse_name(name, ext="dcd")
-        with open(filename, "wb") as fh:
-            header = struct.pack(
-                "<i4c9if", 84, b"C", b"O", b"R", b"D",
-                0, 0, write_interval, 0, 0, 0, 0, 0, 0, timestep,
-            )
-            header += struct.pack(
-                "<13i", 1, 0, 0, 0, 0, 0, 0, 0, 0, 24,
-                84, 164, 2,
-            )
-            header += struct.pack("<80s", b"Created by QM/MM/PME")
-            header += struct.pack("<80s", b"Created now")
-            header += struct.pack("<4i", 164, 4, num_particles, 4)
-            fh.write(header)
-
-    def write_to_dcd(
-            self,
-            name: str,
-            write_interval: int,
-            num_particles: int,
-            positions: NDArray[np.float64] | ObservedArray[Any, array_float],
-            box: NDArray[np.float64] | ObservedArray[Any, array_float],
-            frame: int,
-    ) -> None:
-        r"""Write data to an existing DCD file.
-
-        Args:
-            name: The directory and filename to write the DCD file to.
-            write_interval: The interval between successive DCD
-                writes, in simulation steps.
-            num_particles: The number of atoms in the system.
-            positions: The positions (:math:`\mathrm{\mathring{A}}`) of the
-                atoms within the system.
-            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the box
-                containing the system.
-            frame: The current frame of the simulation.
-
-        .. note:: Based on DCD writer from OpenMM.
-        """
-        filename = self._parse_name(name, ext="dcd")
-        (
-            len_a, len_b, len_c,
-            alpha, beta, gamma,
-        ) = compute_lattice_constants(box)
-        with open(filename, "r+b") as fh:
-            fh.seek(8, os.SEEK_SET)
-            fh.write(struct.pack("<i", frame//write_interval))
-            fh.seek(20, os.SEEK_SET)
-            fh.write(struct.pack("<i", frame))
-            fh.seek(0, os.SEEK_END)
-            fh.write(
-                struct.pack(
-                    "<i6di", 48, len_a, gamma, len_b, beta,
-                    alpha, len_c, 48,
-                ),
-            )
-            num = struct.pack("<i", 4*num_particles)
-            for i in range(3):
-                fh.write(num)
-                coordinate = array.array(
-                    "f", (position[i] for position in positions),
-                )
-                coordinate.tofile(fh)
-                fh.write(num)
-            fh.flush()
-
-    def start_log(
-            self,
-            name: str,
-    ) -> None:
-        """Start writing to a log file.
-
-        Args:
-            name: The directory and filename to write the log file to.
-        """
-        filename = self._parse_name(name, ext="log")
-        with open(filename, "w") as fh:
-            fh.write(f"{' QM/MM/PME Logger ':=^72}\n")
-
-    def write_to_log(
-            self,
-            name: str,
-            lines: str,
-            frame: int,
-    ) -> None:
-        """Write data to an existing log file.
-
-        Args:
-            name: The directory and filename to write the log file to.
-            lines: A multi-line string which will be written to the
-                log file.
-            frame: The current frame of the simulation.
-        """
-        filename = self._parse_name(name, ext="log")
-        with open(filename, "a") as fh:
-            fh.write(f"{' Frame ' + f'{frame:0>6}' + ' ':-^72}\n")
-            fh.write(lines + "\n")
-            fh.flush()
-
-    def end_log(
-            self,
-            name: str,
-    ) -> None:
-        """Terminate an existing log file.
-
-        Args:
-            name: The directory and filename to write the log file to.
-        """
-        filename = self._parse_name(name, ext="log")
-        with open(filename, "a") as fh:
-            fh.write(f"{' End of Log ':=^72}")
-
-    def start_csv(
-            self,
-            name: str,
-            header: str,
-    ) -> None:
-        """Start writing to a CSV file.
-
-        Args:
-            name: The directory and filename to write the CSV file to.
-            header: The header for the CSV file.
-        """
-        filename = self._parse_name(name, ext="csv")
-        with open(filename, "w") as fh:
-            fh.write(header + "\n")
-
-    def write_to_csv(
-            self,
-            name: str,
-            line: str,
-            header: str | None = None,
-    ) -> None:
-        """Write data to an existing CSV file.
-
-        Args:
-            name: The directory and filename to write the CSV file to.
-            line: A string which will be written to the CSV file.
-            header: The header for the CSV file.
-        """
-        filename = self._parse_name(name, ext="csv")
-        if header:
-            with open(filename) as fh:
-                lines = fh.readlines()
-            with open(filename, "w") as fh:
-                lines[0] = header + "\n"
-                fh.writelines(lines)
-        with open(filename, "a") as fh:
-            fh.write(line + "\n")
-            fh.flush()
-
-    def _parse_name(self, name: str, ext: str = "") -> str:
-        """Check file name for correct directory path and extension.
-
-        Args:
-            name: The directory/name of the file.
-            ext: The desired extension of the file.
-
-        Returns:
-            The full path of the file.
-        """
-        filename = ""
-        if not name.startswith(self._working_directory):
-            filename = self._working_directory
-        filename += name
-        if not name.endswith(ext):
-            filename += "." + ext
-        return filename
+    filename = ""
+    if not name.startswith(_WORKING_DIRECTORY):
+        filename = _WORKING_DIRECTORY
+    filename += name
+    if not name.endswith(ext):
+        filename += "." + ext
+    return filename
 
 
 def _check_ext(filename: str, ext: str) -> None:
@@ -345,91 +58,317 @@ def _check_ext(filename: str, ext: str) -> None:
         )
 
 
-def _get_atom_data(
-        pdb_list: list[str],
-        forcefield_list: list[str] | None = None,
-) -> tuple[
-    list[list[float]],
-    list[int],
-    list[str],
-    list[str],
-    list[str],
-    list[float],
-    list[float],
-    list[list[float]],
-]:
-    """Extract system data from PDB and FF XML files.
+def _check_array(value: NDArray[np.float64], key: str = "positions") -> None:
+    if np.isnan(value).any():
+        raise ValueError(
+            f"Array '{key}' contains NaN values.",
+        )
+    if np.isinf(value).any():
+        raise ValueError(
+            f"Array '{key}' contains Inf values.",
+        )
+
+
+def load_system(*args: str) -> tuple[list[Atom], NDArray[np.float64]]:
+    """Load files necessary to generate a system.
+
+    Args:
+        *args: The directory or list of directories containing
+            PDB files with position, element, name, residue, residue
+            name, and lattice vector data.
+
+    Returns:
+        Data required to create a System object.
+    """
+    atoms = []
+    boxes = []
+    for filename in args:
+        tmp_atoms, tmp_box = _read_pdb(filename)
+        atoms.extend(tmp_atoms)
+        boxes.append(tmp_box)
+    if len(boxes) > 1:
+        for i in range(len(boxes) - 1):
+            if not np.allclose(boxes[i], boxes[i+1]):
+                raise OSError(
+                    (
+                        "Multiple PDB files have been loaded with "
+                        "different box vectors."
+                    ),
+                )
+    return atoms, boxes[-1]
+
+
+def _read_pdb(pdb_file: str) -> tuple[list[Atom], NDArray[np.float64]]:
+    """Extract system data from a PDB file.
 
     Args:
         pdb_file: The directory or list of directories containing
             PDB files with position, element, name, residue, residue
             name, and lattice vector data.
-        forcefield_file: The directory or list of directories
-            containing FF XML files with mass and charge data.
 
     Returns:
         Data required to create a System object.
     """
-    positions = []
-    residues: list[int] = []
-    elements = []
-    names = []
-    residue_names = []
-    box = [[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]
-    for pdb in pdb_list:
-        with open(pdb) as fh:
-            lines = fh.readlines()
-        offset = -1
-        for line in lines:
-            if line.startswith("CRYST1"):
-                box[0][0] = float(line[6:15].strip())
-                box[1][1] = float(line[15:24].strip())
-                box[2][2] = float(line[24:33].strip())
-            if line.startswith("ATOM") or line.startswith("HETATM"):
-                names.append(line[12:16].strip())
-                residue_names.append(line[17:21].strip())
-                number = int(line[22:26].strip()) + offset
-                if len(residues) > 0:
-                    if number < residues[-1]:
-                        offset += residues[-1] - number + 1
-                        number += residues[-1] - number + 1
-                residues.append(number)
-                positions.append(
-                    [
-                        float(line[30:38].strip()),
-                        float(line[38:46].strip()),
-                        float(line[46:54].strip()),
-                    ],
-                )
-                elements.append(line[76:78].strip())
-    masses = [0.]*len(names)
-    charges = [0.]*len(names)
-    if forcefield_list is None:
-        forcefield_list = []
-    for xml in forcefield_list:
-        tree = ET.parse(xml)
-        root = tree.getroot()
-        for i, name in enumerate(names):
-            file_residues = root.find("Residues")
-            if not isinstance(file_residues, ET.Element):
-                raise OSError
-            atom = file_residues.find(f".//Atom[@name='{name}']")
-            if not isinstance(atom, ET.Element):
-                raise OSError
-            type_ = atom.attrib["type"]
-            atoms = root.find("AtomTypes")
-            if not isinstance(atoms, ET.Element):
-                raise OSError
-            atom = atoms.find(f".//Type[@name='{type_}']")
-            if isinstance(atom, ET.Element):
-                masses[i] = float(atom.attrib["mass"])
-            nonbonded = root.find("NonbondedForce")
-            if not isinstance(nonbonded, ET.Element):
-                raise OSError
-            atom = nonbonded.find(f".//Atom[@type='{type_}']")
-            if isinstance(atom, ET.Element):
-                charges[i] = float(atom.attrib["charge"])
-    return (
-        positions, residues, elements, names,
-        residue_names, masses, charges, box,
+    atoms: list[Atom] = []
+    box = np.array(
+        [
+            [0., 0., 0.],
+            [0., 0., 0.],
+            [0., 0., 0.],
+        ],
     )
+    with open(pdb_file) as fh:
+        lines = fh.readlines()
+    offset = 0
+    for line in lines:
+        if line.startswith("CRYST1"):
+            a = float(line[6:15].strip())
+            b = float(line[15:24].strip())
+            c = float(line[24:33].strip())
+            alpha = float(line[33:40].strip())
+            beta = float(line[40:47].strip())
+            gamma = float(line[47:54].strip())
+            box = compute_lattice_vectors(
+                a, b, c,
+                alpha, beta, gamma,
+            )
+        if line.startswith("ATOM") or line.startswith("HETATM"):
+            # num = int(line[6:11].strip())
+            name = line[12:16].strip()
+            resname = line[17:21].strip()
+            resnum = int(line[22:26])
+            if len(atoms) == 0:
+                offset = -resnum
+            else:
+                if (
+                    atoms[-1].residue > resnum + offset
+                    or atoms[-1].residue < resnum + offset
+                    or atoms[-1].residue_name != resname
+                ):
+                    offset = atoms[-1].residue - resnum + 1
+            position = np.array([
+                float(line[30:38].strip()),
+                float(line[38:46].strip()),
+                float(line[46:54].strip()),
+            ])
+            element = line[76:78].strip()
+            mass = ELEMENT_TO_MASS.get(element, 0.)
+            atom = Atom(
+                position,
+                np.array([0., 0., 0.]),
+                np.array([0., 0., 0.]),
+                mass,
+                0.,
+                resnum + offset,
+                element,
+                name,
+                resname,
+            )
+            atoms.append(atom)
+    return atoms, box
+
+
+def write_to_pdb(name: str, system: System) -> None:
+    r"""Write system to PDB file.
+
+    Args:
+        name: The directory and filename to write the PDB file to.
+        system: The system whose data will be written to a PDB file.
+
+    .. note:: Based on PDB writer from OpenMM.
+    """
+    filename = _parse_name(name, ext="pdb")
+    (
+        len_a, len_b, len_c,
+        alpha, beta, gamma,
+    ) = compute_lattice_constants(system.box)
+    residues: dict[str, list[int]] = {}
+    for i in range(len(system)):
+        residue = residues.get(system.residue_names[i], [])
+        if not system.residues[i] in residue:
+            residue.append(system.residues[i])
+        residues[system.residue_names[i]] = residue
+    _check_array(system.positions)
+    with open(filename, "w") as fh:
+        fh.write(
+            (
+                f"CRYST1{len_a:9.3f}{len_b:9.3f}{len_c:9.3f}"
+                + f"{alpha:7.2f}{beta:7.2f}"
+                + f"{gamma:7.2f} P 1           1 \n"
+            ),
+        )
+        for i, _ in enumerate(system.names):
+            residue = residues[system.residue_names[i]]
+            resid = residue.index(system.residues[i]) + 1
+            line = "HETATM"
+            line += f"{i+1:5d}  "
+            line += f"{system.names[i]:4s}"
+            line += f"{system.residue_names[i]:4s}"
+            line += f"A{resid:4d}    "
+            line += f"{system.positions[i, 0]:8.3f}"
+            line += f"{system.positions[i, 1]:8.3f}"
+            line += f"{system.positions[i, 2]:8.3f}"
+            line += "  1.00  0.00          "
+            line += f"{system.elements[i]:2s}  \n"
+            fh.write(line)
+        fh.write("END")
+
+
+def start_dcd(
+        name: str,
+        write_interval: int,
+        num_particles: int,
+        timestep: int | float,
+) -> None:
+    r"""Start writing to a DCD file.
+
+    Args:
+        name: The directory and filename to write the DCD file to.
+        write_interval: The interval between successive DCD
+            writes, in simulation steps.
+        num_particles: The number of atoms in the system.
+        timestep: The timestep (:math:`\mathrm{fs}`) used to perform
+            simulation.
+
+    .. note:: Based on DCD writer from OpenMM.
+    """
+    filename = _parse_name(name, ext="dcd")
+    with open(filename, "wb") as fh:
+        header = struct.pack(
+            "<i4c9if", 84, b"C", b"O", b"R", b"D",
+            0, 0, write_interval, 0, 0, 0, 0, 0, 0, timestep,
+        )
+        header += struct.pack(
+            "<13i", 1, 0, 0, 0, 0, 0, 0, 0, 0, 24,
+            84, 164, 2,
+        )
+        header += struct.pack("<80s", b"Created by PyDFT-QMMM")
+        header += struct.pack("<80s", b"Created now")
+        header += struct.pack("<4i", 164, 4, num_particles, 4)
+        fh.write(header)
+
+
+def write_to_dcd(
+        name: str,
+        write_interval: int,
+        system: System,
+        frame: int,
+        offset: NDArray[np.float64] | None = None,
+) -> None:
+    r"""Write data to an existing DCD file.
+
+    Args:
+        name: The directory and filename to write the DCD file to.
+        write_interval: The interval between successive DCD
+            writes, in simulation steps.
+        system: The system whose data will be written to a DCD file.
+        frame: The current frame of the simulation.
+        offset: A translation applied to positions before they are
+            recorded.
+
+    .. note:: Based on DCD writer from OpenMM.
+    """
+    filename = _parse_name(name, ext="dcd")
+    (
+        len_a, len_b, len_c,
+        alpha, beta, gamma,
+    ) = compute_lattice_constants(system.box)
+    positions = system.positions.base.copy()
+    if offset is not None:
+        positions += offset
+    _check_array(positions)
+    with open(filename, "r+b") as fh:
+        fh.seek(8, os.SEEK_SET)
+        fh.write(struct.pack("<i", frame//write_interval))
+        fh.seek(20, os.SEEK_SET)
+        fh.write(struct.pack("<i", frame))
+        fh.seek(0, os.SEEK_END)
+        fh.write(
+            struct.pack(
+                "<i6di", 48, len_a, gamma, len_b, beta,
+                alpha, len_c, 48,
+            ),
+        )
+        num = struct.pack("<i", 4*len(system))
+        for i in range(3):
+            fh.write(num)
+            coordinate = array.array(
+                "f", (position[i] for position in positions),
+            )
+            coordinate.tofile(fh)
+            fh.write(num)
+        fh.flush()
+
+
+def start_log(name: str) -> None:
+    """Start writing to a log file.
+
+    Args:
+        name: The directory and filename to write the log file to.
+    """
+    filename = _parse_name(name, ext="log")
+    with open(filename, "w") as fh:
+        fh.write(f"{' PyDFT-QMMM Logger ':=^72}\n")
+
+
+def write_to_log(name: str, lines: str, frame: int) -> None:
+    """Write data to an existing log file.
+
+    Args:
+        name: The directory and filename to write the log file to.
+        lines: A multi-line string which will be written to the
+            log file.
+        frame: The current frame of the simulation.
+    """
+    filename = _parse_name(name, ext="log")
+    with open(filename, "a") as fh:
+        fh.write(f"{' Frame ' + f'{frame:0>6}' + ' ':-^72}\n")
+        fh.write(lines + "\n")
+        fh.flush()
+
+
+def end_log(name: str) -> None:
+    """Terminate an existing log file.
+
+    Args:
+        name: The directory and filename to write the log file to.
+    """
+    filename = _parse_name(name, ext="log")
+    with open(filename, "a") as fh:
+        fh.write(f"{' End of Log ':=^72}")
+
+
+def start_csv(name: str, header: str) -> None:
+    """Start writing to a CSV file.
+
+    Args:
+        name: The directory and filename to write the CSV file to.
+        header: The header for the CSV file.
+    """
+    filename = _parse_name(name, ext="csv")
+    with open(filename, "w") as fh:
+        fh.write(header + "\n")
+
+
+def write_to_csv(
+        name: str,
+        line: str,
+        header: str | None = None,
+) -> None:
+    """Write data to an existing CSV file.
+
+    Args:
+        name: The directory and filename to write the CSV file to.
+        line: A string which will be written to the CSV file.
+        header: The header for the CSV file.
+    """
+    filename = _parse_name(name, ext="csv")
+    if header:
+        with open(filename) as fh:
+            lines = fh.readlines()
+        with open(filename, "w") as fh:
+            lines[0] = header + "\n"
+            fh.writelines(lines)
+    with open(filename, "a") as fh:
+        fh.write(line + "\n")
+        fh.flush()

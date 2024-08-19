@@ -16,7 +16,10 @@ if TYPE_CHECKING:
 try:
     DISCOVERED_PLUGINS: set[str] = {
         point.name for point
-        in entry_points().get("pydft_qmmm.plugins", [])
+        in entry_points().get(  # type: ignore[attr-defined]
+            "pydft_qmmm.plugins",
+            [],
+        )
     }
 except AttributeError:
     DISCOVERED_PLUGINS = entry_points(

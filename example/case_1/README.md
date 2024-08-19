@@ -17,7 +17,9 @@ and second chlorine atoms and the carbon are tracked as collective
 variables, and the difference of these distances is subject an umbrella
 potential centered at zero.  The coordination of water hydrogens about
 the chlorine atoms is also tracked as a collective variable.  All files
-needed to run this case are in this case directory.
+needed to run this case are in this case directory.  Running this case
+requires installation of the [PLUMED](https://github.com/plumed/plumed2)
+package and its Python wrappers.
 
 How to Run
 ----------

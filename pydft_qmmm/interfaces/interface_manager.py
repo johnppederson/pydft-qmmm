@@ -25,7 +25,10 @@ MODULE_PATH = files("pydft_qmmm") / "interfaces"
 try:
     DISCOVERED_INTERFACES: set[str] = {
         point.name for point
-        in entry_points().get("pydft_qmmm.interfaces", [])
+        in entry_points().get(  # type: ignore[attr-defined]
+            "pydft_qmmm.interfaces",
+            [],
+        )
     }
 except AttributeError:
     DISCOVERED_INTERFACES = entry_points(

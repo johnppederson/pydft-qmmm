@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pydft_qmmm.hamiltonians.qmmm_hamiltonian &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <script src="../../../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
@@ -30,8 +30,7 @@
           <div class="body" role="main">
 
   <h1>Source code for pydft_qmmm.hamiltonians.qmmm_hamiltonian</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;A Hamiltonian defining the inter-subsystem coupling in QM/MM.</span>
+<span></span><span class="sd">&quot;&quot;&quot;A Hamiltonian defining the inter-subsystem coupling in QM/MM.</span>
 
 <span class="sd">Attributes:</span>
 <span class="sd">    _DEFAULT_FORCE_MATRIX: The default force matrix, which has no</span>
@@ -116,7 +115,7 @@
 <a class="viewcode-back" href="../../../pydft_qmmm.hamiltonians.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">QMMMHamiltonian</span><span class="p">(</span><span class="n">CouplingHamiltonian</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Hamiltonian defining inter-subsystem coupling in QM/MM.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A Hamiltonian defining inter-subsystem coupling in QM/MM.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        close_range: The name of the embedding procedure for</span>
@@ -187,8 +186,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">force_matrix</span><span class="p">[</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">I</span><span class="p">][</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">III</span><span class="p">]</span>
             <span class="o">==</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span>
         <span class="p">):</span>
-            <span class="n">plugins</span> <span class="o">=</span> <span class="n">lazy_load</span><span class="p">(</span><span class="s2">&quot;pydft_qmmm.plugins&quot;</span><span class="p">)</span>
-            <span class="n">calculator</span><span class="o">.</span><span class="n">register_plugin</span><span class="p">(</span><span class="n">plugins</span><span class="o">.</span><span class="n">PME</span><span class="p">())</span></div>
+            <span class="n">plugin</span> <span class="o">=</span> <span class="n">lazy_load</span><span class="p">(</span><span class="s2">&quot;pydft_qmmm.plugins.pme&quot;</span><span class="p">)</span>
+            <span class="n">calculator</span><span class="o">.</span><span class="n">register_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">PME</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="QMMMHamiltonian.modify_mm_interface">
@@ -205,9 +204,9 @@
 <span class="sd">            system: The system that will be used to modify the</span>
 <span class="sd">                interface.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">qm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">qm_region</span>
-        <span class="n">mm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">mm_region</span>
-        <span class="n">atoms</span> <span class="o">=</span> <span class="n">qm_atoms</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">mm_atoms</span><span class="p">)</span>
+        <span class="n">qm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">)</span>
+        <span class="n">mm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem II or subsystem III&quot;</span><span class="p">)</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">qm_atoms</span> <span class="o">|</span> <span class="n">mm_atoms</span>
         <span class="n">interface</span><span class="o">.</span><span class="n">zero_intramolecular</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">force_matrix</span><span class="p">[</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">I</span><span class="p">][</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">III</span><span class="p">]</span>
@@ -249,7 +248,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">interface</span><span class="o">.</span><span class="n">zero_forces</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">)</span>
             <span class="n">inclusion</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
-            <span class="n">inclusion</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">inclusion</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">),</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="n">interface</span><span class="o">.</span><span class="n">add_non_elst</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">,</span> <span class="n">inclusion</span><span class="o">=</span><span class="n">inclusion</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">force_matrix</span><span class="p">[</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">I</span><span class="p">][</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">III</span><span class="p">]</span>

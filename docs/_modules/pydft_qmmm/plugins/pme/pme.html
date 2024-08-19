@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pydft_qmmm.plugins.pme.pme &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
@@ -30,8 +30,7 @@
           <div class="body" role="main">
 
   <h1>Source code for pydft_qmmm.plugins.pme.pme</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;A plugin organizing the QM/MM/PME algorithm for calculations.</span>
+<span></span><span class="sd">&quot;&quot;&quot;A plugin organizing the QM/MM/PME algorithm for calculations.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -43,12 +42,16 @@
 <span class="kn">from</span> <span class="nn">simtk.unit</span> <span class="kn">import</span> <span class="n">nanometer</span>
 
 <span class="kn">from</span> <span class="nn">.pme_utils</span> <span class="kn">import</span> <span class="n">pme_components</span>
-<span class="kn">from</span> <span class="nn">pydft_qmmm.plugins.plugin</span> <span class="kn">import</span> <span class="n">CompositeCalculatorPlugin</span>
 <span class="kn">from</span> <span class="nn">pydft_qmmm.calculators</span> <span class="kn">import</span> <span class="n">InterfaceCalculator</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces.qmmm_pme_openmm.openmm_interface</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PMEOpenMMInterface</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PMEPsi4Interface</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pydft_qmmm.plugins.plugin</span> <span class="kn">import</span> <span class="n">CompositeCalculatorPlugin</span>
 <span class="c1"># This is bad practice and should be removed when the hacked versions</span>
 <span class="c1"># of Psi4 and OpenMM are deprecated.</span>
-<span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces.qmmm_pme_openmm.openmm_interface</span> <span class="kn">import</span> <span class="n">PMEOpenMMInterface</span>
-<span class="kn">from</span> <span class="nn">pydft_qmmm.interfaces.qmmm_pme_psi4.psi4_interface</span> <span class="kn">import</span> <span class="n">PMEPsi4Interface</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">pydft_qmmm.calculators</span> <span class="kn">import</span> <span class="n">CompositeCalculator</span>
@@ -56,8 +59,14 @@
     <span class="kn">import</span> <span class="nn">mypy_extensions</span>
     <span class="n">CalculateMethod</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span>
         <span class="p">[</span>
-            <span class="n">mypy_extensions</span><span class="o">.</span><span class="n">DefaultArg</span><span class="p">(</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;return_forces&#39;</span><span class="p">),</span>
-            <span class="n">mypy_extensions</span><span class="o">.</span><span class="n">DefaultArg</span><span class="p">(</span><span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;return_components&#39;</span><span class="p">),</span>
+            <span class="n">mypy_extensions</span><span class="o">.</span><span class="n">DefaultArg</span><span class="p">(</span>
+                <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;return_forces&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+            <span class="p">),</span>
+            <span class="n">mypy_extensions</span><span class="o">.</span><span class="n">DefaultArg</span><span class="p">(</span>
+                <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;return_components&quot;</span><span class="p">,</span>  <span class="c1"># noqa: F821</span>
+            <span class="p">),</span>
         <span class="p">],</span>
         <span class="n">Results</span><span class="p">,</span>
     <span class="p">]</span>
@@ -87,7 +96,8 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">calc</span><span class="p">,</span> <span class="n">InterfaceCalculator</span><span class="p">):</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">calc</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span> <span class="n">PMEOpenMMInterface</span><span class="p">):</span>
                     <span class="n">nonbonded_forces</span> <span class="o">=</span> <span class="p">[</span>
-                        <span class="n">force</span> <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="n">calc</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">_base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getForces</span><span class="p">()</span>
+                        <span class="n">force</span> <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span>
+                        <span class="n">calc</span><span class="o">.</span><span class="n">interface</span><span class="o">.</span><span class="n">_base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getForces</span><span class="p">()</span>
                         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">NonbondedForce</span><span class="p">)</span>
                     <span class="p">]</span>
                     <span class="p">(</span>
@@ -129,11 +139,19 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">pme_gridnumber</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pme_alpha</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qm_interface</span><span class="o">.</span><span class="n">update_quad_extd_pot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">quadrature_pme_potential</span><span class="p">)))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qm_interface</span><span class="o">.</span><span class="n">update_nuc_extd_pot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">nuclei_pme_potential</span><span class="p">)))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">qm_interface</span><span class="o">.</span><span class="n">update_nuc_extd_grad</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qm_interface</span><span class="o">.</span><span class="n">update_quad_extd_pot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">quadrature_pme_potential</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qm_interface</span><span class="o">.</span><span class="n">update_nuc_extd_pot</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">nuclei_pme_potential</span><span class="p">)),</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">qm_interface</span><span class="o">.</span><span class="n">update_nuc_extd_grad</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="nb">tuple</span><span class="p">(</span>
                         <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nuclei_pme_gradient</span><span class="p">],</span>
-            <span class="p">)))</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
             <span class="n">results</span> <span class="o">=</span> <span class="n">calculate</span><span class="p">(</span><span class="n">return_forces</span><span class="p">,</span> <span class="n">return_components</span><span class="p">)</span>
             <span class="n">results</span><span class="o">.</span><span class="n">energy</span> <span class="o">+=</span> <span class="n">reciprocal_energy</span>
             <span class="n">results</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>

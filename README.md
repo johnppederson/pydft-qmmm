@@ -40,6 +40,10 @@ Requirements
 
 * plumed (used for enhanced sampling simulations)
 
+#### Requirements for GROMACS, AMBER, and CHARMM forcefields/topologies
+
+* ParmEd (used for reading molecular mechanics topology files)
+
 Installation
 ------------
 

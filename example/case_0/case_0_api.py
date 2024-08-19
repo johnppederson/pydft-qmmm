@@ -4,10 +4,7 @@ from pydft_qmmm import *
 from pydft_qmmm.plugins import SETTLE
 
 # Load system first.
-system = System.load(
-    "spce.pdb",
-    "spce.xml",
-)
+system = System.load("spce.pdb")
 
 # Generate velocities.
 system.velocities = generate_velocities(
@@ -26,8 +23,7 @@ qm = QMHamiltonian(
 
 # Define MM Hamiltonian.
 mm = MMHamiltonian(
-    "spce.xml",
-    "spce_residues.xml",
+    ["spce.xml", "spce_residues.xml"],
     nonbonded_method="PME",
     pme_gridnumber=30,
     pme_alpha=5.0,

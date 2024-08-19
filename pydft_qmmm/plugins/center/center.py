@@ -36,10 +36,10 @@ def _center_positions(
     Returns:
         The new centered positions of the system.
     """
-    atoms = system.select(query)
+    atoms = sorted(system.select(query))
     box = system.box
-    center = 0.5*box.sum(axis=0)
-    centroid = np.average(positions[list(atoms), :], axis=0)
+    center = 0.5*box.sum(axis=1)
+    centroid = np.average(positions[atoms, :], axis=0)
     differential = center - centroid
     new_positions = positions + differential
     return new_positions

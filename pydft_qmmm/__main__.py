@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 import pydft_qmmm.plugins
 
 if TYPE_CHECKING:
-    from pydfT_qmmm.plugins.plugin import Plugin
+    from pydft_qmmm.plugins.plugin import Plugin
 
 
 def _parse_input(input_value: str) -> int | slice | float | str:
@@ -57,19 +57,28 @@ def main() -> int:
         key: value for key, value
         in input_file["System"].items()
     }
+    if system_args.get("pdb_files") is None:
+        raise OSError(
+            (
+                "At least one PDB file must be specified under the [System] "
+                "section of the *.ini input file, assigned to the 'pdb_files' "
+                "key."
+            ),
+        )
+    pdbs = system_args.get("pdb_files").strip().split("\n")
     if system_args.get("velocities_temperature"):
         temperature = float(system_args.pop("velocities_temperature"))
         velocity_args = [temperature]
         if system_args.get("velocities_seed"):
             seed = int(system_args.pop("velocities_seed"))
             velocity_args.append(seed)
-        system = pydft_qmmm.System.load(**system_args)
+        system = pydft_qmmm.System.load(*pdbs)
         velocity_args.insert(0, system.masses)
         system.velocities = pydft_qmmm.generate_velocities(
             *velocity_args,
         )
     else:
-        system = pydft_qmmm.System.load(**system_args)
+        system = pydft_qmmm.System.load(*pdbs)
     simulation_args = {"system": system}
 
     # Create Integrator object.
@@ -101,8 +110,8 @@ def main() -> int:
             key: _parse_input(value) for key, value
             in input_file[section].items()
         }
+        mm_args["forcefield"] = mm_args["forcefield"].strip().split("\n")
         mm_hamiltonian = getattr(pydft_qmmm, section)(**mm_args)
-
     if (section := "QMMMHamiltonian") in input_file:
         qmmm_args = {
             key: _parse_input(value) for key, value

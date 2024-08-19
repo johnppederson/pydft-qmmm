@@ -11,7 +11,7 @@ import psi4.core
 from numpy.typing import NDArray
 
 from .psi4_interface import Psi4Interface
-from pydft_qmmm.common.units import BOHR_PER_ANGSTROM
+from pydft_qmmm.common import BOHR_PER_ANGSTROM
 
 if TYPE_CHECKING:
     from pydft_qmmm.interfaces import QMSettings
@@ -170,6 +170,10 @@ def psi4_interface_factory(settings: QMSettings) -> Psi4Interface:
     Returns:
         The Psi4 interface.
     """
+    basis = settings.basis_set
+    if "assign" not in settings.basis_set:
+        basis = "assign " + settings.basis_set.strip()
+    psi4.basis_helper(basis, name="default")
     options = _build_options(settings)
     functional = settings.functional
     context = _build_context(settings)
@@ -193,7 +197,7 @@ def _build_options(settings: QMSettings) -> Psi4Options:
         The global options used by Psi4 in each calculation.
     """
     options = Psi4Options(
-        settings.basis_set,
+        "default",
         settings.quadrature_spherical,
         settings.quadrature_radial,
         settings.scf_type,

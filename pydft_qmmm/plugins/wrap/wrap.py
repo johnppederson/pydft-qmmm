@@ -39,16 +39,19 @@ def _wrap_positions(
     Returns:
         The new wrapped positions of the system.
     """
-    box = system.box
+    box = system.box.base.copy()
     inverse_box = np.linalg.inv(box)
     new_positions = np.zeros(positions.shape)
     for residue in system.residue_map.values():
         atoms = sorted(residue)
         residue_positions = positions[atoms, :]
-        residue_centroid = np.average(residue_positions, axis=0)
-        inverse_centroid = residue_centroid @ inverse_box
+        residue_centroid = np.average(
+            residue_positions,
+            axis=0,
+        ).reshape((3, 1))
+        inverse_centroid = inverse_box @ residue_centroid
         mask = np.floor(inverse_centroid)
-        diff = (-mask @ box).reshape((-1, 3))
+        diff = (-box @ mask).reshape((-1, 3))
         temp = residue_positions + diff[:, np.newaxis, :]
         new_positions[atoms] = temp.reshape((len(atoms), 3))
     return new_positions

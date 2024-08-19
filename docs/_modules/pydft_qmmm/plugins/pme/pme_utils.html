@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pydft_qmmm.plugins.pme.pme_utils &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
@@ -30,8 +30,7 @@
           <div class="body" role="main">
 
   <h1>Source code for pydft_qmmm.plugins.pme.pme_utils</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Core functionality for the QM/MM/PME algorithm.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Core functionality for the QM/MM/PME algorithm.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -44,7 +43,6 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.interpolate</span>
 
-<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">Subsystem</span>
 <span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">BOHR_PER_ANGSTROM</span>
 <span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">KJMOL_PER_EH</span>
 
@@ -65,7 +63,7 @@
         <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">pme_alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute relevant components of the PME potential.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute relevant components of the PME potential.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system from which the PME potential is derived.</span>
@@ -85,30 +83,30 @@
 <span class="sd">        nuclear coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Create necessary objects.</span>
-    <span class="n">qm_atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">subsystem_map</span><span class="p">[</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">I</span><span class="p">])</span>
+    <span class="n">qm_atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">))</span>
     <span class="n">nuclei</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">qm_atoms</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">qm_atoms</span><span class="p">,</span> <span class="p">:]</span>
         <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
     <span class="p">)</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pme_gridnumber</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span>
     <span class="n">inverse_box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span>
-        <span class="n">system</span><span class="o">.</span><span class="n">box</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">ae_atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">subsystem_map</span><span class="p">[</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">II</span><span class="p">])</span>
+    <span class="n">ae_atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem II&quot;</span><span class="p">))</span>
     <span class="n">atoms</span> <span class="o">=</span> <span class="n">qm_atoms</span> <span class="o">+</span> <span class="n">ae_atoms</span>  <span class="c1"># + qm_drudes</span>
     <span class="c1"># Gather relevant State data.</span>
-    <span class="n">positions</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">atoms</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
-    <span class="n">charges</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">atoms</span><span class="p">]</span>
+    <span class="n">positions</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">atoms</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
+    <span class="n">charges</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">atoms</span><span class="p">]</span>
     <span class="c1"># Determine and apply exclusions.</span>
     <span class="n">pme_xyz</span><span class="p">,</span> <span class="n">pme_exclusions</span> <span class="o">=</span> <span class="n">_compute_pme_exclusions</span><span class="p">(</span>
-        <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
         <span class="n">inverse_box</span><span class="p">,</span>
         <span class="n">quadrature</span><span class="p">,</span>
         <span class="n">pme_gridnumber</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_apply_pme_exclusions</span><span class="p">(</span>
-        <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="p">,</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
         <span class="n">atoms</span><span class="p">,</span>
         <span class="n">positions</span><span class="p">,</span>
         <span class="n">charges</span><span class="p">,</span>
@@ -156,7 +154,7 @@
         <span class="nb">sum</span><span class="p">(</span>
             <span class="p">(</span>
                 <span class="o">-</span><span class="n">v</span><span class="o">*</span><span class="n">q</span><span class="o">*</span><span class="n">KJMOL_PER_EH</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">q</span> <span class="ow">in</span>
-                <span class="nb">zip</span><span class="p">(</span><span class="n">pme_results</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">qm_atoms</span><span class="p">])</span>
+                <span class="nb">zip</span><span class="p">(</span><span class="n">pme_results</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">qm_atoms</span><span class="p">])</span>
             <span class="p">),</span>
         <span class="p">),</span>
     <span class="p">)</span>
@@ -170,7 +168,7 @@
         <span class="n">quadrature</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
         <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine which PME grid points will participate in interpolation.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Determine which PME grid points will participate in interpolation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the box</span>
@@ -227,7 +225,7 @@
         <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">pme_alpha</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply exlcusions to relevant PME potential grid points.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Apply exlcusions to relevant PME potential grid points.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the box</span>
@@ -276,7 +274,7 @@
         <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">points</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the PME potential interpolated at the points.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculates the PME potential interpolated at the points.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        inverse_box: The inverse lattice vectors</span>
@@ -310,7 +308,7 @@
         <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">points</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform the chain rule for the interpolated PME potential gradient.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the chain rule for the interpolated PME potential gradient.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        inverse_box: The inverse lattice vectors</span>
@@ -391,7 +389,7 @@
         <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">points</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Project points into fractional PME grid coordinates.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Project points into fractional PME grid coordinates.</span>
 
 <span class="sd">    This algorithm is identical to that used in method</span>
 <span class="sd">    &#39;pme_update_grid_index_and_fraction&#39; in OpenMM source code,</span>
@@ -433,7 +431,7 @@
         <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply exlcusions to relevant PME potential grid points.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Apply exlcusions to relevant PME potential grid points.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        external_grid: The PME potential at gridpoints.</span>

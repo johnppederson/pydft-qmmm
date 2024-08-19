@@ -2,7 +2,6 @@
 """
 from __future__ import annotations
 
-from .atom import Atom
 from .system import System
 from .variable import array_float
 from .variable import array_int

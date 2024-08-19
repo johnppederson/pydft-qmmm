@@ -16,7 +16,6 @@ from pydft_qmmm.plugins import SETTLE
 def spce_system():
     return System.load(
         "tests/data/spce.pdb",
-        "tests/data/spce.xml",
     )
 
 
@@ -24,7 +23,6 @@ def spce_system():
 # def spce_dimer_system():
 #    return System.load(
 #        "tests/data/hoh_dimer.pdb",
-#        "tests/data/spce.xml",
 #    )
 
 
@@ -50,8 +48,10 @@ def qm_water():
 @pytest.fixture
 def mm_spce():
     return MMHamiltonian(
-        "tests/data/spce.xml",
-        "tests/data/spce_residues.xml",
+        [
+            "tests/data/spce.xml",
+            "tests/data/spce_residues.xml",
+        ],
         pme_gridnumber=30,
         pme_alpha=5.0,
     )
@@ -60,8 +60,10 @@ def mm_spce():
 @pytest.fixture
 def mm_spce_no_lj():
     return MMHamiltonian(
-        "tests/data/spce_no_lj.xml",
-        "tests/data/spce_residues.xml",
+        [
+            "tests/data/spce_no_lj.xml",
+            "tests/data/spce_residues.xml",
+        ],
         pme_gridnumber=30,
         pme_alpha=5.0,
     )

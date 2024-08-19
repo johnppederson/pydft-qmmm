@@ -2,11 +2,19 @@
 """
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from pydft_qmmm.common import align_dict
-from pydft_qmmm.common import FileManager
+from pydft_qmmm.common import end_log
+from pydft_qmmm.common import start_csv
+from pydft_qmmm.common import start_dcd
+from pydft_qmmm.common import start_log
+from pydft_qmmm.common import write_to_csv
+from pydft_qmmm.common import write_to_dcd
+from pydft_qmmm.common import write_to_log
+from pydft_qmmm.common import write_to_pdb
 
 if TYPE_CHECKING:
     from typing import Any
@@ -80,6 +88,12 @@ class Logger:
     dcd_write_interval: int = 50
     write_to_pdb: bool = True
 
+    def __post_init__(self) -> None:
+        """Create output directory if there it does not already exist.
+        """
+        if not os.path.isdir(self.output_directory):
+            os.mkdir(self.output_directory)
+
     def __enter__(self) -> Logger:
         """Begin managing the logging context.
 
@@ -89,16 +103,15 @@ class Logger:
             A logger for context management with access to all necessary
             files in the output directory.
         """
-        self.file_manager = FileManager(self.output_directory)
         if self.write_to_log:
-            self.log = "output.log"
-            self.file_manager.start_log(self.log)
+            self.log = self.output_directory + "output.log"
+            start_log(self.log)
         if self.write_to_csv:
-            self.csv = "output.csv"
-            self.file_manager.start_csv(self.csv, "")
+            self.csv = self.output_directory + "output.csv"
+            start_csv(self.csv, "")
         if self.write_to_dcd:
-            self.dcd = "output.dcd"
-            self.file_manager.start_dcd(
+            self.dcd = self.output_directory + "output.dcd"
+            start_dcd(
                 self.dcd, self.dcd_write_interval, len(self.system), 1,
             )
         return self
@@ -114,16 +127,11 @@ class Logger:
             traceback: The traceback from an exception.
         """
         if self.write_to_log:
-            self.file_manager.end_log(self.log)
+            end_log(self.log)
         if self.write_to_pdb:
-            self.file_manager.write_to_pdb(
-                "output.pdb",
-                self.system.positions,
-                self.system.box,
-                self.system.residues,
-                self.system.residue_names,
-                self.system.elements,
-                self.system.names,
+            write_to_pdb(
+                self.output_directory + "output.pdb",
+                self.system,
             )
 
     def record(self, simulation: Simulation) -> None:
@@ -134,7 +142,7 @@ class Logger:
                 the logger.
         """
         if self.write_to_log:
-            self.file_manager.write_to_log(
+            write_to_log(
                 self.log,
                 self._unwrap_energy(simulation.energy),
                 simulation._frame,
@@ -142,7 +150,7 @@ class Logger:
         if self.write_to_csv:
             flat_dict = align_dict(simulation.energy)
             if simulation._frame > 0:
-                self.file_manager.write_to_csv(
+                write_to_csv(
                     self.csv,
                     ",".join(
                         f"{val}" for val
@@ -150,7 +158,7 @@ class Logger:
                     ),
                 )
             else:
-                self.file_manager.write_to_csv(
+                write_to_csv(
                     self.csv,
                     ",".join(
                         f"{val}" for val
@@ -162,13 +170,12 @@ class Logger:
                     ),
                 )
         if self.write_to_dcd:
-            self.file_manager.write_to_dcd(
+            write_to_dcd(
                 self.dcd,
                 self.dcd_write_interval,
-                len(self.system),
-                simulation.system.positions,
-                simulation.system.box,
+                self.system,
                 simulation._frame,
+                simulation._offset,
             )
 
     def _unwrap_energy(

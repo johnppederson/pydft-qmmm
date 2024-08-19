@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>pydft_qmmm.common.utils package &#8212; PyDFT-QMMM 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=61cd365c" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+
+
+
+
+  </head><body>
+
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+
+
+          <div class="body" role="main">
+
+  <section id="pydft-qmmm-common-utils-package">
+<h1>pydft_qmmm.common.utils package<a class="headerlink" href="#pydft-qmmm-common-utils-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pydft_qmmm.common.utils.lattice_utils">
+<span id="pydft-qmmm-common-utils-lattice-utils-module"></span><h2>pydft_qmmm.common.utils.lattice_utils module<a class="headerlink" href="#module-pydft_qmmm.common.utils.lattice_utils" title="Link to this heading">¶</a></h2>
+<p>A module containing helper functions accessed by multiple classes.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.lattice_utils.compute_lattice_constants">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.lattice_utils.</span></span><span class="sig-name descname"><span class="pre">compute_lattice_constants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/lattice_utils.html#compute_lattice_constants"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.lattice_utils.compute_lattice_constants" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the length and angle constants from lattice vectors.</p>
+<p>Returns the lattice constants a, b, c, alpha, beta, and gamma using
+a set of box vectors for a periodic triclinic system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>box</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The lattice vectors (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of an arbitrary
+triclinic box.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The characteristic lengths (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) and angles
+(<span class="math notranslate nohighlight">\(\mathrm{\degree}\)</span>) of an arbitrary triclinic box.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[float, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.lattice_utils.compute_lattice_vectors">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.lattice_utils.</span></span><span class="sig-name descname"><span class="pre">compute_lattice_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/lattice_utils.html#compute_lattice_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.lattice_utils.compute_lattice_vectors" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the lattice vectors from length and angle constants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>float</em>) – The first characteristic length
+(<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of an arbitrary triclinic
+box.</p></li>
+<li><p><strong>b</strong> (<em>float</em>) – The second characteristic length
+(<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of an arbitrary triclinic
+box.</p></li>
+<li><p><strong>b</strong> – The third characteristic length
+(<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of an arbitrary triclinic
+box.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – The first characteristic angle (<span class="math notranslate nohighlight">\(\mathrm{\degree}\)</span>)
+of an arbitrary triclinic box.</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – The second characteristic angle (<span class="math notranslate nohighlight">\(\mathrm{\degree}\)</span>)
+of an arbitrary triclinic box.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – The third characteristic angle (<span class="math notranslate nohighlight">\(\mathrm{\degree}\)</span>)
+of an arbitrary triclinic box.</p></li>
+<li><p><strong>c</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The lattice vectors (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of an
+arbitrary triclinic box.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NDArray[np.float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.lattice_utils.compute_least_mirror">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.lattice_utils.</span></span><span class="sig-name descname"><span class="pre">compute_least_mirror</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/lattice_utils.html#compute_least_mirror"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.lattice_utils.compute_least_mirror" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the least mirror vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>i_vector</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The position vector (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>).</p></li>
+<li><p><strong>j_vector</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The reference vector (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>).</p></li>
+<li><p><strong>box</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The lattice vectors (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of an arbitrary
+triclinic box.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns the least mirror coordinates of i_vector with respect to
+j_vector given a set of lattice vectors from a periodic
+triclinic system.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.common.utils.misc_utils">
+<span id="pydft-qmmm-common-utils-misc-utils-module"></span><h2>pydft_qmmm.common.utils.misc_utils module<a class="headerlink" href="#module-pydft_qmmm.common.utils.misc_utils" title="Link to this heading">¶</a></h2>
+<p>A module containing helper functions accessed by multiple classes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.Components">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">Components</span></span><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.Components" title="Link to this definition">¶</a></dt>
+<dd><p>The type corresponding to the energy components
+determined by calculators.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.SELECTORS">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">SELECTORS</span></span><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.SELECTORS" title="Link to this definition">¶</a></dt>
+<dd><p>Pairs of VMD selection keywords and the corresponding
+attribute and type to check in a system.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.Results">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">Results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forces=&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components=&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#Results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.Results" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Store the results of a calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energy</strong> (<em>float</em>) – The energy (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}}\)</span>) of a system
+determined by a calculator.</p></li>
+<li><p><strong>forces</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The forces (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}\)</span>) on
+a system determined by a calculator.</p></li>
+<li><p><strong>componentes</strong> – The energy components
+(<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}}\)</span>) of a system determined by a
+calculator.</p></li>
+<li><p><strong>components</strong> (<em>Components</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.Results.components">
+<span class="sig-name descname"><span class="pre">components</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Components</span></em><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.Results.components" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.Results.energy">
+<span class="sig-name descname"><span class="pre">energy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.Results.energy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.Results.forces">
+<span class="sig-name descname"><span class="pre">forces</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">np.float64</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.Results.forces" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.align_dict">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">align_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#align_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.align_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Create a ‘flat’ version of an energy components dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dictionary</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – The components dictionary to flatten.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A flattened version of the components dictionary.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.center_positions">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">center_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#center_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.center_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Center positions about the centroid of a set of atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>NDArray</em><em>[</em><em>np.ndarray</em><em>]</em>) – The positions (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) which will be
+centered.</p></li>
+<li><p><strong>box</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The lattice vectors (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the box
+containing the system.</p></li>
+<li><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The set of atom indices whose centroid will become the center of
+the box.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The new centered positions of the system.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.empty_array">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">empty_array</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#empty_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.empty_array" title="Link to this definition">¶</a></dt>
+<dd><p>Factory method for empty arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An empty array.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.generate_velocities">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">generate_velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#generate_velocities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.generate_velocities" title="Link to this definition">¶</a></dt>
+<dd><p>Generate velocities with the Maxwell-Boltzmann distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>masses</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The masses (<span class="math notranslate nohighlight">\(\mathrm{AMU}\)</span>) of particles.</p></li>
+<li><p><strong>temperature</strong> (<em>float</em><em> | </em><em>int</em>) – The temperature (<span class="math notranslate nohighlight">\(\mathrm{K}\)</span>) of the system.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em> | </em><em>None</em>) – A seed for the random number generator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A set of velocities (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}\;fs^{-1}}\)</span>) equal in
+number to the set of masses provided.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.lazy_load">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">lazy_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#lazy_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.lazy_load" title="Link to this definition">¶</a></dt>
+<dd><p>Load a module lazily, not performing execution until necessary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the module to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The module that has been lazily loaded.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ModuleType</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.numerical_gradient">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">numerical_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">calculator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#numerical_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.numerical_gradient" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the numerical energy gradients for a set of atoms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> – A simulation object used for the energy evaluations.</p></li>
+<li><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The atoms to perform numerical gradients on.</p></li>
+<li><p><strong>dist</strong> (<em>int</em><em> | </em><em>float</em>) – The displacement for central differencing
+(<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>).</p></li>
+<li><p><strong>component</strong> (<em>str</em><em> | </em><em>None</em>) – The component of the energy dictionary to use in
+central differencing calculations.</p></li>
+<li><p><strong>calculator</strong> (<a class="reference internal" href="pydft_qmmm.calculators.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><em>Calculator</em></a>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The numerical gradients of the energy
+(<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}\)</span>)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.residue_partition">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">residue_partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residue_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#residue_partition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.residue_partition" title="Link to this definition">¶</a></dt>
+<dd><p>Perform the residue-wise system partitioning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The positions (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) which will be
+centered.</p></li>
+<li><p><strong>box</strong> – The lattice vectors (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the box
+containing the system.</p></li>
+<li><p><strong>atoms</strong> (<em>frozenset</em><em>[</em><em>int</em><em>]</em>) – The set of atom indices whose centroid will become the center of
+the box.</p></li>
+<li><p><strong>residue_map</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>frozenset</em><em>[</em><em>int</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>atoms_metric</strong> (<em>Callable</em><em>[</em><em>[</em><em>NDArray</em><em>]</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>other_metric</strong> (<em>Callable</em><em>[</em><em>[</em><em>NDArray</em><em>]</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em><em> | </em><em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.wrap_positions">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">wrap_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">box</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residue_map</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#wrap_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.wrap_positions" title="Link to this definition">¶</a></dt>
+<dd><p>Wrap atom positions in accord with PBC.</p>
+<p>Atoms are wrapped to stay inside of the periodic box.  This
+function ensures molecules are not broken up by a periodic
+boundary, since OpenMM electrostatics will be incorrect if atoms
+in a molecule are not on the same side of the periodic box.
+This method currently assumes an isotropic box.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The positions (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) which will be
+wrapped.</p></li>
+<li><p><strong>box</strong> (<em>NDArray</em><em>[</em><em>np.float64</em><em>]</em>) – The lattice vectors (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>) of the box
+containing the system.</p></li>
+<li><p><strong>residue_map</strong> (<em>dict</em><em>[</em><em>int</em><em>, </em><em>frozenset</em><em>[</em><em>int</em><em>]</em><em>]</em>) – Sets of atom indices mapped by residue index.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The new wrapped positions of the system.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.misc_utils.zero_vector">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.misc_utils.</span></span><span class="sig-name descname"><span class="pre">zero_vector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/misc_utils.html#zero_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.misc_utils.zero_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Create a zero vector with three dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An array with three dimensions of zero magnitude.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>NDArray[np.float64]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.common.utils.selection_utils">
+<span id="pydft-qmmm-common-utils-selection-utils-module"></span><h2>pydft_qmmm.common.utils.selection_utils module<a class="headerlink" href="#module-pydft_qmmm.common.utils.selection_utils" title="Link to this heading">¶</a></h2>
+<p>A module containing helper functions accessed by multiple classes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.SELECTORS">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">SELECTORS</span></span><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.SELECTORS" title="Link to this definition">¶</a></dt>
+<dd><p>Pairs of VMD selection keywords and the corresponding
+attribute and type to check in a system.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.and_slice">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">and_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/selection_utils.html#and_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.and_slice" title="Link to this definition">¶</a></dt>
+<dd><p>Find the slice of a query modified by the ‘and’ keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The atom selection query, broken into meaningful
+components.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – The index of the line where the statement modified by the
+‘and’ keyword begins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The slice whose start and stop corresponds to the phrase
+modified by the ‘and’ keyword.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>slice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.decompose">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">decompose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/selection_utils.html#decompose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.decompose" title="Link to this definition">¶</a></dt>
+<dd><p>Decompose an atom selection query into meaningful components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The atom selection query.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The atom selection query broken into meaningful parts,
+demarcated by keywords.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.evaluate">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/selection_utils.html#evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate a part of an atom selection query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>text</strong> (<em>str</em>) – A single contained statement from an atom selection query.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system whose atoms will be selected by evaluating
+a single query statement.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The set of atom indices selected by the query statement.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frozenset[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.interpret">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">interpret</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/selection_utils.html#interpret"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.interpret" title="Link to this definition">¶</a></dt>
+<dd><p>Interpret a line of atom selection query language.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The atom selection query, broken into meaningful
+components.</p></li>
+<li><p><strong>system</strong> (<a class="reference internal" href="pydft_qmmm.system.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><em>System</em></a>) – The system whose atoms will be selected by interpreting
+the selection query.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The set of atom indices selected by the query.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frozenset[int]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Based on the VMD atom selection rules.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.not_slice">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">not_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/selection_utils.html#not_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.not_slice" title="Link to this definition">¶</a></dt>
+<dd><p>Find the slice of a query modified by the ‘not’ keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The atom selection query, broken into meaningful
+components.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – The index of the line where the statement modified by the
+‘not’ keyword begins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The slice whose start and stop corresponds to the phrase
+modified by the ‘not’ keyword.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>slice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.or_slice">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">or_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/selection_utils.html#or_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.or_slice" title="Link to this definition">¶</a></dt>
+<dd><p>Find the slice of a query modified by the ‘or’ keyword.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The atom selection query, broken into meaningful
+components.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – The index of the line where the statement modified by the
+‘or’ keyword begins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The slice whose start and stop corresponds to the phrase
+modified by the ‘or’ keyword.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>slice</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pydft_qmmm.common.utils.selection_utils.parens_slice">
+<span class="sig-prename descclassname"><span class="pre">pydft_qmmm.common.utils.selection_utils.</span></span><span class="sig-name descname"><span class="pre">parens_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pydft_qmmm/common/utils/selection_utils.html#parens_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.common.utils.selection_utils.parens_slice" title="Link to this definition">¶</a></dt>
+<dd><p>Find the slice of a query within parentheses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – The atom selection query, broken into meaningful
+components.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – The index of the line where the statement within
+parentheses begins.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The slice whose start and stop corresponds to the phrase
+contained by parentheses.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>slice</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pydft_qmmm.common.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pydft_qmmm.common.utils" title="Link to this heading">¶</a></h2>
+<p>A sub-package containing common classes, utilities, and constants.</p>
+</section>
+</section>
+
+
+          </div>
+
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyDFT-QMMM</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, John Pederson, Jesse McDaniel.
+
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.3.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+
+      |
+      <a href="_sources/pydft_qmmm.common.utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+
+
+
+  </body>
+</html>

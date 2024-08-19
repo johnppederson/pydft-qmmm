@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pydft_qmmm.plugins.wrap.wrap &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
@@ -30,8 +30,7 @@
           <div class="body" role="main">
 
   <h1>Source code for pydft_qmmm.plugins.wrap.wrap</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Plugins for wrapping system coordinates when a PBC is in use.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Plugins for wrapping system coordinates when a PBC is in use.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -56,7 +55,7 @@
         <span class="n">positions</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
         <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap atom positions in accord with PBC.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Wrap atom positions in accord with PBC.</span>
 
 <span class="sd">    Atoms are wrapped to stay inside of the periodic box.  This</span>
 <span class="sd">    function ensures molecules are not broken up by a periodic</span>
@@ -72,16 +71,19 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        The new wrapped positions of the system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">box</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">box</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">inverse_box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
     <span class="n">new_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">residue</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">residue_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">residue</span><span class="p">)</span>
         <span class="n">residue_positions</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">residue_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">residue_positions</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">inverse_centroid</span> <span class="o">=</span> <span class="n">residue_centroid</span> <span class="o">@</span> <span class="n">inverse_box</span>
+        <span class="n">residue_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
+            <span class="n">residue_positions</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">inverse_centroid</span> <span class="o">=</span> <span class="n">inverse_box</span> <span class="o">@</span> <span class="n">residue_centroid</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">inverse_centroid</span><span class="p">)</span>
-        <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">mask</span> <span class="o">@</span> <span class="n">box</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">box</span> <span class="o">@</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="n">residue_positions</span> <span class="o">+</span> <span class="n">diff</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
         <span class="n">new_positions</span><span class="p">[</span><span class="n">atoms</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">new_positions</span>

@@ -31,10 +31,8 @@ class MMSettings(SoftwareSettings):
 
     Args:
         system: The system which will be tied to the MM interface.
-        forcefield_file: The FF XML file containing forcefield data
-            for the system.
-        topology_file: The FF XML file containing topology data for
-            the system.
+        forcefield: The files containing forcefield  and topology
+            data for the system.
         nonbonded_method: The method for treating non-bonded
             interactions, as in OpenMM.
         nonbonded_cutoff: The distance at which to truncate close-range
@@ -45,11 +43,10 @@ class MMSettings(SoftwareSettings):
             (:math:`\mathrm{nm^{-1}}`).
     """
     system: System
-    forcefield_file: str | list[str]
-    topology_file: list[str] | None = None
+    forcefield: list[str]
     nonbonded_method: str = "PME"
     nonbonded_cutoff: float | int = 14.
-    pme_gridnumber: int | None = None
+    pme_gridnumber: tuple[int, int, int] | None = None
     pme_alpha: float | int | None = None
 
 

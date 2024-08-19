@@ -10,13 +10,13 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from .atom import _SystemAtom
-from .atom import Atom
+from .system_atom import _SystemAtom
 from .variable import ArrayValue
 from .variable import ObservedArray
+from pydft_qmmm.common import Atom
 from pydft_qmmm.common import decompose
-from pydft_qmmm.common import FileManager
 from pydft_qmmm.common import interpret
+from pydft_qmmm.common import load_system
 
 
 if TYPE_CHECKING:
@@ -108,16 +108,20 @@ class System(Sequence[_SystemAtom]):
     def __getitem__(self, key: int) -> _SystemAtom: ...
     @overload
     def __getitem__(self, key: slice) -> Sequence[_SystemAtom]: ...
+    @overload
+    def __getitem__(self, key: str) -> Sequence[_SystemAtom]: ...
 
     def __getitem__(
             self,
-            key: int | slice,
+            key: int | slice | str,
     ) -> _SystemAtom | Sequence[_SystemAtom]:
         """Get the specified atom or slice of atoms.
 
         Returns:
             An atom or list of atoms.
         """
+        if isinstance(key, str):
+            return [self._system_atoms[i] for i in sorted(self.select(key))]
         return self._system_atoms[key]
 
     def __contains__(self, atom: object) -> bool:
@@ -233,40 +237,19 @@ class System(Sequence[_SystemAtom]):
         return atom_list
 
     @staticmethod
-    def load(
-            pdb_file: list[str] | str,
-            forcefield_file: list[str] | str | None = None,
-    ) -> System:
+    def load(*args: str) -> System:
         """Load a system from PDB and FF XML files.
 
         Args:
-            pdb_file: The directory or list of directories containing
+            *args: The directory or list of directories containing
                 PDB files with position, element, name, residue, residue
                 name, and lattice vector data.
-            forcefield_file: The directory or list of directories
-                containing FF XML files with mass and charge data.
 
         Returns:
             The system generated from the data in the PDB and FF XML
             files.
         """
-        fm = FileManager()
-        system_info = fm.load(pdb_file, forcefield_file)
-        box = np.array(system_info[-1])
-        atom_info = zip(*system_info[0:-1])
-        atoms = []
-        for pos, mol, el, name, mol_name, mass, charge in atom_info:
-            atoms.append(
-                Atom(
-                    position=np.array(pos),
-                    residue=mol,
-                    element=el,
-                    name=name,
-                    residue_name=mol_name,
-                    mass=mass,
-                    charge=charge,
-                ),
-            )
+        atoms, box = load_system(*args)
         return System(atoms, box)
 
     @lru_cache

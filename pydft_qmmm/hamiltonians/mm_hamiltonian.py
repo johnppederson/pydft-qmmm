@@ -25,10 +25,8 @@ class MMHamiltonian(CalculatorHamiltonian):
     r"""A Hamiltonian representing the MM level of theory.
 
     Args:
-        forcefield_file: The FF XML file containing forcefield data
-            for the system.
-        topology_file: The FF XML file containing topology data for
-            the system.
+        forcefield: The files containing forcefield and topology
+            data for the system.
         nonbonded_method: The method for treating non-bonded
             interactions, as in OpenMM.
         nonbonded_cutoff: The distance at which to truncate close-range
@@ -38,11 +36,10 @@ class MMHamiltonian(CalculatorHamiltonian):
         pme_alpha: The Gaussian width parameter in Ewald summation
             (:math:`\mathrm{nm^{-1}}`).
     """
-    forcefield_file: str | list[str]
-    topology_file: str | list[str] | None = None
+    forcefield: str | list[str]
     nonbonded_method: str = "PME"
     nonbonded_cutoff: float | int = 14.
-    pme_gridnumber: int | None = None
+    pme_gridnumber: int | tuple[int, int, int] | None = None
     pme_alpha: float | int | None = None
 
     def __post_init__(self) -> None:
@@ -63,6 +60,10 @@ class MMHamiltonian(CalculatorHamiltonian):
         """
         mm_atoms = self._parse_atoms(system)
         system.subsystems[mm_atoms] = Subsystem.III
+        if isinstance(self.pme_gridnumber, int):
+            self.pme_gridnumber = (self.pme_gridnumber,) * 3
+        if isinstance(self.forcefield, str):
+            self.forcefield = [self.forcefield]
         settings = MMSettings(system=system, **asdict(self))
         interface = lazy_load("pydft_qmmm.interfaces").mm_factory(settings)
         calculator = InterfaceCalculator(system=system, interface=interface)

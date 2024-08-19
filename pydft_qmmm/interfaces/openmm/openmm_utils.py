@@ -2,9 +2,16 @@
 """
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import openmm
+from simtk.unit import elementary_charge
 from simtk.unit import kilojoule_per_mole
 from simtk.unit import nanometer
+
+if TYPE_CHECKING:
+    import numpy as np
+    from numpy.typing import NDArray
 
 
 def _generate_state(
@@ -223,7 +230,7 @@ def _real_electrostatic(
         ]
         exclusions = [
             [x[0], x[1]]
-            for x in exclusions if x[-1] / kilojoule_per_mole == 0
+            for x in exclusions if x[2] / (elementary_charge**2) == 0
         ]
         for x in exclusions:
             new_force.addExclusion(*x)
@@ -379,3 +386,28 @@ def _exclude_custom_nonbonded(
             other_atoms,
             other_atoms,
         )
+
+
+def _update_exceptions(
+        force: openmm.nonbondedForce,
+        new_charges: NDArray[np.float64],
+) -> None:
+    """Update OpenMM NonbondedForce exceptions to match a new set of charges.
+
+    Args:
+        force: The OpenMM NonbondedForce with exceptions to update.
+        new_charges: The new partial charge (:math:`e`) of the atoms.
+    """
+    exceptions = [
+        force.getExceptionParameters(
+            i,
+        ) for i in range(force.getNumExceptions())
+    ]
+    for i, x in enumerate(exceptions):
+        if x[2] / (elementary_charge**2):
+            q0, _, _ = force.getParticleParameters(x[0])
+            q1, _, _ = force.getParticleParameters(x[1])
+            qprod_old = q0 * q1 / (elementary_charge**2)
+            qprod_new = new_charges[x[0]] * new_charges[x[1]]
+            x[2] *= (qprod_new / qprod_old)
+            force.setExceptionParameters(i, *x)

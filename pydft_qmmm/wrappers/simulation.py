@@ -10,6 +10,7 @@ from .logger import NullLogger
 from pydft_qmmm.calculators import Calculator
 from pydft_qmmm.calculators import CompositeCalculator
 from pydft_qmmm.calculators import InterfaceCalculator
+from pydft_qmmm.common import ELEMENT_TO_MASS
 from pydft_qmmm.common import ResourceManager
 from pydft_qmmm.hamiltonians import CalculatorHamiltonian
 from pydft_qmmm.hamiltonians import CompositeHamiltonian
@@ -17,6 +18,7 @@ from pydft_qmmm.hamiltonians import QMMMHamiltonian
 from pydft_qmmm.plugins import CalculatorCenter
 from pydft_qmmm.plugins import CalculatorWrap
 from pydft_qmmm.plugins import CentroidPartition
+from pydft_qmmm.plugins import Stationary
 from pydft_qmmm.plugins.plugin import PartitionPlugin
 
 if TYPE_CHECKING:
@@ -101,6 +103,15 @@ class Simulation:
             for calculator in self.calculator.calculators:
                 if isinstance(calculator, InterfaceCalculator):
                     calculators.append(calculator)
+        if system.masses[system.masses == 0].size > 0:
+            query = "atom"
+            for atom in np.where(system.masses.base == 0)[0]:
+                query += f" {atom}"
+                system.masses[atom] = ELEMENT_TO_MASS.get(
+                    system.elements[atom],
+                    0.1,
+                )
+            self.integrator.register_plugin(Stationary(query))
         self._resources = ResourceManager(calculators)
         self.calculate_energy_forces()
 
@@ -125,6 +136,7 @@ class Simulation:
     def calculate_energy_forces(self) -> None:
         """Update total system energy and forces on atoms in the system.
         """
+        temp = self.system.positions.base.copy()
         results = self.calculator.calculate()
         self.system.forces = results.forces
         kinetic_energy = self.integrator.compute_kinetic_energy(
@@ -139,6 +151,7 @@ class Simulation:
             },
         }
         self.energy = energy
+        self._offset += temp - self.system.positions.base
 
     def set_threads(self, threads: int) -> None:
         """Set the number of threads that calculators can use.

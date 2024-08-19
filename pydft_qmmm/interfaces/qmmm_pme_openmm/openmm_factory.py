@@ -29,6 +29,15 @@ def pme_openmm_interface_factory(settings: MMSettings) -> PMEOpenMMInterface:
     Returns:
         The QM/MM/PME OpenMM interface.
     """
+    if not (x := settings.pme_gridnumber) is None:
+        for num in x:
+            if num != x[0]:
+                raise ValueError(
+                    (
+                        "Non-uniform number of grid points along each axis "
+                        "is not currently supported for QM/MM/PME."
+                    ),
+                )
     topology = _build_topology(settings)
     modeller = _build_modeller(settings, topology)
     forcefield = _build_forcefield(settings, modeller)

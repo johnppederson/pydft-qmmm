@@ -5,10 +5,7 @@ from pydft_qmmm.plugins import Plumed
 from pydft_qmmm.plugins import SETTLE
 
 # Load system first.
-system = System.load(
-    "cmc.pdb",
-    "tip3p_cmc.xml",
-)
+system = System.load("cmc.pdb")
 
 # Generate velocities.
 system.velocities = generate_velocities(
@@ -29,8 +26,10 @@ qm = QMHamiltonian(
 
 # Define MM Hamiltonian.
 mm = MMHamiltonian(
-    "tip3p_cmc_no_intra.xml",
-    "tip3p_cmc_residues.xml",
+    [
+        "tip3p_cmc_no_intra.xml",
+        "tip3p_cmc_residues.xml",
+    ],
 )
 
 # Define IXN Hamiltonian.

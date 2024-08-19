@@ -58,7 +58,7 @@ class Stationary(IntegratorPlugin):
             velocities of stationary residues.
         """
         velocities = system.velocities
-        atoms = system.select(self.query)
+        atoms = sorted(system.select(self.query))
         velocities[atoms, :] = 0
         return velocities
 
@@ -77,7 +77,7 @@ class Stationary(IntegratorPlugin):
         """
         def inner(system: System) -> Returns:
             positions, velocities = integrate(system)
-            atoms = system.select(self.query)
+            atoms = sorted(system.select(self.query))
             positions[atoms, :] = system.positions[atoms, :]
             velocities[atoms, :] = 0.
             return positions, velocities
@@ -106,7 +106,7 @@ class Stationary(IntegratorPlugin):
                     * system.forces*(10**-4)/masses
                 )
             )
-            atoms = system.select(self.query)
+            atoms = sorted(system.select(self.query))
             velocities[atoms, :] = 0.
             kinetic_energy = (
                 np.sum(0.5*masses*(velocities)**2)

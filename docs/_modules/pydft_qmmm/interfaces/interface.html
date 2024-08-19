@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pydft_qmmm.interfaces.interface &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
     <script src="../../../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
@@ -30,8 +30,7 @@
           <div class="body" role="main">
 
   <h1>Source code for pydft_qmmm.interfaces.interface</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Base classes for software interfaces and settings.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Base classes for software interfaces and settings.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -65,14 +64,12 @@
 <a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.MMSettings">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MMSettings</span><span class="p">(</span><span class="n">SoftwareSettings</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Immutable container which holds settings for an MM interface.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Immutable container which holds settings for an MM interface.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system which will be tied to the MM interface.</span>
-<span class="sd">        forcefield_file: The FF XML file containing forcefield data</span>
-<span class="sd">            for the system.</span>
-<span class="sd">        topology_file: The FF XML file containing topology data for</span>
-<span class="sd">            the system.</span>
+<span class="sd">        forcefield: The files containing forcefield  and topology</span>
+<span class="sd">            data for the system.</span>
 <span class="sd">        nonbonded_method: The method for treating non-bonded</span>
 <span class="sd">            interactions, as in OpenMM.</span>
 <span class="sd">        nonbonded_cutoff: The distance at which to truncate close-range</span>
@@ -83,11 +80,10 @@
 <span class="sd">            (:math:`\mathrm{nm^{-1}}`).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">system</span><span class="p">:</span> <span class="n">System</span>
-    <span class="n">forcefield_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-    <span class="n">topology_file</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">forcefield</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">nonbonded_method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PME&quot;</span>
     <span class="n">nonbonded_cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mf">14.</span>
-    <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">pme_alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
@@ -144,7 +140,7 @@
 <a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.compute_energy">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the energy of the system using the external software.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the energy of the system using the external software.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the system.</span>
@@ -155,7 +151,7 @@
 <a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.compute_forces">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the forces on the system using the external software.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the forces on the system using the external software.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
@@ -167,7 +163,7 @@
 <a class="viewcode-back" href="../../../pydft_qmmm.interfaces.html#pydft_qmmm.interfaces.interface.SoftwareInterface.compute_components">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the components of energy using the external software.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the components of energy using the external software.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)</span>

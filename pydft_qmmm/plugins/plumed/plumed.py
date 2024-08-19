@@ -95,7 +95,7 @@ class Plumed(CalculatorPlugin):
             results = calculate(return_forces, return_components)
             self.plumed.cmd("setStep", self.frame)
             self.frame += 1
-            self.plumed.cmd("setBox", self.system.box)
+            self.plumed.cmd("setBox", self.system.box.T)
             self.plumed.cmd("setPositions", self.system.positions)
             self.plumed.cmd("setEnergy", results.energy)
             self.plumed.cmd("setMasses", self.system.masses)

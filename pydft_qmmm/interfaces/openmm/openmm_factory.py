@@ -12,11 +12,14 @@ from openmm.app import ForceField
 from openmm.app import Modeller
 from openmm.app import Topology
 from simtk.unit import angstrom
+from simtk.unit import daltons
+from simtk.unit import elementary_charge
 from simtk.unit import femtosecond
 from simtk.unit import nanometer
 
 from ..interface import MMSettings
 from .openmm_interface import OpenMMInterface
+from pydft_qmmm.common import lazy_load
 
 
 SUPPORTED_FORCES = [
@@ -39,11 +42,50 @@ def openmm_interface_factory(settings: MMSettings) -> OpenMMInterface:
     Returns:
         The OpenMM interface.
     """
-    topology = _build_topology(settings)
-    modeller = _build_modeller(settings, topology)
-    forcefield = _build_forcefield(settings, modeller)
-    system = _build_system(forcefield, modeller)
+    box_vectors = []
+    for box_vec in settings.system.box.T:
+        box_vectors.append(
+            openmm.Vec3(
+                box_vec[0] / 10.,
+                box_vec[1] / 10.,
+                box_vec[2] / 10.,
+            ) * nanometer,
+        )
+    if all(x := [fh.endswith(".xml") for fh in settings.forcefield]):
+        topology = _build_topology(settings)
+        modeller = _build_modeller(settings, topology)
+        forcefield = _build_forcefield(settings, modeller)
+        system = _build_system(forcefield, modeller)
+    elif not any(x):
+        parmed = lazy_load("parmed")
+        forcefield = settings.forcefield.copy()
+        if len(x) > 1:
+            # Assuming a set of CHARMM parameter files and a psf file.
+            mask = [fh.endswith(".psf") for fh in forcefield]
+            psf = forcefield.pop(mask.index(1))
+            struct = parmed.load_file(psf)
+            params = parmed.charmm.CharmmParameterSet(*forcefield)
+            struct.box_vectors = box_vectors
+            system = struct.createSystem(params)
+            topology = struct.topology
+        else:
+            # Assuming the file is a GROMACS top and AMBER prmtop files
+            struct = parmed.load_file(*forcefield)
+            struct.box_vectors = box_vectors
+            system = struct.createSystem()
+            topology = struct.topology
+        modeller = _build_modeller(settings, topology)
+    else:
+        raise OSError(
+            (
+                "Both FF XML and non-XML files have been provided as the "
+                "forcefield data to the MM interface factory.  Mixing of "
+                "forcefield file formats is not currently supported."
+            ),
+        )
+    system.setDefaultPeriodicBoxVectors(*box_vectors)
     _adjust_forces(settings, system)
+    _adjust_system(settings, system)
     base_context = _build_context(settings, system, modeller)
     ixn_context = _build_context(settings, _empty_system(settings), modeller)
     wrapper = OpenMMInterface(settings, base_context, ixn_context)
@@ -64,14 +106,8 @@ def _build_topology(settings: MMSettings) -> Topology:
     Returns:
         The internal representation of system topology for OpenMM.
     """
-    if (x := settings.topology_file):
-        if isinstance(x, list):
-            for fh in x:
-                Topology.loadBondDefinitions(fh)
-        elif isinstance(x, str):
-            Topology.loadBondDefinitions(x)
-        else:
-            raise TypeError("...")
+    for fh in settings.forcefield:
+        Topology.loadBondDefinitions(fh)
     topology = Topology()
     chain = topology.addChain()
     residue_map = settings.system.residue_map
@@ -125,12 +161,7 @@ def _build_forcefield(settings: MMSettings, modeller: Modeller) -> ForceField:
     Returns:
         The internal representation of the force field for OpenMM.
     """
-    if isinstance(settings.forcefield_file, str):
-        forcefield = ForceField(settings.forcefield_file)
-    elif isinstance(settings.forcefield_file, list):
-        forcefield = ForceField(*settings.forcefield_file)
-    else:
-        raise TypeError("...")
+    forcefield = ForceField(*settings.forcefield)
     # modeller.addExtraParticles(forcefield)
     return forcefield
 
@@ -179,40 +210,51 @@ def _adjust_forces(settings: MMSettings, system: openmm.System) -> None:
         system: The OpenMM representation of forces, constraints, and
             particles.
     """
-    temp = []
-    for box_vec in settings.system.box:
-        temp.append(
-            openmm.Vec3(
-                box_vec[0] / 10.,
-                box_vec[1] / 10.,
-                box_vec[2] / 10.,
-            ) * nanometer,
-        )
-    system.setDefaultPeriodicBoxVectors(*temp)
     for i, force in enumerate(system.getForces()):
         force.setForceGroup(i)
         if type(force) not in SUPPORTED_FORCES:
-            print(type(force))
-            raise Exception
+            raise ValueError(f"{type(force)}")
         if isinstance(force, openmm.NonbondedForce):
             force.setNonbondedMethod(openmm.NonbondedForce.PME)
             force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
             if (
                 settings.nonbonded_method == "PME"
-                and settings.pme_gridnumber
+                and (settings.pme_gridnumber is not None)
                 and settings.pme_alpha
             ):
                 force.setPMEParameters(
                     settings.pme_alpha,
-                    settings.pme_gridnumber,
-                    settings.pme_gridnumber,
-                    settings.pme_gridnumber,
+                    settings.pme_gridnumber[0],
+                    settings.pme_gridnumber[1],
+                    settings.pme_gridnumber[2],
                 )
         if isinstance(force, openmm.CustomNonbondedForce):
             force.setNonbondedMethod(
                 openmm.CustomNonbondedForce.CutoffPeriodic,
             )
             force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
+
+
+def _adjust_system(settings: MMSettings, system: openmm.System) -> None:
+    """Replace system masses and charges with those from the forcefield.
+
+    Args:
+        settings: The settings used to build the OpenMM interface.
+        system: The OpenMM representation of forces, constraints, and
+            particles.
+    """
+    masses = []
+    charges = []
+    for force in system.getForces():
+        if isinstance(force, openmm.NonbondedForce):
+            for atom in range(system.getNumParticles()):
+                masses.append(system.getParticleMass(atom) / daltons)
+                q, _, _ = force.getParticleParameters(
+                    atom,
+                )
+                charges.append(q / elementary_charge)
+    settings.system.masses[:] = masses
+    settings.system.charges[:] = charges
 
 
 def _build_context(

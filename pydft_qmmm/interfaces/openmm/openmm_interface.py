@@ -16,6 +16,7 @@ from .openmm_utils import _exclude_intramolecular
 from .openmm_utils import _generate_state
 from .openmm_utils import _non_electrostatic
 from .openmm_utils import _real_electrostatic
+from .openmm_utils import _update_exceptions
 from pydft_qmmm.common import Subsystem
 from pydft_qmmm.interfaces import MMInterface
 from pydft_qmmm.interfaces import MMSettings
@@ -264,6 +265,7 @@ class OpenMMInterface(MMInterface):
             if isinstance(force, openmm.NonbondedForce)
         ]
         for force in nonbonded_forces:
+            _update_exceptions(force, charges)
             for i, charge in enumerate(charges):
                 _, sigma, epsilon = force.getParticleParameters(i)
                 force.setParticleParameters(i, charge, sigma, epsilon)

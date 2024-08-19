@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pydft_qmmm.interfaces.openmm.openmm_factory &#8212; PyDFT-QMMM 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=61cd365c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=12dfc556" />
     <script src="../../../../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
@@ -30,8 +30,7 @@
           <div class="body" role="main">
 
   <h1>Source code for pydft_qmmm.interfaces.openmm.openmm_factory</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;Functionality for building the OpenMM interface.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Functionality for building the OpenMM interface.</span>
 
 <span class="sd">Attributes:</span>
 <span class="sd">    SUPPORTED_FORCES: OpenMM force classes which can be processed by</span>
@@ -47,6 +46,10 @@
 <span class="kn">from</span> <span class="nn">simtk.unit</span> <span class="kn">import</span> <span class="n">angstrom</span>
 <span class="kn">from</span> <span class="nn">simtk.unit</span> <span class="kn">import</span> <span class="n">femtosecond</span>
 <span class="kn">from</span> <span class="nn">simtk.unit</span> <span class="kn">import</span> <span class="n">nanometer</span>
+<span class="kn">from</span> <span class="nn">simtk.unit</span> <span class="kn">import</span> <span class="n">daltons</span>
+<span class="kn">from</span> <span class="nn">simtk.unit</span> <span class="kn">import</span> <span class="n">elementary_charge</span>
+
+<span class="kn">from</span> <span class="nn">pydft_qmmm.common</span> <span class="kn">import</span> <span class="n">lazy_load</span>
 
 <span class="kn">from</span> <span class="nn">..interface</span> <span class="kn">import</span> <span class="n">MMSettings</span>
 <span class="kn">from</span> <span class="nn">.openmm_interface</span> <span class="kn">import</span> <span class="n">OpenMMInterface</span>
@@ -74,11 +77,48 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        The OpenMM interface.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">topology</span> <span class="o">=</span> <span class="n">_build_topology</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
-    <span class="n">modeller</span> <span class="o">=</span> <span class="n">_build_modeller</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">topology</span><span class="p">)</span>
-    <span class="n">forcefield</span> <span class="o">=</span> <span class="n">_build_forcefield</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">modeller</span><span class="p">)</span>
-    <span class="n">system</span> <span class="o">=</span> <span class="n">_build_system</span><span class="p">(</span><span class="n">forcefield</span><span class="p">,</span> <span class="n">modeller</span><span class="p">)</span>
+    <span class="n">box_vectors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">box_vec</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">T</span><span class="p">:</span>
+        <span class="n">box_vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">openmm</span><span class="o">.</span><span class="n">Vec3</span><span class="p">(</span>
+                <span class="n">box_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">,</span>
+                <span class="n">box_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">,</span>
+                <span class="n">box_vec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">((</span><span class="n">x</span> <span class="o">:=</span> <span class="p">[</span><span class="n">fh</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xml&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">fh</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">forcefield</span><span class="p">])):</span>
+        <span class="n">topology</span> <span class="o">=</span> <span class="n">_build_topology</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+        <span class="n">modeller</span> <span class="o">=</span> <span class="n">_build_modeller</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">topology</span><span class="p">)</span>
+        <span class="n">forcefield</span> <span class="o">=</span> <span class="n">_build_forcefield</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">modeller</span><span class="p">)</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="n">_build_system</span><span class="p">(</span><span class="n">forcefield</span><span class="p">,</span> <span class="n">modeller</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">parmed</span> <span class="o">=</span> <span class="n">lazy_load</span><span class="p">(</span><span class="s2">&quot;parmed&quot;</span><span class="p">)</span>
+        <span class="n">forcefield</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">forcefield</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Assuming a set of CHARMM parameter files and a psf file.</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="n">fh</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.psf&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">fh</span> <span class="ow">in</span> <span class="n">forcefield</span><span class="p">]</span>
+            <span class="n">psf</span> <span class="o">=</span> <span class="n">forcefield</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">struct</span> <span class="o">=</span> <span class="n">parmed</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="n">psf</span><span class="p">)</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="n">parmed</span><span class="o">.</span><span class="n">charmm</span><span class="o">.</span><span class="n">CharmmParameterSet</span><span class="p">(</span><span class="o">*</span><span class="n">forcefield</span><span class="p">)</span>
+            <span class="n">struct</span><span class="o">.</span><span class="n">box_vectors</span> <span class="o">=</span> <span class="n">box_vectors</span>
+            <span class="n">system</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">createSystem</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">topology</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">topology</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Assuming the file is a GROMACS top and AMBER prmtop files</span>
+            <span class="n">struct</span> <span class="o">=</span> <span class="n">parmed</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="o">*</span><span class="n">forcefield</span><span class="p">)</span>
+            <span class="n">struct</span><span class="o">.</span><span class="n">box_vectors</span> <span class="o">=</span> <span class="n">box_vectors</span>
+            <span class="n">system</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">createSystem</span><span class="p">()</span>
+            <span class="n">topology</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">topology</span>
+        <span class="n">modeller</span> <span class="o">=</span> <span class="n">_build_modeller</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">topology</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;Both FF XML and non-XML files have been provided as the &quot;</span>
+             <span class="s2">&quot;forcefield data to the MM interface factory.  Mixing of &quot;</span>
+             <span class="s2">&quot;forcefield file formats is not currently supported.&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="n">system</span><span class="o">.</span><span class="n">setDefaultPeriodicBoxVectors</span><span class="p">(</span><span class="o">*</span><span class="n">box_vectors</span><span class="p">)</span>
     <span class="n">_adjust_forces</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
+    <span class="n">_adjust_system</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span>
     <span class="n">base_context</span> <span class="o">=</span> <span class="n">_build_context</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="n">modeller</span><span class="p">)</span>
     <span class="n">ixn_context</span> <span class="o">=</span> <span class="n">_build_context</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">_empty_system</span><span class="p">(</span><span class="n">settings</span><span class="p">),</span> <span class="n">modeller</span><span class="p">)</span>
     <span class="n">wrapper</span> <span class="o">=</span> <span class="n">OpenMMInterface</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">base_context</span><span class="p">,</span> <span class="n">ixn_context</span><span class="p">)</span>
@@ -100,20 +140,13 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        The internal representation of system topology for OpenMM.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">:=</span> <span class="n">settings</span><span class="o">.</span><span class="n">topology_file</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">fh</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-                <span class="n">Topology</span><span class="o">.</span><span class="n">loadBondDefinitions</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">Topology</span><span class="o">.</span><span class="n">loadBondDefinitions</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">fh</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">forcefield</span><span class="p">:</span>
+        <span class="n">Topology</span><span class="o">.</span><span class="n">loadBondDefinitions</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
     <span class="n">topology</span> <span class="o">=</span> <span class="n">Topology</span><span class="p">()</span>
     <span class="n">chain</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">addChain</span><span class="p">()</span>
     <span class="n">residue_map</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">residue_map</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">residue_map</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">atoms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">residue_map</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">atoms</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">residue_map</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
         <span class="n">residue</span> <span class="o">=</span> <span class="n">topology</span><span class="o">.</span><span class="n">addResidue</span><span class="p">(</span>
             <span class="n">settings</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">residue_names</span><span class="p">[</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
             <span class="n">chain</span><span class="p">,</span>
@@ -162,12 +195,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        The internal representation of the force field for OpenMM.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">forcefield_file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">forcefield</span> <span class="o">=</span> <span class="n">ForceField</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">forcefield_file</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">forcefield_file</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="n">forcefield</span> <span class="o">=</span> <span class="n">ForceField</span><span class="p">(</span><span class="o">*</span><span class="n">settings</span><span class="o">.</span><span class="n">forcefield_file</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+    <span class="n">forcefield</span> <span class="o">=</span> <span class="n">ForceField</span><span class="p">(</span><span class="o">*</span><span class="n">settings</span><span class="o">.</span><span class="n">forcefield</span><span class="p">)</span>
     <span class="c1"># modeller.addExtraParticles(forcefield)</span>
     <span class="k">return</span> <span class="n">forcefield</span>
 
@@ -216,38 +244,51 @@
 <span class="sd">        system: The OpenMM representation of forces, constraints, and</span>
 <span class="sd">            particles.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">box_vec</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="p">:</span>
-        <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">openmm</span><span class="o">.</span><span class="n">Vec3</span><span class="p">(</span>
-                <span class="n">box_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">,</span>
-                <span class="n">box_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">,</span>
-                <span class="n">box_vec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">,</span>
-            <span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="n">system</span><span class="o">.</span><span class="n">setDefaultPeriodicBoxVectors</span><span class="p">(</span><span class="o">*</span><span class="n">temp</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">force</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">getForces</span><span class="p">()):</span>
         <span class="n">force</span><span class="o">.</span><span class="n">setForceGroup</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">force</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SUPPORTED_FORCES</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">force</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="ne">Exception</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">force</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">NonbondedForce</span><span class="p">):</span>
             <span class="n">force</span><span class="o">.</span><span class="n">setNonbondedMethod</span><span class="p">(</span><span class="n">openmm</span><span class="o">.</span><span class="n">NonbondedForce</span><span class="o">.</span><span class="n">PME</span><span class="p">)</span>
             <span class="n">force</span><span class="o">.</span><span class="n">setCutoffDistance</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">nonbonded_cutoff</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">)</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="n">settings</span><span class="o">.</span><span class="n">nonbonded_method</span> <span class="o">==</span> <span class="s2">&quot;PME&quot;</span>
-                <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="ow">and</span> <span class="n">settings</span><span class="o">.</span><span class="n">pme_alpha</span>
             <span class="p">):</span>
                 <span class="n">force</span><span class="o">.</span><span class="n">setPMEParameters</span><span class="p">(</span>
                     <span class="n">settings</span><span class="o">.</span><span class="n">pme_alpha</span><span class="p">,</span>
-                    <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span><span class="p">,</span>
-                    <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span><span class="p">,</span>
-                    <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span><span class="p">,</span>
+                    <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">settings</span><span class="o">.</span><span class="n">pme_gridnumber</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
                 <span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">CustomNonbondedForce</span><span class="p">):</span>
-            <span class="n">force</span><span class="o">.</span><span class="n">setNonbondedMethod</span><span class="p">(</span><span class="n">openmm</span><span class="o">.</span><span class="n">CustomNonbondedForce</span><span class="o">.</span><span class="n">CutoffPeriodic</span><span class="p">)</span>
+            <span class="n">force</span><span class="o">.</span><span class="n">setNonbondedMethod</span><span class="p">(</span>
+                <span class="n">openmm</span><span class="o">.</span><span class="n">CustomNonbondedForce</span><span class="o">.</span><span class="n">CutoffPeriodic</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">force</span><span class="o">.</span><span class="n">setCutoffDistance</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">nonbonded_cutoff</span> <span class="o">/</span> <span class="mf">10.</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_adjust_system</span><span class="p">(</span><span class="n">settings</span><span class="p">:</span> <span class="n">MMSettings</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">openmm</span><span class="o">.</span><span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace system masses and charges with those from the forcefield.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        settings: The settings used to build the OpenMM interface.</span>
+<span class="sd">        system: The OpenMM representation of forces, constraints, and</span>
+<span class="sd">            particles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">charges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="n">system</span><span class="o">.</span><span class="n">getForces</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">NonbondedForce</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">getNumParticles</span><span class="p">()):</span>
+                <span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">getParticleMass</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span> <span class="o">/</span> <span class="n">daltons</span><span class="p">)</span>
+                <span class="n">q</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">getParticleParameters</span><span class="p">(</span>
+                    <span class="n">atom</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span> <span class="o">/</span> <span class="n">elementary_charge</span><span class="p">)</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span>
+    <span class="n">settings</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charges</span> <span class="o">=</span> <span class="n">charges</span>
 
 
 <span class="k">def</span> <span class="nf">_build_context</span><span class="p">(</span>
