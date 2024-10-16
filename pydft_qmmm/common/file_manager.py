@@ -160,7 +160,7 @@ def _read_pdb(pdb_file: str) -> tuple[list[Atom], NDArray[np.float64]]:
                 mass,
                 0.,
                 resnum + offset,
-                element,
+                element.lower().capitalize(),
                 name,
                 resname,
             )

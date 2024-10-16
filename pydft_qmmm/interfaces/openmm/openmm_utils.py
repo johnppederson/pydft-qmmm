@@ -230,7 +230,7 @@ def _real_electrostatic(
         ]
         exclusions = [
             [x[0], x[1]]
-            for x in exclusions if x[2] / (elementary_charge**2) == 0
+            for x in exclusions
         ]
         for x in exclusions:
             new_force.addExclusion(*x)
