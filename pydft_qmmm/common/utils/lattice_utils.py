@@ -128,7 +128,7 @@ def compute_lattice_vectors(
         ],
     )
     box = np.concatenate((vec_a, vec_b, vec_c), axis=1)
-    box[box < 1e-6] = 0.
+    box[box**2 < 1e-12] = 0.
     box[:, 2] -= box[:, 1]*np.round(box[1, 2]/box[1, 1])
     box[:, 2] -= box[:, 0]*np.round(box[0, 2]/box[0, 0])
     box[:, 1] -= box[:, 0]*np.round(box[0, 1]/box[0, 0])

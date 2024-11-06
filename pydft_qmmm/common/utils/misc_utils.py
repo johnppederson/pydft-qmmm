@@ -55,6 +55,8 @@ def generate_velocities(
     z = np.random.standard_normal((len(masses), 3))
     momenta = z * np.sqrt(avg_ke * masses)
     velocities = (momenta / masses) * (10**-5)
+    zero_mass = np.where(masses == 0)
+    velocities[zero_mass, :] = np.array([0., 0., 0.])
     return velocities
 
 
