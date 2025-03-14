@@ -95,9 +95,8 @@ class CentroidPartition(PartitionPlugin):
         region_ii: list[int] = []
         selection = self.system.select(self._query)
         for residue in self.system.residue_map.values():
-            atoms = sorted(residue & selection)
-            not_qm = set(qm_region).isdisjoint(set(atoms))
-            if not_qm and atoms:
+            atoms = sorted(residue & selection - set(qm_region))
+            if atoms:
                 nth_centroid = np.average(
                     self.system.positions[atoms, :],
                     axis=0,

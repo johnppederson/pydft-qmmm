@@ -83,7 +83,8 @@ def openmm_interface_factory(settings: MMSettings) -> OpenMMInterface:
                 "forcefield file formats is not currently supported."
             ),
         )
-    system.setDefaultPeriodicBoxVectors(*box_vectors)
+    if settings.nonbonded_method.upper() not in ("NOCUTOFF", "CUTOFFNONPERIODIC"):
+        system.setDefaultPeriodicBoxVectors(*box_vectors)
     _adjust_forces(settings, system)
     _adjust_system(settings, system)
     base_context = _build_context(settings, system, modeller)
@@ -215,24 +216,28 @@ def _adjust_forces(settings: MMSettings, system: openmm.System) -> None:
         if type(force) not in SUPPORTED_FORCES:
             raise ValueError(f"{type(force)}")
         if isinstance(force, openmm.NonbondedForce):
-            force.setNonbondedMethod(openmm.NonbondedForce.PME)
-            force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
-            if (
-                settings.nonbonded_method == "PME"
-                and (settings.pme_gridnumber is not None)
-                and settings.pme_alpha
-            ):
-                force.setPMEParameters(
-                    settings.pme_alpha,
-                    settings.pme_gridnumber[0],
-                    settings.pme_gridnumber[1],
-                    settings.pme_gridnumber[2],
-                )
+            if (settings.nonbonded_method.upper()
+                in ("PME", "EWALD", "CUTOFFPERIODIC", "CUTOFFNONPERIODIC")):
+                force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
+            if settings.nonbonded_method.upper() == "PME":
+                force.setNonbondedMethod(openmm.NonbondedForce.PME)
+                if ((settings.pme_gridnumber is not None)
+                    and settings.pme_alpha):
+                    force.setPMEParameters(
+                        settings.pme_alpha,
+                        settings.pme_gridnumber[0],
+                        settings.pme_gridnumber[1],
+                        settings.pme_gridnumber[2],
+                    )
         if isinstance(force, openmm.CustomNonbondedForce):
-            force.setNonbondedMethod(
-                openmm.CustomNonbondedForce.CutoffPeriodic,
-            )
-            force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
+            if (settings.nonbonded_method.upper()
+                in ("PME", "EWALD", "CUTOFFPERIODIC", "CUTOFFNONPERIODIC")):
+                force.setCutoffDistance(settings.nonbonded_cutoff / 10.)
+            if (settings.nonbonded_method.upper()
+                in ("PME", "EWALD", "CUTOFFPERIODIC")):
+                force.setNonbondedMethod(
+                    openmm.CustomNonbondedForce.CutoffPeriodic,
+                )
 
 
 def _adjust_system(settings: MMSettings, system: openmm.System) -> None:

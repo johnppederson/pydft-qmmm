@@ -81,11 +81,8 @@ class Simulation:
         self._offset = np.zeros(self.system.positions.shape)
         if isinstance(self.hamiltonian, CompositeHamiltonian):
             for hamiltonian in self.hamiltonian.hamiltonians:
-                if (
-                    isinstance(hamiltonian, QMMMHamiltonian)
-                    and self.system.box.any()
-                    and isinstance(self.calculator, CompositeCalculator)
-                ):
+                if (isinstance(hamiltonian, QMMMHamiltonian)
+                    and isinstance(self.calculator, CompositeCalculator)):
                     query = "not ("
                     for plugin in self.plugins:
                         if isinstance(plugin, PartitionPlugin):
@@ -94,6 +91,7 @@ class Simulation:
                     if query == "not ()":
                         query == "all"
                     self.calculator.register_plugin(CentroidPartition(query))
+                if self.system.box.any():
                     self.calculator.register_plugin(CalculatorWrap())
                     self.calculator.register_plugin(CalculatorCenter())
         calculators = []

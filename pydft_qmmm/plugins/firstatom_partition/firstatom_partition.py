@@ -95,9 +95,8 @@ class FirstAtomPartition(PartitionPlugin):
         region_ii: list[int] = []
         selection = self.system.select(self._query)
         for residue in self.system.residue_map.values():
-            atoms = sorted(residue & selection)
-            not_qm = set(qm_region).isdisjoint(set(atoms))
-            if not_qm and atoms:
+            atoms = sorted(residue & selection - set(qm_region))
+            if atoms:
                 nth_centroid = self.system.positions[atoms[0], :]
                 r_vector = nth_centroid - qm_centroid
                 distance = np.sum(r_vector**2)**0.5

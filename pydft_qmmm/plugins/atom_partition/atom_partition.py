@@ -94,9 +94,8 @@ class AtomPartition(PartitionPlugin):
         region_ii: list[int] = []
         selection = self.system.select(self._query)
         for atom in range(len(self.system)):
-            atoms = sorted(frozenset((atom,)) & selection)
-            not_qm = set(qm_region).isdisjoint({atoms})
-            if not_qm and atoms:
+            atoms = sorted(set((atom,)) & selection - set(qm_region))
+            if atoms:
                 nth_centroid = np.average(
                     self.system.positions[atoms, :],
                     axis=0,
