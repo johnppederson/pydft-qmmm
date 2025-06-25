@@ -10,6 +10,7 @@ from simtk.unit import nanometer
 
 from .openmm_interface import PMEOpenMMInterface
 from pydft_qmmm.interfaces.openmm.openmm_factory import _adjust_forces
+from pydft_qmmm.interfaces.openmm.openmm_factory import _adjust_system
 from pydft_qmmm.interfaces.openmm.openmm_factory import _build_forcefield
 from pydft_qmmm.interfaces.openmm.openmm_factory import _build_modeller
 from pydft_qmmm.interfaces.openmm.openmm_factory import _build_system
@@ -39,6 +40,38 @@ def pme_openmm_interface_factory(settings: MMSettings) -> PMEOpenMMInterface:
                 box_vec[2] / 10.,
             ) * nanometer,
         )
+    if all(x := [fh.endswith(".xml") for fh in settings.forcefield]):
+        topology = _build_topology(settings)
+        modeller = _build_modeller(settings, topology)
+        forcefield = _build_forcefield(settings, modeller)
+        system = _build_system(forcefield, modeller)
+    elif not any(x):
+        parmed = lazy_load("parmed")
+        forcefield = settings.forcefield.copy()
+        if len(x) > 1:
+            # Assuming a set of CHARMM parameter files and a psf file.
+            mask = [fh.endswith(".psf") for fh in forcefield]
+            psf = forcefield.pop(mask.index(1))
+            struct = parmed.load_file(psf)
+            params = parmed.charmm.CharmmParameterSet(*forcefield)
+            struct.box_vectors = box_vectors
+            system = struct.createSystem(params)
+            topology = struct.topology
+        else:
+            # Assuming the file is a GROMACS top and AMBER prmtop files
+            struct = parmed.load_file(*forcefield)
+            struct.box_vectors = box_vectors
+            system = struct.createSystem()
+            topology = struct.topology
+        modeller = _build_modeller(settings, topology)
+    else:
+        raise IOError(
+            (
+                "Both FF XML and non-XML files have been provided as the "
+                "forcefield data to the MM interface factory.  Mixing of "
+                "forcefield file formats is not currently supported."
+            ),
+        )
     if not (x := settings.pme_gridnumber) is None:
         for num in x:
             if num != x[0]:
@@ -48,12 +81,9 @@ def pme_openmm_interface_factory(settings: MMSettings) -> PMEOpenMMInterface:
                         "is not currently supported for QM/MM/PME."
                     ),
                 )
-    topology = _build_topology(settings)
-    modeller = _build_modeller(settings, topology)
-    forcefield = _build_forcefield(settings, modeller)
-    system = _build_system(forcefield, modeller)
     system.setDefaultPeriodicBoxVectors(*box_vectors)
     _adjust_forces(settings, system)
+    _adjust_system(settings, system)
     base_context = _build_context(
         settings, system, modeller, {
             "ReferenceVextGrid": "true",
