@@ -135,7 +135,6 @@ class PMEPsi4Interface(Psi4Interface):
         basis = psi4.core.BasisSet.build(
             c1_molecule,
             "ORBITAL",
-            self._options.basis,
         )
         vbase = psi4.core.VBase.build(basis, sup_func, "RV")
         vbase.initialize()

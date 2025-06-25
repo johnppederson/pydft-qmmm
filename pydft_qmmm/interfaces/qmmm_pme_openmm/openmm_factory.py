@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 import openmm
 from simtk.unit import femtosecond
+from simtk.unit import nanometer
 
 from .openmm_interface import PMEOpenMMInterface
 from pydft_qmmm.interfaces.openmm.openmm_factory import _adjust_forces
@@ -29,6 +30,15 @@ def pme_openmm_interface_factory(settings: MMSettings) -> PMEOpenMMInterface:
     Returns:
         The QM/MM/PME OpenMM interface.
     """
+    box_vectors = []
+    for box_vec in settings.system.box.T:
+        box_vectors.append(
+            openmm.Vec3(
+                box_vec[0] / 10.,
+                box_vec[1] / 10.,
+                box_vec[2] / 10.,
+            ) * nanometer,
+        )
     if not (x := settings.pme_gridnumber) is None:
         for num in x:
             if num != x[0]:
@@ -42,6 +52,7 @@ def pme_openmm_interface_factory(settings: MMSettings) -> PMEOpenMMInterface:
     modeller = _build_modeller(settings, topology)
     forcefield = _build_forcefield(settings, modeller)
     system = _build_system(forcefield, modeller)
+    system.setDefaultPeriodicBoxVectors(*box_vectors)
     _adjust_forces(settings, system)
     base_context = _build_context(
         settings, system, modeller, {

@@ -76,7 +76,7 @@ def openmm_interface_factory(settings: MMSettings) -> OpenMMInterface:
             topology = struct.topology
         modeller = _build_modeller(settings, topology)
     else:
-        raise OSError(
+        raise IOError(
             (
                 "Both FF XML and non-XML files have been provided as the "
                 "forcefield data to the MM interface factory.  Mixing of "
