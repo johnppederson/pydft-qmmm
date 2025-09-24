@@ -1,0 +1,19 @@
+﻿pydft\_qmmm.wrappers
+====================
+
+.. automodule:: pydft_qmmm.wrappers
+
+   
+   
+   
+    
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+
+   optimization
+   simulation

@@ -1,0 +1,19 @@
+pydft\_qmmm.plugins.atom\_partition
+===================================
+
+.. automodule:: pydft_qmmm.plugins.atom_partition
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      AtomPartition
+   

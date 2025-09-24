@@ -1,0 +1,46 @@
+pydft\_qmmm.calculators.composite\_calculator.CompositeCalculator
+=================================================================
+
+.. currentmodule:: pydft_qmmm.calculators.composite_calculator
+
+.. autoclass:: CompositeCalculator
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~CompositeCalculator.active_plugins
+   
+   
+      ~CompositeCalculator.calculate
+   
+   
+      ~CompositeCalculator.register_plugin
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: CompositeCalculator.active_plugins
+   
+   
+   
+   .. automethod:: CompositeCalculator.calculate
+   
+   
+   
+   .. automethod:: CompositeCalculator.register_plugin
+   
+   
+    
+   

@@ -1,0 +1,403 @@
+pydft\_qmmm.system.variable.ObservedArray
+=========================================
+
+.. currentmodule:: pydft_qmmm.system.variable
+
+.. autoclass:: ObservedArray
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~ObservedArray.all
+   
+   
+      ~ObservedArray.any
+   
+   
+      ~ObservedArray.argmax
+   
+   
+      ~ObservedArray.argmin
+   
+   
+      ~ObservedArray.argpartition
+   
+   
+      ~ObservedArray.argsort
+   
+   
+      ~ObservedArray.astype
+   
+   
+      ~ObservedArray.byteswap
+   
+   
+      ~ObservedArray.choose
+   
+   
+      ~ObservedArray.clip
+   
+   
+      ~ObservedArray.compress
+   
+   
+      ~ObservedArray.conj
+   
+   
+      ~ObservedArray.conjugate
+   
+   
+      ~ObservedArray.copy
+   
+   
+      ~ObservedArray.cumprod
+   
+   
+      ~ObservedArray.cumsum
+   
+   
+      ~ObservedArray.diagonal
+   
+   
+      ~ObservedArray.dot
+   
+   
+      ~ObservedArray.dump
+   
+   
+      ~ObservedArray.dumps
+   
+   
+      ~ObservedArray.fill
+   
+   
+      ~ObservedArray.flatten
+   
+   
+      ~ObservedArray.getfield
+   
+   
+      ~ObservedArray.item
+   
+   
+      ~ObservedArray.max
+   
+   
+      ~ObservedArray.mean
+   
+   
+      ~ObservedArray.min
+   
+   
+      ~ObservedArray.nonzero
+   
+   
+      ~ObservedArray.partition
+   
+   
+      ~ObservedArray.prod
+   
+   
+      ~ObservedArray.put
+   
+   
+      ~ObservedArray.ravel
+   
+   
+      ~ObservedArray.register_notifier
+   
+   
+      ~ObservedArray.repeat
+   
+   
+      ~ObservedArray.reshape
+   
+   
+      ~ObservedArray.resize
+   
+   
+      ~ObservedArray.round
+   
+   
+      ~ObservedArray.searchsorted
+   
+   
+      ~ObservedArray.setfield
+   
+   
+      ~ObservedArray.setflags
+   
+   
+      ~ObservedArray.sort
+   
+   
+      ~ObservedArray.squeeze
+   
+   
+      ~ObservedArray.std
+   
+   
+      ~ObservedArray.sum
+   
+   
+      ~ObservedArray.swapaxes
+   
+   
+      ~ObservedArray.take
+   
+   
+      ~ObservedArray.to_device
+   
+   
+      ~ObservedArray.tobytes
+   
+   
+      ~ObservedArray.tofile
+   
+   
+      ~ObservedArray.tolist
+   
+   
+      ~ObservedArray.trace
+   
+   
+      ~ObservedArray.transpose
+   
+   
+      ~ObservedArray.var
+   
+   
+      ~ObservedArray.view
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: ObservedArray.all
+   
+   
+   
+   .. automethod:: ObservedArray.any
+   
+   
+   
+   .. automethod:: ObservedArray.argmax
+   
+   
+   
+   .. automethod:: ObservedArray.argmin
+   
+   
+   
+   .. automethod:: ObservedArray.argpartition
+   
+   
+   
+   .. automethod:: ObservedArray.argsort
+   
+   
+   
+   .. automethod:: ObservedArray.astype
+   
+   
+   
+   .. automethod:: ObservedArray.byteswap
+   
+   
+   
+   .. automethod:: ObservedArray.choose
+   
+   
+   
+   .. automethod:: ObservedArray.clip
+   
+   
+   
+   .. automethod:: ObservedArray.compress
+   
+   
+   
+   .. automethod:: ObservedArray.conj
+   
+   
+   
+   .. automethod:: ObservedArray.conjugate
+   
+   
+   
+   .. automethod:: ObservedArray.copy
+   
+   
+   
+   .. automethod:: ObservedArray.cumprod
+   
+   
+   
+   .. automethod:: ObservedArray.cumsum
+   
+   
+   
+   .. automethod:: ObservedArray.diagonal
+   
+   
+   
+   .. automethod:: ObservedArray.dot
+   
+   
+   
+   .. automethod:: ObservedArray.dump
+   
+   
+   
+   .. automethod:: ObservedArray.dumps
+   
+   
+   
+   .. automethod:: ObservedArray.fill
+   
+   
+   
+   .. automethod:: ObservedArray.flatten
+   
+   
+   
+   .. automethod:: ObservedArray.getfield
+   
+   
+   
+   .. automethod:: ObservedArray.item
+   
+   
+   
+   .. automethod:: ObservedArray.max
+   
+   
+   
+   .. automethod:: ObservedArray.mean
+   
+   
+   
+   .. automethod:: ObservedArray.min
+   
+   
+   
+   .. automethod:: ObservedArray.nonzero
+   
+   
+   
+   .. automethod:: ObservedArray.partition
+   
+   
+   
+   .. automethod:: ObservedArray.prod
+   
+   
+   
+   .. automethod:: ObservedArray.put
+   
+   
+   
+   .. automethod:: ObservedArray.ravel
+   
+   
+   
+   .. automethod:: ObservedArray.register_notifier
+   
+   
+   
+   .. automethod:: ObservedArray.repeat
+   
+   
+   
+   .. automethod:: ObservedArray.reshape
+   
+   
+   
+   .. automethod:: ObservedArray.resize
+   
+   
+   
+   .. automethod:: ObservedArray.round
+   
+   
+   
+   .. automethod:: ObservedArray.searchsorted
+   
+   
+   
+   .. automethod:: ObservedArray.setfield
+   
+   
+   
+   .. automethod:: ObservedArray.setflags
+   
+   
+   
+   .. automethod:: ObservedArray.sort
+   
+   
+   
+   .. automethod:: ObservedArray.squeeze
+   
+   
+   
+   .. automethod:: ObservedArray.std
+   
+   
+   
+   .. automethod:: ObservedArray.sum
+   
+   
+   
+   .. automethod:: ObservedArray.swapaxes
+   
+   
+   
+   .. automethod:: ObservedArray.take
+   
+   
+   
+   .. automethod:: ObservedArray.to_device
+   
+   
+   
+   .. automethod:: ObservedArray.tobytes
+   
+   
+   
+   .. automethod:: ObservedArray.tofile
+   
+   
+   
+   .. automethod:: ObservedArray.tolist
+   
+   
+   
+   .. automethod:: ObservedArray.trace
+   
+   
+   
+   .. automethod:: ObservedArray.transpose
+   
+   
+   
+   .. automethod:: ObservedArray.var
+   
+   
+   
+   .. automethod:: ObservedArray.view
+   
+   
+    
+   

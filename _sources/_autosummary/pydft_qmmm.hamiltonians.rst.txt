@@ -1,0 +1,21 @@
+﻿pydft\_qmmm.hamiltonians
+========================
+
+.. automodule:: pydft_qmmm.hamiltonians
+
+   
+   
+   
+    
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+
+   hamiltonian
+   mm_hamiltonian
+   qm_hamiltonian
+   qmmm_hamiltonian

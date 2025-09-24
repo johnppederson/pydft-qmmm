@@ -1,0 +1,20 @@
+pydft\_qmmm.interfaces.interface\_manager
+=========================================
+
+.. automodule:: pydft_qmmm.interfaces.interface_manager
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_interfaces
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.interfaces.interface_manager.get_interfaces
+   
+    
+   

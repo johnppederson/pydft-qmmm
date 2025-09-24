@@ -1,0 +1,32 @@
+pydft\_qmmm.plugins.wrap.CalculatorWrap
+=======================================
+
+.. currentmodule:: pydft_qmmm.plugins.wrap
+
+.. autoclass:: CalculatorWrap
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~CalculatorWrap.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: CalculatorWrap.modify
+   
+   
+    
+   

@@ -1,0 +1,32 @@
+pydft\_qmmm.integrators.integrator.IntegratorPlugin
+===================================================
+
+.. currentmodule:: pydft_qmmm.integrators.integrator
+
+.. autoclass:: IntegratorPlugin
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~IntegratorPlugin.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: IntegratorPlugin.modify
+   
+   
+    
+   

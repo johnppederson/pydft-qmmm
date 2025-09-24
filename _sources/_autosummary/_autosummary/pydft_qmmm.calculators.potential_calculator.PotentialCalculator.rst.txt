@@ -1,0 +1,46 @@
+pydft\_qmmm.calculators.potential\_calculator.PotentialCalculator
+=================================================================
+
+.. currentmodule:: pydft_qmmm.calculators.potential_calculator
+
+.. autoclass:: PotentialCalculator
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~PotentialCalculator.active_plugins
+   
+   
+      ~PotentialCalculator.calculate
+   
+   
+      ~PotentialCalculator.register_plugin
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: PotentialCalculator.active_plugins
+   
+   
+   
+   .. automethod:: PotentialCalculator.calculate
+   
+   
+   
+   .. automethod:: PotentialCalculator.register_plugin
+   
+   
+    
+   

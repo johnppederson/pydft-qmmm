@@ -1,0 +1,39 @@
+pydft\_qmmm.interfaces.psi4.psi4\_interface.Psi4Interface
+=========================================================
+
+.. currentmodule:: pydft_qmmm.interfaces.psi4.psi4_interface
+
+.. autoclass:: Psi4Interface
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~Psi4Interface.add_electronic_potential
+   
+   
+      ~Psi4Interface.update_options
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: Psi4Interface.add_electronic_potential
+   
+   
+   
+   .. automethod:: Psi4Interface.update_options
+   
+   
+    
+   

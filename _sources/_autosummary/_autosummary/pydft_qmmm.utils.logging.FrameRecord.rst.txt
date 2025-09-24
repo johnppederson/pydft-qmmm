@@ -1,0 +1,32 @@
+pydft\_qmmm.utils.logging.FrameRecord
+=====================================
+
+.. currentmodule:: pydft_qmmm.utils.logging
+
+.. autoclass:: FrameRecord
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~FrameRecord.getMessage
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: FrameRecord.getMessage
+   
+   
+    
+   

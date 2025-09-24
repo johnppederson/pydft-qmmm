@@ -1,0 +1,46 @@
+pydft\_qmmm.plugins.firstatom\_partition.FirstAtomPartition
+===========================================================
+
+.. currentmodule:: pydft_qmmm.plugins.firstatom_partition
+
+.. autoclass:: FirstAtomPartition
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~FirstAtomPartition.generate_partition
+   
+   
+      ~FirstAtomPartition.modify
+   
+   
+      ~FirstAtomPartition.modify_composite
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: FirstAtomPartition.generate_partition
+   
+   
+   
+   .. automethod:: FirstAtomPartition.modify
+   
+   
+   
+   .. automethod:: FirstAtomPartition.modify_composite
+   
+   
+    
+   

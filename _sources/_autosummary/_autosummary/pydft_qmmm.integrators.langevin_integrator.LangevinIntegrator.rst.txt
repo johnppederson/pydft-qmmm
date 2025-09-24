@@ -1,0 +1,53 @@
+pydft\_qmmm.integrators.langevin\_integrator.LangevinIntegrator
+===============================================================
+
+.. currentmodule:: pydft_qmmm.integrators.langevin_integrator
+
+.. autoclass:: LangevinIntegrator
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~LangevinIntegrator.active_plugins
+   
+   
+      ~LangevinIntegrator.compute_kinetic_energy
+   
+   
+      ~LangevinIntegrator.integrate
+   
+   
+      ~LangevinIntegrator.register_plugin
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: LangevinIntegrator.active_plugins
+   
+   
+   
+   .. automethod:: LangevinIntegrator.compute_kinetic_energy
+   
+   
+   
+   .. automethod:: LangevinIntegrator.integrate
+   
+   
+   
+   .. automethod:: LangevinIntegrator.register_plugin
+   
+   
+    
+   

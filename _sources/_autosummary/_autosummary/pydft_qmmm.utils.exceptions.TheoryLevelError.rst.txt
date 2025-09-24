@@ -1,0 +1,15 @@
+pydft\_qmmm.utils.exceptions.TheoryLevelError
+=============================================
+
+.. currentmodule:: pydft_qmmm.utils.exceptions
+
+.. autoclass:: TheoryLevelError
+
+   
+
+   
+   
+
+   
+    
+   

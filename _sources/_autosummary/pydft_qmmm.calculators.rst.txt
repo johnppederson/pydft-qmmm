@@ -1,0 +1,20 @@
+﻿pydft\_qmmm.calculators
+=======================
+
+.. automodule:: pydft_qmmm.calculators
+
+   
+   
+   
+    
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+
+   calculator
+   composite_calculator
+   potential_calculator

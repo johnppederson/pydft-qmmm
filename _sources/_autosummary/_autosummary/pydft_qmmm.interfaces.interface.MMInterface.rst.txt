@@ -1,0 +1,74 @@
+pydft\_qmmm.interfaces.interface.MMInterface
+============================================
+
+.. currentmodule:: pydft_qmmm.interfaces.interface
+
+.. autoclass:: MMInterface
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~MMInterface.add_non_elst
+   
+   
+      ~MMInterface.add_real_elst
+   
+   
+      ~MMInterface.get_pme_parameters
+   
+   
+      ~MMInterface.zero_charges
+   
+   
+      ~MMInterface.zero_forces
+   
+   
+      ~MMInterface.zero_intermolecular
+   
+   
+      ~MMInterface.zero_intramolecular
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: MMInterface.add_non_elst
+   
+   
+   
+   .. automethod:: MMInterface.add_real_elst
+   
+   
+   
+   .. automethod:: MMInterface.get_pme_parameters
+   
+   
+   
+   .. automethod:: MMInterface.zero_charges
+   
+   
+   
+   .. automethod:: MMInterface.zero_forces
+   
+   
+   
+   .. automethod:: MMInterface.zero_intermolecular
+   
+   
+   
+   .. automethod:: MMInterface.zero_intramolecular
+   
+   
+    
+   

@@ -1,0 +1,19 @@
+pydft\_qmmm.system.atom.Atom
+============================
+
+.. currentmodule:: pydft_qmmm.system.atom
+
+.. autoclass:: Atom
+
+   
+
+   
+   
+
+   
+   
+   
+   
+   
+    
+   

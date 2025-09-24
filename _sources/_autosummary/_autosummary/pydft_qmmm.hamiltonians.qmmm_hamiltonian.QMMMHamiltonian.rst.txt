@@ -1,0 +1,39 @@
+pydft\_qmmm.hamiltonians.qmmm\_hamiltonian.QMMMHamiltonian
+==========================================================
+
+.. currentmodule:: pydft_qmmm.hamiltonians.qmmm_hamiltonian
+
+.. autoclass:: QMMMHamiltonian
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~QMMMHamiltonian.apply_exclusions
+   
+   
+      ~QMMMHamiltonian.modify_calculator
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: QMMMHamiltonian.apply_exclusions
+   
+   
+   
+   .. automethod:: QMMMHamiltonian.modify_calculator
+   
+   
+    
+   

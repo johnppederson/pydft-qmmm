@@ -1,0 +1,23 @@
+pydft\_qmmm.utils.descriptor
+============================
+
+.. automodule:: pydft_qmmm.utils.descriptor
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      pluggable_method
+      system_cache
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.utils.descriptor.pluggable_method
+   
+   .. autofunction:: pydft_qmmm.utils.descriptor.system_cache
+   
+    
+   

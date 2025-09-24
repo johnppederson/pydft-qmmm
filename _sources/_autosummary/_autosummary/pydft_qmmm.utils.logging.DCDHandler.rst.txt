@@ -1,0 +1,137 @@
+pydft\_qmmm.utils.logging.DCDHandler
+====================================
+
+.. currentmodule:: pydft_qmmm.utils.logging
+
+.. autoclass:: DCDHandler
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~DCDHandler.acquire
+   
+   
+      ~DCDHandler.addFilter
+   
+   
+      ~DCDHandler.close
+   
+   
+      ~DCDHandler.createLock
+   
+   
+      ~DCDHandler.emit
+   
+   
+      ~DCDHandler.filter
+   
+   
+      ~DCDHandler.flush
+   
+   
+      ~DCDHandler.format
+   
+   
+      ~DCDHandler.get_name
+   
+   
+      ~DCDHandler.handle
+   
+   
+      ~DCDHandler.handleError
+   
+   
+      ~DCDHandler.release
+   
+   
+      ~DCDHandler.removeFilter
+   
+   
+      ~DCDHandler.setFormatter
+   
+   
+      ~DCDHandler.setLevel
+   
+   
+      ~DCDHandler.set_name
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: DCDHandler.acquire
+   
+   
+   
+   .. automethod:: DCDHandler.addFilter
+   
+   
+   
+   .. automethod:: DCDHandler.close
+   
+   
+   
+   .. automethod:: DCDHandler.createLock
+   
+   
+   
+   .. automethod:: DCDHandler.emit
+   
+   
+   
+   .. automethod:: DCDHandler.filter
+   
+   
+   
+   .. automethod:: DCDHandler.flush
+   
+   
+   
+   .. automethod:: DCDHandler.format
+   
+   
+   
+   .. automethod:: DCDHandler.get_name
+   
+   
+   
+   .. automethod:: DCDHandler.handle
+   
+   
+   
+   .. automethod:: DCDHandler.handleError
+   
+   
+   
+   .. automethod:: DCDHandler.release
+   
+   
+   
+   .. automethod:: DCDHandler.removeFilter
+   
+   
+   
+   .. automethod:: DCDHandler.setFormatter
+   
+   
+   
+   .. automethod:: DCDHandler.setLevel
+   
+   
+   
+   .. automethod:: DCDHandler.set_name
+   
+   
+    
+   

@@ -1,0 +1,22 @@
+pydft\_qmmm.potentials.pme\_potential
+=====================================
+
+.. automodule:: pydft_qmmm.potentials.pme_potential
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      HelPMEPyInterface
+      PMEElectronicPotential
+      PMEExcludedPotential
+      PMENuclearPotential
+   

@@ -1,0 +1,46 @@
+pydft\_qmmm.potentials.potential.AtomicPotential
+================================================
+
+.. currentmodule:: pydft_qmmm.potentials.potential
+
+.. autoclass:: AtomicPotential
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~AtomicPotential.compute_components
+   
+   
+      ~AtomicPotential.compute_energy
+   
+   
+      ~AtomicPotential.compute_forces
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: AtomicPotential.compute_components
+   
+   
+   
+   .. automethod:: AtomicPotential.compute_energy
+   
+   
+   
+   .. automethod:: AtomicPotential.compute_forces
+   
+   
+    
+   

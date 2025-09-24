@@ -1,0 +1,19 @@
+pydft\_qmmm.wrappers.optimization
+=================================
+
+.. automodule:: pydft_qmmm.wrappers.optimization
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      Optimization
+   

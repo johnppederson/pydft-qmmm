@@ -1,0 +1,32 @@
+pydft\_qmmm.utils.logging.PositionRecord
+========================================
+
+.. currentmodule:: pydft_qmmm.utils.logging
+
+.. autoclass:: PositionRecord
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~PositionRecord.getMessage
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: PositionRecord.getMessage
+   
+   
+    
+   

@@ -1,0 +1,24 @@
+pydft\_qmmm.utils.exceptions
+============================
+
+.. automodule:: pydft_qmmm.utils.exceptions
+
+   
+   
+   
+    
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      AssetImportError
+      DependencyImportError
+      InterfaceImportError
+      PluginImportError
+      PyDFTQMMMException
+      TheoryLevelError
+   

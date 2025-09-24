@@ -1,0 +1,32 @@
+pydft\_qmmm.interfaces.interface.QMInterface
+============================================
+
+.. currentmodule:: pydft_qmmm.interfaces.interface
+
+.. autoclass:: QMInterface
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~QMInterface.add_electronic_potential
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: QMInterface.add_electronic_potential
+   
+   
+    
+   

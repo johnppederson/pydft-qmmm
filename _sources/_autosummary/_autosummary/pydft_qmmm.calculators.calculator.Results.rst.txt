@@ -1,0 +1,19 @@
+pydft\_qmmm.calculators.calculator.Results
+==========================================
+
+.. currentmodule:: pydft_qmmm.calculators.calculator
+
+.. autoclass:: Results
+
+   
+
+   
+   
+
+   
+   
+   
+   
+   
+    
+   

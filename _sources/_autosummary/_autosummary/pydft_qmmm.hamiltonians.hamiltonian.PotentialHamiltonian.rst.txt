@@ -1,0 +1,32 @@
+pydft\_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian
+=========================================================
+
+.. currentmodule:: pydft_qmmm.hamiltonians.hamiltonian
+
+.. autoclass:: PotentialHamiltonian
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~PotentialHamiltonian.build_calculator
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: PotentialHamiltonian.build_calculator
+   
+   
+    
+   

@@ -1,0 +1,19 @@
+pydft\_qmmm.interfaces.interface.SoftwareInterface
+==================================================
+
+.. currentmodule:: pydft_qmmm.interfaces.interface
+
+.. autoclass:: SoftwareInterface
+
+   
+
+   
+   
+
+   
+   
+   
+   
+   
+    
+   

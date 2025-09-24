@@ -1,0 +1,32 @@
+pydft\_qmmm.plugins.wrap.IntegratorWrap
+=======================================
+
+.. currentmodule:: pydft_qmmm.plugins.wrap
+
+.. autoclass:: IntegratorWrap
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~IntegratorWrap.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: IntegratorWrap.modify
+   
+   
+    
+   

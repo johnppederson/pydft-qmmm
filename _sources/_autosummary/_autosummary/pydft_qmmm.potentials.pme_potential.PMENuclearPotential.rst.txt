@@ -1,0 +1,67 @@
+pydft\_qmmm.potentials.pme\_potential.PMENuclearPotential
+=========================================================
+
+.. currentmodule:: pydft_qmmm.potentials.pme_potential
+
+.. autoclass:: PMENuclearPotential
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~PMENuclearPotential.compute_components
+   
+   
+      ~PMENuclearPotential.compute_energy
+   
+   
+      ~PMENuclearPotential.compute_forces
+   
+   
+      ~PMENuclearPotential.compute_potential_and_derivs
+   
+   
+      ~PMENuclearPotential.get_nuclear_charges
+   
+   
+      ~PMENuclearPotential.update_box
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: PMENuclearPotential.compute_components
+   
+   
+   
+   .. automethod:: PMENuclearPotential.compute_energy
+   
+   
+   
+   .. automethod:: PMENuclearPotential.compute_forces
+   
+   
+   
+   .. automethod:: PMENuclearPotential.compute_potential_and_derivs
+   
+   
+   
+   .. automethod:: PMENuclearPotential.get_nuclear_charges
+   
+   
+   
+   .. automethod:: PMENuclearPotential.update_box
+   
+   
+    
+   

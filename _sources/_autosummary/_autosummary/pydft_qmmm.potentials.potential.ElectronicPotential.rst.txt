@@ -1,0 +1,32 @@
+pydft\_qmmm.potentials.potential.ElectronicPotential
+====================================================
+
+.. currentmodule:: pydft_qmmm.potentials.potential
+
+.. autoclass:: ElectronicPotential
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~ElectronicPotential.compute_potential
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: ElectronicPotential.compute_potential
+   
+   
+    
+   

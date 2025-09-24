@@ -1,0 +1,32 @@
+pydft\_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian
+==========================================================
+
+.. currentmodule:: pydft_qmmm.hamiltonians.hamiltonian
+
+.. autoclass:: StandaloneHamiltonian
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~StandaloneHamiltonian.build_calculator
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: StandaloneHamiltonian.build_calculator
+   
+   
+    
+   

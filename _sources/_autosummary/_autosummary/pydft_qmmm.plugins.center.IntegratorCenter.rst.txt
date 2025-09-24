@@ -1,0 +1,32 @@
+pydft\_qmmm.plugins.center.IntegratorCenter
+===========================================
+
+.. currentmodule:: pydft_qmmm.plugins.center
+
+.. autoclass:: IntegratorCenter
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~IntegratorCenter.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: IntegratorCenter.modify
+   
+   
+    
+   

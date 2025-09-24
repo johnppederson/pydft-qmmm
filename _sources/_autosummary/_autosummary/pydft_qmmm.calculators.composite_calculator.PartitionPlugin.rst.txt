@@ -1,0 +1,46 @@
+pydft\_qmmm.calculators.composite\_calculator.PartitionPlugin
+=============================================================
+
+.. currentmodule:: pydft_qmmm.calculators.composite_calculator
+
+.. autoclass:: PartitionPlugin
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~PartitionPlugin.generate_partition
+   
+   
+      ~PartitionPlugin.modify
+   
+   
+      ~PartitionPlugin.modify_composite
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: PartitionPlugin.generate_partition
+   
+   
+   
+   .. automethod:: PartitionPlugin.modify
+   
+   
+   
+   .. automethod:: PartitionPlugin.modify_composite
+   
+   
+    
+   

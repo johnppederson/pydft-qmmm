@@ -1,0 +1,32 @@
+pydft\_qmmm.plugins.center.CalculatorCenter
+===========================================
+
+.. currentmodule:: pydft_qmmm.plugins.center
+
+.. autoclass:: CalculatorCenter
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~CalculatorCenter.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: CalculatorCenter.modify
+   
+   
+    
+   

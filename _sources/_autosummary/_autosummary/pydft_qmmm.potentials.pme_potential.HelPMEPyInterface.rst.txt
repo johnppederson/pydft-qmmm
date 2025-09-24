@@ -1,0 +1,32 @@
+pydft\_qmmm.potentials.pme\_potential.HelPMEPyInterface
+=======================================================
+
+.. currentmodule:: pydft_qmmm.potentials.pme_potential
+
+.. autoclass:: HelPMEPyInterface
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~HelPMEPyInterface.update_box
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: HelPMEPyInterface.update_box
+   
+   
+    
+   

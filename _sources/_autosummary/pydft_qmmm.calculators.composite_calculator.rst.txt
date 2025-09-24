@@ -1,0 +1,21 @@
+pydft\_qmmm.calculators.composite\_calculator
+=============================================
+
+.. automodule:: pydft_qmmm.calculators.composite_calculator
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      CompositeCalculator
+      CompositeCalculatorPlugin
+      PartitionPlugin
+   

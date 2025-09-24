@@ -1,0 +1,39 @@
+pydft\_qmmm.wrappers.optimization.Optimization
+==============================================
+
+.. currentmodule:: pydft_qmmm.wrappers.optimization
+
+.. autoclass:: Optimization
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~Optimization.calculate_energy_forces
+   
+   
+      ~Optimization.optimize
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: Optimization.calculate_energy_forces
+   
+   
+   
+   .. automethod:: Optimization.optimize
+   
+   
+    
+   

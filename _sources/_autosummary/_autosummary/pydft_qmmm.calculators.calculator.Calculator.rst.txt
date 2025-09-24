@@ -1,0 +1,46 @@
+pydft\_qmmm.calculators.calculator.Calculator
+=============================================
+
+.. currentmodule:: pydft_qmmm.calculators.calculator
+
+.. autoclass:: Calculator
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~Calculator.active_plugins
+   
+   
+      ~Calculator.calculate
+   
+   
+      ~Calculator.register_plugin
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: Calculator.active_plugins
+   
+   
+   
+   .. automethod:: Calculator.calculate
+   
+   
+   
+   .. automethod:: Calculator.register_plugin
+   
+   
+    
+   

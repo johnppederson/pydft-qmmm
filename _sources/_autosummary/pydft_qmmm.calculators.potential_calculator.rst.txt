@@ -1,0 +1,19 @@
+pydft\_qmmm.calculators.potential\_calculator
+=============================================
+
+.. automodule:: pydft_qmmm.calculators.potential_calculator
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      PotentialCalculator
+   

@@ -1,0 +1,39 @@
+pydft\_qmmm.plugins.rigid.Stationary
+====================================
+
+.. currentmodule:: pydft_qmmm.plugins.rigid
+
+.. autoclass:: Stationary
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~Stationary.constrain_velocities
+   
+   
+      ~Stationary.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: Stationary.constrain_velocities
+   
+   
+   
+   .. automethod:: Stationary.modify
+   
+   
+    
+   

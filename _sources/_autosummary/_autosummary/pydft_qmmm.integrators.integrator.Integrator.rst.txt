@@ -1,0 +1,53 @@
+pydft\_qmmm.integrators.integrator.Integrator
+=============================================
+
+.. currentmodule:: pydft_qmmm.integrators.integrator
+
+.. autoclass:: Integrator
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~Integrator.active_plugins
+   
+   
+      ~Integrator.compute_kinetic_energy
+   
+   
+      ~Integrator.integrate
+   
+   
+      ~Integrator.register_plugin
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: Integrator.active_plugins
+   
+   
+   
+   .. automethod:: Integrator.compute_kinetic_energy
+   
+   
+   
+   .. automethod:: Integrator.integrate
+   
+   
+   
+   .. automethod:: Integrator.register_plugin
+   
+   
+    
+   

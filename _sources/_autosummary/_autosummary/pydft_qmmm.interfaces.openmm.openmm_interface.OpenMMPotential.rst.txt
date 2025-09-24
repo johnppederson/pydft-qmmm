@@ -1,0 +1,123 @@
+pydft\_qmmm.interfaces.openmm.openmm\_interface.OpenMMPotential
+===============================================================
+
+.. currentmodule:: pydft_qmmm.interfaces.openmm.openmm_interface
+
+.. autoclass:: OpenMMPotential
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~OpenMMPotential.add_non_elst
+   
+   
+      ~OpenMMPotential.add_real_elst
+   
+   
+      ~OpenMMPotential.compute_components
+   
+   
+      ~OpenMMPotential.compute_energy
+   
+   
+      ~OpenMMPotential.compute_forces
+   
+   
+      ~OpenMMPotential.get_pme_parameters
+   
+   
+      ~OpenMMPotential.update_box
+   
+   
+      ~OpenMMPotential.update_charges
+   
+   
+      ~OpenMMPotential.update_positions
+   
+   
+      ~OpenMMPotential.update_subsystems
+   
+   
+      ~OpenMMPotential.zero_charges
+   
+   
+      ~OpenMMPotential.zero_forces
+   
+   
+      ~OpenMMPotential.zero_intermolecular
+   
+   
+      ~OpenMMPotential.zero_intramolecular
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: OpenMMPotential.add_non_elst
+   
+   
+   
+   .. automethod:: OpenMMPotential.add_real_elst
+   
+   
+   
+   .. automethod:: OpenMMPotential.compute_components
+   
+   
+   
+   .. automethod:: OpenMMPotential.compute_energy
+   
+   
+   
+   .. automethod:: OpenMMPotential.compute_forces
+   
+   
+   
+   .. automethod:: OpenMMPotential.get_pme_parameters
+   
+   
+   
+   .. automethod:: OpenMMPotential.update_box
+   
+   
+   
+   .. automethod:: OpenMMPotential.update_charges
+   
+   
+   
+   .. automethod:: OpenMMPotential.update_positions
+   
+   
+   
+   .. automethod:: OpenMMPotential.update_subsystems
+   
+   
+   
+   .. automethod:: OpenMMPotential.zero_charges
+   
+   
+   
+   .. automethod:: OpenMMPotential.zero_forces
+   
+   
+   
+   .. automethod:: OpenMMPotential.zero_intermolecular
+   
+   
+   
+   .. automethod:: OpenMMPotential.zero_intramolecular
+   
+   
+    
+   

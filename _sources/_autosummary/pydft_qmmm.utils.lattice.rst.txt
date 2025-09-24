@@ -1,0 +1,26 @@
+pydft\_qmmm.utils.lattice
+=========================
+
+.. automodule:: pydft_qmmm.utils.lattice
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      compute_lattice_constants
+      compute_lattice_vectors
+      compute_least_mirror
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.utils.lattice.compute_lattice_constants
+   
+   .. autofunction:: pydft_qmmm.utils.lattice.compute_lattice_vectors
+   
+   .. autofunction:: pydft_qmmm.utils.lattice.compute_least_mirror
+   
+    
+   

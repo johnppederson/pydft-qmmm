@@ -1,0 +1,32 @@
+pydft\_qmmm.utils.logging.EnergyRecord
+======================================
+
+.. currentmodule:: pydft_qmmm.utils.logging
+
+.. autoclass:: EnergyRecord
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~EnergyRecord.getMessage
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: EnergyRecord.getMessage
+   
+   
+    
+   

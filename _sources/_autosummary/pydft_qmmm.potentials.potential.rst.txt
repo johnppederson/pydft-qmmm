@@ -1,0 +1,20 @@
+pydft\_qmmm.potentials.potential
+================================
+
+.. automodule:: pydft_qmmm.potentials.potential
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      AtomicPotential
+      ElectronicPotential
+   

@@ -1,0 +1,19 @@
+pydft\_qmmm.plugins.rigid
+=========================
+
+.. automodule:: pydft_qmmm.plugins.rigid
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      Stationary
+   

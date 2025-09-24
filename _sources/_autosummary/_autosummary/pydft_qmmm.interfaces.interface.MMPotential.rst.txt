@@ -1,0 +1,95 @@
+pydft\_qmmm.interfaces.interface.MMPotential
+============================================
+
+.. currentmodule:: pydft_qmmm.interfaces.interface
+
+.. autoclass:: MMPotential
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~MMPotential.add_non_elst
+   
+   
+      ~MMPotential.add_real_elst
+   
+   
+      ~MMPotential.compute_components
+   
+   
+      ~MMPotential.compute_energy
+   
+   
+      ~MMPotential.compute_forces
+   
+   
+      ~MMPotential.get_pme_parameters
+   
+   
+      ~MMPotential.zero_charges
+   
+   
+      ~MMPotential.zero_forces
+   
+   
+      ~MMPotential.zero_intermolecular
+   
+   
+      ~MMPotential.zero_intramolecular
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: MMPotential.add_non_elst
+   
+   
+   
+   .. automethod:: MMPotential.add_real_elst
+   
+   
+   
+   .. automethod:: MMPotential.compute_components
+   
+   
+   
+   .. automethod:: MMPotential.compute_energy
+   
+   
+   
+   .. automethod:: MMPotential.compute_forces
+   
+   
+   
+   .. automethod:: MMPotential.get_pme_parameters
+   
+   
+   
+   .. automethod:: MMPotential.zero_charges
+   
+   
+   
+   .. automethod:: MMPotential.zero_forces
+   
+   
+   
+   .. automethod:: MMPotential.zero_intermolecular
+   
+   
+   
+   .. automethod:: MMPotential.zero_intramolecular
+   
+   
+    
+   

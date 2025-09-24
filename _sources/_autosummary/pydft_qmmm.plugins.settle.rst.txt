@@ -1,0 +1,19 @@
+pydft\_qmmm.plugins.settle
+==========================
+
+.. automodule:: pydft_qmmm.plugins.settle
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      SETTLE
+   

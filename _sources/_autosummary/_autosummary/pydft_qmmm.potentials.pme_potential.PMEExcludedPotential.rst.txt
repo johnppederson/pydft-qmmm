@@ -1,0 +1,67 @@
+pydft\_qmmm.potentials.pme\_potential.PMEExcludedPotential
+==========================================================
+
+.. currentmodule:: pydft_qmmm.potentials.pme_potential
+
+.. autoclass:: PMEExcludedPotential
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~PMEExcludedPotential.compute_components
+   
+   
+      ~PMEExcludedPotential.compute_energy
+   
+   
+      ~PMEExcludedPotential.compute_forces
+   
+   
+      ~PMEExcludedPotential.compute_potential_and_derivs
+   
+   
+      ~PMEExcludedPotential.get_nuclear_charges
+   
+   
+      ~PMEExcludedPotential.update_box
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: PMEExcludedPotential.compute_components
+   
+   
+   
+   .. automethod:: PMEExcludedPotential.compute_energy
+   
+   
+   
+   .. automethod:: PMEExcludedPotential.compute_forces
+   
+   
+   
+   .. automethod:: PMEExcludedPotential.compute_potential_and_derivs
+   
+   
+   
+   .. automethod:: PMEExcludedPotential.get_nuclear_charges
+   
+   
+   
+   .. automethod:: PMEExcludedPotential.update_box
+   
+   
+    
+   

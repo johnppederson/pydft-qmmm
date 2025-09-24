@@ -1,0 +1,19 @@
+﻿pydft\_qmmm.potentials
+======================
+
+.. automodule:: pydft_qmmm.potentials
+
+   
+   
+   
+    
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+
+   pme_potential
+   potential

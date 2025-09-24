@@ -1,0 +1,39 @@
+pydft\_qmmm.plugins.settle.SETTLE
+=================================
+
+.. currentmodule:: pydft_qmmm.plugins.settle
+
+.. autoclass:: SETTLE
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~SETTLE.constrain_velocities
+   
+   
+      ~SETTLE.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: SETTLE.constrain_velocities
+   
+   
+   
+   .. automethod:: SETTLE.modify
+   
+   
+    
+   

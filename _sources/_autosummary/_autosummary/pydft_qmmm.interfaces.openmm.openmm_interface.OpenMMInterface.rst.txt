@@ -1,0 +1,102 @@
+pydft\_qmmm.interfaces.openmm.openmm\_interface.OpenMMInterface
+===============================================================
+
+.. currentmodule:: pydft_qmmm.interfaces.openmm.openmm_interface
+
+.. autoclass:: OpenMMInterface
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~OpenMMInterface.add_non_elst
+   
+   
+      ~OpenMMInterface.add_real_elst
+   
+   
+      ~OpenMMInterface.get_pme_parameters
+   
+   
+      ~OpenMMInterface.update_box
+   
+   
+      ~OpenMMInterface.update_charges
+   
+   
+      ~OpenMMInterface.update_positions
+   
+   
+      ~OpenMMInterface.update_subsystems
+   
+   
+      ~OpenMMInterface.zero_charges
+   
+   
+      ~OpenMMInterface.zero_forces
+   
+   
+      ~OpenMMInterface.zero_intermolecular
+   
+   
+      ~OpenMMInterface.zero_intramolecular
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: OpenMMInterface.add_non_elst
+   
+   
+   
+   .. automethod:: OpenMMInterface.add_real_elst
+   
+   
+   
+   .. automethod:: OpenMMInterface.get_pme_parameters
+   
+   
+   
+   .. automethod:: OpenMMInterface.update_box
+   
+   
+   
+   .. automethod:: OpenMMInterface.update_charges
+   
+   
+   
+   .. automethod:: OpenMMInterface.update_positions
+   
+   
+   
+   .. automethod:: OpenMMInterface.update_subsystems
+   
+   
+   
+   .. automethod:: OpenMMInterface.zero_charges
+   
+   
+   
+   .. automethod:: OpenMMInterface.zero_forces
+   
+   
+   
+   .. automethod:: OpenMMInterface.zero_intermolecular
+   
+   
+   
+   .. automethod:: OpenMMInterface.zero_intramolecular
+   
+   
+    
+   

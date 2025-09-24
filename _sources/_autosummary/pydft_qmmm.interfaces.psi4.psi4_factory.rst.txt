@@ -1,0 +1,20 @@
+pydft\_qmmm.interfaces.psi4.psi4\_factory
+=========================================
+
+.. automodule:: pydft_qmmm.interfaces.psi4.psi4_factory
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      psi4_interface_factory
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.interfaces.psi4.psi4_factory.psi4_interface_factory
+   
+    
+   

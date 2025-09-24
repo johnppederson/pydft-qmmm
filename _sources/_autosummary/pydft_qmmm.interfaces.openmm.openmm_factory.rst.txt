@@ -1,0 +1,20 @@
+pydft\_qmmm.interfaces.openmm.openmm\_factory
+=============================================
+
+.. automodule:: pydft_qmmm.interfaces.openmm.openmm_factory
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      openmm_interface_factory
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.interfaces.openmm.openmm_factory.openmm_interface_factory
+   
+    
+   

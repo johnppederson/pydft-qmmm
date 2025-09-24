@@ -1,0 +1,35 @@
+pydft\_qmmm.system.selection\_utils
+===================================
+
+.. automodule:: pydft_qmmm.system.selection_utils
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      decompose
+      evaluate
+      evaluate_math
+      interpret
+      isvalue
+      line_slice
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.system.selection_utils.decompose
+   
+   .. autofunction:: pydft_qmmm.system.selection_utils.evaluate
+   
+   .. autofunction:: pydft_qmmm.system.selection_utils.evaluate_math
+   
+   .. autofunction:: pydft_qmmm.system.selection_utils.interpret
+   
+   .. autofunction:: pydft_qmmm.system.selection_utils.isvalue
+   
+   .. autofunction:: pydft_qmmm.system.selection_utils.line_slice
+   
+    
+   

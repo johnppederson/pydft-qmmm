@@ -1,0 +1,53 @@
+pydft\_qmmm.interfaces.interface.QMPotential
+============================================
+
+.. currentmodule:: pydft_qmmm.interfaces.interface
+
+.. autoclass:: QMPotential
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~QMPotential.add_electronic_potential
+   
+   
+      ~QMPotential.compute_components
+   
+   
+      ~QMPotential.compute_energy
+   
+   
+      ~QMPotential.compute_forces
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: QMPotential.add_electronic_potential
+   
+   
+   
+   .. automethod:: QMPotential.compute_components
+   
+   
+   
+   .. automethod:: QMPotential.compute_energy
+   
+   
+   
+   .. automethod:: QMPotential.compute_forces
+   
+   
+    
+   

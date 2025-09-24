@@ -1,0 +1,19 @@
+pydft\_qmmm.hamiltonians.hamiltonian.Hamiltonian
+================================================
+
+.. currentmodule:: pydft_qmmm.hamiltonians.hamiltonian
+
+.. autoclass:: Hamiltonian
+
+   
+
+   
+   
+
+   
+   
+   
+   
+   
+    
+   

@@ -1,0 +1,53 @@
+pydft\_qmmm.integrators.verlet\_integrator.VerletIntegrator
+===========================================================
+
+.. currentmodule:: pydft_qmmm.integrators.verlet_integrator
+
+.. autoclass:: VerletIntegrator
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~VerletIntegrator.active_plugins
+   
+   
+      ~VerletIntegrator.compute_kinetic_energy
+   
+   
+      ~VerletIntegrator.integrate
+   
+   
+      ~VerletIntegrator.register_plugin
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: VerletIntegrator.active_plugins
+   
+   
+   
+   .. automethod:: VerletIntegrator.compute_kinetic_energy
+   
+   
+   
+   .. automethod:: VerletIntegrator.integrate
+   
+   
+   
+   .. automethod:: VerletIntegrator.register_plugin
+   
+   
+    
+   

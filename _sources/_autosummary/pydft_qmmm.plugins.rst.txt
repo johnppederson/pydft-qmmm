@@ -1,0 +1,26 @@
+﻿pydft\_qmmm.plugins
+===================
+
+.. automodule:: pydft_qmmm.plugins
+
+   
+   
+   
+    
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+
+   atom_partition
+   center
+   centroid_partition
+   firstatom_partition
+   plugin_manager
+   plumed
+   rigid
+   settle
+   wrap

@@ -1,0 +1,2057 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 --><title>Index - PyDFT-QMMM documentation</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=506bd67a" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">PyDFT-QMMM  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">PyDFT-QMMM  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api_docs.html">Code Documentation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Code Documentation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.calculators.html">pydft_qmmm.calculators</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.calculators.calculator.html">pydft_qmmm.calculators.calculator</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators.calculator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Calculator.html">pydft_qmmm.calculators.calculator.Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.CalculatorPlugin.html">pydft_qmmm.calculators.calculator.CalculatorPlugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Results.html">pydft_qmmm.calculators.calculator.Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.calculators.composite_calculator.html">pydft_qmmm.calculators.composite_calculator</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators.composite_calculator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculator.html">pydft_qmmm.calculators.composite_calculator.CompositeCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin.html">pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html">pydft_qmmm.calculators.composite_calculator.PartitionPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.calculators.potential_calculator.html">pydft_qmmm.calculators.potential_calculator</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators.potential_calculator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.calculators.potential_calculator.PotentialCalculator.html">pydft_qmmm.calculators.potential_calculator.PotentialCalculator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.hamiltonians.html">pydft_qmmm.hamiltonians</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.hamiltonians.hamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.html">pydft_qmmm.hamiltonians.mm_hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.mm_hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.html">pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.html">pydft_qmmm.hamiltonians.qm_hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.qm_hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.html">pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html">pydft_qmmm.hamiltonians.qmmm_hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.qmmm_hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.html">pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.integrators.html">pydft_qmmm.integrators</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.integrators.integrator.html">pydft_qmmm.integrators.integrator</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators.integrator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html">pydft_qmmm.integrators.integrator.Integrator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.IntegratorPlugin.html">pydft_qmmm.integrators.integrator.IntegratorPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.integrators.langevin_integrator.html">pydft_qmmm.integrators.langevin_integrator</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators.langevin_integrator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.html">pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.integrators.verlet_integrator.html">pydft_qmmm.integrators.verlet_integrator</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators.verlet_integrator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.html">pydft_qmmm.integrators.verlet_integrator.VerletIntegrator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.html">pydft_qmmm.interfaces</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.interface.html">pydft_qmmm.interfaces.interface</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html">pydft_qmmm.interfaces.interface.MMInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html">pydft_qmmm.interfaces.interface.MMPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMInterface.html">pydft_qmmm.interfaces.interface.QMInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMPotential.html">pydft_qmmm.interfaces.interface.QMPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.SoftwareInterface.html">pydft_qmmm.interfaces.interface.SoftwareInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.interface_manager.html">pydft_qmmm.interfaces.interface_manager</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.openmm.html">pydft_qmmm.interfaces.openmm</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.openmm</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html">pydft_qmmm.interfaces.openmm.openmm_factory</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.html">pydft_qmmm.interfaces.openmm.openmm_interface</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.openmm.openmm_interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html">pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html">pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_utils.html">pydft_qmmm.interfaces.openmm.openmm_utils</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.psi4.html">pydft_qmmm.interfaces.psi4</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.psi4</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_factory.html">pydft_qmmm.interfaces.psi4.psi4_factory</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.html">pydft_qmmm.interfaces.psi4.psi4_interface</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.psi4.psi4_interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html">pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html">pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_utils.html">pydft_qmmm.interfaces.psi4.psi4_utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.potentials.html">pydft_qmmm.potentials</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of pydft_qmmm.potentials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.potentials.pme_potential.html">pydft_qmmm.potentials.pme_potential</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of pydft_qmmm.potentials.pme_potential</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.html">pydft_qmmm.potentials.pme_potential.HelPMEPyInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html">pydft_qmmm.potentials.pme_potential.PMEElectronicPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html">pydft_qmmm.potentials.pme_potential.PMEExcludedPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html">pydft_qmmm.potentials.pme_potential.PMENuclearPotential</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.potentials.potential.html">pydft_qmmm.potentials.potential</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of pydft_qmmm.potentials.potential</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html">pydft_qmmm.potentials.potential.AtomicPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.ElectronicPotential.html">pydft_qmmm.potentials.potential.ElectronicPotential</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.html">pydft_qmmm.plugins</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.atom_partition.html">pydft_qmmm.plugins.atom_partition</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.atom_partition</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html">pydft_qmmm.plugins.atom_partition.AtomPartition</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.center.html">pydft_qmmm.plugins.center</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.center</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.center.CalculatorCenter.html">pydft_qmmm.plugins.center.CalculatorCenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.center.IntegratorCenter.html">pydft_qmmm.plugins.center.IntegratorCenter</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.centroid_partition.html">pydft_qmmm.plugins.centroid_partition</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.centroid_partition</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.centroid_partition.CentroidPartition.html">pydft_qmmm.plugins.centroid_partition.CentroidPartition</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.firstatom_partition.html">pydft_qmmm.plugins.firstatom_partition</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.firstatom_partition</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.html">pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.plugin_manager.html">pydft_qmmm.plugins.plugin_manager</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.plumed.html">pydft_qmmm.plugins.plumed</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.plumed</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.plumed.Plumed.html">pydft_qmmm.plugins.plumed.Plumed</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.rigid.html">pydft_qmmm.plugins.rigid</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.rigid</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.rigid.Stationary.html">pydft_qmmm.plugins.rigid.Stationary</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.settle.html">pydft_qmmm.plugins.settle</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.settle</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.settle.SETTLE.html">pydft_qmmm.plugins.settle.SETTLE</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.plugins.wrap.html">pydft_qmmm.plugins.wrap</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.wrap</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.wrap.CalculatorWrap.html">pydft_qmmm.plugins.wrap.CalculatorWrap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.plugins.wrap.IntegratorWrap.html">pydft_qmmm.plugins.wrap.IntegratorWrap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.system.html">pydft_qmmm.system</a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.system.atom.html">pydft_qmmm.system.atom</a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system.atom</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.system.atom.Atom.html">pydft_qmmm.system.atom.Atom</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/pydft_qmmm.system.file_manager.html">pydft_qmmm.system.file_manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/pydft_qmmm.system.selection_utils.html">pydft_qmmm.system.selection_utils</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.system.system.html">pydft_qmmm.system.system</a><input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" role="switch" type="checkbox"/><label for="toctree-checkbox-35"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system.system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.system.system.System.html">pydft_qmmm.system.system.System</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.system.variable.html">pydft_qmmm.system.variable</a><input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" role="switch" type="checkbox"/><label for="toctree-checkbox-36"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system.variable</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.system.variable.ArrayValue.html">pydft_qmmm.system.variable.ArrayValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html">pydft_qmmm.system.variable.ObservedArray</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.utils.html">pydft_qmmm.utils</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.utils.constants.html">pydft_qmmm.utils.constants</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils.constants</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.constants.Subsystem.html">pydft_qmmm.utils.constants.Subsystem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.constants.TheoryLevel.html">pydft_qmmm.utils.constants.TheoryLevel</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/pydft_qmmm.utils.descriptor.html">pydft_qmmm.utils.descriptor</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.utils.exceptions.html">pydft_qmmm.utils.exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" role="switch" type="checkbox"/><label for="toctree-checkbox-39"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils.exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.AssetImportError.html">pydft_qmmm.utils.exceptions.AssetImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.DependencyImportError.html">pydft_qmmm.utils.exceptions.DependencyImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.InterfaceImportError.html">pydft_qmmm.utils.exceptions.InterfaceImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.PluginImportError.html">pydft_qmmm.utils.exceptions.PluginImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.PyDFTQMMMException.html">pydft_qmmm.utils.exceptions.PyDFTQMMMException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.TheoryLevelError.html">pydft_qmmm.utils.exceptions.TheoryLevelError</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/pydft_qmmm.utils.lattice.html">pydft_qmmm.utils.lattice</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.utils.logging.html">pydft_qmmm.utils.logging</a><input class="toctree-checkbox" id="toctree-checkbox-40" name="toctree-checkbox-40" role="switch" type="checkbox"/><label for="toctree-checkbox-40"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils.logging</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html">pydft_qmmm.utils.logging.DCDHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.EnergyRecord.html">pydft_qmmm.utils.logging.EnergyRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.FrameRecord.html">pydft_qmmm.utils.logging.FrameRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.Loggable.html">pydft_qmmm.utils.logging.Loggable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html">pydft_qmmm.utils.logging.PositionRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html">pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html">pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html">pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html">pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html">pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/pydft_qmmm.utils.misc.html">pydft_qmmm.utils.misc</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.wrappers.html">pydft_qmmm.wrappers</a><input class="toctree-checkbox" id="toctree-checkbox-41" name="toctree-checkbox-41" role="switch" type="checkbox"/><label for="toctree-checkbox-41"><div class="visually-hidden">Toggle navigation of pydft_qmmm.wrappers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.wrappers.optimization.html">pydft_qmmm.wrappers.optimization</a><input class="toctree-checkbox" id="toctree-checkbox-42" name="toctree-checkbox-42" role="switch" type="checkbox"/><label for="toctree-checkbox-42"><div class="visually-hidden">Toggle navigation of pydft_qmmm.wrappers.optimization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html">pydft_qmmm.wrappers.optimization.Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/pydft_qmmm.wrappers.simulation.html">pydft_qmmm.wrappers.simulation</a><input class="toctree-checkbox" id="toctree-checkbox-43" name="toctree-checkbox-43" role="switch" type="checkbox"/><label for="toctree-checkbox-43"><div class="visually-hidden">Toggle navigation of pydft_qmmm.wrappers.simulation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/_autosummary/pydft_qmmm.wrappers.simulation.Simulation.html">pydft_qmmm.wrappers.simulation.Simulation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          
+<section class="genindex-section">
+  <h1 id="index">Index</h1>
+  <div class="genindex-jumpbox"><a href="#_"><strong>_</strong></a> | <a href="#A"><strong>A</strong></a> | <a href="#B"><strong>B</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#K"><strong>K</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#N"><strong>N</strong></a> | <a href="#O"><strong>O</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#Q"><strong>Q</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#V"><strong>V</strong></a> | <a href="#W"><strong>W</strong></a> | <a href="#Z"><strong>Z</strong></a></div>
+</section>
+<section id="_" class="genindex-section">
+  <h2>_</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian._CLOSE_EMBEDDING">_CLOSE_EMBEDDING (in module pydft_qmmm.hamiltonians.qmmm_hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian._DEFAULT_FORCE_MATRIX">_DEFAULT_FORCE_MATRIX (in module pydft_qmmm.hamiltonians.qmmm_hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html#pydft_qmmm.wrappers.optimization.Optimization._frame">_frame (pydft_qmmm.wrappers.optimization.Optimization attribute)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.simulation.Simulation.html#pydft_qmmm.wrappers.simulation.Simulation._frame">(pydft_qmmm.wrappers.simulation.Simulation attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian._LONG_EMBEDDING">_LONG_EMBEDDING (in module pydft_qmmm.hamiltonians.qmmm_hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray._notifiers">_notifiers (pydft_qmmm.system.variable.ObservedArray attribute)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator._plugins">_plugins (pydft_qmmm.calculators.calculator.Calculator attribute)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator._plugins">(pydft_qmmm.integrators.integrator.Integrator attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian._SUPPORTED_EMBEDDING">_SUPPORTED_EMBEDDING (in module pydft_qmmm.hamiltonians.qmmm_hamiltonian)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.acquire">acquire() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator.active_plugins">active_plugins() (pydft_qmmm.calculators.calculator.Calculator method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculator.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculator.active_plugins">(pydft_qmmm.calculators.composite_calculator.CompositeCalculator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.potential_calculator.PotentialCalculator.html#pydft_qmmm.calculators.potential_calculator.PotentialCalculator.active_plugins">(pydft_qmmm.calculators.potential_calculator.PotentialCalculator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator.active_plugins">(pydft_qmmm.integrators.integrator.Integrator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.html#pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.active_plugins">(pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.html#pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.active_plugins">(pydft_qmmm.integrators.verlet_integrator.VerletIntegrator method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMInterface.html#pydft_qmmm.interfaces.interface.QMInterface.add_electronic_potential">add_electronic_potential() (pydft_qmmm.interfaces.interface.QMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMPotential.html#pydft_qmmm.interfaces.interface.QMPotential.add_electronic_potential">(pydft_qmmm.interfaces.interface.QMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.add_electronic_potential">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.add_electronic_potential">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.add_non_elst">add_non_elst() (pydft_qmmm.interfaces.interface.MMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.add_non_elst">(pydft_qmmm.interfaces.interface.MMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.add_non_elst">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.add_non_elst">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.add_real_elst">add_real_elst() (pydft_qmmm.interfaces.interface.MMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.add_real_elst">(pydft_qmmm.interfaces.interface.MMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.add_real_elst">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.add_real_elst">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.addFilter">addFilter() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.all">all() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.any">any() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.apply_exclusions">apply_exclusions() (pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.argmax">argmax() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.argmin">argmin() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.argpartition">argpartition() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.argsort">argsort() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ArrayValue.html#pydft_qmmm.system.variable.ArrayValue">ArrayValue (class in pydft_qmmm.system.variable)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.AssetImportError.html#pydft_qmmm.utils.exceptions.AssetImportError">AssetImportError (class in pydft_qmmm.utils.exceptions)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.astype">astype() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.atom.Atom.html#pydft_qmmm.system.atom.Atom">Atom (class in pydft_qmmm.system.atom)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential">AtomicPotential (class in pydft_qmmm.potentials.potential)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html#pydft_qmmm.plugins.atom_partition.AtomPartition">AtomPartition (class in pydft_qmmm.plugins.atom_partition)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.atoms">atoms (pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="B" class="genindex-section">
+  <h2>B</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.base">base (pydft_qmmm.system.variable.ObservedArray attribute)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.constants.html#pydft_qmmm.utils.constants.BOHR_PER_ANGSTROM">BOHR_PER_ANGSTROM (in module pydft_qmmm.utils.constants)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html#pydft_qmmm.utils.logging.PositionRecord.box">box (pydft_qmmm.utils.logging.PositionRecord attribute)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.build_calculator">build_calculator() (pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.build_calculator">(pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.build_calculator">(pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.html#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.build_calculator">(pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.html#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.build_calculator">(pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.byteswap">byteswap() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="C" class="genindex-section">
+  <h2>C</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator.calculate">calculate() (pydft_qmmm.calculators.calculator.Calculator method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculator.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculator.calculate">(pydft_qmmm.calculators.composite_calculator.CompositeCalculator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.potential_calculator.PotentialCalculator.html#pydft_qmmm.calculators.potential_calculator.PotentialCalculator.calculate">(pydft_qmmm.calculators.potential_calculator.PotentialCalculator method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html#pydft_qmmm.wrappers.optimization.Optimization.calculate_energy_forces">calculate_energy_forces() (pydft_qmmm.wrappers.optimization.Optimization method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.simulation.Simulation.html#pydft_qmmm.wrappers.simulation.Simulation.calculate_energy_forces">(pydft_qmmm.wrappers.simulation.Simulation method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator">Calculator (class in pydft_qmmm.calculators.calculator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.center.CalculatorCenter.html#pydft_qmmm.plugins.center.CalculatorCenter">CalculatorCenter (class in pydft_qmmm.plugins.center)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.CalculatorPlugin.html#pydft_qmmm.calculators.calculator.CalculatorPlugin">CalculatorPlugin (class in pydft_qmmm.calculators.calculator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.wrap.CalculatorWrap.html#pydft_qmmm.plugins.wrap.CalculatorWrap">CalculatorWrap (class in pydft_qmmm.plugins.wrap)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.misc.html#pydft_qmmm.utils.misc.center_positions">center_positions() (in module pydft_qmmm.utils.misc)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.centroid_partition.CentroidPartition.html#pydft_qmmm.plugins.centroid_partition.CentroidPartition">CentroidPartition (class in pydft_qmmm.plugins.centroid_partition)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.misc.html#pydft_qmmm.utils.misc.check_array">check_array() (in module pydft_qmmm.utils.misc)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.choose">choose() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.clip">clip() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.close">close() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculator.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculator">CompositeCalculator (class in pydft_qmmm.calculators.composite_calculator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin">CompositeCalculatorPlugin (class in pydft_qmmm.calculators.composite_calculator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian">CompositeHamiltonian (class in pydft_qmmm.hamiltonians.hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.compress">compress() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.compute_components">compute_components() (pydft_qmmm.interfaces.interface.MMPotential method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMPotential.html#pydft_qmmm.interfaces.interface.QMPotential.compute_components">(pydft_qmmm.interfaces.interface.QMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.compute_components">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_components">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.compute_components">(pydft_qmmm.potentials.pme_potential.PMEExcludedPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_components">(pydft_qmmm.potentials.pme_potential.PMENuclearPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential.compute_components">(pydft_qmmm.potentials.potential.AtomicPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.compute_energy">compute_energy() (pydft_qmmm.interfaces.interface.MMPotential method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMPotential.html#pydft_qmmm.interfaces.interface.QMPotential.compute_energy">(pydft_qmmm.interfaces.interface.QMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.compute_energy">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_energy">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.compute_energy">(pydft_qmmm.potentials.pme_potential.PMEExcludedPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_energy">(pydft_qmmm.potentials.pme_potential.PMENuclearPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential.compute_energy">(pydft_qmmm.potentials.potential.AtomicPotential method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.compute_forces">compute_forces() (pydft_qmmm.interfaces.interface.MMPotential method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMPotential.html#pydft_qmmm.interfaces.interface.QMPotential.compute_forces">(pydft_qmmm.interfaces.interface.QMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.compute_forces">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_forces">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.compute_forces">(pydft_qmmm.potentials.pme_potential.PMEExcludedPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_forces">(pydft_qmmm.potentials.pme_potential.PMENuclearPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential.compute_forces">(pydft_qmmm.potentials.potential.AtomicPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator.compute_kinetic_energy">compute_kinetic_energy() (pydft_qmmm.integrators.integrator.Integrator method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.html#pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.compute_kinetic_energy">(pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.html#pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.compute_kinetic_energy">(pydft_qmmm.integrators.verlet_integrator.VerletIntegrator method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/pydft_qmmm.utils.lattice.html#pydft_qmmm.utils.lattice.compute_lattice_constants">compute_lattice_constants() (in module pydft_qmmm.utils.lattice)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.lattice.html#pydft_qmmm.utils.lattice.compute_lattice_vectors">compute_lattice_vectors() (in module pydft_qmmm.utils.lattice)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.lattice.html#pydft_qmmm.utils.lattice.compute_least_mirror">compute_least_mirror() (in module pydft_qmmm.utils.lattice)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html#pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.compute_potential">compute_potential() (pydft_qmmm.potentials.pme_potential.PMEElectronicPotential method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.ElectronicPotential.html#pydft_qmmm.potentials.potential.ElectronicPotential.compute_potential">(pydft_qmmm.potentials.potential.ElectronicPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.compute_potential_and_derivs">compute_potential_and_derivs() (pydft_qmmm.potentials.pme_potential.PMEExcludedPotential method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_potential_and_derivs">(pydft_qmmm.potentials.pme_potential.PMENuclearPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.conj">conj() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.conjugate">conjugate() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.rigid.Stationary.html#pydft_qmmm.plugins.rigid.Stationary.constrain_velocities">constrain_velocities() (pydft_qmmm.plugins.rigid.Stationary method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.settle.SETTLE.html#pydft_qmmm.plugins.settle.SETTLE.constrain_velocities">(pydft_qmmm.plugins.settle.SETTLE method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.converter">converter() (pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.converter">(pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.copy">copy() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.count">count() (pydft_qmmm.system.system.System method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian">CouplingHamiltonian (class in pydft_qmmm.hamiltonians.hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.createLock">createLock() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.cumprod">cumprod() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.cumsum">cumsum() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html#pydft_qmmm.calculators.composite_calculator.PartitionPlugin.cutoff">cutoff (pydft_qmmm.calculators.composite_calculator.PartitionPlugin attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler">DCDHandler (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.decompose">decompose() (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.DependencyImportError.html#pydft_qmmm.utils.exceptions.DependencyImportError">DependencyImportError (class in pydft_qmmm.utils.exceptions)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.diagonal">diagonal() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_utils.html#pydft_qmmm.interfaces.psi4.psi4_utils.disable_logging">disable_logging() (in module pydft_qmmm.interfaces.psi4.psi4_utils)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.interface_manager.html#pydft_qmmm.interfaces.interface_manager.DISCOVERED_INTERFACES">DISCOVERED_INTERFACES (in module pydft_qmmm.interfaces.interface_manager)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.plugins.plugin_manager.html#pydft_qmmm.plugins.plugin_manager.DISCOVERED_PLUGINS">DISCOVERED_PLUGINS (in module pydft_qmmm.plugins.plugin_manager)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.dot">dot() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.dump">dump() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.dumps">dumps() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.potential.ElectronicPotential.html#pydft_qmmm.potentials.potential.ElectronicPotential">ElectronicPotential (class in pydft_qmmm.potentials.potential)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.constants.html#pydft_qmmm.utils.constants.ELEMENT_TO_MASS">ELEMENT_TO_MASS (in module pydft_qmmm.utils.constants)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.emit">emit() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.EnergyRecord.html#pydft_qmmm.utils.logging.EnergyRecord.energy">energy (pydft_qmmm.utils.logging.EnergyRecord attribute)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.EnergyRecord.html#pydft_qmmm.utils.logging.EnergyRecord">EnergyRecord (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.evaluate">evaluate() (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.evaluate_math">evaluate_math() (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.FAST_KEYWORDS">FAST_KEYWORDS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.FAST_SELECTORS">FAST_SELECTORS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.FAST_VARIABLES">FAST_VARIABLES (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.fill">fill() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.filter">filter() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.filter">(pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.filter">(pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.filter">(pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.html#pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition">FirstAtomPartition (class in pydft_qmmm.plugins.firstatom_partition)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.flatten">flatten() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.flush">flush() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.force_matrix">force_matrix (pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian attribute)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.format">format() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.format">(pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.format">(pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.formatException">formatException() (pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.formatException">(pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.formatMessage">formatMessage() (pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.formatMessage">(pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.formatStack">formatStack() (pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.formatStack">(pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.formatTime">formatTime() (pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.formatTime">(pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.frame">frame (pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface attribute)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.frame">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential attribute)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.FrameRecord.html#pydft_qmmm.utils.logging.FrameRecord.frame">(pydft_qmmm.utils.logging.FrameRecord attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.FrameRecord.html#pydft_qmmm.utils.logging.FrameRecord">FrameRecord (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.FUNCTIONS">FUNCTIONS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="G" class="genindex-section">
+  <h2>G</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html#pydft_qmmm.calculators.composite_calculator.PartitionPlugin.generate_partition">generate_partition() (pydft_qmmm.calculators.composite_calculator.PartitionPlugin method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html#pydft_qmmm.plugins.atom_partition.AtomPartition.generate_partition">(pydft_qmmm.plugins.atom_partition.AtomPartition method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.centroid_partition.CentroidPartition.html#pydft_qmmm.plugins.centroid_partition.CentroidPartition.generate_partition">(pydft_qmmm.plugins.centroid_partition.CentroidPartition method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.html#pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.generate_partition">(pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/pydft_qmmm.utils.misc.html#pydft_qmmm.utils.misc.generate_velocities">generate_velocities() (in module pydft_qmmm.utils.misc)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.interface_manager.html#pydft_qmmm.interfaces.interface_manager.get_interfaces">get_interfaces() (in module pydft_qmmm.interfaces.interface_manager)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.get_name">get_name() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.get_nuclear_charges">get_nuclear_charges() (pydft_qmmm.potentials.pme_potential.PMEExcludedPotential method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.get_nuclear_charges">(pydft_qmmm.potentials.pme_potential.PMENuclearPotential method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.plugins.plugin_manager.html#pydft_qmmm.plugins.plugin_manager.get_plugins">get_plugins() (in module pydft_qmmm.plugins.plugin_manager)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.get_pme_parameters">get_pme_parameters() (pydft_qmmm.interfaces.interface.MMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.get_pme_parameters">(pydft_qmmm.interfaces.interface.MMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.get_pme_parameters">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.get_pme_parameters">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.getfield">getfield() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.EnergyRecord.html#pydft_qmmm.utils.logging.EnergyRecord.getMessage">getMessage() (pydft_qmmm.utils.logging.EnergyRecord method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.FrameRecord.html#pydft_qmmm.utils.logging.FrameRecord.getMessage">(pydft_qmmm.utils.logging.FrameRecord method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html#pydft_qmmm.utils.logging.PositionRecord.getMessage">(pydft_qmmm.utils.logging.PositionRecord method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="H" class="genindex-section">
+  <h2>H</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian">Hamiltonian (class in pydft_qmmm.hamiltonians.hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.handle">handle() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.handleError">handleError() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.html#pydft_qmmm.potentials.pme_potential.HelPMEPyInterface">HelPMEPyInterface (class in pydft_qmmm.potentials.pme_potential)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="I" class="genindex-section">
+  <h2>I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.index">index() (pydft_qmmm.system.system.System method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator.integrate">integrate() (pydft_qmmm.integrators.integrator.Integrator method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.html#pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.integrate">(pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.html#pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.integrate">(pydft_qmmm.integrators.verlet_integrator.VerletIntegrator method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator">Integrator (class in pydft_qmmm.integrators.integrator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.center.IntegratorCenter.html#pydft_qmmm.plugins.center.IntegratorCenter">IntegratorCenter (class in pydft_qmmm.plugins.center)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.IntegratorPlugin.html#pydft_qmmm.integrators.integrator.IntegratorPlugin">IntegratorPlugin (class in pydft_qmmm.integrators.integrator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.wrap.IntegratorWrap.html#pydft_qmmm.plugins.wrap.IntegratorWrap">IntegratorWrap (class in pydft_qmmm.plugins.wrap)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.interface">interface (pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian attribute)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.InterfaceImportError.html#pydft_qmmm.utils.exceptions.InterfaceImportError">InterfaceImportError (class in pydft_qmmm.utils.exceptions)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.interpret">interpret() (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.isvalue">isvalue() (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.item">item() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="K" class="genindex-section">
+  <h2>K</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.utils.constants.html#pydft_qmmm.utils.constants.KB">KB (in module pydft_qmmm.utils.constants)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.KEYWORDS">KEYWORDS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.constants.html#pydft_qmmm.utils.constants.KJMOL_PER_EH">KJMOL_PER_EH (in module pydft_qmmm.utils.constants)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="L" class="genindex-section">
+  <h2>L</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.html#pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator">LangevinIntegrator (class in pydft_qmmm.integrators.langevin_integrator)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.line_slice">line_slice() (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.load">load() (pydft_qmmm.system.system.System static method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.system.file_manager.html#pydft_qmmm.system.file_manager.load_system">load_system() (in module pydft_qmmm.system.file_manager)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.interface_manager.html#pydft_qmmm.interfaces.interface_manager.LOADED_INTERFACES">LOADED_INTERFACES (in module pydft_qmmm.interfaces.interface_manager)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.plugins.plugin_manager.html#pydft_qmmm.plugins.plugin_manager.LOADED_PLUGINS">LOADED_PLUGINS (in module pydft_qmmm.plugins.plugin_manager)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.Loggable.html#pydft_qmmm.utils.logging.Loggable">Loggable (class in pydft_qmmm.utils.logging)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="M" class="genindex-section">
+  <h2>M</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_csv_handler">make_csv_handler() (in module pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_dcd_handler">make_dcd_handler() (in module pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_file_handler">make_file_handler() (in module pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_log_handler">make_log_handler() (in module pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.MATH_KEYWORDS">MATH_KEYWORDS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.max">max() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.mean">mean() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.min">min() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.html#pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian">MMHamiltonian (class in pydft_qmmm.hamiltonians.mm_hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface">MMInterface (class in pydft_qmmm.interfaces.interface)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential">MMPotential (class in pydft_qmmm.interfaces.interface)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.CalculatorPlugin.html#pydft_qmmm.calculators.calculator.CalculatorPlugin.modify">modify() (pydft_qmmm.calculators.calculator.CalculatorPlugin method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin.modify">(pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html#pydft_qmmm.calculators.composite_calculator.PartitionPlugin.modify">(pydft_qmmm.calculators.composite_calculator.PartitionPlugin method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.IntegratorPlugin.html#pydft_qmmm.integrators.integrator.IntegratorPlugin.modify">(pydft_qmmm.integrators.integrator.IntegratorPlugin method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html#pydft_qmmm.plugins.atom_partition.AtomPartition.modify">(pydft_qmmm.plugins.atom_partition.AtomPartition method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.center.CalculatorCenter.html#pydft_qmmm.plugins.center.CalculatorCenter.modify">(pydft_qmmm.plugins.center.CalculatorCenter method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.center.IntegratorCenter.html#pydft_qmmm.plugins.center.IntegratorCenter.modify">(pydft_qmmm.plugins.center.IntegratorCenter method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.centroid_partition.CentroidPartition.html#pydft_qmmm.plugins.centroid_partition.CentroidPartition.modify">(pydft_qmmm.plugins.centroid_partition.CentroidPartition method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.html#pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.modify">(pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.plumed.Plumed.html#pydft_qmmm.plugins.plumed.Plumed.modify">(pydft_qmmm.plugins.plumed.Plumed method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.rigid.Stationary.html#pydft_qmmm.plugins.rigid.Stationary.modify">(pydft_qmmm.plugins.rigid.Stationary method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.settle.SETTLE.html#pydft_qmmm.plugins.settle.SETTLE.modify">(pydft_qmmm.plugins.settle.SETTLE method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.wrap.CalculatorWrap.html#pydft_qmmm.plugins.wrap.CalculatorWrap.modify">(pydft_qmmm.plugins.wrap.CalculatorWrap method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.wrap.IntegratorWrap.html#pydft_qmmm.plugins.wrap.IntegratorWrap.modify">(pydft_qmmm.plugins.wrap.IntegratorWrap method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.modify_calculator">modify_calculator() (pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.modify_calculator">(pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin.modify_composite">modify_composite() (pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html#pydft_qmmm.calculators.composite_calculator.PartitionPlugin.modify_composite">(pydft_qmmm.calculators.composite_calculator.PartitionPlugin method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html#pydft_qmmm.plugins.atom_partition.AtomPartition.modify_composite">(pydft_qmmm.plugins.atom_partition.AtomPartition method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.centroid_partition.CentroidPartition.html#pydft_qmmm.plugins.centroid_partition.CentroidPartition.modify_composite">(pydft_qmmm.plugins.centroid_partition.CentroidPartition method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.html#pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.modify_composite">(pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition method)</a>
+</li>
+        </ul></li>
+        <li>
+    module
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.calculators.html#module-pydft_qmmm.calculators">pydft_qmmm.calculators</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.calculators.calculator.html#module-pydft_qmmm.calculators.calculator">pydft_qmmm.calculators.calculator</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.calculators.composite_calculator.html#module-pydft_qmmm.calculators.composite_calculator">pydft_qmmm.calculators.composite_calculator</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.calculators.potential_calculator.html#module-pydft_qmmm.calculators.potential_calculator">pydft_qmmm.calculators.potential_calculator</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.html#module-pydft_qmmm.hamiltonians">pydft_qmmm.hamiltonians</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.hamiltonian.html#module-pydft_qmmm.hamiltonians.hamiltonian">pydft_qmmm.hamiltonians.hamiltonian</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.html#module-pydft_qmmm.hamiltonians.mm_hamiltonian">pydft_qmmm.hamiltonians.mm_hamiltonian</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.html#module-pydft_qmmm.hamiltonians.qm_hamiltonian">pydft_qmmm.hamiltonians.qm_hamiltonian</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html#module-pydft_qmmm.hamiltonians.qmmm_hamiltonian">pydft_qmmm.hamiltonians.qmmm_hamiltonian</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.integrators.html#module-pydft_qmmm.integrators">pydft_qmmm.integrators</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.integrators.integrator.html#module-pydft_qmmm.integrators.integrator">pydft_qmmm.integrators.integrator</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.integrators.langevin_integrator.html#module-pydft_qmmm.integrators.langevin_integrator">pydft_qmmm.integrators.langevin_integrator</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.integrators.verlet_integrator.html#module-pydft_qmmm.integrators.verlet_integrator">pydft_qmmm.integrators.verlet_integrator</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.html#module-pydft_qmmm.interfaces">pydft_qmmm.interfaces</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.interface.html#module-pydft_qmmm.interfaces.interface">pydft_qmmm.interfaces.interface</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.interface_manager.html#module-pydft_qmmm.interfaces.interface_manager">pydft_qmmm.interfaces.interface_manager</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.html#module-pydft_qmmm.interfaces.openmm">pydft_qmmm.interfaces.openmm</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html#module-pydft_qmmm.interfaces.openmm.openmm_factory">pydft_qmmm.interfaces.openmm.openmm_factory</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.html#module-pydft_qmmm.interfaces.openmm.openmm_interface">pydft_qmmm.interfaces.openmm.openmm_interface</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_utils.html#module-pydft_qmmm.interfaces.openmm.openmm_utils">pydft_qmmm.interfaces.openmm.openmm_utils</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.html#module-pydft_qmmm.interfaces.psi4">pydft_qmmm.interfaces.psi4</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_factory.html#module-pydft_qmmm.interfaces.psi4.psi4_factory">pydft_qmmm.interfaces.psi4.psi4_factory</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.html#module-pydft_qmmm.interfaces.psi4.psi4_interface">pydft_qmmm.interfaces.psi4.psi4_interface</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_utils.html#module-pydft_qmmm.interfaces.psi4.psi4_utils">pydft_qmmm.interfaces.psi4.psi4_utils</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.html#module-pydft_qmmm.plugins">pydft_qmmm.plugins</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.atom_partition.html#module-pydft_qmmm.plugins.atom_partition">pydft_qmmm.plugins.atom_partition</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.center.html#module-pydft_qmmm.plugins.center">pydft_qmmm.plugins.center</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.centroid_partition.html#module-pydft_qmmm.plugins.centroid_partition">pydft_qmmm.plugins.centroid_partition</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.firstatom_partition.html#module-pydft_qmmm.plugins.firstatom_partition">pydft_qmmm.plugins.firstatom_partition</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.plugin_manager.html#module-pydft_qmmm.plugins.plugin_manager">pydft_qmmm.plugins.plugin_manager</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.plumed.html#module-pydft_qmmm.plugins.plumed">pydft_qmmm.plugins.plumed</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.rigid.html#module-pydft_qmmm.plugins.rigid">pydft_qmmm.plugins.rigid</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.settle.html#module-pydft_qmmm.plugins.settle">pydft_qmmm.plugins.settle</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.plugins.wrap.html#module-pydft_qmmm.plugins.wrap">pydft_qmmm.plugins.wrap</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.potentials.html#module-pydft_qmmm.potentials">pydft_qmmm.potentials</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.potentials.pme_potential.html#module-pydft_qmmm.potentials.pme_potential">pydft_qmmm.potentials.pme_potential</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.potentials.potential.html#module-pydft_qmmm.potentials.potential">pydft_qmmm.potentials.potential</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.system.html#module-pydft_qmmm.system">pydft_qmmm.system</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.system.atom.html#module-pydft_qmmm.system.atom">pydft_qmmm.system.atom</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.system.file_manager.html#module-pydft_qmmm.system.file_manager">pydft_qmmm.system.file_manager</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#module-pydft_qmmm.system.selection_utils">pydft_qmmm.system.selection_utils</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.system.system.html#module-pydft_qmmm.system.system">pydft_qmmm.system.system</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.system.variable.html#module-pydft_qmmm.system.variable">pydft_qmmm.system.variable</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.utils.html#module-pydft_qmmm.utils">pydft_qmmm.utils</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.utils.constants.html#module-pydft_qmmm.utils.constants">pydft_qmmm.utils.constants</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.utils.descriptor.html#module-pydft_qmmm.utils.descriptor">pydft_qmmm.utils.descriptor</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.utils.exceptions.html#module-pydft_qmmm.utils.exceptions">pydft_qmmm.utils.exceptions</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.utils.lattice.html#module-pydft_qmmm.utils.lattice">pydft_qmmm.utils.lattice</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.utils.logging.html#module-pydft_qmmm.utils.logging">pydft_qmmm.utils.logging</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.utils.misc.html#module-pydft_qmmm.utils.misc">pydft_qmmm.utils.misc</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.wrappers.html#module-pydft_qmmm.wrappers">pydft_qmmm.wrappers</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.wrappers.optimization.html#module-pydft_qmmm.wrappers.optimization">pydft_qmmm.wrappers.optimization</a>
+</li>
+          <li><a href="_autosummary/pydft_qmmm.wrappers.simulation.html#module-pydft_qmmm.wrappers.simulation">pydft_qmmm.wrappers.simulation</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="N" class="genindex-section">
+  <h2>N</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html#pydft_qmmm.interfaces.openmm.openmm_factory.NEEDS_CUTOFF">NEEDS_CUTOFF (in module pydft_qmmm.interfaces.openmm.openmm_factory)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.nonzero">nonzero() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.misc.html#pydft_qmmm.utils.misc.numerical_gradient">numerical_gradient() (in module pydft_qmmm.utils.misc)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="O" class="genindex-section">
+  <h2>O</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.system.variable.html#pydft_qmmm.system.variable.observed_class">observed_class() (in module pydft_qmmm.system.variable)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray">ObservedArray (class in pydft_qmmm.system.variable)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html#pydft_qmmm.interfaces.openmm.openmm_factory.openmm_interface_factory">openmm_interface_factory() (in module pydft_qmmm.interfaces.openmm.openmm_factory)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface">OpenMMInterface (class in pydft_qmmm.interfaces.openmm.openmm_interface)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential">OpenMMPotential (class in pydft_qmmm.interfaces.openmm.openmm_interface)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.OPERATORS">OPERATORS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html#pydft_qmmm.wrappers.optimization.Optimization">Optimization (class in pydft_qmmm.wrappers.optimization)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html#pydft_qmmm.wrappers.optimization.Optimization.optimize">optimize() (pydft_qmmm.wrappers.optimization.Optimization method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="P" class="genindex-section">
+  <h2>P</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.partition">partition() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html#pydft_qmmm.calculators.composite_calculator.PartitionPlugin">PartitionPlugin (class in pydft_qmmm.calculators.composite_calculator)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html#pydft_qmmm.interfaces.openmm.openmm_factory.PERIODIC">PERIODIC (in module pydft_qmmm.interfaces.openmm.openmm_factory)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.descriptor.html#pydft_qmmm.utils.descriptor.pluggable_method">pluggable_method() (in module pydft_qmmm.utils.descriptor)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.PluginImportError.html#pydft_qmmm.utils.exceptions.PluginImportError">PluginImportError (class in pydft_qmmm.utils.exceptions)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.plumed.Plumed.html#pydft_qmmm.plugins.plumed.Plumed">Plumed (class in pydft_qmmm.plugins.plumed)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.html#pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.pme">pme (pydft_qmmm.potentials.pme_potential.HelPMEPyInterface attribute)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html#pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.pme">(pydft_qmmm.potentials.pme_potential.PMEElectronicPotential attribute)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.pme">(pydft_qmmm.potentials.pme_potential.PMEExcludedPotential attribute)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.pme">(pydft_qmmm.potentials.pme_potential.PMENuclearPotential attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html#pydft_qmmm.potentials.pme_potential.PMEElectronicPotential">PMEElectronicPotential (class in pydft_qmmm.potentials.pme_potential)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential">PMEExcludedPotential (class in pydft_qmmm.potentials.pme_potential)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential">PMENuclearPotential (class in pydft_qmmm.potentials.pme_potential)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html#pydft_qmmm.utils.logging.PositionRecord.position">position (pydft_qmmm.utils.logging.PositionRecord attribute)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html#pydft_qmmm.utils.logging.PositionRecord">PositionRecord (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.potential_calculator.PotentialCalculator.html#pydft_qmmm.calculators.potential_calculator.PotentialCalculator">PotentialCalculator (class in pydft_qmmm.calculators.potential_calculator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian">PotentialHamiltonian (class in pydft_qmmm.hamiltonians.hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.potentials">potentials (pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface attribute)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.potentials">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.prod">prod() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_factory.html#pydft_qmmm.interfaces.psi4.psi4_factory.psi4_interface_factory">psi4_interface_factory() (in module pydft_qmmm.interfaces.psi4.psi4_factory)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface">Psi4Interface (class in pydft_qmmm.interfaces.psi4.psi4_interface)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential">Psi4Potential (class in pydft_qmmm.interfaces.psi4.psi4_interface)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.put">put() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li>
+    pydft_qmmm.calculators
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.calculators.html#module-pydft_qmmm.calculators">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.calculators.calculator
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.calculators.calculator.html#module-pydft_qmmm.calculators.calculator">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.calculators.composite_calculator
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.calculators.composite_calculator.html#module-pydft_qmmm.calculators.composite_calculator">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.calculators.potential_calculator
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.calculators.potential_calculator.html#module-pydft_qmmm.calculators.potential_calculator">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.hamiltonians
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.html#module-pydft_qmmm.hamiltonians">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.hamiltonians.hamiltonian
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.hamiltonian.html#module-pydft_qmmm.hamiltonians.hamiltonian">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.hamiltonians.mm_hamiltonian
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.html#module-pydft_qmmm.hamiltonians.mm_hamiltonian">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.hamiltonians.qm_hamiltonian
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.html#module-pydft_qmmm.hamiltonians.qm_hamiltonian">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.hamiltonians.qmmm_hamiltonian
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html#module-pydft_qmmm.hamiltonians.qmmm_hamiltonian">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.integrators
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.integrators.html#module-pydft_qmmm.integrators">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.integrators.integrator
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.integrators.integrator.html#module-pydft_qmmm.integrators.integrator">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.integrators.langevin_integrator
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.integrators.langevin_integrator.html#module-pydft_qmmm.integrators.langevin_integrator">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.integrators.verlet_integrator
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.integrators.verlet_integrator.html#module-pydft_qmmm.integrators.verlet_integrator">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.html#module-pydft_qmmm.interfaces">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.interface
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.interface.html#module-pydft_qmmm.interfaces.interface">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.interface_manager
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.interface_manager.html#module-pydft_qmmm.interfaces.interface_manager">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.openmm
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.html#module-pydft_qmmm.interfaces.openmm">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.openmm.openmm_factory
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html#module-pydft_qmmm.interfaces.openmm.openmm_factory">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.openmm.openmm_interface
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.html#module-pydft_qmmm.interfaces.openmm.openmm_interface">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.openmm.openmm_utils
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_utils.html#module-pydft_qmmm.interfaces.openmm.openmm_utils">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.psi4
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.html#module-pydft_qmmm.interfaces.psi4">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.psi4.psi4_factory
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_factory.html#module-pydft_qmmm.interfaces.psi4.psi4_factory">module</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li>
+    pydft_qmmm.interfaces.psi4.psi4_interface
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.html#module-pydft_qmmm.interfaces.psi4.psi4_interface">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.interfaces.psi4.psi4_utils
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_utils.html#module-pydft_qmmm.interfaces.psi4.psi4_utils">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.html#module-pydft_qmmm.plugins">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.atom_partition
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.atom_partition.html#module-pydft_qmmm.plugins.atom_partition">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.center
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.center.html#module-pydft_qmmm.plugins.center">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.centroid_partition
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.centroid_partition.html#module-pydft_qmmm.plugins.centroid_partition">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.firstatom_partition
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.firstatom_partition.html#module-pydft_qmmm.plugins.firstatom_partition">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.plugin_manager
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.plugin_manager.html#module-pydft_qmmm.plugins.plugin_manager">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.plumed
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.plumed.html#module-pydft_qmmm.plugins.plumed">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.rigid
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.rigid.html#module-pydft_qmmm.plugins.rigid">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.settle
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.settle.html#module-pydft_qmmm.plugins.settle">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.plugins.wrap
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.plugins.wrap.html#module-pydft_qmmm.plugins.wrap">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.potentials
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.potentials.html#module-pydft_qmmm.potentials">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.potentials.pme_potential
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.potentials.pme_potential.html#module-pydft_qmmm.potentials.pme_potential">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.potentials.potential
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.potentials.potential.html#module-pydft_qmmm.potentials.potential">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.system
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.system.html#module-pydft_qmmm.system">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.system.atom
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.system.atom.html#module-pydft_qmmm.system.atom">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.system.file_manager
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.system.file_manager.html#module-pydft_qmmm.system.file_manager">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.system.selection_utils
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#module-pydft_qmmm.system.selection_utils">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.system.system
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.system.system.html#module-pydft_qmmm.system.system">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.system.variable
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.system.variable.html#module-pydft_qmmm.system.variable">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.utils
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.utils.html#module-pydft_qmmm.utils">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.utils.constants
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.utils.constants.html#module-pydft_qmmm.utils.constants">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.utils.descriptor
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.utils.descriptor.html#module-pydft_qmmm.utils.descriptor">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.utils.exceptions
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.utils.exceptions.html#module-pydft_qmmm.utils.exceptions">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.utils.lattice
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.utils.lattice.html#module-pydft_qmmm.utils.lattice">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.utils.logging
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.utils.logging.html#module-pydft_qmmm.utils.logging">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.utils.misc
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.utils.misc.html#module-pydft_qmmm.utils.misc">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.wrappers
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.wrappers.html#module-pydft_qmmm.wrappers">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.wrappers.optimization
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.wrappers.optimization.html#module-pydft_qmmm.wrappers.optimization">module</a>
+</li>
+        </ul></li>
+        <li>
+    pydft_qmmm.wrappers.simulation
+
+        <ul>
+          <li><a href="_autosummary/pydft_qmmm.wrappers.simulation.html#module-pydft_qmmm.wrappers.simulation">module</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter">PyDFTQMMMCSVFormatter (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter">PyDFTQMMMEnergyFilter (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.PyDFTQMMMException.html#pydft_qmmm.utils.exceptions.PyDFTQMMMException">PyDFTQMMMException (class in pydft_qmmm.utils.exceptions)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter">PyDFTQMMMIntervalFilter (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter">PyDFTQMMMLogFormatter (class in pydft_qmmm.utils.logging)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter">PyDFTQMMMPositionFilter (class in pydft_qmmm.utils.logging)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Q" class="genindex-section">
+  <h2>Q</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.html#pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian">QMHamiltonian (class in pydft_qmmm.hamiltonians.qm_hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMInterface.html#pydft_qmmm.interfaces.interface.QMInterface">QMInterface (class in pydft_qmmm.interfaces.interface)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian">QMMMHamiltonian (class in pydft_qmmm.hamiltonians.qmmm_hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMPotential.html#pydft_qmmm.interfaces.interface.QMPotential">QMPotential (class in pydft_qmmm.interfaces.interface)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html#pydft_qmmm.calculators.composite_calculator.PartitionPlugin.query">query (pydft_qmmm.calculators.composite_calculator.PartitionPlugin attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.ravel">ravel() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.register_notifier">register_notifier() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator.register_plugin">register_plugin() (pydft_qmmm.calculators.calculator.Calculator method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculator.html#pydft_qmmm.calculators.composite_calculator.CompositeCalculator.register_plugin">(pydft_qmmm.calculators.composite_calculator.CompositeCalculator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.potential_calculator.PotentialCalculator.html#pydft_qmmm.calculators.potential_calculator.PotentialCalculator.register_plugin">(pydft_qmmm.calculators.potential_calculator.PotentialCalculator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator.register_plugin">(pydft_qmmm.integrators.integrator.Integrator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.html#pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.register_plugin">(pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.html#pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.register_plugin">(pydft_qmmm.integrators.verlet_integrator.VerletIntegrator method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.release">release() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.removeFilter">removeFilter() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.repeat">repeat() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.reshape">reshape() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.misc.html#pydft_qmmm.utils.misc.residue_partition">residue_partition() (in module pydft_qmmm.utils.misc)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.resize">resize() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Results.html#pydft_qmmm.calculators.calculator.Results">Results (class in pydft_qmmm.calculators.calculator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.round">round() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.simulation.Simulation.html#pydft_qmmm.wrappers.simulation.Simulation.run_dynamics">run_dynamics() (pydft_qmmm.wrappers.simulation.Simulation method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="S" class="genindex-section">
+  <h2>S</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.searchsorted">searchsorted() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.select">select() (pydft_qmmm.system.system.System method)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.SELECT_KEYWORDS">SELECT_KEYWORDS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.SELECTORS">SELECTORS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.set_name">set_name() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.psi4.psi4_utils.html#pydft_qmmm.interfaces.psi4.psi4_utils.set_options">set_options() (in module pydft_qmmm.interfaces.psi4.psi4_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.setfield">setfield() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.setflags">setflags() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.setFormatter">setFormatter() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.setLevel">setLevel() (pydft_qmmm.utils.logging.DCDHandler method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.settle.SETTLE.html#pydft_qmmm.plugins.settle.SETTLE">SETTLE (class in pydft_qmmm.plugins.settle)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.wrappers.simulation.Simulation.html#pydft_qmmm.wrappers.simulation.Simulation">Simulation (class in pydft_qmmm.wrappers.simulation)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.SLOW_KEYWORDS">SLOW_KEYWORDS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.SLOW_SELECTORS">SLOW_SELECTORS (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.SLOW_VARIABLES">SLOW_VARIABLES (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.SoftwareInterface.html#pydft_qmmm.interfaces.interface.SoftwareInterface">SoftwareInterface (class in pydft_qmmm.interfaces.interface)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.sort">sort() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.squeeze">squeeze() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian">StandaloneHamiltonian (class in pydft_qmmm.hamiltonians.hamiltonian)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.plugins.rigid.Stationary.html#pydft_qmmm.plugins.rigid.Stationary">Stationary (class in pydft_qmmm.plugins.rigid)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.std">std() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.constants.Subsystem.html#pydft_qmmm.utils.constants.Subsystem">Subsystem (class in pydft_qmmm.utils.constants)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.sum">sum() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html#pydft_qmmm.interfaces.openmm.openmm_factory.SUPPORTED_FORCES">SUPPORTED_FORCES (in module pydft_qmmm.interfaces.openmm.openmm_factory)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.swapaxes">swapaxes() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System">System (class in pydft_qmmm.system.system)</a>
+</li>
+        <li><a href="_autosummary/pydft_qmmm.utils.descriptor.html#pydft_qmmm.utils.descriptor.system_cache">system_cache() (in module pydft_qmmm.utils.descriptor)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.take">take() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.theory_level">theory_level (pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian attribute)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.theory_level">(pydft_qmmm.interfaces.interface.MMInterface attribute)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMInterface.html#pydft_qmmm.interfaces.interface.QMInterface.theory_level">(pydft_qmmm.interfaces.interface.QMInterface attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.constants.TheoryLevel.html#pydft_qmmm.utils.constants.TheoryLevel">TheoryLevel (class in pydft_qmmm.utils.constants)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.exceptions.TheoryLevelError.html#pydft_qmmm.utils.exceptions.TheoryLevelError">TheoryLevelError (class in pydft_qmmm.utils.exceptions)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.to_device">to_device() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.tobytes">tobytes() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.tofile">tofile() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.tolist">tolist() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.trace">trace() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.transpose">transpose() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="U" class="genindex-section">
+  <h2>U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ArrayValue.html#pydft_qmmm.system.variable.ArrayValue.update">update() (pydft_qmmm.system.variable.ArrayValue method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_box">update_box() (pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.update_box">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.html#pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.update_box">(pydft_qmmm.potentials.pme_potential.HelPMEPyInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html#pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.update_box">(pydft_qmmm.potentials.pme_potential.PMEElectronicPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.update_box">(pydft_qmmm.potentials.pme_potential.PMEExcludedPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.update_box">(pydft_qmmm.potentials.pme_potential.PMENuclearPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_charges">update_charges() (pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.update_charges">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_options">update_options() (pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.update_options">(pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_positions">update_positions() (pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.update_positions">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_subsystems">update_subsystems() (pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.update_subsystems">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.usesTime">usesTime() (pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.usesTime">(pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="V" class="genindex-section">
+  <h2>V</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ArrayValue.html#pydft_qmmm.system.variable.ArrayValue.value">value() (pydft_qmmm.system.variable.ArrayValue method)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.var">var() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.system.selection_utils.html#pydft_qmmm.system.selection_utils.VARIABLES">VARIABLES (in module pydft_qmmm.system.selection_utils)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.html#pydft_qmmm.integrators.verlet_integrator.VerletIntegrator">VerletIntegrator (class in pydft_qmmm.integrators.verlet_integrator)</a>
+</li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html#pydft_qmmm.system.variable.ObservedArray.view">view() (pydft_qmmm.system.variable.ObservedArray method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="W" class="genindex-section">
+  <h2>W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.utils.misc.html#pydft_qmmm.utils.misc.wrap_positions">wrap_positions() (in module pydft_qmmm.utils.misc)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/pydft_qmmm.system.file_manager.html#pydft_qmmm.system.file_manager.write_to_pdb">write_to_pdb() (in module pydft_qmmm.system.file_manager)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="Z" class="genindex-section">
+  <h2>Z</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.zero_charges">zero_charges() (pydft_qmmm.interfaces.interface.MMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.zero_charges">(pydft_qmmm.interfaces.interface.MMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_charges">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.zero_charges">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.zero_forces">zero_forces() (pydft_qmmm.interfaces.interface.MMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.zero_forces">(pydft_qmmm.interfaces.interface.MMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_forces">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.zero_forces">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.zero_intermolecular">zero_intermolecular() (pydft_qmmm.interfaces.interface.MMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.zero_intermolecular">(pydft_qmmm.interfaces.interface.MMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intermolecular">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.zero_intermolecular">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html#pydft_qmmm.interfaces.interface.MMInterface.zero_intramolecular">zero_intramolecular() (pydft_qmmm.interfaces.interface.MMInterface method)</a>
+
+        <ul>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html#pydft_qmmm.interfaces.interface.MMPotential.zero_intramolecular">(pydft_qmmm.interfaces.interface.MMPotential method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intramolecular">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface method)</a>
+</li>
+          <li><a href="_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.zero_intramolecular">(pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential method)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024-2025, John Pederson, Jesse McDaniel
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=e5fddd80"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

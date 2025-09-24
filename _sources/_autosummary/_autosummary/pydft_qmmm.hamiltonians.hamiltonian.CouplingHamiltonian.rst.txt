@@ -1,0 +1,32 @@
+pydft\_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian
+========================================================
+
+.. currentmodule:: pydft_qmmm.hamiltonians.hamiltonian
+
+.. autoclass:: CouplingHamiltonian
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~CouplingHamiltonian.modify_calculator
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: CouplingHamiltonian.modify_calculator
+   
+   
+    
+   

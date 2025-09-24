@@ -1,0 +1,1041 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+        <title>pydft_qmmm.utils.logging - PyDFT-QMMM documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">PyDFT-QMMM  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">PyDFT-QMMM  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api_docs.html">Code Documentation</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Code Documentation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.calculators.html">pydft_qmmm.calculators</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.calculators.calculator.html">pydft_qmmm.calculators.calculator</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators.calculator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Calculator.html">pydft_qmmm.calculators.calculator.Calculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.calculators.calculator.CalculatorPlugin.html">pydft_qmmm.calculators.calculator.CalculatorPlugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.calculators.calculator.Results.html">pydft_qmmm.calculators.calculator.Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.calculators.composite_calculator.html">pydft_qmmm.calculators.composite_calculator</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators.composite_calculator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculator.html">pydft_qmmm.calculators.composite_calculator.CompositeCalculator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin.html">pydft_qmmm.calculators.composite_calculator.CompositeCalculatorPlugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.calculators.composite_calculator.PartitionPlugin.html">pydft_qmmm.calculators.composite_calculator.PartitionPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.calculators.potential_calculator.html">pydft_qmmm.calculators.potential_calculator</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of pydft_qmmm.calculators.potential_calculator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.calculators.potential_calculator.PotentialCalculator.html">pydft_qmmm.calculators.potential_calculator.PotentialCalculator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.hamiltonians.html">pydft_qmmm.hamiltonians</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.hamiltonians.hamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html">pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.html">pydft_qmmm.hamiltonians.mm_hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.mm_hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian.html">pydft_qmmm.hamiltonians.mm_hamiltonian.MMHamiltonian</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.html">pydft_qmmm.hamiltonians.qm_hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.qm_hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian.html">pydft_qmmm.hamiltonians.qm_hamiltonian.QMHamiltonian</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.html">pydft_qmmm.hamiltonians.qmmm_hamiltonian</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of pydft_qmmm.hamiltonians.qmmm_hamiltonian</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.html">pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.integrators.html">pydft_qmmm.integrators</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.integrators.integrator.html">pydft_qmmm.integrators.integrator</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators.integrator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html">pydft_qmmm.integrators.integrator.Integrator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.integrator.IntegratorPlugin.html">pydft_qmmm.integrators.integrator.IntegratorPlugin</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.integrators.langevin_integrator.html">pydft_qmmm.integrators.langevin_integrator</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators.langevin_integrator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator.html">pydft_qmmm.integrators.langevin_integrator.LangevinIntegrator</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.integrators.verlet_integrator.html">pydft_qmmm.integrators.verlet_integrator</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of pydft_qmmm.integrators.verlet_integrator</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.verlet_integrator.VerletIntegrator.html">pydft_qmmm.integrators.verlet_integrator.VerletIntegrator</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.html">pydft_qmmm.interfaces</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.interface.html">pydft_qmmm.interfaces.interface</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMInterface.html">pydft_qmmm.interfaces.interface.MMInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.interface.MMPotential.html">pydft_qmmm.interfaces.interface.MMPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMInterface.html">pydft_qmmm.interfaces.interface.QMInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.interface.QMPotential.html">pydft_qmmm.interfaces.interface.QMPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.interface.SoftwareInterface.html">pydft_qmmm.interfaces.interface.SoftwareInterface</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.interface_manager.html">pydft_qmmm.interfaces.interface_manager</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.openmm.html">pydft_qmmm.interfaces.openmm</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.openmm</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.openmm.openmm_factory.html">pydft_qmmm.interfaces.openmm.openmm_factory</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.html">pydft_qmmm.interfaces.openmm.openmm_interface</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.openmm.openmm_interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html">pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html">pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.openmm.openmm_utils.html">pydft_qmmm.interfaces.openmm.openmm_utils</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.psi4.html">pydft_qmmm.interfaces.psi4</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.psi4</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.psi4.psi4_factory.html">pydft_qmmm.interfaces.psi4.psi4_factory</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.html">pydft_qmmm.interfaces.psi4.psi4_interface</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of pydft_qmmm.interfaces.psi4.psi4_interface</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html">pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.html">pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.interfaces.psi4.psi4_utils.html">pydft_qmmm.interfaces.psi4.psi4_utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.potentials.html">pydft_qmmm.potentials</a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle navigation of pydft_qmmm.potentials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.potentials.pme_potential.html">pydft_qmmm.potentials.pme_potential</a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle navigation of pydft_qmmm.potentials.pme_potential</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.html">pydft_qmmm.potentials.pme_potential.HelPMEPyInterface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html">pydft_qmmm.potentials.pme_potential.PMEElectronicPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html">pydft_qmmm.potentials.pme_potential.PMEExcludedPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html">pydft_qmmm.potentials.pme_potential.PMENuclearPotential</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.potentials.potential.html">pydft_qmmm.potentials.potential</a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle navigation of pydft_qmmm.potentials.potential</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html">pydft_qmmm.potentials.potential.AtomicPotential</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.ElectronicPotential.html">pydft_qmmm.potentials.potential.ElectronicPotential</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.html">pydft_qmmm.plugins</a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.atom_partition.html">pydft_qmmm.plugins.atom_partition</a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.atom_partition</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html">pydft_qmmm.plugins.atom_partition.AtomPartition</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.center.html">pydft_qmmm.plugins.center</a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.center</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.center.CalculatorCenter.html">pydft_qmmm.plugins.center.CalculatorCenter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.center.IntegratorCenter.html">pydft_qmmm.plugins.center.IntegratorCenter</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.centroid_partition.html">pydft_qmmm.plugins.centroid_partition</a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.centroid_partition</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.centroid_partition.CentroidPartition.html">pydft_qmmm.plugins.centroid_partition.CentroidPartition</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.firstatom_partition.html">pydft_qmmm.plugins.firstatom_partition</a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.firstatom_partition</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition.html">pydft_qmmm.plugins.firstatom_partition.FirstAtomPartition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.plugin_manager.html">pydft_qmmm.plugins.plugin_manager</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.plumed.html">pydft_qmmm.plugins.plumed</a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.plumed</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.plumed.Plumed.html">pydft_qmmm.plugins.plumed.Plumed</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.rigid.html">pydft_qmmm.plugins.rigid</a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.rigid</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.rigid.Stationary.html">pydft_qmmm.plugins.rigid.Stationary</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.settle.html">pydft_qmmm.plugins.settle</a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.settle</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.settle.SETTLE.html">pydft_qmmm.plugins.settle.SETTLE</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.plugins.wrap.html">pydft_qmmm.plugins.wrap</a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle navigation of pydft_qmmm.plugins.wrap</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.wrap.CalculatorWrap.html">pydft_qmmm.plugins.wrap.CalculatorWrap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.plugins.wrap.IntegratorWrap.html">pydft_qmmm.plugins.wrap.IntegratorWrap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.system.html">pydft_qmmm.system</a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.system.atom.html">pydft_qmmm.system.atom</a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system.atom</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.system.atom.Atom.html">pydft_qmmm.system.atom.Atom</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.system.file_manager.html">pydft_qmmm.system.file_manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.system.selection_utils.html">pydft_qmmm.system.selection_utils</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.system.system.html">pydft_qmmm.system.system</a><input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" role="switch" type="checkbox"/><label for="toctree-checkbox-35"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system.system</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.system.system.System.html">pydft_qmmm.system.system.System</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.system.variable.html">pydft_qmmm.system.variable</a><input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" role="switch" type="checkbox"/><label for="toctree-checkbox-36"><div class="visually-hidden">Toggle navigation of pydft_qmmm.system.variable</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.system.variable.ArrayValue.html">pydft_qmmm.system.variable.ArrayValue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.system.variable.ObservedArray.html">pydft_qmmm.system.variable.ObservedArray</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.utils.html">pydft_qmmm.utils</a><input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" role="switch" type="checkbox"/><label for="toctree-checkbox-37"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.utils.constants.html">pydft_qmmm.utils.constants</a><input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" role="switch" type="checkbox"/><label for="toctree-checkbox-38"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils.constants</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.constants.Subsystem.html">pydft_qmmm.utils.constants.Subsystem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.constants.TheoryLevel.html">pydft_qmmm.utils.constants.TheoryLevel</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.utils.descriptor.html">pydft_qmmm.utils.descriptor</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.utils.exceptions.html">pydft_qmmm.utils.exceptions</a><input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" role="switch" type="checkbox"/><label for="toctree-checkbox-39"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils.exceptions</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.exceptions.AssetImportError.html">pydft_qmmm.utils.exceptions.AssetImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.exceptions.DependencyImportError.html">pydft_qmmm.utils.exceptions.DependencyImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.exceptions.InterfaceImportError.html">pydft_qmmm.utils.exceptions.InterfaceImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.exceptions.PluginImportError.html">pydft_qmmm.utils.exceptions.PluginImportError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.exceptions.PyDFTQMMMException.html">pydft_qmmm.utils.exceptions.PyDFTQMMMException</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.exceptions.TheoryLevelError.html">pydft_qmmm.utils.exceptions.TheoryLevelError</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.utils.lattice.html">pydft_qmmm.utils.lattice</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.utils.logging.html">pydft_qmmm.utils.logging</a><input class="toctree-checkbox" id="toctree-checkbox-40" name="toctree-checkbox-40" role="switch" type="checkbox"/><label for="toctree-checkbox-40"><div class="visually-hidden">Toggle navigation of pydft_qmmm.utils.logging</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html">pydft_qmmm.utils.logging.DCDHandler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.EnergyRecord.html">pydft_qmmm.utils.logging.EnergyRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.FrameRecord.html">pydft_qmmm.utils.logging.FrameRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.Loggable.html">pydft_qmmm.utils.logging.Loggable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html">pydft_qmmm.utils.logging.PositionRecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html">pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html">pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html">pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html">pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html">pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.utils.misc.html">pydft_qmmm.utils.misc</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.wrappers.html">pydft_qmmm.wrappers</a><input class="toctree-checkbox" id="toctree-checkbox-41" name="toctree-checkbox-41" role="switch" type="checkbox"/><label for="toctree-checkbox-41"><div class="visually-hidden">Toggle navigation of pydft_qmmm.wrappers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.wrappers.optimization.html">pydft_qmmm.wrappers.optimization</a><input class="toctree-checkbox" id="toctree-checkbox-42" name="toctree-checkbox-42" role="switch" type="checkbox"/><label for="toctree-checkbox-42"><div class="visually-hidden">Toggle navigation of pydft_qmmm.wrappers.optimization</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html">pydft_qmmm.wrappers.optimization.Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/pydft_qmmm.wrappers.simulation.html">pydft_qmmm.wrappers.simulation</a><input class="toctree-checkbox" id="toctree-checkbox-43" name="toctree-checkbox-43" role="switch" type="checkbox"/><label for="toctree-checkbox-43"><div class="visually-hidden">Toggle navigation of pydft_qmmm.wrappers.simulation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/_autosummary/pydft_qmmm.wrappers.simulation.Simulation.html">pydft_qmmm.wrappers.simulation.Simulation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for pydft_qmmm.utils.logging</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utilities for logging energies and positions and related types.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;make_csv_handler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_log_handler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_dcd_handler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Loggable&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">array</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">struct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">lattice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.misc</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+
+
+<div class="viewcode-block" id="FrameRecord">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.FrameRecord.html#pydft_qmmm.utils.logging.FrameRecord">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FrameRecord</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A log record with a frame data.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        frame: The current frame of a simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span></div>
+
+
+
+<div class="viewcode-block" id="EnergyRecord">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.EnergyRecord.html#pydft_qmmm.utils.logging.EnergyRecord">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EnergyRecord</span><span class="p">(</span><span class="n">FrameRecord</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A log record with an energy data.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        energy: The current energy of a simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">energy</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="PositionRecord">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html#pydft_qmmm.utils.logging.PositionRecord">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PositionRecord</span><span class="p">(</span><span class="n">FrameRecord</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A log record with an position data.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        position: The current positions of a simulation.</span>
+<span class="sd">        box: The current box vectors of a simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">positions</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_flatten_dict</span><span class="p">(</span>
+        <span class="n">dictionary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a &#39;flat&#39; version of a nested dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dictionary: The nested dictionary to flatten.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A flattened version of the nested dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">flat</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">flat</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">_flatten_dict</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">val</span><span class="p">},</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">flat</span>
+
+
+<div class="viewcode-block" id="PyDFTQMMMIntervalFilter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMIntervalFilter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging filter that grabs logs at a given interval.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        interval: The interval at which to write logs in terms of</span>
+<span class="sd">            simulation steps.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
+
+<div class="viewcode-block" id="PyDFTQMMMIntervalFilter.filter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.filter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine whether or not to log the record.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record: The record to log if the simulation frame is</span>
+<span class="sd">                divisible by the write interval.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Whether or not to log the record.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">frame</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PyDFTQMMMEnergyFilter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMEnergyFilter</span><span class="p">(</span><span class="n">PyDFTQMMMIntervalFilter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging filter that grabs logs with an energy attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyDFTQMMMEnergyFilter.filter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.filter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine whether or not to log the record.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record: The record to log if the simulation frame is</span>
+<span class="sd">                divisible by the write interval and if the log</span>
+<span class="sd">                contains the simulation energy.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Whether or not to log the record.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">record</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PyDFTQMMMPositionFilter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMPositionFilter</span><span class="p">(</span><span class="n">PyDFTQMMMIntervalFilter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging filter that grab logs with position data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyDFTQMMMPositionFilter.filter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.filter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine whether or not to log the record.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record: The record to log if the simulation frame is</span>
+<span class="sd">                divisible by the write interval and if the log</span>
+<span class="sd">                contains the simulation position data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Whether or not to log the record.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">record</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;box&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">check_array</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">positions</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PyDFTQMMMCSVFormatter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMCSVFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging formatter that formats energy outputs to CSV files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyDFTQMMMCSVFormatter.format">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.format">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format the log record data for output to a CSV file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record: The log record to format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The message to write to a CSV file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EnergyRecord</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+        <span class="n">flat_components</span> <span class="o">=</span> <span class="n">_flatten_dict</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+        <span class="n">round_</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">formatting</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\.(\d+)f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">_fmt</span><span class="p">))</span>
+                <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">round_</span> <span class="o">=</span> <span class="n">formatting</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">round_</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flat_components</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">frame</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">flat_components</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">message</span>
+        <span class="k">return</span> <span class="n">message</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PyDFTQMMMLogFormatter">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMLogFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging formatter that formats energy outputs to log files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_unwrap_energy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">energy</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+            <span class="n">spaces</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">cont</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a log file string from an energy dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            energy: The energy component dictionary.</span>
+<span class="sd">            spaces: The number of spaces to indent the line.</span>
+<span class="sd">            cont: A list to keep track of sub-component continuation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The tree-like string of energies to write to the log file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unwrap_energy</span><span class="p">(</span>
+                    <span class="n">val</span><span class="p">,</span> <span class="n">spaces</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">cont</span> <span class="o">+</span> <span class="p">[</span><span class="n">spaces</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">cont</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">round_</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
+                <span class="k">if</span> <span class="p">((</span><span class="n">formatting</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\.(\d+)f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">_fmt</span><span class="p">))</span>
+                        <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="n">round_</span> <span class="o">=</span> <span class="n">formatting</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">round_</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> kJ/mol</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">spaces</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="s2">&quot;| &quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cont</span> <span class="k">else</span> <span class="s2">&quot;  &quot;</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spaces</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;|_&quot;</span> <span class="o">+</span> <span class="n">key</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2"> &gt;</span><span class="si">{</span><span class="mi">72</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">message</span>
+
+<div class="viewcode-block" id="PyDFTQMMMLogFormatter.format">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.format">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">,</span>
+            <span class="n">spaces</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">cont</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format the log record data for output to a log file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record: The log record to format.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The message to write to a log file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EnergyRecord</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">frame</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; PyDFT-QMMM Logger &#39;</span><span class="si">:</span><span class="s2">=^72</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; Frame &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">0&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="si">:</span><span class="s2">-^72</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unwrap_energy</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">message</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="DCDHandler">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DCDHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handler for writing position data to a DCD file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename: The path of the DCD file.</span>
+<span class="sd">        interval: The interval between subsequent writes in terms</span>
+<span class="sd">            of simulation steps.</span>
+<span class="sd">        timestep: The timestep (:math:`\mathrm{fs}`) of the simulation.</span>
+<span class="sd">        mode: The mode in which to access the DCD file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
+            <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;w+b&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the header to the DCD file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            system_size: The number of particles in the system.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The header of the DCD file in binary format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;i4c9if&quot;</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
+            <span class="s2">&quot;&lt;13i&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span>
+            <span class="mi">84</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;80s&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;Created by PyDFT-QMMM&quot;</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;80s&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;Created now&quot;</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;4i&quot;</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">system_size</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">header</span>
+
+<div class="viewcode-block" id="DCDHandler.emit">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.emit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a record to a DCD file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            record: The record to write to a DCD file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">PositionRecord</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+            <span class="n">positions</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">box</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">frame</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">G</span> <span class="o">=</span> <span class="n">lattice</span><span class="o">.</span><span class="n">compute_lattice_constants</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+            <span class="n">system_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">frame</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_header</span><span class="p">(</span><span class="n">system_size</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_END</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i6di&quot;</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="mi">48</span><span class="p">))</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">system_size</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+                <span class="n">coordinate</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">))</span>
+                <span class="n">coordinate</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handleError</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DCDHandler.close">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.close">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the DCD file stream.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="make_file_handler">
+<a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_file_handler">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_file_handler</span><span class="p">(</span>
+        <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">formatter</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">,</span>
+        <span class="n">filter_</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a handler for logging to files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output_directory: A directory where records are written.</span>
+<span class="sd">        suffix: A file extension.</span>
+<span class="sd">        formatter: A formatter to apply to records.</span>
+<span class="sd">        filter_: A filter to apply to records.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The file handler applying the specified filters and formatters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;pydft_qmmm&quot;</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+    <span class="n">handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">filter_</span><span class="p">)</span>
+    <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span></div>
+
+
+
+<div class="viewcode-block" id="make_csv_handler">
+<a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_csv_handler">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_csv_handler</span><span class="p">(</span>
+        <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a handler for logging to CSV files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output_directory: A directory where records are written.</span>
+<span class="sd">        decimal_places: The number of decimal places to include when</span>
+<span class="sd">            logging to a CSV file.</span>
+<span class="sd">        interval: The interval at which to write logs in terms of</span>
+<span class="sd">            simulation steps.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A CSV file handler.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">make_file_handler</span><span class="p">(</span>
+        <span class="n">output_directory</span><span class="p">,</span>
+        <span class="s2">&quot;.csv&quot;</span><span class="p">,</span>
+        <span class="n">PyDFTQMMMCSVFormatter</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%(message).</span><span class="si">{</span><span class="n">decimal_places</span><span class="si">}</span><span class="s2">f&quot;</span><span class="p">),</span>
+        <span class="n">PyDFTQMMMEnergyFilter</span><span class="p">(</span><span class="n">interval</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span></div>
+
+
+
+<div class="viewcode-block" id="make_log_handler">
+<a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_log_handler">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_log_handler</span><span class="p">(</span>
+        <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a handler for logging to log files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output_directory: A directory where records are written.</span>
+<span class="sd">        decimal_places: The number of decimal places to include when</span>
+<span class="sd">            logging to a log file.</span>
+<span class="sd">        interval: The interval at which to write logs in terms of</span>
+<span class="sd">            simulation steps.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A log file handler.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">make_file_handler</span><span class="p">(</span>
+        <span class="n">output_directory</span><span class="p">,</span>
+        <span class="s2">&quot;.log&quot;</span><span class="p">,</span>
+        <span class="n">PyDFTQMMMLogFormatter</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%(message).</span><span class="si">{</span><span class="n">decimal_places</span><span class="si">}</span><span class="s2">f&quot;</span><span class="p">),</span>
+        <span class="n">PyDFTQMMMEnergyFilter</span><span class="p">(</span><span class="n">interval</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span></div>
+
+
+
+<div class="viewcode-block" id="make_dcd_handler">
+<a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.utils.logging.html#pydft_qmmm.utils.logging.make_dcd_handler">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_dcd_handler</span><span class="p">(</span>
+        <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a handler for logging to DCD files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output_directory: A directory where records are written.</span>
+<span class="sd">        interval: The interval at which to write logs in terms of</span>
+<span class="sd">            simulation steps.</span>
+<span class="sd">        timestep: The timestep (:math:`\mathrm{fs}`) of the simulation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A DCD file handler.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;pydft_qmmm.dcd&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">DCDHandler</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
+    <span class="n">handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">PyDFTQMMMPositionFilter</span><span class="p">(</span><span class="n">interval</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">handler</span></div>
+
+
+
+<div class="viewcode-block" id="Loggable">
+<a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.Loggable.html#pydft_qmmm.utils.logging.Loggable">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Loggable</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A mix-in for generating logging handlers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output_directory: A directory where logs will be written.</span>
+<span class="sd">        log_write: Whether or not to write energies to a log file.</span>
+<span class="sd">        log_write_interval: The interval at which to write logs to a</span>
+<span class="sd">            log file in terms of simulation steps.</span>
+<span class="sd">        log_decimal_places: The number of decimal places to include</span>
+<span class="sd">            when logging to a log file.</span>
+<span class="sd">        csv_write: Whether or not to write energies to a CSV file.</span>
+<span class="sd">        csv_write_interval: The interval at which to write logs to a</span>
+<span class="sd">            CSV file in terms of simulation steps.</span>
+<span class="sd">        csv_decimal_places: The number of decimal places to include</span>
+<span class="sd">            when logging to a CSV file.</span>
+<span class="sd">        dcd_write: Whether or not to write positions to a DCD file.</span>
+<span class="sd">        dcd_write_interval: The interval at which to write logs to a</span>
+<span class="sd">            DCD file in terms of simulation steps.</span>
+<span class="sd">        dcd_timestep: The timestep (:math:`\mathrm{fs}`) of the</span>
+<span class="sd">            simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+            <span class="n">log_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">log_write_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">log_decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="n">csv_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">csv_write_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">csv_decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="n">dcd_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">dcd_write_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+            <span class="n">dcd_timestep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">))</span>
+        <span class="n">handlers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">log_write</span><span class="p">:</span>
+            <span class="n">log_handler</span> <span class="o">=</span> <span class="n">make_log_handler</span><span class="p">(</span>
+                <span class="n">output_directory</span><span class="p">,</span>
+                <span class="n">log_decimal_places</span><span class="p">,</span>
+                <span class="n">log_write_interval</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">handlers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">log_handler</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">csv_write</span><span class="p">:</span>
+            <span class="n">csv_handler</span> <span class="o">=</span> <span class="n">make_csv_handler</span><span class="p">(</span>
+                <span class="n">output_directory</span><span class="p">,</span>
+                <span class="n">csv_decimal_places</span><span class="p">,</span>
+                <span class="n">csv_write_interval</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">handlers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">csv_handler</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dcd_write</span><span class="p">:</span>
+            <span class="n">dcd_handler</span> <span class="o">=</span> <span class="n">make_dcd_handler</span><span class="p">(</span>
+                <span class="n">output_directory</span><span class="p">,</span>
+                <span class="n">dcd_write_interval</span><span class="p">,</span>
+                <span class="n">dcd_timestep</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">handlers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dcd_handler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handlers</span> <span class="o">=</span> <span class="n">handlers</span></div>
+
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024-2025, John Pederson, Jesse McDaniel
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=e5fddd80"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

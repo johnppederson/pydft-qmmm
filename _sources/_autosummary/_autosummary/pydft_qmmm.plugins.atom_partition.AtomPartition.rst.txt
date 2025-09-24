@@ -1,0 +1,46 @@
+pydft\_qmmm.plugins.atom\_partition.AtomPartition
+=================================================
+
+.. currentmodule:: pydft_qmmm.plugins.atom_partition
+
+.. autoclass:: AtomPartition
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~AtomPartition.generate_partition
+   
+   
+      ~AtomPartition.modify
+   
+   
+      ~AtomPartition.modify_composite
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: AtomPartition.generate_partition
+   
+   
+   
+   .. automethod:: AtomPartition.modify
+   
+   
+   
+   .. automethod:: AtomPartition.modify_composite
+   
+   
+    
+   

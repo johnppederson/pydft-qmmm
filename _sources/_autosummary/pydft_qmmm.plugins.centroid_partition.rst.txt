@@ -1,0 +1,19 @@
+pydft\_qmmm.plugins.centroid\_partition
+=======================================
+
+.. automodule:: pydft_qmmm.plugins.centroid_partition
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      CentroidPartition
+   

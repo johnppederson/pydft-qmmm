@@ -1,0 +1,32 @@
+pydft\_qmmm.plugins.plumed.Plumed
+=================================
+
+.. currentmodule:: pydft_qmmm.plugins.plumed
+
+.. autoclass:: Plumed
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~Plumed.modify
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: Plumed.modify
+   
+   
+    
+   

@@ -1,0 +1,46 @@
+pydft\_qmmm.plugins.centroid\_partition.CentroidPartition
+=========================================================
+
+.. currentmodule:: pydft_qmmm.plugins.centroid_partition
+
+.. autoclass:: CentroidPartition
+
+   
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+   
+   
+      ~CentroidPartition.generate_partition
+   
+   
+      ~CentroidPartition.modify
+   
+   
+      ~CentroidPartition.modify_composite
+   
+   
+   
+
+   
+   
+   
+   
+   
+   
+   .. automethod:: CentroidPartition.generate_partition
+   
+   
+   
+   .. automethod:: CentroidPartition.modify
+   
+   
+   
+   .. automethod:: CentroidPartition.modify_composite
+   
+   
+    
+   

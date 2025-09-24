@@ -1,0 +1,30 @@
+pydft\_qmmm.system.variable
+===========================
+
+.. automodule:: pydft_qmmm.system.variable
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      observed_class
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.system.variable.observed_class
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      ArrayValue
+      ObservedArray
+   

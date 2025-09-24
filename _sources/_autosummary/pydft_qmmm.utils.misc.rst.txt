@@ -1,0 +1,35 @@
+pydft\_qmmm.utils.misc
+======================
+
+.. automodule:: pydft_qmmm.utils.misc
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      center_positions
+      check_array
+      generate_velocities
+      numerical_gradient
+      residue_partition
+      wrap_positions
+   
+   
+   
+   
+   
+   .. autofunction:: pydft_qmmm.utils.misc.center_positions
+   
+   .. autofunction:: pydft_qmmm.utils.misc.check_array
+   
+   .. autofunction:: pydft_qmmm.utils.misc.generate_velocities
+   
+   .. autofunction:: pydft_qmmm.utils.misc.numerical_gradient
+   
+   .. autofunction:: pydft_qmmm.utils.misc.residue_partition
+   
+   .. autofunction:: pydft_qmmm.utils.misc.wrap_positions
+   
+    
+   

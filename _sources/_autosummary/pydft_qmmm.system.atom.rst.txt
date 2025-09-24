@@ -1,0 +1,19 @@
+pydft\_qmmm.system.atom
+=======================
+
+.. automodule:: pydft_qmmm.system.atom
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      Atom
+   

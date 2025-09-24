@@ -1,0 +1,21 @@
+pydft\_qmmm.calculators.calculator
+==================================
+
+.. automodule:: pydft_qmmm.calculators.calculator
+
+   
+   
+   
+    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: _autosummary
+      :template: class.rst
+      :recursive:
+   
+      Calculator
+      CalculatorPlugin
+      Results
+   
