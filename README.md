@@ -13,7 +13,7 @@ PyDFT-QMMM: A Modular Framework for DFT-QM/MM Simulation
 
 <p align="center">
 
-[Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=fff)
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=fff)
 [![License](https://img.shields.io/badge/license-LGPL_2.1-blue.svg)](https://opensource.org/license/lgpl-2-1)
 
 [![Build](https://github.com/johnppederson/pydft-qmmm/actions/workflows/test_and_coverage.yml/badge.svg)](https://github.com/johnppederson/pydft-qmmm/actions)
@@ -49,6 +49,10 @@ Requirements
 #### Required for Enhanced Sampling
 * [PLUMED](https://github.com/plumed/plumed2) required for enhanced sampling
   [(LGPL-3.0 license)](https://opensource.org/license/LGPL-3-0).
+
+#### Required for Optimization
+* [geomeTRIC](https://github.com/leeping/geomeTRIC) required for optimization
+  [(BSD-3-clause license)](https://opensource.org/licenses/BSD-3-Clause).
 
 #### Required for Expanded MM Input File Types
 * [ParmEd](https://github.com/ParmEd/ParmEd) required for reading GROMACS, AMBER,
