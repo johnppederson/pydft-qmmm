@@ -6,9 +6,13 @@
 Welcome to PyDFT-QMMM's documentation!
 ======================================
 
-.. image:: _media/pydft-qmmm.svg
+.. image:: _media/pydft-qmmm-light.svg
+   :class: only-light
    :width: 600
 
+.. image:: _media/pydft-qmmm-dark.svg
+   :class: only-dark
+   :width: 600
 
 .. toctree::
    :maxdepth: 2
