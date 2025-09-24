@@ -18,9 +18,7 @@ jobs:
       - name: Install dependencies
         shell: bash -el {0}
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-sphinx
-          conda install -c conda-forge psi4 openmm
+          conda install -c conda-forge psi4 openmm sphinx
           pip install numpy sphinx-autodoc-typehints furo
 
       - name: Build
@@ -30,7 +28,7 @@ jobs:
       - name: Build Documentation
         working-directory: docs
         run: |
-          make html
+          python3 -m sphinx.cmd.build -b html . _build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

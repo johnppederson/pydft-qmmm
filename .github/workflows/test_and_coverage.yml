@@ -34,7 +34,7 @@ jobs:
         working-directory: build
         id: extract
         run: |
-          PCT=$(coverage report | tail -1 | grep -oE '[^ %]+' | tail -1)
+          PCT=$(python -m coverage report | tail -1 | grep -oE '[^ %]+' | tail -1)
           echo "COVERAGE=${PCT}" >> $GITHUB_ENV
 
       - name: Create coverage badge
