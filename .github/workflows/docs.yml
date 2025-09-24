@@ -19,7 +19,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda install -c conda-forge psi4 openmm sphinx
-          pip install numpy sphinx-autodoc-typehints furo
+          pip install numpy sphinx-autodoc-typehints furo helpme-py
 
       - name: Build
         shell: bash -el {0}
@@ -29,7 +29,7 @@ jobs:
         shell: bash -el {0}
         working-directory: docs
         run: |
-          python3 -m sphinx.cmd.build -b html . _build
+          make html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

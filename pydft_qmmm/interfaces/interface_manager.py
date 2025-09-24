@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from typing import TypeAlias
     from .interface import QMFactory
     from .interface import MMFactory
-    from pydft_qmmm import TheoryLevel
+    from pydft_qmmm.utils import TheoryLevel
 
     Factory: TypeAlias = QMFactory | MMFactory
 

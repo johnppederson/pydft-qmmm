@@ -32,7 +32,6 @@ jobs:
 
       - name: Extract line‐coverage %
         shell: bash -el {0}
-        working-directory: build
         run: |
           PCT=$(coverage report | tail -1 | grep -oE '[^ %]+' | tail -1)
           echo "COVERAGE=${PCT}" >> $GITHUB_ENV

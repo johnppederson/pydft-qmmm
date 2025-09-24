@@ -15,7 +15,7 @@ import textwrap
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from pydft_qmmm import TheoryLevel
+    from pydft_qmmm.utils import TheoryLevel
 
 
 class PyDFTQMMMException(Exception):
