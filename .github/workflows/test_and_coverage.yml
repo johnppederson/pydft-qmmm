@@ -20,7 +20,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda install -c conda-forge psi4 openmm
-          pip install helpme numpy pytest pytest-cov helpme-py
+          pip install helpme numpy pytest pytest-cov helpme-py coverage
 
       - name: Build
         shell: bash -el {0}

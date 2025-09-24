@@ -45,6 +45,8 @@ tests = ["pytest", "pytest-cov"]
 [tool.setuptools]
 packages = ["pydft_qmmm"]
 
+[tool.setuptools_scm]
+
 [tool.mypy]
 ignore_missing_imports = true
 exclude = ["__main__.py"]
