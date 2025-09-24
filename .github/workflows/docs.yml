@@ -1,0 +1,37 @@
+name: Docs
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: 3.12
+
+      - name: Install dependencies
+        shell: bash -el {0}
+        run: |
+          conda install -c conda-forge psi4 openmm
+          pip install numpy sphinx sphinx-autodoc-typehints furo 
+
+      - name: Build
+        shell: bash -el {0}
+        run: pip install .
+
+      - name: Build Documentation
+        working-directory: docs
+        run: |
+          make html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_build/html

@@ -1,7 +1,8 @@
-"""A sub-package containing wrapper classes for the end user.
+"""A sub-package containing classes for simulation and optimization.
 """
 from __future__ import annotations
 
-from .logger import Logger
-from .simulation import Simulation
 __author__ = "John Pederson"
+
+from .simulation import *
+from .optimization import *

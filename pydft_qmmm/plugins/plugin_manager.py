@@ -1,46 +1,47 @@
-"""Functionality for handling external plugin imports.
+"""Functionality for importing third-party plugins.
 
 Attributes:
-    DISCOVERED_PLUGINS: A list of entry points into the plugin
-        architecture of PyDFT-QMMM within installed package metadata.
+    DISCOVERED_PLUGINS: A tuple of entry points into the plugin
+        architecture of PyDFT-QMMM from installed package metadata.
+    LOADED_PLUGINS: The loaded plugin modules.
 """
 from __future__ import annotations
 
-from importlib import import_module
-from importlib.metadata import entry_points
-from typing import TYPE_CHECKING
+__all__ = ["get_plugins", "Plugin"]
 
-if TYPE_CHECKING:
-    from .plugin import Plugin
+from importlib.metadata import entry_points
+from typing import TypeAlias
+
+from pydft_qmmm.calculators import CalculatorPlugin
+from pydft_qmmm.integrators import IntegratorPlugin
+
+Plugin: TypeAlias = CalculatorPlugin | IntegratorPlugin
 
 try:
-    DISCOVERED_PLUGINS: set[str] = {
-        point.name for point
-        in entry_points().get(  # type: ignore[attr-defined]
-            "pydft_qmmm.plugins",
-            [],
-        )
-    }
+    # This is for Python 3.10-3.11.
+    DISCOVERED_PLUGINS = tuple(
+        entry_points(
+        ).get("pydft_qmmm.plugins", []),  # type: ignore[attr-defined]
+    )
 except AttributeError:
-    DISCOVERED_PLUGINS = entry_points(
-        group="pydft_qmmm.plugins",
-    ).names
+    # This is for Python +3.12, importlib.metadata now uses a selectable
+    # EntryPoints object.
+    DISCOVERED_PLUGINS = tuple(
+        entry_points(group="pydft_qmmm.plugins"),
+    )
+
+LOADED_PLUGINS = tuple(
+    map(lambda x: x.load(), DISCOVERED_PLUGINS),
+)
 
 
-def get_external_plugins() -> dict[str, Plugin]:
-    """Get PyDFT-QMMM plugins from externally installed packages.
+def get_plugins() -> dict[str, Plugin]:
+    """Get third-party PyDFT-QMMM plugins.
 
     Returns:
-        A dictionary of plugin names and loaded classes for the
-        PyDFT-QMMM plugin sub-package.
+        A dictionary of plugin classes indexed by plugin name.
     """
-    package_names = [name for name in DISCOVERED_PLUGINS]
-    plugins = {}
-    for name in package_names:
-        module = import_module(name, package=name)
-        plugins.update({
-            plugin: getattr(module, plugin)
-            for plugin in dir(module)
-            if not plugin.startswith("__")
-        })
+    plugins: dict[str, Plugin] = dict()
+    for mod in LOADED_PLUGINS:
+        plugins.update(dict(map(lambda y: (y.__name__, y), mod.PLUGINS)))
     return plugins

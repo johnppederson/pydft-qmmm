@@ -8,14 +8,14 @@ from pydft_qmmm import MMHamiltonian
 from pydft_qmmm import QMHamiltonian
 from pydft_qmmm import System
 from pydft_qmmm import VerletIntegrator
-from pydft_qmmm.common import Subsystem
 from pydft_qmmm.plugins import SETTLE
+from pydft_qmmm.utils import Subsystem
 
 
 @pytest.fixture
 def spce_system():
     return System.load(
-        "tests/data/spce.pdb",
+        "tests/data/spce_qmmm.pdb",
     )
 
 
@@ -38,17 +38,18 @@ def spce_qmmm_system(spce_system):
 @pytest.fixture
 def qm_water():
     return QMHamiltonian(
-        basis_set="def2-SVP",
+        basis="def2-SVP",
         functional="PBE",
         charge=0,
-        spin=1,
+        multiplicity=1,
+        guess="read",
     )
 
 
 @pytest.fixture
 def mm_spce():
     return MMHamiltonian(
-        [
+        forcefield=[
             "tests/data/spce.xml",
             "tests/data/spce_residues.xml",
         ],
@@ -60,7 +61,7 @@ def mm_spce():
 @pytest.fixture
 def mm_spce_no_lj():
     return MMHamiltonian(
-        [
+        forcefield=[
             "tests/data/spce_no_lj.xml",
             "tests/data/spce_residues.xml",
         ],
@@ -77,3 +78,12 @@ def spce_plugins():
 @pytest.fixture
 def verlet():
     return VerletIntegrator(1)
+
+
+@pytest.fixture
+def no_logging():
+    return {
+        "log_write": False,
+        "csv_write": False,
+        "dcd_write": False,
+    }

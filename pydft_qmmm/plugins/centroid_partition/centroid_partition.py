@@ -2,69 +2,43 @@
 """
 from __future__ import annotations
 
-from typing import Callable
+__all__ = ["CentroidPartition"]
+
 from typing import TYPE_CHECKING
 
 import numpy as np
 
-from pydft_qmmm.common import Subsystem
-from pydft_qmmm.plugins.plugin import PartitionPlugin
+from pydft_qmmm.utils import Subsystem
+from pydft_qmmm.calculators.composite_calculator import PartitionPlugin
 
 if TYPE_CHECKING:
-    from pydft_qmmm.calculators import CompositeCalculator
-    from pydft_qmmm.common import Results
-    import mypy_extensions
-    CalculateMethod = Callable[
-        [
-            mypy_extensions.DefaultArg(
-                bool | None,
-                "return_forces",  # noqa: F821
-            ),
-            mypy_extensions.DefaultArg(
-                bool | None,
-                "return_components",  # noqa: F821
-            ),
-        ],
-        Results,
-    ]
+    from collections.abc import Callable
+    from pydft_qmmm.calculators import Results
 
 
 class CentroidPartition(PartitionPlugin):
-    """Partition subsystems residue-wise according to centroid.
+    r"""Partition subsystems residue-wise according to centroid.
 
     Args:
         query: The VMD-like query representing the group of atoms whose
             subsystem membership will be determined on an residue-wise
             basis.
+        cutoff: The cutoff distance (:math:`\mathrm{\mathring{A}}`) to
+            apply in the partition.
     """
 
     def __init__(
             self,
             query: str,
+            cutoff: float | int,
     ) -> None:
-        self._query = query
-
-    def modify(
-            self,
-            calculator: CompositeCalculator,
-    ) -> None:
-        """Modify the functionality of a calculator.
-
-        Args:
-            calculator: The calculator whose functionality will be
-                modified by the plugin.
-        """
-        self._modifieds.append(type(calculator).__name__)
-        self.system = calculator.system
-        self.cutoff = calculator.cutoff
-        calculator.calculate = self._modify_calculate(
-            calculator.calculate,
-        )
+        self.query = query
+        self.cutoff = cutoff
 
     def _modify_calculate(
             self,
-            calculate: CalculateMethod,
-    ) -> CalculateMethod:
+            calculate: Callable[[bool, bool], Results],
+    ) -> Callable[[bool, bool], Results]:
         """Modify the calculate routine to perform residue-wise partitioning.
 
         Args:
@@ -76,8 +50,8 @@ class CentroidPartition(PartitionPlugin):
             calculation.
         """
         def inner(
-                return_forces: bool | None = True,
-                return_components: bool | None = True,
+                return_forces: bool = True,
+                return_components: bool = True,
         ) -> Results:
             self.generate_partition()
             results = calculate(return_forces, return_components)
@@ -87,32 +61,25 @@ class CentroidPartition(PartitionPlugin):
     def generate_partition(self) -> None:
         """Perform the residue-wise system partitioning.
         """
-        qm_region = sorted(self.system.select("subsystem I"))
+        qm_region = self.calculator.system.select("subsystem I")
         qm_centroid = np.average(
-            self.system.positions[qm_region, :],
+            self.calculator.system.positions[sorted(qm_region), :],
             axis=0,
         )
-        region_ii: list[int] = []
-        selection = self.system.select(self._query)
-        for residue in self.system.residue_map.values():
-            atoms = sorted(residue & selection - set(qm_region))
+        region_ii: set[int] = set()
+        selection = self.calculator.system.select(self.query)
+        for residue in self.calculator.system.residue_map.values():
+            atoms = residue & selection - qm_region
             if atoms:
                 nth_centroid = np.average(
-                    self.system.positions[atoms, :],
+                    self.calculator.system.positions[sorted(atoms), :],
                     axis=0,
                 )
                 r_vector = nth_centroid - qm_centroid
                 distance = np.sum(r_vector**2)**0.5
                 if distance < self.cutoff:
-                    region_ii.extend(atoms)
+                    region_ii |= atoms
         # Update the topology with the current embedding atoms.
-        temp = [Subsystem.III]*len(self.system)
-        temp = [
-            Subsystem.II if i in region_ii else x
-            for i, x in enumerate(temp)
-        ]
-        temp = [
-            Subsystem.I if i in qm_region else x
-            for i, x in enumerate(temp)
-        ]
-        self.system.subsystems = np.array(temp)
+        region_iii = selection - qm_region - region_ii
+        self.calculator.system.subsystems[sorted(region_iii)] = Subsystem.III
+        self.calculator.system.subsystems[sorted(region_ii)] = Subsystem.II

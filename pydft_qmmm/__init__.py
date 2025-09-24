@@ -12,21 +12,24 @@ Todo:
 """
 from __future__ import annotations
 
-from . import _version
-from .common import Atom
-from .common import generate_velocities
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version
+
 from .hamiltonians import MMHamiltonian
 from .hamiltonians import QMHamiltonian
 from .hamiltonians import QMMMHamiltonian
 from .integrators import LangevinIntegrator
 from .integrators import VerletIntegrator
-from .interfaces import set_default_interfaces
-from .interfaces import set_interfaces
+from .system import Atom
 from .system import System
-from .wrappers import Logger
+from .utils import generate_velocities
+from .wrappers import Optimization
 from .wrappers import Simulation
 
 __author__ = "Jesse McDaniel, John Pederson"
-__version__ = _version.get_versions()['version']
+try:
+    __version__ = version("pydft-qmmm")
+except PackageNotFoundError:
+    pass
 
-del _version
+del version, PackageNotFoundError

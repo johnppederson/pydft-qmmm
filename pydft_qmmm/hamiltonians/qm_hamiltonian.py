@@ -2,66 +2,46 @@
 """
 from __future__ import annotations
 
-from dataclasses import asdict
-from dataclasses import dataclass
-from typing import Callable
+__all__ = ["QMHamiltonian"]
+
 from typing import TYPE_CHECKING
 
-from .hamiltonian import CalculatorHamiltonian
-from pydft_qmmm.calculators import InterfaceCalculator
-from pydft_qmmm.common import lazy_load
-from pydft_qmmm.common import Subsystem
-from pydft_qmmm.common import TheoryLevel
-from pydft_qmmm.interfaces import QMSettings
+from .hamiltonian import PotentialHamiltonian
+from pydft_qmmm.calculators import PotentialCalculator
+from pydft_qmmm.utils import Subsystem
+from pydft_qmmm.utils import TheoryLevel
+from pydft_qmmm.utils import TheoryLevelError
+from pydft_qmmm.utils import InterfaceImportError
+from pydft_qmmm.interfaces import interfaces
 
 if TYPE_CHECKING:
+    from typing import Any
     from pydft_qmmm import System
-    from pydft_qmmm.interfaces.interface import QMInterface
-    Factory = Callable[[QMSettings], QMInterface]
 
 
-@dataclass
-class QMHamiltonian(CalculatorHamiltonian):
+class QMHamiltonian(PotentialHamiltonian):
     """A Hamiltonian representing the QM level of theory.
 
     Args:
-        basis_set: The name of the basis set to be used in QM
-            calculations.
-        functional: The name of the functional set to be used in QM
-            calculations.
-        charge: The net charge (:math:`e`) of the system represented by
-            the QM Hamiltonian.
-        spin: The net spin of the system represented by the QM
-            Hamiltonian
-        quadrature_spherical: The number of spherical Lebedev points
-            to use in the DFT quadrature.
-        quadrature_radial: The number of radial points to use in the
-            DFT quadrature.
-        scf_type: The name of the type of SCF to perform, relating to
-            the JK build algorithms as in Psi4.
-        read_guess: Whether or not to reuse previous wavefunctions as
-            initial guesses in subsequent QM calculations.
+        interface: The name of the software that implements the desired
+            level of theory described by the Hamiltonian.
+        options: Keyword arguments to provide to the interface factory.
     """
-    basis_set: str
-    functional: str
-    charge: int
-    spin: int
-    quadrature_spherical: int = 302
-    quadrature_radial: int = 75
-    scf_type: str = "df"
-    read_guess: bool = True
+    theory_level: TheoryLevel = TheoryLevel.QM
 
-    def __post_init__(self) -> None:
-        """Set level of theory.
-        """
-        self.theory_level = TheoryLevel.QM
+    def __init__(
+            self,
+            interface: str = "psi4",
+            **options: dict[str, Any],
+    ) -> None:
+        self.interface = interface
+        self.options = options
 
-    def build_calculator(self, system: System) -> InterfaceCalculator:
+    def build_calculator(self, system: System) -> PotentialCalculator:
         """Build the calculator corresponding to the Hamiltonian.
 
         Args:
-            system: The system that will be used to calculate the
-                calculator.
+            system: The system that will be used in calculations.
 
         Returns:
             The calculator which is defined by the system and the
@@ -69,9 +49,23 @@ class QMHamiltonian(CalculatorHamiltonian):
         """
         qm_atoms = self._parse_atoms(system)
         system.subsystems[qm_atoms] = Subsystem.I
-        settings = QMSettings(system=system, **asdict(self))
-        interface = lazy_load("pydft_qmmm.interfaces").qm_factory(settings)
-        calculator = InterfaceCalculator(system=system, interface=interface)
+        try:
+            interface_info = interfaces[self.interface]
+        except KeyError:
+            raise InterfaceImportError(self.interface)
+        if interface_info[0] != self.theory_level:
+            raise TheoryLevelError(
+                self.theory_level,
+                interface_info[0],
+                "interface specified for the QMHamiltonian object",
+                "Please specify an interface at an appropriate level "
+                "of theory for the QMHamiltonian.",
+            )
+        try:
+            interface = interface_info[1](system, **self.options)
+        except TypeError as e:
+            raise e  # Todo: Make this informative.
+        calculator = PotentialCalculator(system, interface)
         return calculator
 
     def __str__(self) -> str:

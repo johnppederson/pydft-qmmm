@@ -2,17 +2,18 @@
 """
 from __future__ import annotations
 
-from typing import Callable
+__all__ = ["Stationary"]
+
 from typing import TYPE_CHECKING
 
 import numpy as np
-from numpy.typing import NDArray
 
-from pydft_qmmm.plugins.plugin import IntegratorPlugin
+from pydft_qmmm.integrators import IntegratorPlugin
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+    from numpy.typing import NDArray
     from pydft_qmmm.integrators import Returns
-    from pydft_qmmm.integrators import Integrator
     from pydft_qmmm import System
 
 
@@ -30,23 +31,6 @@ class Stationary(IntegratorPlugin):
     ) -> None:
         self.query = query
 
-    def modify(
-            self,
-            integrator: Integrator,
-    ) -> None:
-        """Modify the functionality of an integrator.
-
-        Args:
-            integrator: The integrator whose functionality will be
-                modified by the plugin.
-        """
-        self._modifieds.append(type(integrator).__name__)
-        self.integrator = integrator
-        integrator.integrate = self._modify_integrate(integrator.integrate)
-        integrator.compute_kinetic_energy = self._modify_compute_kinetic_energy(
-            integrator.compute_kinetic_energy,
-        )
-
     def constrain_velocities(self, system: System) -> NDArray[np.float64]:
         """Zero velocities for stationary residues.
 
@@ -54,7 +38,7 @@ class Stationary(IntegratorPlugin):
             system: The system with stationary residues.
 
         Returns:
-            New velocities which result from zeroing the system
+            New velocities which result from zeroing the
             velocities of stationary residues.
         """
         velocities = system.velocities
@@ -114,27 +98,3 @@ class Stationary(IntegratorPlugin):
             )
             return kinetic_energy
         return inner
-
-
-class RigidBody(IntegratorPlugin):
-    """Apply rigid-body dynamics to select residues during integration.
-
-    Args:
-        query: The VMD-like selection query which corresponds to
-            residues that should be kept rigid during integration.
-    """
-
-    def __init__(self, query: str) -> None:
-        raise NotImplementedError
-
-    def modify(
-            self,
-            integrator: Integrator,
-    ) -> None:
-        """Modify the functionality of an integrator.
-
-        Args:
-            integrator: The integrator whose functionality will be
-                modified by the plugin.
-        """
-        pass

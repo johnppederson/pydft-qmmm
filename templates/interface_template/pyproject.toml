@@ -1,0 +1,14 @@
+[project]
+name = "interface_template"
+version = "0.0.0"
+
+# This is how PyDFT-QMMM can find the templated interface, so every
+# local or third-party interface must have entry_points defined for
+# the key "pydft_qmmm.interfaces" with a variable that is assigned the
+# name of the interface package (it does not matter what the name of
+# the variable is).
+[project.entry-points."pydft_qmmm.interfaces"]
+interface = "interface_template"
+
+[tool.setuptools]
+packages = ["interface_template"]

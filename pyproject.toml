@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=80", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydft_qmmm"
+dynamic = ["version"]
+authors = [
+    {name = "John P. Pederson", email = "johnppederson@gmail.com"},
+]
+license = "LGPL-2.1"
+license-files = ["LICENSE", "COPYING", "COPYING.LESSER"]
+description = "PyDFT-QMMM: A Python Package for Performing QM/MM Simulations"
+requires-python = ">=3.10"
+dependencies = ["numpy", "OpenMM", "Pint", "qcelemental"]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Documentation = "https://johnppederson.com/pydft-qmmm/"
+Repository = "https://github.com/johnppederson/pydft-qmmm.git"
+Issues = "https://github.com/johnppederson/pydft-qmmm/issues"
+
+[project.scripts]
+pydft-qmmm = "pydft_qmmm.__main__:main"
+
+[project.optional-dependencies]
+docs = ["sphinx", "sphinx-autodoc-typehints", "furo"]
+arbitrary-topologies = ["ParmEd"]
+enhanced-sampling = ["plumed"]
+qmmm-pme = ["helpme-py"]
+dev = ["pre-commit"]
+tests = ["pytest", "pytest-cov"]
+
+[tool.setuptools]
+packages = ["pydft_qmmm"]
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ["__main__.py"]

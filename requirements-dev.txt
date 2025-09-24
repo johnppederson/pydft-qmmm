@@ -1,4 +1,0 @@
-mypy_extensions
-pytest
-pytest-cov
-python >= 3.10

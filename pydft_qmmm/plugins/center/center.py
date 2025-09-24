@@ -2,33 +2,36 @@
 """
 from __future__ import annotations
 
-from typing import Callable
+__all__ = [
+    "CalculatorCenter",
+    "IntegratorCenter",
+]
+
 from typing import TYPE_CHECKING
 
 import numpy as np
-from numpy.typing import NDArray
 
-from pydft_qmmm.plugins.plugin import CalculatorPlugin
-from pydft_qmmm.plugins.plugin import IntegratorPlugin
+from pydft_qmmm.calculators.calculator import CalculatorPlugin
+from pydft_qmmm.integrators.integrator import IntegratorPlugin
 
 if TYPE_CHECKING:
-    from pydft_qmmm.integrator import Integrator
-    from pydft_qmmm.integrator import Returns
-    from pydft_qmmm.calculator import Calculator
-    from pydft_qmmm.common import Results
+    from collections.abc import Callable
+    from numpy.typing import NDArray
+    from pydft_qmmm.integrators import Returns
+    from pydft_qmmm.calculators import Results
     from pydft_qmmm import System
 
 
 def _center_positions(
-        positions: NDArray[np.ndarray],
+        positions: NDArray[np.float64],
         system: System,
         query: str,
 ) -> NDArray[np.float64]:
     r"""Center positions about the centroid of a query selection.
 
     Args:
-        positions: The positions (:math:`\mathrm{\mathring{A}}`) which will be
-            centered.
+        positions: The positions (:math:`\mathrm{\mathring{A}}`) to
+            center.
         system: The system whose positions will be centered.
         query: The VMD-like query representing the group of atoms whose
             centroid will be taken to be the center of the system.
@@ -59,22 +62,6 @@ class CalculatorCenter(CalculatorPlugin):
     ) -> None:
         self.query = query
 
-    def modify(
-            self,
-            calculator: Calculator,
-    ) -> None:
-        """Modify the functionality of a calculator.
-
-        Args:
-            calculator: The calculator whose functionality will be
-                modified by the plugin.
-        """
-        self._modifieds.append(type(calculator).__name__)
-        self.system = calculator.system
-        calculator.calculate = self._modify_calculate(
-            calculator.calculate,
-        )
-
     def _modify_calculate(
             self,
             calculate: Callable[[bool, bool], Results],
@@ -92,9 +79,9 @@ class CalculatorCenter(CalculatorPlugin):
                 return_forces: bool = True,
                 return_components: bool = True,
         ) -> Results:
-            self.system.positions = _center_positions(
-                self.system.positions,
-                self.system,
+            self.calculator.system.positions[:] = _center_positions(
+                self.calculator.system.positions,
+                self.calculator.system,
                 self.query,
             )
             results = calculate(return_forces, return_components)
@@ -115,22 +102,6 @@ class IntegratorCenter(IntegratorPlugin):
             query: str = "subsystem I",
     ) -> None:
         self.query = query
-
-    def modify(
-            self,
-            integrator: Integrator,
-    ) -> None:
-        """Modify the functionality of an integrator.
-
-        Args:
-            integrator: The integrator whose functionality will be
-                modified by the plugin.
-        """
-        self._modifieds.append(type(integrator).__name__)
-        self.integrator = integrator
-        integrator.integrate = self._modify_integrate(
-            integrator.integrate,
-        )
 
     def _modify_integrate(
             self,

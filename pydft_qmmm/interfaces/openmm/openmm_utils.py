@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 def _generate_state(
-        context: openmm.Context,
+        omm_context: openmm.Context,
         groups: set[int] | int | None = -1,
 ) -> openmm.State:
     """Generate an OpenMM State in order to collect energies and forces.
@@ -33,34 +33,34 @@ def _generate_state(
     """
     if groups is None:
         groups = -1
-    return context.getState(getEnergy=True, getForces=True, groups=groups)
+    return omm_context.getState(getEnergy=True, getForces=True, groups=groups)
 
 
 def _exclude_intramolecular(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove intramolecular interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove intra-molecular
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove
+            intra-molecular interactions.
     """
     # Remove double-counted intramolecular interactions for QM atoms.
     # This doesn't currently generalize to residues which are part MM
     # and part QM.
-    _exclude_harmonic_bond(system, atoms)
-    _exclude_harmonic_angle(system, atoms)
-    _exclude_periodic_torsion(system, atoms)
-    _exclude_rb_torsion(system, atoms)
+    _exclude_harmonic_bond(omm_system, atoms)
+    _exclude_harmonic_angle(omm_system, atoms)
+    _exclude_periodic_torsion(omm_system, atoms)
+    _exclude_rb_torsion(omm_system, atoms)
     nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.NonbondedForce)
     ]
     custom_nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.CustomNonbondedForce)
     ]
     atom_list = list(atoms)
@@ -82,19 +82,19 @@ def _exclude_intramolecular(
 
 
 def _exclude_harmonic_bond(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove harmonic bond interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove harmonic bond
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove harmonic bond
+            interactions.
     """
     harmonic_bond_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.HarmonicBondForce)
     ]
     for force in harmonic_bond_forces:
@@ -106,19 +106,19 @@ def _exclude_harmonic_bond(
 
 
 def _exclude_harmonic_angle(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove harmonic angle interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove harmonic angle
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove harmonic angle
+            interactions.
     """
     harmonic_angle_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.HarmonicAngleForce)
     ]
     for force in harmonic_angle_forces:
@@ -130,19 +130,19 @@ def _exclude_harmonic_angle(
 
 
 def _exclude_periodic_torsion(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove periodic torsion interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove periodic torsion
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove periodic
+            torsion interactions.
     """
     periodic_torsion_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.PeriodicTorsionForce)
     ]
     for force in periodic_torsion_forces:
@@ -154,19 +154,19 @@ def _exclude_periodic_torsion(
 
 
 def _exclude_rb_torsion(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
-    """Remove Ryckaert-Bellemans torsion interactions for a set of atoms.
+    """Remove Ryckaert-Bellemans interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove Ryckaert-Bellemans torsion
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove
+            Ryckaert-Bellemans torsion interactions.
     """
     rb_torsion_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.RBTorsionForce)
     ]
     for force in rb_torsion_forces:
@@ -180,23 +180,30 @@ def _exclude_rb_torsion(
 
 
 def _real_electrostatic(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
         const: int | float,
 ) -> list[openmm.customNonbondedForce]:
     """Add Coulomb interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to add a Coulomb interaction
-            for.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms for which to add a Coulomb
+            interaction.
         const: A constant to multiply at the beginning of the
             coulomb expression.
+
+    Returns:
+        A list of OpenMM custom nonbonded forces implementing Coulomb
+        interactions for the given atoms.
     """
-    other_atoms = {i for i in range(system.getNumParticles())} - atoms
+    other_atoms = (
+        {i for i in range(omm_system.getNumParticles())}
+        - atoms
+    )
     nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.NonbondedForce)
     ]
     forces = []
@@ -208,7 +215,7 @@ def _real_electrostatic(
         )
         new_force.addPerParticleParameter("q")
         new_force.addPerParticleParameter("n")
-        for atom in range(system.getNumParticles()):
+        for atom in range(omm_system.getNumParticles()):
             q, _, _ = force.getParticleParameters(
                 atom,
             )
@@ -218,7 +225,8 @@ def _real_electrostatic(
         for atom in atoms:
             q, _ = new_force.getParticleParameters(atom)
             new_force.setParticleParameters(atom, [q, 1])
-        force.setNonbondedMethod(openmm.CustomNonbondedForce.NoCutoff)
+        # Todo: Evaluate new_force construction.
+        #force.setNonbondedMethod(openmm.CustomNonbondedForce.NoCutoff)
         new_force.addInteractionGroup(
             atoms,
             other_atoms,
@@ -239,24 +247,31 @@ def _real_electrostatic(
 
 
 def _non_electrostatic(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> list[openmm.customNonbondedForce]:
     """Add a non-electrostatic interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to add a non-electrostatic,
-            non-bonded interaction for.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms for which to add non-electrostatic,
+            non-bonded interactions.
+
+    Returns:
+        A list of OpenMM custom nonbonded forces implementing
+        non-electrostatic, non-bonded interactions for the given atoms.
     """
-    other_atoms = {i for i in range(system.getNumParticles())} - atoms
+    other_atoms = (
+        {i for i in range(omm_system.getNumParticles())}
+        - atoms
+    )
     nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.NonbondedForce)
     ]
     custom_nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.CustomNonbondedForce)
     ]
     forces = []
@@ -271,7 +286,7 @@ def _non_electrostatic(
         )
         new_force.addPerParticleParameter("epsilon")
         new_force.addPerParticleParameter("sigma")
-        for atom in range(system.getNumParticles()):
+        for atom in range(omm_system.getNumParticles()):
             _, sigma, epsilon = force.getParticleParameters(
                 atom,
             )
@@ -300,36 +315,36 @@ def _non_electrostatic(
 
 
 def _exclude_intermolecular(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove inter-molecular interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove inter-molecular
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove inter-molecular
+            interactions.
     """
-    _exclude_electrostatic(system, atoms)
-    _exclude_lennard_jones(system, atoms)
-    _exclude_custom_nonbonded(system, atoms)
+    _exclude_electrostatic(omm_system, atoms)
+    _exclude_lennard_jones(omm_system, atoms)
+    _exclude_custom_nonbonded(omm_system, atoms)
 
 
 def _exclude_electrostatic(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove electrostatic interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove electrostatic
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove electrostatic
+            interactions.
     """
     nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.NonbondedForce)
     ]
     for force in nonbonded_forces:
@@ -340,19 +355,19 @@ def _exclude_electrostatic(
 
 
 def _exclude_lennard_jones(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove Lennard-Jones interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove Lennard-Jones
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove Lennard-Jones
+            interactions.
     """
     nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.NonbondedForce)
     ]
     for force in nonbonded_forces:
@@ -364,22 +379,22 @@ def _exclude_lennard_jones(
 
 
 def _exclude_custom_nonbonded(
-        system: openmm.System,
+        omm_system: openmm.System,
         atoms: frozenset[int],
 ) -> None:
     """Remove user-defined non-bonded interactions for a set of atoms.
 
     Args:
-        system: The OpenMM representation of forces, constraints, and
-            particles.
-        atoms: The indices of atoms to remove user-defined non-bonded
-            interactions from.
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove user-defined
+            non-bonded interactions.
     """
     custom_nonbonded_forces = [
-        force for force in system.getForces()
+        force for force in omm_system.getForces()
         if isinstance(force, openmm.CustomNonbondedForce)
     ]
-    all_atoms = {i for i in range(system.getNumParticles())}
+    all_atoms = {i for i in range(omm_system.getNumParticles())}
     other_atoms = all_atoms - atoms
     for force in custom_nonbonded_forces:
         force.addInteractionGroup(
@@ -392,7 +407,7 @@ def _update_exceptions(
         force: openmm.nonbondedForce,
         new_charges: NDArray[np.float64],
 ) -> None:
-    """Update OpenMM NonbondedForce exceptions to match a new set of charges.
+    """Update OpenMM NonbondedForce exceptions to match new charges.
 
     Args:
         force: The OpenMM NonbondedForce with exceptions to update.

@@ -1,8 +1,9 @@
-"""A sub-package containing the calculators of the simulation engine.
+"""A sub-package containing the force and energy calculators.
 """
 from __future__ import annotations
 
-from .calculator import Calculator
-from .composite_calculator import CompositeCalculator
-from .interface_calculator import InterfaceCalculator
 __author__ = "John Pederson"
+
+from .calculator import *
+from .composite_calculator import *
+from .potential_calculator import *

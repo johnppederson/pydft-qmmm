@@ -1,13 +1,9 @@
 from __future__ import annotations
 
 import numpy
-import pytest
 
 from pydft_qmmm import QMMMHamiltonian
-from pydft_qmmm import set_interfaces
 from pydft_qmmm import Simulation
-
-set_interfaces("psi4", "openmm")
 
 
 def test_simulation_system_centering(
@@ -16,12 +12,14 @@ def test_simulation_system_centering(
         mm_spce,
         qm_water,
         verlet,
+        no_logging,
 ):
     qmmm = QMMMHamiltonian("electrostatic", "electrostatic")
     total = mm_spce[3:] + qm_water[0:3] + qmmm
-    simulation = Simulation(
+    _ = Simulation(
         system=spce_system,
         integrator=verlet,
         hamiltonian=total,
+        **no_logging,
     )
     assert numpy.allclose(spce_system.positions, spce_qmmm_system.positions)

@@ -2,6 +2,11 @@
 """
 from __future__ import annotations
 
+__all__ = [
+    "settle_positions",
+    "settle_velocities",
+]
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -16,13 +21,16 @@ def settle_positions(
 ) -> NDArray[np.float64]:
     r"""A utility to perform the SETTLE algorithm on a set of positions.
 
+    This method is based off of the implementation of OpenMM in
+    :openmm:`SimTKReference/ReferenceSETTLEAlgorithm.cpp`.
+
     Args:
         residues: The list of list of atom indices corresponding to the
             list of water residues in a system.
-        positions_i: The initial positions (:math:`\mathrm{\mathring{A}}`) of
-            the system.
-        positions_f: The final positions (:math:`\mathrm{\mathring{A}}`) of
-            the system.
+        positions_i: The initial positions
+            (:math:`\mathrm{\mathring{A}}`) of the system.
+        positions_f: The final positions
+            (:math:`\mathrm{\mathring{A}}`) of the system.
         masses: The masses (:math:`\mathrm{AMU}`) of atoms in the
             system.
         oh_distance: The distance between the oxygen and hydrogens
@@ -33,8 +41,6 @@ def settle_positions(
     Returns:
         The new positions with SETTLE applied to the positions of water
         residues.
-
-    .. note:: Based on the SETTLE kernel in OpenMM.
     """
     pos_0 = positions_i[residues, :]
     oxy_0 = pos_0[:, 0, :]
@@ -192,6 +198,9 @@ def settle_velocities(
 ) -> NDArray[np.float64]:
     r"""A utility to perform the SETTLE algorithm on a set of velocities.
 
+    This method is based off of the implementation of OpenMM in
+    :openmm:`SimTKReference/ReferenceSETTLEAlgorithm.cpp`.
+
     Args:
         residues: The list of list of atom indices corresponding to the
             list of water residues in a system.
@@ -205,8 +214,6 @@ def settle_velocities(
     Returns:
         The new velocities with SETTLE applied to the velocities of
         water residues.
-
-    .. note:: Based on the SETTLE kernel in OpenMM.
     """
     pos_0 = positions_i[residues, :]
     oxy_p = pos_0[:, 0, :]

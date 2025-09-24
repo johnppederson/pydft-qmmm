@@ -133,6 +133,7 @@ dmypy.json
 
 # Psi4 data
 *.clean
+EMBPOT
 
 # Run data
 *.dat

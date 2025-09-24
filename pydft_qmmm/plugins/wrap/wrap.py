@@ -1,21 +1,24 @@
-"""Plugins for wrapping system coordinates when a PBC is in use.
+"""Plugins for wrapping system coordinates with a PBC.
 """
 from __future__ import annotations
 
-from typing import Callable
+__all__ = [
+    "CalculatorWrap",
+    "IntegratorWrap",
+]
+
 from typing import TYPE_CHECKING
 
 import numpy as np
-from numpy.typing import NDArray
 
-from pydft_qmmm.plugins.plugin import CalculatorPlugin
-from pydft_qmmm.plugins.plugin import IntegratorPlugin
+from pydft_qmmm.calculators.calculator import CalculatorPlugin
+from pydft_qmmm.integrators.integrator import IntegratorPlugin
 
 if TYPE_CHECKING:
-    from pydft_qmmm.integrator import Integrator
-    from pydft_qmmm.integrator import Returns
-    from pydft_qmmm.calculator import Calculator
-    from pydft_qmmm.common import Results
+    from collections.abc import Callable
+    from numpy.typing import NDArray
+    from pydft_qmmm.integrators import Returns
+    from pydft_qmmm.calculators import Results
     from pydft_qmmm import System
 
 
@@ -29,11 +32,10 @@ def _wrap_positions(
     function ensures molecules are not broken up by a periodic
     boundary, since OpenMM electrostatics will be incorrect if atoms
     in a molecule are not on the same side of the periodic box.
-    This method currently assumes an isotropic box.
 
     Args:
-        positions: The positions (:math:`\mathrm{\mathring{A}}`) which will be
-            wrapped.
+        positions: The positions (:math:`\mathrm{\mathring{A}}`) to
+            wrap.
         system: The system whose positions will be wrapped.
 
     Returns:
@@ -61,22 +63,6 @@ class CalculatorWrap(CalculatorPlugin):
     """Wrap positions before performing a calculation.
     """
 
-    def modify(
-            self,
-            calculator: Calculator,
-    ) -> None:
-        """Modify the functionality of a calculator.
-
-        Args:
-            calculator: The calculator whose functionality will be
-                modified by the plugin.
-        """
-        self._modifieds.append(type(calculator).__name__)
-        self.system = calculator.system
-        calculator.calculate = self._modify_calculate(
-            calculator.calculate,
-        )
-
     def _modify_calculate(
             self,
             calculate: Callable[[bool, bool], Results],
@@ -94,9 +80,9 @@ class CalculatorWrap(CalculatorPlugin):
                 return_forces: bool = True,
                 return_components: bool = True,
         ) -> Results:
-            self.system.positions = _wrap_positions(
-                self.system.positions,
-                self.system,
+            self.calculator.system.positions[:] = _wrap_positions(
+                self.calculator.system.positions,
+                self.calculator.system,
             )
             results = calculate(return_forces, return_components)
             return results
@@ -106,22 +92,6 @@ class CalculatorWrap(CalculatorPlugin):
 class IntegratorWrap(IntegratorPlugin):
     """Wrap positions after performing an integration.
     """
-
-    def modify(
-            self,
-            integrator: Integrator,
-    ) -> None:
-        """Modify the functionality of an integrator.
-
-        Args:
-            integrator: The integrator whose functionality will be
-                modified by the plugin.
-        """
-        self._modifieds.append(type(integrator).__name__)
-        self.integrator = integrator
-        integrator.integrate = self._modify_integrate(
-            integrator.integrate,
-        )
 
     def _modify_integrate(
             self,

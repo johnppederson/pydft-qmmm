@@ -2,20 +2,24 @@
 """
 from __future__ import annotations
 
+__all__ = ["LangevinIntegrator"]
+
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import numpy as np
 
+from pydft_qmmm.utils import KB
+from pydft_qmmm.utils import pluggable_method
+
 from .integrator import Integrator
-from pydft_qmmm.common import KB
 
 if TYPE_CHECKING:
     from pydft_qmmm import System
     from .integrator import Returns
 
 
-@dataclass
+@dataclass(frozen=True)
 class LangevinIntegrator(Integrator):
     r"""An integrator implementing the Leapfrog Verlet algorithm.
 
@@ -27,28 +31,28 @@ class LangevinIntegrator(Integrator):
         friction: The friction (:math:`\mathrm{fs^{-1}}`) experienced
             by particles in the system.
     """
-    timestep: float | int
     temperature: int | float
     friction: int | float
 
+    @pluggable_method
     def integrate(self, system: System) -> Returns:
         r"""Integrate forces into new positions and velocities.
 
         Args:
             system: The system whose forces
-                (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and existing
-                positions (:math:`\mathrm{\mathring{A}}`) and velocities
-                (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) will be used to
-                determine new positions and velocities.
+                (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and
+                existing positions (:math:`\mathrm{\mathring{A}}`) and
+                velocities (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) will
+                be used to determine new positions and velocities.
+
+        This method is based off of the implementation of OpenMM in
+        :openmm:`ReferenceKernels.cpp`.
 
         Returns:
             New positions (:math:`\mathrm{\mathring{A}}`) and velocities
-            (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) integrated from the forces
-            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) and existing
-            positions and velocities of the system.
-
-        .. note:: Based on the implementation of the integrator
-            kernels from OpenMM.
+            (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) integrated from the
+            forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`)
+            and existing positions and velocities of the system.
         """
         masses = system.masses.reshape((-1, 1))
         vel_scale = np.exp(-self.timestep*self.friction)

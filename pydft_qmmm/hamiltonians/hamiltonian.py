@@ -1,16 +1,29 @@
-"""Hamiltonian base and derived classes.
+"""Base classes for the Hamiltonian API.
+
+This module contains the Hamiltonian abstract base class as well as
+several derived classes for standalone Hamiltonians, Hamiltonians that
+couple other standalone Hamiltonians, and composite Hamiltonians.
 """
 from __future__ import annotations
 
+__all__ = [
+    "Hamiltonian",
+    "StandaloneHamiltonian",
+    "PotentialHamiltonian",
+    "CouplingHamiltonian",
+    "CompositeHamiltonian",
+]
+
 from abc import ABC
 from abc import abstractmethod
+from collections.abc import Iterable
 from copy import deepcopy
 from typing import Any
 from typing import TYPE_CHECKING
 
 from pydft_qmmm.calculators import CompositeCalculator
-from pydft_qmmm.common import Subsystem
-from pydft_qmmm.common import TheoryLevel
+from pydft_qmmm.utils import Subsystem
+from pydft_qmmm.utils import TheoryLevel
 
 if TYPE_CHECKING:
     from pydft_qmmm import System
@@ -45,27 +58,85 @@ class Hamiltonian(ABC):
 
     @abstractmethod
     def __str__(self) -> str:
-        """Create a LATEX string representation of the Hamiltonian.
+        """Create a LaTeX string representation of the Hamiltonian.
 
         Returns:
             The string representation of the Hamiltonian.
         """
 
 
-class CalculatorHamiltonian(Hamiltonian):
-    """An abstract Hamiltonian base class for creating calculators.
+class StandaloneHamiltonian(Hamiltonian):
+    """A base class for Hamiltonians that build calculators.
+    """
+
+    @abstractmethod
+    def build_calculator(self, system: System) -> Calculator:
+        """Build the calculator corresponding to the Hamiltonian.
+
+        Args:
+            system: The system that will be used in calculations.
+
+        Returns:
+            The calculator which is defined by the system and the
+            Hamiltonian.
+        """
+
+
+class CouplingHamiltonian(Hamiltonian):
+    """A base class for Hamiltonians that couple other Hamiltonians.
+
+    Attributes:
+        force_matrix: A matrix representing the gradient of potential
+            expressions representing interactions between subsystems
+            treated by different Hamiltonians.
+    """
+    force_matrix: dict[Subsystem, dict[Subsystem, TheoryLevel]]
+
+    def __add__(self, other: Hamiltonian) -> CompositeHamiltonian:
+        """Add Hamiltonians together.
+
+        Args:
+            other: The object being added to the Hamiltonian.
+
+        Returns:
+            A new Hamiltonian.
+        """
+        if not isinstance(other, Hamiltonian):
+            raise TypeError("...")
+        return CompositeHamiltonian(self, other)
+
+    @abstractmethod
+    def modify_calculator(
+            self,
+            calculator: CompositeCalculator,
+            system: System,
+    ) -> None:
+        """Modify a composite calculator to include the coupling.
+
+        Args:
+            calculator: A composite calculator which is defined in part
+                by the system.
+            system: The system corresponding to the calculator.
+        """
+
+
+class PotentialHamiltonian(StandaloneHamiltonian):
+    """A base class for Hamiltonians that build potential calculators.
 
     Attributes:
         atoms: Indices corresponding to the atoms for which the
             Hamiltonian is applicable.
         theory_level: The level of theory of the Hamiltonian.
+        interface: The name of the software that implements the desired
+            level of theory described by the Hamiltonian.
     """
-    atoms: list[int | slice] = []
+    atoms: tuple[int | slice, ...] = ()
     theory_level: TheoryLevel = TheoryLevel.NO
+    interface: str = ""
 
     def __getitem__(
             self,
-            indices: int | slice | tuple[int | slice, ...],
+            indices: int | slice | Iterable[int | slice],
     ) -> Hamiltonian:
         """Sets the indices for atoms treated by the Hamiltonian.
 
@@ -76,11 +147,11 @@ class CalculatorHamiltonian(Hamiltonian):
         Returns:
             A copy of the Hamiltonian with the selected atoms.
         """
-        indices = indices if isinstance(indices, tuple) else (indices,)
-        atoms = []
+        indices = indices if isinstance(indices, Iterable) else (indices,)
+        atoms: tuple[int | slice, ...] = ()
         for i in indices:
             if isinstance(i, (int, slice)):
-                atoms.append(i)
+                atoms += (i,)
             else:
                 raise TypeError("...")
         ret = deepcopy(self)
@@ -88,8 +159,7 @@ class CalculatorHamiltonian(Hamiltonian):
         return ret
 
     def _parse_atoms(self, system: System) -> list[int]:
-        """Parse the indices provided to the :class:`Hamiltonian` object
-        to create the list of residue-grouped atom indices.
+        """Parse the Hamiltonian's indices in the context of the system.
 
         Args:
             system: The system whose atoms will be selected by the by
@@ -130,7 +200,7 @@ class CalculatorHamiltonian(Hamiltonian):
         return CompositeHamiltonian(self, other)
 
     def __str__(self) -> str:
-        """Create a LATEX string representation of the Hamiltonian.
+        """Create a LaTeX string representation of the Hamiltonian.
 
         Returns:
             The string representation of the Hamiltonian.
@@ -141,72 +211,9 @@ class CalculatorHamiltonian(Hamiltonian):
         string += "}"
         return string
 
-    @abstractmethod
-    def build_calculator(self, system: System) -> Calculator:
-        """Build the calculator corresponding to the Hamiltonian.
 
-        Args:
-            system: The system that will be used to calculate the
-                calculator.
-
-        Returns:
-            The calculator which is defined by the system and the
-            Hamiltonian.
-        """
-
-
-class CouplingHamiltonian(Hamiltonian):
-    """An abstract Hamiltonian base class for coupling Hamiltonians.
-
-    Attributes:
-        force_matrix: A matrix representing the gradient of potential
-            expressions representing interactions between differing
-            subsystems.
-    """
-    force_matrix: dict[Subsystem, dict[Subsystem, TheoryLevel]]
-
-    def __add__(self, other: Hamiltonian) -> CompositeHamiltonian:
-        """Add Hamiltonians together.
-
-        Args:
-            other: The object being added to the Hamiltonian.
-
-        Returns:
-            A new Hamiltonian.
-        """
-        if not isinstance(other, Hamiltonian):
-            raise TypeError("...")
-        return CompositeHamiltonian(self, other)
-
-    @abstractmethod
-    def modify_calculator(self, calculator: Calculator, system: System) -> None:
-        """Modify a calculator to represent the coupling.
-
-        Args:
-            calculator: A calculator which is defined in part by the
-                system.
-            system: The system that will be used to modify the
-                calculator.
-        """
-
-    @abstractmethod
-    def modify_composite(
-            self,
-            calculator: CompositeCalculator,
-            system: System,
-    ) -> None:
-        """Modify a composite calculator to represent the coupling.
-
-        Args:
-            calculator: A composite calculator which is defined in part
-                by the system.
-            system: The system that will be used to modify the
-                calculator.
-        """
-
-
-class CompositeHamiltonian(Hamiltonian):
-    """An abstract Hamiltonian base class for combining Hamiltonians.
+class CompositeHamiltonian(StandaloneHamiltonian):
+    """A Hamiltonian that can combine other Hamiltonians.
 
     Args:
         hamiltonians: A set of Hamiltonians belonging to the composite
@@ -253,8 +260,7 @@ class CompositeHamiltonian(Hamiltonian):
         """Build the calculator corresponding to the Hamiltonian.
 
         Args:
-            system: The system that will be used to calculate the
-                calculator.
+            system: The system that will be used in calculations.
 
         Returns:
             The calculator which is defined by the system and the
@@ -267,19 +273,16 @@ class CompositeHamiltonian(Hamiltonian):
         for hamiltonian in standalone:
             calculator = hamiltonian.build_calculator(system)
             calculators.append(calculator)
-        # Then modify build calculators
-        for calculator in calculators:
-            for coupler in coupling:
-                coupler.modify_calculator(calculator, system)
         calculator = CompositeCalculator(
             system=system,
             calculators=calculators,
         )
+        # Modify the built calculator.
         for coupler in coupling:
-            coupler.modify_composite(calculator, system)
+            coupler.modify_calculator(calculator, system)
         return calculator
 
-    def _calculator_hamiltonians(self) -> list[CalculatorHamiltonian]:
+    def _calculator_hamiltonians(self) -> list[StandaloneHamiltonian]:
         """Sort out calculator-building Hamiltonians.
 
         Returns:
@@ -287,7 +290,7 @@ class CompositeHamiltonian(Hamiltonian):
         """
         standalone = []
         for hamiltonian in self.hamiltonians:
-            if isinstance(hamiltonian, CalculatorHamiltonian):
+            if isinstance(hamiltonian, StandaloneHamiltonian):
                 standalone.append(hamiltonian)
         return standalone
 

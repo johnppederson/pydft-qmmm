@@ -1,0 +1,50 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: 3.12
+
+      - name: Install dependencies
+        shell: bash -el {0}
+        run: |
+          conda install -c conda-forge psi4 openmm
+          pip install helpme numpy pytest pytest-cov
+
+      - name: Build
+        shell: bash -el {0}
+        run: pip install .
+
+      - name: Run tests
+        shell: bash -el {0}
+        run: pytest --cov=pydft_qmmm tests
+
+      - name: Extract line‐coverage %
+        working-directory: build
+        id: extract
+        run: |
+          PCT=$(coverage report | tail -1 | grep -oE '[^ %]+' | tail -1)
+          echo "COVERAGE=${PCT}" >> $GITHUB_ENV
+
+      - name: Create coverage badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ secrets.GIST_ID }}
+          filename: pydft_qmmm.json
+          label: coverage
+          message: ${{ env.COVERAGE }}%
+          valColorRange: ${{ env.COVERAGE }}
+          minColorRange: 0
+          maxColorRange: 100

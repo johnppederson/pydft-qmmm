@@ -2,7 +2,9 @@
 """
 from __future__ import annotations
 
-from typing import Callable
+__all__ = ["SETTLE"]
+
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -10,16 +12,18 @@ from numpy.typing import NDArray
 
 from .settle_utils import settle_positions
 from .settle_utils import settle_velocities
-from pydft_qmmm.plugins.plugin import IntegratorPlugin
+from pydft_qmmm.integrators import IntegratorPlugin
 
 if TYPE_CHECKING:
-    from pydft_qmmm.integrator import Integrator
-    from pydft_qmmm.integrator import Returns
+    from pydft_qmmm.integrators import Returns
     from pydft_qmmm import System
 
 
 class SETTLE(IntegratorPlugin):
     r"""Apply the SETTLE algorithm to water residues after integration.
+
+    This plugin is based off of the implementation of OpenMM in
+    :openmm:`SimTKReference/ReferenceSETTLEAlgorithm.cpp`.
 
     Args:
         query: The VMD-like selection query which should correspond to
@@ -39,23 +43,6 @@ class SETTLE(IntegratorPlugin):
         self.query = "(" + query + ") and not subsystem I"
         self.oh_distance = oh_distance
         self.hh_distance = hh_distance
-
-    def modify(
-            self,
-            integrator: Integrator,
-    ) -> None:
-        """Modify the functionality of an integrator.
-
-        Args:
-            integrator: The integrator whose functionality will be
-                modified by the plugin.
-        """
-        self._modifieds.append(type(integrator).__name__)
-        self.integrator = integrator
-        integrator.integrate = self._modify_integrate(integrator.integrate)
-        integrator.compute_kinetic_energy = self._modify_compute_kinetic_energy(
-            integrator.compute_kinetic_energy,
-        )
 
     def constrain_velocities(self, system: System) -> NDArray[np.float64]:
         """Apply the SETTLE algorithm to system velocities.
@@ -87,7 +74,7 @@ class SETTLE(IntegratorPlugin):
             residues in the system.
         """
         residue_indices = sorted({
-            system[i].residue for i in system.select(self.query)
+            system.residues[i] for i in system.select(self.query)
         })
         residues: list[list[int]] = [[] for _ in residue_indices]
         for i, atom in enumerate(system):

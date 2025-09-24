@@ -1,0 +1,53 @@
+name: PyPI Deployment
+
+on:
+  workflow_dispatch:
+#  push:
+#    tags:
+#      - "[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  build-wheel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: 3.12
+
+      - name: Install dependencies
+        shell: bash -el {0}
+        run: |
+          conda install -c conda-forge psi4 openmm
+          pip install numpy build
+
+      - name: Build wheel
+        shell: bash -el {0}
+        run: python -m build
+
+      - name: Upload wheel artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/*
+
+  publish:
+    needs: [build-wheel]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pydft-qmmm
+    steps:
+      - name: Download all wheel artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{secrets.PYPI_API_TOKEN}}
+          packages-dir: dist
