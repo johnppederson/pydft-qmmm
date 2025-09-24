@@ -17,7 +17,7 @@ PyDFT-QMMM: A Modular Framework for DFT-QM/MM Simulation
 [![License](https://img.shields.io/badge/license-LGPL_2.1-blue.svg)](https://opensource.org/license/lgpl-2-1)
 
 [![Build](https://github.com/johnppederson/pydft-qmmm/actions/workflows/test_and_coverage.yml/badge.svg)](https://github.com/johnppederson/pydft-qmmm/actions)
-[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/johnppederson/4c2e0c473552016c70f6cc0f0a44a9c1/raw/pydft_qmmmm.json)](https://github.com/johnppederson/pydft-qmmm/actions)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/johnppederson/f0e19ee2c0a71030ace6067046a59ff1/raw/pydft_qmmmm.json)](https://github.com/johnppederson/pydft-qmmm/actions)
 <!-- [![Deployment](https://github.com/johnppederson/pydft-qmmm/actions/workflows/build_and_deploy.yml/badge.svg)](https://pypi.org/project/pydft-qmmm/) -->
 [![Docs](https://github.com/johnppederson/pydft-qmmm/actions/workflows/docs.yml/badge.svg)](https://johnppederson.com/pydft-qmmm/)
 

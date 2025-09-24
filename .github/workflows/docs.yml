@@ -26,6 +26,7 @@ jobs:
         run: pip install .
 
       - name: Build Documentation
+        shell: bash -el {0}
         working-directory: docs
         run: |
           python3 -m sphinx.cmd.build -b html . _build
@@ -33,5 +34,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN }}
           publish_dir: docs/_build/html
