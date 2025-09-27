@@ -100,20 +100,21 @@ class SETTLE(IntegratorPlugin):
         def inner(system: System) -> Returns:
             positions, velocities = integrate(system)
             residues = self._get_hoh_residues(system)
-            positions = settle_positions(
-                residues,
-                system.positions,
-                positions,
-                system.masses,
-                self.oh_distance,
-                self.hh_distance,
-            )
-            velocities[residues, :] = (
-                (
-                    positions[residues, :]
-                    - system.positions[residues, :]
-                ) / self.integrator.timestep
-            )
+            if residues:
+                positions = settle_positions(
+                    residues,
+                    system.positions,
+                    positions,
+                    system.masses,
+                    self.oh_distance,
+                    self.hh_distance,
+                )
+                velocities[residues, :] = (
+                    (
+                        positions[residues, :]
+                        - system.positions[residues, :]
+                    ) / self.integrator.timestep
+                )
             return positions, velocities
         return inner
 
@@ -141,12 +142,13 @@ class SETTLE(IntegratorPlugin):
                 )
             )
             residues = self._get_hoh_residues(system)
-            velocities = settle_velocities(
-                residues,
-                system.positions,
-                velocities,
-                system.masses,
-            )
+            if residues:
+                velocities = settle_velocities(
+                    residues,
+                    system.positions,
+                    velocities,
+                    system.masses,
+                )
             kinetic_energy = (
                 np.sum(0.5*masses*(velocities)**2)
                 * (10**4)
