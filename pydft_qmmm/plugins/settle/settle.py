@@ -5,6 +5,7 @@ from __future__ import annotations
 __all__ = ["SETTLE"]
 
 from collections.abc import Callable
+from functools import lru_cache
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -63,26 +64,34 @@ class SETTLE(IntegratorPlugin):
         )
         return velocities
 
-    def _get_hoh_residues(self, system: System) -> list[list[int]]:
+    @lru_cache
+    def _get_hoh_residues(
+            self,
+            residues: tuple[int, ...],
+            residue_set: frozenset[tuple[int, frozenset[int]]],
+            select: Callable[[str], frozenset[int]],
+    ) -> list[list[int]]:
         """Get the water residues from the system.
 
         Args:
-            system: The system with water residues.
+            residues: The indices of the residue to which the atoms
+                of the system belong.
+            residue_set: The residue index and the corresponding sets of
+                atoms.
+            select: The select method of the system.
 
         Returns:
             A list of list of atom indices, representing the all water
             residues in the system.
         """
-        residue_indices = sorted({
-            system.residues[i] for i in system.select(self.query)
-        })
-        residues: list[list[int]] = [[] for _ in residue_indices]
-        for i, atom in enumerate(system):
-            if atom.residue in residue_indices:
-                residues[residue_indices.index(atom.residue)].append(i)
-        if any([len(residue) != 3 for residue in residues]):
+        residue_indices = np.unique(
+            np.array(residues)[sorted(select(self.query))],
+        )
+        residue_map = dict(residue_set)
+        hoh_residues = [sorted(residue_map[i]) for i in residue_indices]
+        if any([len(residue) != 3 for residue in hoh_residues]):
             raise ValueError("Some SETTLE residues do not have 3 atoms")
-        return residues
+        return hoh_residues
 
     def _modify_integrate(
             self,
@@ -99,7 +108,11 @@ class SETTLE(IntegratorPlugin):
         """
         def inner(system: System) -> Returns:
             positions, velocities = integrate(system)
-            residues = self._get_hoh_residues(system)
+            residues = self._get_hoh_residues(
+                tuple(system.residues),
+                frozenset(system.residue_map.items()),
+                system.select,
+            )
             if residues:
                 positions = settle_positions(
                     residues,
@@ -141,7 +154,11 @@ class SETTLE(IntegratorPlugin):
                     * system.forces*(10**-4)/masses
                 )
             )
-            residues = self._get_hoh_residues(system)
+            residues = self._get_hoh_residues(
+                tuple(system.residues),
+                frozenset(system.residue_map.items()),
+                system.select,
+            )
             if residues:
                 velocities = settle_velocities(
                     residues,

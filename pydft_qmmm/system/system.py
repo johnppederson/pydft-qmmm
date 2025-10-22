@@ -7,6 +7,7 @@ __all__ = ["System"]
 from collections.abc import Sequence
 from dataclasses import field
 from functools import cached_property
+from types import MappingProxyType
 from typing import overload
 from typing import TYPE_CHECKING
 
@@ -298,10 +299,10 @@ class System(Sequence[_SystemAtom]):
         return selection
 
     @cached_property
-    def residue_map(self) -> dict[int, frozenset[int]]:
+    def residue_map(self) -> MappingProxyType[int, frozenset[int]]:
         """The set of atom indices corresponding to a residue index."""
         residue_map: dict[int, frozenset[int]] = {}
         for i, residue in enumerate(self.residues):
             resid = residue_map.get(residue, frozenset())
             residue_map[residue] = resid | {i}
-        return residue_map
+        return MappingProxyType(residue_map)

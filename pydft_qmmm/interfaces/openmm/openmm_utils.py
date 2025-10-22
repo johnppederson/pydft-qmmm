@@ -55,6 +55,7 @@ def _exclude_intramolecular(
     _exclude_harmonic_angle(omm_system, atoms)
     _exclude_periodic_torsion(omm_system, atoms)
     _exclude_rb_torsion(omm_system, atoms)
+    _exclude_custom_bond(omm_system, atoms)
     nonbonded_forces = [
         force for force in omm_system.getForces()
         if isinstance(force, openmm.NonbondedForce)
@@ -66,18 +67,28 @@ def _exclude_intramolecular(
     atom_list = list(atoms)
     atom_list.sort()
     for force in nonbonded_forces:
+        exclusions = []
+        for i in range(force.getNumExceptions()):
+            *p, q, s, e = force.getExceptionParameters(i)
+            exclusions.append(set(p))
+            if not set(p).isdisjoint(atoms):
+                q *= 0
+            if not set(p) - atoms:
+                e *= 0
+            force.setExceptionParameters(i, *p, q, s, e)
         for i, j in enumerate(atom_list):
             for k in atom_list[i+1:]:
-                force.addException(j, k, 0, 1, 0, True)
+                if {j, k} not in exclusions:
+                    force.addException(j, k, 0, 1, 0)
     for force in custom_nonbonded_forces:
         exclusions = [
-            force.getExclusionParticles(
-                i,
+            set(
+                force.getExclusionParticles(i),
             ) for i in range(force.getNumExclusions())
         ]
         for i, j in enumerate(atom_list):
             for k in atom_list[i+1:]:
-                if not ([j, k] in exclusions or [k, j] in exclusions):
+                if not {j, k} in exclusions:
                     force.addExclusion(j, k)
 
 
@@ -100,7 +111,7 @@ def _exclude_harmonic_bond(
     for force in harmonic_bond_forces:
         for i in range(force.getNumBonds()):
             *p, r0, k = force.getBondParameters(i)
-            if not set(p).isdisjoint(atoms):
+            if not set(p) - atoms:
                 k *= 0
                 force.setBondParameters(i, *p, r0, k)
 
@@ -124,7 +135,7 @@ def _exclude_harmonic_angle(
     for force in harmonic_angle_forces:
         for i in range(force.getNumAngles()):
             *p, r0, k = force.getAngleParameters(i)
-            if not set(p).isdisjoint(atoms):
+            if not set(p) - atoms:
                 k *= 0
                 force.setAngleParameters(i, *p, r0, k)
 
@@ -148,7 +159,7 @@ def _exclude_periodic_torsion(
     for force in periodic_torsion_forces:
         for i in range(force.getNumTorsions()):
             *p, n, t, k = force.getTorsionParameters(i)
-            if not set(p).isdisjoint(atoms):
+            if not set(p) - atoms:
                 k *= 0
                 force.setTorsionParameters(i, *p, n, t, k)
 
@@ -172,11 +183,35 @@ def _exclude_rb_torsion(
     for force in rb_torsion_forces:
         for i in range(force.getNumTorsions()):
             *p, c0, c1, c2, c3, c4, c5 = force.getTorsionParameters(i)
-            if not set(p).isdisjoint(atoms):
+            if not set(p) - atoms:
                 c0, c1, c2, c3, c4, c5 = (
                     x*0 for x in (c0, c1, c2, c3, c4, c5)
                 )
                 force.setTorsionParameters(i, *p, c0, c1, c2, c3, c4, c5)
+
+
+def _exclude_custom_bond(
+        omm_system: openmm.System,
+        atoms: frozenset[int],
+) -> None:
+    """Remove Custom Bond forces for a set of atoms.
+
+    Args:
+        omm_system: The OpenMM representation of forces, constraints,
+            and particles.
+        atoms: The indices of atoms from which to remove Custom Bond
+            interactions.
+    """
+    custom_bond_forces = [
+        force for force in omm_system.getForces()
+        if isinstance(force, openmm.CustomBondForce)
+    ]
+    for force in custom_bond_forces:
+        for i in range(force.getNumBonds()):
+            *p, params = force.getBondParameters(i)
+            if not set(p) - atoms:
+                params = tuple(x*0. for x in params)
+                force.setBondParameters(i, *p, params)
 
 
 def _real_electrostatic(
@@ -226,7 +261,7 @@ def _real_electrostatic(
             q, _ = new_force.getParticleParameters(atom)
             new_force.setParticleParameters(atom, [q, 1])
         # Todo: Evaluate new_force construction.
-        #force.setNonbondedMethod(openmm.CustomNonbondedForce.NoCutoff)
+        # force.setNonbondedMethod(openmm.CustomNonbondedForce.NoCutoff)
         new_force.addInteractionGroup(
             atoms,
             other_atoms,

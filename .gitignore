@@ -135,6 +135,9 @@ dmypy.json
 *.clean
 EMBPOT
 
+# GHO4 data
+gho4_psi4
+
 # Run data
 *.dat
 

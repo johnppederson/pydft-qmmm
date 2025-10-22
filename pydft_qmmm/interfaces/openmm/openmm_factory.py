@@ -29,6 +29,7 @@ PERIODIC = ("PME", "EWALD", "CUTOFFPERIODIC")
 SUPPORTED_FORCES = (
     openmm.CMMotionRemover,
     openmm.CustomNonbondedForce,
+    openmm.CustomBondForce,
     openmm.HarmonicAngleForce,
     openmm.HarmonicBondForce,
     openmm.NonbondedForce,
@@ -72,7 +73,8 @@ def openmm_interface_factory(
     omm_box = [openmm.Vec3(*x)*openmm.unit.angstrom for x in system.box.T]
     if all(x := [fh.endswith(".xml") for fh in forcefield]):
         omm_topology = _build_omm_topology(system, forcefield)
-        omm_topology.setPeriodicBoxVectors(omm_box)
+        if np.any(system.box):
+            omm_topology.setPeriodicBoxVectors(omm_box)
         omm_modeller = _build_omm_modeller(system, omm_topology)
         omm_forcefield = _build_omm_forcefield(forcefield, omm_modeller)
         base_system = _build_omm_system(omm_forcefield, omm_modeller)

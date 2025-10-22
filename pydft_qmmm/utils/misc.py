@@ -18,7 +18,8 @@ import numpy as np
 from .constants import KB
 
 if TYPE_CHECKING:
-    from typing import Callable
+    from types import MappingProxyType
+    from collections.abc import Callable
     from numpy.typing import NDArray
     from pydft_qmmm.calculators import Calculator
 
@@ -66,7 +67,7 @@ def generate_velocities(
 def wrap_positions(
         positions: NDArray[np.float64],
         box: NDArray[np.float64],
-        residue_map: dict[int, frozenset[int]],
+        residue_map: MappingProxyType[int, frozenset[int]],
 ) -> NDArray[np.float64]:
     r"""Wrap atom positions in accord with PBC.
 

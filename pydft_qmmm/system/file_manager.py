@@ -55,7 +55,7 @@ def load_system(*args: str) -> tuple[list[Atom], NDArray[np.float64]]:
 
 def _read_pdb(
         pdb_file: str,
-        residue: int = 0
+        residue: int = 0,
 ) -> tuple[list[Atom], NDArray[np.float64]]:
     """Extract system data from a PDB file.
 
@@ -92,14 +92,18 @@ def _read_pdb(
             # sequence number, or chain identifier changes once there is
             # at least one Atom in the list of Atom objects.
             if atoms:
-                if (atoms[-1].residue_name != resname
-                        or atoms[-1].chain != chain
-                        or resnum_old != resnum):
+                if (
+                    atoms[-1].residue_name != resname
+                    or atoms[-1].chain != chain
+                    or resnum_old != resnum
+                ):
                     residue += 1
             position = np.array(
-                [float(line[30:38].strip()),
-                 float(line[38:46].strip()),
-                 float(line[46:54].strip())],
+                [
+                    float(line[30:38].strip()),
+                    float(line[38:46].strip()),
+                    float(line[46:54].strip()),
+                ],
             )
             element = line[76:78].strip().lower().capitalize()
             mass = ELEMENT_TO_MASS.get(element, 0.)
@@ -125,7 +129,6 @@ def write_to_pdb(name: str, system: System) -> None:
         system: The system whose data will be written to a PDB file.
     """
     filename = pathlib.Path(name).with_suffix(".pdb")
-    a, b, c, A, B, G = compute_lattice_constants(system.box)
     residues: dict[str, list[int]] = {}
     for i in range(len(system)):
         residue = residues.get(system.residue_names[i], [])
@@ -135,10 +138,12 @@ def write_to_pdb(name: str, system: System) -> None:
     if check_array(system.positions):
         raise TypeError
     with open(filename, "w") as fh:
-        fh.write(
-            (f"CRYST1{a:9.3f}{b:9.3f}{c:9.3f}{A:7.2f}{B:7.2f}"
-             f"{G:7.2f} P 1           1 \n"),
-        )
+        if np.any(system.box):
+            a, b, c, A, B, G = compute_lattice_constants(system.box)
+            fh.write(
+                (f"CRYST1{a:9.3f}{b:9.3f}{c:9.3f}{A:7.2f}{B:7.2f}"
+                 f"{G:7.2f} P 1           1 \n"),
+            )
         for i, _ in enumerate(system.names):
             residue = residues[system.residue_names[i]]
             resid = residue.index(system.residues[i]) + 1

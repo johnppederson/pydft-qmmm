@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from pydft_qmmm.calculators import CalculatorPlugin
+from pydft_qmmm.utils import BOHR_PER_ANGSTROM
+from pydft_qmmm.utils import KJMOL_PER_EH
 from pydft_qmmm.utils import Loggable
 from pydft_qmmm.utils import DependencyImportError
 from pydft_qmmm.plugins import CalculatorCenter
@@ -57,6 +59,7 @@ class Optimization(Loggable):
             hamiltonian: StandaloneHamiltonian | None = None,
             calculator: Calculator | None = None,
             plugins: list[CalculatorPlugin] | None = None,
+            constraints: str | None = None,
             **kwargs: Any,
     ) -> None:
         # Perform logging setup.
@@ -72,6 +75,7 @@ class Optimization(Loggable):
             raise TypeError
         # Perform additional simulation setup.
         self.query = query
+        self.constraints = constraints
         self._offset = np.zeros(system.positions.shape)
         # Todo: See if this is desirable or necessary.
         if system.box.any():
@@ -99,21 +103,21 @@ class Optimization(Loggable):
         # Define objective function.
         def model(x, *args):
             # geomeTRIC provides coordinates in a.u.
-            y = x/1.88973
+            y = x / BOHR_PER_ANGSTROM
             self.system.positions[opt_indices, :] = (
                 y - self._offset[opt_indices, :]
             )
             self.calculate_energy_forces()
             # geomeTRIC wants energies and gradients in a.u.
-            e = self.energy["Total Energy"] / 2625.5
-            G = -self.system.forces / 2625.5 / 1.88973
+            e = self.energy["Total Energy"] / KJMOL_PER_EH
+            G = -self.system.forces / KJMOL_PER_EH / BOHR_PER_ANGSTROM
             self._frame += 1
             return e, G[opt_indices, :]
 
         # Define Geometric engine.
         class CustomEngine(geometric.engine.Engine):
             def __init__(self, molecule):
-                super(CustomEngine, self).__init__(molecule)
+                super().__init__(molecule)
 
             def calc_new(self, coords, dirname):
                 energy, gradient = model(coords.reshape(-1, 3))
@@ -121,8 +125,8 @@ class Optimization(Loggable):
 
         # Instantiate optimizer.
         molecule = geometric.molecule.Molecule()
-        molecule.elem = self.system.elements[np.ix_(opt_indices)].tolist()
-        molecule.xyzs = [self.system.positions[opt_indices, :]]
+        molecule.elem = self.system.elements.base[np.ix_(opt_indices)].tolist()
+        molecule.xyzs = [self.system.positions.base[opt_indices, :]]
         customengine = CustomEngine(molecule)
 
         # Run the optimizer.
@@ -134,6 +138,7 @@ class Optimization(Loggable):
                 customengine=customengine,
                 check=1,
                 input=tmp_path,
+                constraints=self.constraints,
             )
         finally:
             os.remove(tmp_path)
@@ -147,9 +152,11 @@ class Optimization(Loggable):
         unwrapped_positions = self.system.positions.base + self._offset
         logger.info(
             "",
-            extra={"frame": self._frame,
-                   "positions": unwrapped_positions,
-                   "box": self.system.box.base},
+            extra={
+                "frame": self._frame,
+                "positions": unwrapped_positions,
+                "box": self.system.box.base,
+            },
         )
         temp = self.system.positions.base.copy()
         results = self.calculator.calculate()

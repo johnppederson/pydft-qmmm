@@ -131,14 +131,14 @@ class Psi4Interface(QMInterface):
         for atom in atoms:
             geometrystring = (
                 geometrystring
-                + str(self.system.elements[atom]) + " "
+                + str(self.system.elements[atom]) + str(atom) + " "
                 + str(self.system.positions[atom][0]) + " "
                 + str(self.system.positions[atom][1]) + " "
                 + str(self.system.positions[atom][2]) + "\n"
             )
         geometrystring += str(self.charge) + " "
         geometrystring += str(self.multiplicity) + "\n"
-        # geometrystring += "symmetry c1\n"
+        geometrystring += "symmetry c1\n"
         geometrystring += "noreorient\nnocom\n"
         return psi4.geometry(geometrystring)
 
@@ -232,7 +232,7 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
         return forces_temp
 
     def compute_components(self) -> dict[str, float]:
-        r"""Compute the components of energy using OpenMM.
+        r"""Compute the components of energy using Psi4.
 
         Returns:
             The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)
