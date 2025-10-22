@@ -449,6 +449,8 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.calculators</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalculatorPlugin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">BOHR_PER_ANGSTROM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">KJMOL_PER_EH</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loggable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">DependencyImportError</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.plugins</span><span class="w"> </span><span class="kn">import</span> <span class="n">CalculatorCenter</span>
@@ -496,6 +498,7 @@
             <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">StandaloneHamiltonian</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">calculator</span><span class="p">:</span> <span class="n">Calculator</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">plugins</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CalculatorPlugin</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">constraints</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Perform logging setup.</span>
@@ -511,6 +514,7 @@
             <span class="k">raise</span> <span class="ne">TypeError</span>
         <span class="c1"># Perform additional simulation setup.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="n">constraints</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="c1"># Todo: See if this is desirable or necessary.</span>
         <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
@@ -540,21 +544,21 @@
         <span class="c1"># Define objective function.</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
             <span class="c1"># geomeTRIC provides coordinates in a.u.</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="mf">1.88973</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">BOHR_PER_ANGSTROM</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">calculate_energy_forces</span><span class="p">()</span>
             <span class="c1"># geomeTRIC wants energies and gradients in a.u.</span>
-            <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2625.5</span>
-            <span class="n">G</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">forces</span> <span class="o">/</span> <span class="mf">2625.5</span> <span class="o">/</span> <span class="mf">1.88973</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">KJMOL_PER_EH</span>
+            <span class="n">G</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">forces</span> <span class="o">/</span> <span class="n">KJMOL_PER_EH</span> <span class="o">/</span> <span class="n">BOHR_PER_ANGSTROM</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="n">e</span><span class="p">,</span> <span class="n">G</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="c1"># Define Geometric engine.</span>
         <span class="k">class</span><span class="w"> </span><span class="nc">CustomEngine</span><span class="p">(</span><span class="n">geometric</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">Engine</span><span class="p">):</span>
             <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">molecule</span><span class="p">):</span>
-                <span class="nb">super</span><span class="p">(</span><span class="n">CustomEngine</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
 
             <span class="k">def</span><span class="w"> </span><span class="nf">calc_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">dirname</span><span class="p">):</span>
                 <span class="n">energy</span><span class="p">,</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -562,8 +566,8 @@
 
         <span class="c1"># Instantiate optimizer.</span>
         <span class="n">molecule</span> <span class="o">=</span> <span class="n">geometric</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
-        <span class="n">molecule</span><span class="o">.</span><span class="n">elem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">opt_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="n">molecule</span><span class="o">.</span><span class="n">xyzs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]]</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">elem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">opt_indices</span><span class="p">)]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">xyzs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]]</span>
         <span class="n">customengine</span> <span class="o">=</span> <span class="n">CustomEngine</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
 
         <span class="c1"># Run the optimizer.</span>
@@ -575,6 +579,7 @@
                 <span class="n">customengine</span><span class="o">=</span><span class="n">customengine</span><span class="p">,</span>
                 <span class="n">check</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                 <span class="nb">input</span><span class="o">=</span><span class="n">tmp_path</span><span class="p">,</span>
+                <span class="n">constraints</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">constraints</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
@@ -591,9 +596,11 @@
         <span class="n">unwrapped_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
             <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
-                   <span class="s2">&quot;positions&quot;</span><span class="p">:</span> <span class="n">unwrapped_positions</span><span class="p">,</span>
-                   <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span><span class="p">},</span>
+            <span class="n">extra</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
+                <span class="s2">&quot;positions&quot;</span><span class="p">:</span> <span class="n">unwrapped_positions</span><span class="p">,</span>
+                <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
+            <span class="p">},</span>
         <span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>

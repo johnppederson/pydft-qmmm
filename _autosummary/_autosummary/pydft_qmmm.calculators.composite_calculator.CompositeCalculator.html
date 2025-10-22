@@ -453,7 +453,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>system</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a></span>) – The system whose atom positions, atom identities, and
 geometry will be used to calculate energies and forces.</p></li>
-<li><p><strong>calculators</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Calculator</span></code></a>]</span>) – The calculators that will perform sub-calculations.</p></li>
+<li><p><strong>calculators</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Calculator</span></code></a>]</span>) – The calculators that will perform sub-calculations.</p></li>
 </ul>
 </dd>
 </dl>
@@ -479,7 +479,7 @@ geometry will be used to calculate energies and forces.</p></li>
 <dd><p>Get the current list of active plugins.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pydft_qmmm.calculators.calculator.CalculatorPlugin.html#pydft_qmmm.calculators.calculator.CalculatorPlugin" title="pydft_qmmm.calculators.calculator.CalculatorPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalculatorPlugin</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pydft_qmmm.calculators.calculator.CalculatorPlugin.html#pydft_qmmm.calculators.calculator.CalculatorPlugin" title="pydft_qmmm.calculators.calculator.CalculatorPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalculatorPlugin</span></code></a>]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A list of the active plugins registered by the calculator.</p>
@@ -494,8 +494,8 @@ geometry will be used to calculate energies and forces.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>return_forces</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Whether or not to return forces.</p></li>
-<li><p><strong>return_components</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Whether or not to return the components
+<li><p><strong>return_forces</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Whether or not to return forces.</p></li>
+<li><p><strong>return_components</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Whether or not to return the components
 of the energy.</p></li>
 </ul>
 </dd>
@@ -521,7 +521,7 @@ calculation.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>plugin</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.calculators.calculator.CalculatorPlugin.html#pydft_qmmm.calculators.calculator.CalculatorPlugin" title="pydft_qmmm.calculators.calculator.CalculatorPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalculatorPlugin</span></code></a></span>) – A plugin that will modify the behavior of the
 calculator’s pluggable methods.</p></li>
-<li><p><strong>index</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The index at which to insert the plugin in the
+<li><p><strong>index</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The index at which to insert the plugin in the
 plugin load order, i.e., 0 will be called first,
 1 will be called second, etc.  The default behavior
 is to append the plugin at the end of the plugin
@@ -529,7 +529,7 @@ load order.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
