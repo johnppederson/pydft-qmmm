@@ -63,9 +63,13 @@ class CompositeCalculator(Calculator):
         components: Components = dict()
         for i, calculator in enumerate(self.calculators):
             # Calculate the energy, forces, and components.
-            results = calculator.calculate()
+            results = calculator.calculate(
+                return_forces,
+                return_components,
+            )
             energy += results.energy
-            forces += results.forces
+            if return_forces:
+                forces += results.forces
             # Determine a unique name for the calculator.
             name = calculator.name
             suffix = "0"

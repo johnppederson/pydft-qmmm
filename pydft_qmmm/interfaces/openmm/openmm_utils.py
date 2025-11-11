@@ -49,8 +49,6 @@ def _exclude_intramolecular(
             intra-molecular interactions.
     """
     # Remove double-counted intramolecular interactions for QM atoms.
-    # This doesn't currently generalize to residues which are part MM
-    # and part QM.
     _exclude_harmonic_bond(omm_system, atoms)
     _exclude_harmonic_angle(omm_system, atoms)
     _exclude_periodic_torsion(omm_system, atoms)
@@ -64,22 +62,11 @@ def _exclude_intramolecular(
         force for force in omm_system.getForces()
         if isinstance(force, openmm.CustomNonbondedForce)
     ]
-    atom_list = list(atoms)
-    atom_list.sort()
+    atom_list = sorted(atoms)
     for force in nonbonded_forces:
-        exclusions = []
-        for i in range(force.getNumExceptions()):
-            *p, q, s, e = force.getExceptionParameters(i)
-            exclusions.append(set(p))
-            if not set(p).isdisjoint(atoms):
-                q *= 0
-            if not set(p) - atoms:
-                e *= 0
-            force.setExceptionParameters(i, *p, q, s, e)
         for i, j in enumerate(atom_list):
             for k in atom_list[i+1:]:
-                if {j, k} not in exclusions:
-                    force.addException(j, k, 0, 1, 0)
+                force.addException(j, k, 0, 1, 0, True)
     for force in custom_nonbonded_forces:
         exclusions = [
             set(
@@ -250,34 +237,39 @@ def _real_electrostatic(
         )
         new_force.addPerParticleParameter("q")
         new_force.addPerParticleParameter("n")
+        cbf_force = openmm.CustomBondForce(
+            f"{const}*138.935459977*n*q/r",
+        )
+        cbf_force.addPerBondParameter("q")
+        cbf_force.addPerBondParameter("n")
         for atom in range(omm_system.getNumParticles()):
             q, _, _ = force.getParticleParameters(
                 atom,
             )
-            new_force.addParticle(
-                [q, 0],
-            )
-        for atom in atoms:
-            q, _ = new_force.getParticleParameters(atom)
-            new_force.setParticleParameters(atom, [q, 1])
-        # Todo: Evaluate new_force construction.
-        # force.setNonbondedMethod(openmm.CustomNonbondedForce.NoCutoff)
+            if atom in atoms:
+                new_force.addParticle([q/elementary_charge, 1])
+            else:
+                new_force.addParticle([q/elementary_charge, 0])
+        exclusions = []
+        for i in range(force.getNumExceptions()):
+            *p, q, _, _ = force.getExceptionParameters(i)
+            exclusions.append(p)
+            if (
+                set(p) & atoms
+                and q/elementary_charge/elementary_charge
+            ):
+                cbf_force.addBond(
+                    *p, [q/elementary_charge/elementary_charge, 0],
+                )
+        for x in exclusions:
+            new_force.addExclusion(*x)
         new_force.addInteractionGroup(
             atoms,
             other_atoms,
         )
-        exclusions = [
-            force.getExceptionParameters(
-                i,
-            ) for i in range(force.getNumExceptions())
-        ]
-        exclusions = [
-            [x[0], x[1]]
-            for x in exclusions
-        ]
-        for x in exclusions:
-            new_force.addExclusion(*x)
         forces.append(new_force)
+        if cbf_force.getNumBonds():
+            forces.append(cbf_force)
     return forces
 
 
@@ -309,9 +301,19 @@ def _non_electrostatic(
         force for force in omm_system.getForces()
         if isinstance(force, openmm.CustomNonbondedForce)
     ]
+    bonded_forces = [
+        force for force in omm_system.getForces()
+        if (
+            not isinstance(force, openmm.CustomNonbondedForce)
+            and not isinstance(force, openmm.NonbondedForce)
+        )
+    ]
     forces = []
     if custom_nonbonded_forces:
         for force in custom_nonbonded_forces:
+            forces.append(force.__copy__())
+    if bonded_forces:
+        for force in bonded_forces:
             forces.append(force.__copy__())
     for force in nonbonded_forces:
         new_force = openmm.CustomNonbondedForce(
@@ -321,6 +323,11 @@ def _non_electrostatic(
         )
         new_force.addPerParticleParameter("epsilon")
         new_force.addPerParticleParameter("sigma")
+        cbf_force = openmm.CustomBondForce(
+            "4*epsilon*((sigma/r)^12-(sigma/r)^6)",
+        )
+        cbf_force.addPerBondParameter("epsilon")
+        cbf_force.addPerBondParameter("sigma")
         for atom in range(omm_system.getNumParticles()):
             _, sigma, epsilon = force.getParticleParameters(
                 atom,
@@ -328,24 +335,21 @@ def _non_electrostatic(
             new_force.addParticle(
                 [epsilon / kilojoule_per_mole, sigma / nanometer],
             )
-        exclusions = [
-            force.getExceptionParameters(
-                i,
-            ) for i in range(force.getNumExceptions())
-        ]
-        exclusions = [
-            [x[0], x[1]]
-            for x in exclusions if x[-1] / kilojoule_per_mole == 0
-        ]
+        exclusions = []
+        for i in range(force.getNumExceptions()):
+            *p, _, s, e = force.getExceptionParameters(i)
+            exclusions.append(p)
+            if set(p) & atoms and e / kilojoule_per_mole:
+                cbf_force.addBond(*p, [e / kilojoule_per_mole, s / nanometer])
         for x in exclusions:
             new_force.addExclusion(*x)
-        forces.append(new_force)
-    for force in forces:
-        force.setNonbondedMethod(openmm.CustomNonbondedForce.NoCutoff)
-        force.addInteractionGroup(
+        new_force.addInteractionGroup(
             atoms,
             other_atoms,
         )
+        forces.append(new_force)
+        if cbf_force.getNumBonds():
+            forces.append(cbf_force)
     return forces
 
 
@@ -385,8 +389,11 @@ def _exclude_electrostatic(
     for force in nonbonded_forces:
         for i in atoms:
             q, s, e = force.getParticleParameters(i)
-            q *= 0
-            force.setParticleParameters(i, q, s, e)
+            force.setParticleParameters(i, q*0, s, e)
+        for i in range(force.getNumExceptions()):
+            *p, q, s, e = force.getExceptionParameters(i)
+            if set(p) & atoms:
+                force.setExceptionParameters(i, *p, q*0, s, e)
 
 
 def _exclude_lennard_jones(
@@ -408,9 +415,11 @@ def _exclude_lennard_jones(
     for force in nonbonded_forces:
         for i in atoms:
             q, s, e = force.getParticleParameters(i)
-            s /= s._value
-            e *= 0
-            force.setParticleParameters(i, q, s, e)
+            force.setParticleParameters(i, q, s/s._value, e*0)
+        for i in range(force.getNumExceptions()):
+            *p, q, s, e = force.getExceptionParameters(i)
+            if set(p) & atoms:
+                force.setExceptionParameters(i, *p, q, s/s._value, e*0)
 
 
 def _exclude_custom_nonbonded(

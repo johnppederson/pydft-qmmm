@@ -138,7 +138,7 @@ class Psi4Interface(QMInterface):
             )
         geometrystring += str(self.charge) + " "
         geometrystring += str(self.multiplicity) + "\n"
-        geometrystring += "symmetry c1\n"
+        # geometrystring += "symmetry c1\n"
         geometrystring += "noreorient\nnocom\n"
         return psi4.geometry(geometrystring)
 

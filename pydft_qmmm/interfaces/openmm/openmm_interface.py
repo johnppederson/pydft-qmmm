@@ -275,13 +275,28 @@ class OpenMMInterface(MMInterface):
             if isinstance(force, openmm.CustomNonbondedForce)
         ]
         for force in custom_nonbonded_forces:
-            if "nn" in force.getEnergyFunction():
+            if "nn*qq/r" in force.getEnergyFunction():
                 for i, s in enumerate(subsystems):
                     q, _ = force.getParticleParameters(i)
                     if s == Subsystem.III:
                         force.setParticleParameters(i, [q, 0])
                     else:
                         force.setParticleParameters(i, [q, 1])
+                force.updateParametersInContext(self.aux_context)
+        custom_bond_forces = [
+            force for force in self.aux_context.getSystem().getForces()
+            if isinstance(force, openmm.CustomBondForce)
+        ]
+        for force in custom_bond_forces:
+            if "n*q/r" in force.getEnergyFunction():
+                for i in range(force.getNumBonds()):
+                    p1, p2, param = force.getBondParameters(i)
+                    q, _ = param
+                    s = {subsystems[p1], subsystems[p2]}
+                    if s == {Subsystem.II, Subsystem.I}:
+                        force.setBondParameters(i, p1, p2, [q, 1])
+                    else:
+                        force.setBondParameters(i, p1, p2, [q, 0])
                 force.updateParametersInContext(self.aux_context)
 
 
