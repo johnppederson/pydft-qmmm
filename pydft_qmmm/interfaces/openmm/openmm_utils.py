@@ -311,7 +311,9 @@ def _non_electrostatic(
     forces = []
     if custom_nonbonded_forces:
         for force in custom_nonbonded_forces:
-            forces.append(force.__copy__())
+            new_force = force.__copy__()
+            new_force.setNonbondedMethod(0)
+            forces.append(new_force)
     if bonded_forces:
         for force in bonded_forces:
             forces.append(force.__copy__())
