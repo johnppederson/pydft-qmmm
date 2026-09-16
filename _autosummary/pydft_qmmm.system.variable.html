@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="pydft_qmmm.system.variable.ArrayValue" href="_autosummary/pydft_qmmm.system.variable.ArrayValue.html"><link rel="prev" title="pydft_qmmm.system.system.System" href="_autosummary/pydft_qmmm.system.system.System.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.system.variable - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -459,14 +459,20 @@
 <span class="sig-prename descclassname"><span class="pre">pydft_qmmm.system.variable.</span></span><span class="sig-name descname"><span class="pre">observed_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pydft_qmmm/system/variable.html#observed_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.system.variable.observed_class" title="Link to this definition">¶</a></dt>
 <dd><p>Modify a class to have protected observed properties.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<span class="sphinx_autodoc_typehints-type">type[Class]</span>), <strong>kwargs</strong> (<span class="sphinx_autodoc_typehints-type">Any</span>) → <span class="sphinx_autodoc_typehints-type">type[Class]</span></p></li>
+<li><p><strong>args</strong> (<span class="sphinx_autodoc_typehints-type">None</span>), <strong>kwargs</strong> (<span class="sphinx_autodoc_typehints-type">Any</span>) → <span class="sphinx_autodoc_typehints-type">Callable[[type[Class]], type[Class]]</span></p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>args</strong> – An optional class to modify.</p></li>
 <li><p><strong>kwargs</strong> – Optional dataclass settings.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Either the modified dataclass with added property getters and
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Either the modified dataclass with added property getters and
 setters, or the function to generate the modified dataclass.</p>
 </dd>
 </dl>

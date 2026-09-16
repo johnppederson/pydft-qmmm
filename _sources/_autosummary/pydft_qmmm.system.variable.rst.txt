@@ -10,13 +10,13 @@ pydft\_qmmm.system.variable
    
       observed_class
    
-   
+
    
    
    
    .. autofunction:: pydft_qmmm.system.variable.observed_class
    
-    
+   
    
    .. rubric:: Classes
 

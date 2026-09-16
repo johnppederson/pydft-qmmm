@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.hamiltonians.hamiltonian - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,20 +435,20 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.hamiltonians.hamiltonian</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Base classes for the Hamiltonian API.</span>
+<span></span><span class="sd">"""Base classes for the Hamiltonian API.</span>
 
 <span class="sd">This module contains the Hamiltonian abstract base class as well as</span>
 <span class="sd">several derived classes for standalone Hamiltonians, Hamiltonians that</span>
 <span class="sd">couple other standalone Hamiltonians, and composite Hamiltonians.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Hamiltonian&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;StandaloneHamiltonian&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PotentialHamiltonian&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;CouplingHamiltonian&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;CompositeHamiltonian&quot;</span><span class="p">,</span>
+    <span class="s2">"Hamiltonian"</span><span class="p">,</span>
+    <span class="s2">"StandaloneHamiltonian"</span><span class="p">,</span>
+    <span class="s2">"PotentialHamiltonian"</span><span class="p">,</span>
+    <span class="s2">"CouplingHamiltonian"</span><span class="p">,</span>
+    <span class="s2">"CompositeHamiltonian"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
@@ -470,52 +470,52 @@
 <div class="viewcode-block" id="Hamiltonian">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.Hamiltonian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Hamiltonian</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The abstract Hamiltonian base class.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The abstract Hamiltonian base class.</span>
+<span class="sd">    """</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hamiltonian</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Hamiltonians together.</span>
+<span class="w">        </span><span class="sd">"""Add Hamiltonians together.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            other: The object being added to the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Hamiltonians together.</span>
+<span class="w">        </span><span class="sd">"""Add Hamiltonians together.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            other: The object being added to the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a LaTeX string representation of the Hamiltonian.</span>
+<span class="w">        </span><span class="sd">"""Create a LaTeX string representation of the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The string representation of the Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 
 <div class="viewcode-block" id="StandaloneHamiltonian">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StandaloneHamiltonian</span><span class="p">(</span><span class="n">Hamiltonian</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class for Hamiltonians that build calculators.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A base class for Hamiltonians that build calculators.</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="StandaloneHamiltonian.build_calculator">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.build_calculator">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">build_calculator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Calculator</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the calculator corresponding to the Hamiltonian.</span>
+<span class="w">        </span><span class="sd">"""Build the calculator corresponding to the Hamiltonian.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            system: The system that will be used in calculations.</span>
@@ -523,7 +523,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The calculator which is defined by the system and the</span>
 <span class="sd">            Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 </div>
 
 
@@ -531,26 +531,26 @@
 <div class="viewcode-block" id="CouplingHamiltonian">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CouplingHamiltonian</span><span class="p">(</span><span class="n">Hamiltonian</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class for Hamiltonians that couple other Hamiltonians.</span>
+<span class="w">    </span><span class="sd">"""A base class for Hamiltonians that couple other Hamiltonians.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        force_matrix: A matrix representing the gradient of potential</span>
 <span class="sd">            expressions representing interactions between subsystems</span>
 <span class="sd">            treated by different Hamiltonians.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">force_matrix</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Subsystem</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Subsystem</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="p">]]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositeHamiltonian</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Hamiltonians together.</span>
+<span class="w">        </span><span class="sd">"""Add Hamiltonians together.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            other: The object being added to the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"..."</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">CompositeHamiltonian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CouplingHamiltonian.modify_calculator">
@@ -561,13 +561,13 @@
             <span class="n">calculator</span><span class="p">:</span> <span class="n">CompositeCalculator</span><span class="p">,</span>
             <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify a composite calculator to include the coupling.</span>
+<span class="w">        </span><span class="sd">"""Modify a composite calculator to include the coupling.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            calculator: A composite calculator which is defined in part</span>
 <span class="sd">                by the system.</span>
 <span class="sd">            system: The system corresponding to the calculator.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 </div>
 
 
@@ -575,7 +575,7 @@
 <div class="viewcode-block" id="PotentialHamiltonian">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.PotentialHamiltonian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PotentialHamiltonian</span><span class="p">(</span><span class="n">StandaloneHamiltonian</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A base class for Hamiltonians that build potential calculators.</span>
+<span class="w">    </span><span class="sd">"""A base class for Hamiltonians that build potential calculators.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        atoms: Indices corresponding to the atoms for which the</span>
@@ -583,16 +583,16 @@
 <span class="sd">        theory_level: The level of theory of the Hamiltonian.</span>
 <span class="sd">        interface: The name of the software that implements the desired</span>
 <span class="sd">            level of theory described by the Hamiltonian.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">atoms</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">slice</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
     <span class="n">theory_level</span><span class="p">:</span> <span class="n">TheoryLevel</span> <span class="o">=</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span>
-    <span class="n">interface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">interface</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">indices</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">slice</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hamiltonian</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the indices for atoms treated by the Hamiltonian.</span>
+<span class="w">        </span><span class="sd">"""Sets the indices for atoms treated by the Hamiltonian.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            indices: Indices corresponding to the atoms for which the</span>
@@ -600,20 +600,20 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A copy of the Hamiltonian with the selected atoms.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">indices</span><span class="p">,)</span>
         <span class="n">atoms</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span> <span class="o">|</span> <span class="nb">slice</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)):</span>
                 <span class="n">atoms</span> <span class="o">+=</span> <span class="p">(</span><span class="n">i</span><span class="p">,)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"..."</span><span class="p">)</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="n">atoms</span>
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the Hamiltonian&#39;s indices in the context of the system.</span>
+<span class="w">        </span><span class="sd">"""Parse the Hamiltonian's indices in the context of the system.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            system: The system whose atoms will be selected by the by</span>
@@ -621,7 +621,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The atoms selected for representation by the Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
@@ -641,28 +641,28 @@
         <span class="k">return</span> <span class="n">indices</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositeHamiltonian</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Hamiltonians together.</span>
+<span class="w">        </span><span class="sd">"""Add Hamiltonians together.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            other: The object being added to the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"..."</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">CompositeHamiltonian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a LaTeX string representation of the Hamiltonian.</span>
+<span class="w">        </span><span class="sd">"""Create a LaTeX string representation of the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The string representation of the Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;_{&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s2">"_{"</span>
         <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s2">, &quot;</span>
-        <span class="n">string</span> <span class="o">+=</span> <span class="s2">&quot;}&quot;</span>
+            <span class="n">string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">atom</span><span class="si">}</span><span class="s2">, "</span>
+        <span class="n">string</span> <span class="o">+=</span> <span class="s2">"}"</span>
         <span class="k">return</span> <span class="n">string</span></div>
 
 
@@ -670,27 +670,27 @@
 <div class="viewcode-block" id="CompositeHamiltonian">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CompositeHamiltonian</span><span class="p">(</span><span class="n">StandaloneHamiltonian</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Hamiltonian that can combine other Hamiltonians.</span>
+<span class="w">    </span><span class="sd">"""A Hamiltonian that can combine other Hamiltonians.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        hamiltonians: A set of Hamiltonians belonging to the composite</span>
 <span class="sd">            Hamiltonian.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">hamiltonians</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hamiltonians</span> <span class="o">=</span> <span class="n">hamiltonians</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CompositeHamiltonian</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Hamiltonians together.</span>
+<span class="w">        </span><span class="sd">"""Add Hamiltonians together.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            other: The object being added to the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"..."</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">CompositeHamiltonian</span><span class="p">):</span>
             <span class="n">ret</span> <span class="o">=</span> <span class="n">CompositeHamiltonian</span><span class="p">(</span>
                 <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">hamiltonians</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="o">.</span><span class="n">hamiltonians</span><span class="p">,</span>
@@ -703,20 +703,20 @@
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a LATEX string representation of the Hamiltonian.</span>
+<span class="w">        </span><span class="sd">"""Create a LATEX string representation of the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The string representation of the Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;H^</span><span class="si">{Total}</span><span class="s2"> =&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="s2">"H^</span><span class="si">{Total}</span><span class="s2"> ="</span>
         <span class="k">for</span> <span class="n">hamiltonian</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hamiltonians</span><span class="p">:</span>
-            <span class="n">string</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">)</span>
+            <span class="n">string</span> <span class="o">+=</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string</span>
 
 <div class="viewcode-block" id="CompositeHamiltonian.build_calculator">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian.build_calculator">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">build_calculator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Calculator</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build the calculator corresponding to the Hamiltonian.</span>
+<span class="w">        </span><span class="sd">"""Build the calculator corresponding to the Hamiltonian.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            system: The system that will be used in calculations.</span>
@@ -724,7 +724,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The calculator which is defined by the system and the</span>
 <span class="sd">            Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">standalone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculator_hamiltonians</span><span class="p">()</span>
         <span class="n">coupling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coupling_hamiltonians</span><span class="p">()</span>
         <span class="n">calculators</span> <span class="o">=</span> <span class="p">[]</span>
@@ -743,11 +743,11 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_calculator_hamiltonians</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">StandaloneHamiltonian</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sort out calculator-building Hamiltonians.</span>
+<span class="w">        </span><span class="sd">"""Sort out calculator-building Hamiltonians.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A list of calculator-building Hamiltonians.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">standalone</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">hamiltonian</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hamiltonians</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">StandaloneHamiltonian</span><span class="p">):</span>
@@ -755,11 +755,11 @@
         <span class="k">return</span> <span class="n">standalone</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_coupling_hamiltonians</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CouplingHamiltonian</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sort out coupling Hamiltonians.</span>
+<span class="w">        </span><span class="sd">"""Sort out coupling Hamiltonians.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A list of coupling Hamiltonians.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">coupling</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">hamiltonian</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hamiltonians</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">CouplingHamiltonian</span><span class="p">):</span>

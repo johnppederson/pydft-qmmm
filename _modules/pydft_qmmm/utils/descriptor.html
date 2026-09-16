@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.utils.descriptor - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,13 +435,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.utils.descriptor</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Helpful descriptors for caching and plugin loading.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Helpful descriptors for caching and plugin loading.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;system_cache&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;pluggable_method&quot;</span><span class="p">,</span>
+    <span class="s2">"system_cache"</span><span class="p">,</span>
+    <span class="s2">"pluggable_method"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
@@ -453,27 +453,27 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParamSpec</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Concatenate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
 
-<span class="n">Class</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Class&quot;</span><span class="p">)</span>
+<span class="n">Class</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"Class"</span><span class="p">)</span>
 
-<span class="n">P</span> <span class="o">=</span> <span class="n">ParamSpec</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
-<span class="n">R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">ParamSpec</span><span class="p">(</span><span class="s2">"P"</span><span class="p">)</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"R"</span><span class="p">)</span>
 
 <span class="n">Bound</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]</span>
 <span class="n">Unbound</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span><span class="n">Concatenate</span><span class="p">[</span><span class="n">Class</span><span class="p">,</span> <span class="n">P</span><span class="p">],</span> <span class="n">R</span><span class="p">]</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_Descriptor</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">Class</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">],</span> <span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The base class for a Python descriptor that wraps a method.</span>
+<span class="w">    </span><span class="sd">"""The base class for a Python descriptor that wraps a method.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        method: The unbound method wrapped by the descriptor.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="n">Unbound</span><span class="p">[</span><span class="n">Class</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;__wrapped_</span><span class="si">{</span><span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"__wrapped_</span><span class="si">{</span><span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="nd">@overload</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Class</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Unbound</span><span class="p">[</span><span class="n">Class</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]:</span>
@@ -485,7 +485,7 @@
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the method.</span>
+<span class="w">        </span><span class="sd">"""Get the method.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            obj: An instance of the class containing the method.</span>
@@ -493,7 +493,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Either the bound or unbound method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">pass</span>
 
 
@@ -501,9 +501,9 @@
 <a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.utils.descriptor.html#pydft_qmmm.utils.descriptor.system_cache">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">system_cache</span><span class="p">(</span>
         <span class="o">*</span><span class="n">attributes</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">obj_is_system</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">obj_is_system</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Unbound</span><span class="p">[</span><span class="n">Class</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]],</span> <span class="n">_Descriptor</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a cached method that resets when the system changes.</span>
+<span class="w">    </span><span class="sd">"""Create a cached method that resets when the system changes.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        attributes: The name of the system attributes for which the</span>
@@ -514,13 +514,13 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        A function that takes a bound method and returns a descriptor</span>
 <span class="sd">        object that implements the caching.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">class</span><span class="w"> </span><span class="nc">_SystemCache</span><span class="p">(</span><span class="n">_Descriptor</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A descriptor class that creates a cached version of a method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""A descriptor class that creates a cached version of a method.</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Get the method.</span>
+<span class="w">            </span><span class="sd">"""Get the method.</span>
 
 <span class="sd">            Args:</span>
 <span class="sd">                obj: An instance of the class containing the method.</span>
@@ -528,7 +528,7 @@
 
 <span class="sd">            Returns:</span>
 <span class="sd">                Either the bound or unbound method.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">            """</span>
             <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_name</span><span class="p">):</span>
@@ -538,7 +538,7 @@
                 <span class="k">if</span> <span class="n">obj_is_system</span><span class="p">:</span>
                     <span class="n">system</span> <span class="o">=</span> <span class="n">obj</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">system</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="n">system</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"system"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
                     <span class="n">observed</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">observed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -551,12 +551,12 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_PluggableMethod</span><span class="p">(</span><span class="n">_Descriptor</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A descriptor class that applies plugins to a method.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A descriptor class that applies plugins to a method.</span>
+<span class="sd">    """</span>
     <span class="n">plugin_no</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the method.</span>
+<span class="w">        </span><span class="sd">"""Get the method.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            obj: An instance of the class containing the method.</span>
@@ -564,18 +564,20 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Either the bound or unbound method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span>
-        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_name</span><span class="p">)</span>
-                <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_no</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_plugins&quot;</span><span class="p">))):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_name</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_no</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"_plugins"</span><span class="p">))</span>
+        <span class="p">):</span>
             <span class="n">wrapped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plugin_no</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_plugins&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plugin_no</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"_plugins"</span><span class="p">))</span>
             <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_name</span><span class="p">,</span> <span class="n">wrapped</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrapped_name</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">wrap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Class</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">Class</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Bound</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrap the bound method in plugins in reverse order.</span>
+<span class="w">        </span><span class="sd">"""Wrap the bound method in plugins in reverse order.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            obj: An instance of the class containing the method.</span>
@@ -583,11 +585,11 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The wrapped bound method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
         <span class="n">initial_wrappers</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;_modify_&quot;</span> <span class="o">+</span> <span class="n">bound</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;_plugins&quot;</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"_modify_"</span> <span class="o">+</span> <span class="n">bound</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"_plugins"</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="n">wrappers</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">initial_wrappers</span><span class="p">))</span>
         <span class="n">wrapped</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">wrappers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">bound</span><span class="p">)</span>
@@ -597,7 +599,7 @@
 <div class="viewcode-block" id="pluggable_method">
 <a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.utils.descriptor.html#pydft_qmmm.utils.descriptor.pluggable_method">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pluggable_method</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Unbound</span><span class="p">[</span><span class="n">Class</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">_PluggableMethod</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a pluggable method that applies plugins in reverse order.</span>
+<span class="w">    </span><span class="sd">"""Create a pluggable method that applies plugins in reverse order.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        func: The method to wrap.</span>
@@ -606,7 +608,7 @@
 <span class="sd">        A descriptor class that can be updated with additional wrapper</span>
 <span class="sd">        functions, which are applied in reverse order to ensure that</span>
 <span class="sd">        the first wrapper may apply the outermost changes.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="n">_PluggableMethod</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
 
 </pre></div>

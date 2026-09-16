@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.system.system - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,11 +435,11 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.system.system</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A container for all atom data in a given system.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""A container for all atom data in a given system.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;System&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"System"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
@@ -474,7 +474,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_del_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make a function that deletes a system attribute when called.</span>
+<span class="w">    </span><span class="sd">"""Make a function that deletes a system attribute when called.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        self: The system object.</span>
@@ -484,7 +484,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        A function that deletes the given attribute from the system</span>
 <span class="sd">        when called.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
             <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
@@ -495,13 +495,13 @@
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System">[docs]</a>
 <span class="nd">@observed_class</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">System</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="n">_SystemAtom</span><span class="p">]):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A container for all atom and residue data in a given system.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A container for all atom and residue data in a given system.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        atoms: The list of atoms that will comprise the system.</span>
 <span class="sd">        box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of the</span>
 <span class="sd">            box containing the system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">positions</span><span class="p">:</span> <span class="n">ObservedArray</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">array_float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">ObservedArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">float</span><span class="p">)),</span>
     <span class="p">)</span>
@@ -544,19 +544,19 @@
             <span class="n">atoms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Atom</span><span class="p">],</span>
             <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;__dataclass_fields__&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_</span><span class="o">.</span><span class="n">default_factory</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"__dataclass_fields__"</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_</span><span class="o">.</span><span class="n">default_factory</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="p">:</span> <span class="n">ObservedArray</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">array_float</span><span class="p">]</span> <span class="o">=</span> <span class="n">ObservedArray</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
         <span class="c1"># Delete residue_map cached property if residues changes.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">residues</span><span class="o">.</span><span class="n">register_notifier</span><span class="p">(</span><span class="n">_del_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;residue_map&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">residues</span><span class="o">.</span><span class="n">register_notifier</span><span class="p">(</span><span class="n">_del_attr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"residue_map"</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of atoms in the system.</span>
+<span class="w">        </span><span class="sd">"""Get the number of atoms in the system.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The number of atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_atoms</span><span class="p">)</span>
 
     <span class="nd">@overload</span>
@@ -570,24 +570,24 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">key</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">slice</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_SystemAtom</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">_SystemAtom</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the specified atom or slice of atoms.</span>
+<span class="w">        </span><span class="sd">"""Get the specified atom or slice of atoms.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            An atom or list of atoms.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_system_atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">key</span><span class="p">))]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_atoms</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if an atom is in the system.</span>
+<span class="w">        </span><span class="sd">"""Check if an atom is in the system.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atom: An atom object.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Whether the atom is in the system or not.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">Atom</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">atom</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atoms</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">_SystemAtom</span><span class="p">):</span>
@@ -595,53 +595,53 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">_SystemAtom</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over atoms in the system.</span>
+<span class="w">        </span><span class="sd">"""Iterate over atoms in the system.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            An iterator for atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_atoms</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__reversed__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">_SystemAtom</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterate over atoms in the system in reversed order.</span>
+<span class="w">        </span><span class="sd">"""Iterate over atoms in the system in reversed order.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            An iterator for atoms in the system in reversed order.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_system_atoms</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Atom</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an internal representation of the atoms of the system.</span>
+<span class="w">        </span><span class="sd">"""Create an internal representation of the atoms of the system.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atoms: A list of atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Populate ObservedArray objects.</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;__dataclass_fields__&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;box&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"__dataclass_fields__"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"box"</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">temp</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
                 <span class="n">atom_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
                     <span class="n">atom</span><span class="p">,</span>
                     <span class="p">(</span>
-                        <span class="s2">&quot;velocity&quot;</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;velocities&quot;</span>
-                        <span class="k">else</span> <span class="s2">&quot;mass&quot;</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;masses&quot;</span> <span class="k">else</span> <span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="s2">"velocity"</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"velocities"</span>
+                        <span class="k">else</span> <span class="s2">"mass"</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"masses"</span> <span class="k">else</span> <span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
                 <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">temp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">atom_value</span><span class="p">])))</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span> <span class="n">ObservedArray</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span> <span class="n">ObservedArray</span><span class="p">(</span><span class="n">temp</span><span class="p">))</span>
         <span class="c1"># Generate _SystemAtom objects.</span>
         <span class="n">system_atoms</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
             <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;__dataclass_fields__&quot;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;box&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"__dataclass_fields__"</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"box"</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s2">&quot;velocity&quot;</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;velocities&quot;</span>
-                    <span class="k">else</span> <span class="s2">&quot;mass&quot;</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;masses&quot;</span> <span class="k">else</span> <span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="s2">"velocity"</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"velocities"</span>
+                    <span class="k">else</span> <span class="s2">"mass"</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"masses"</span> <span class="k">else</span> <span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
                     <span class="n">kwargs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -654,13 +654,13 @@
 <div class="viewcode-block" id="System.index">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.index">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the first index where the atom object is found.</span>
+<span class="w">        </span><span class="sd">"""Find the first index where the atom object is found.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atom: An atom object.</span>
 <span class="sd">            start: The index at which to begin the search.</span>
 <span class="sd">            stop: The index at which to conclude the search.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">Atom</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">_SystemAtom</span><span class="p">):</span>
@@ -672,11 +672,11 @@
 <div class="viewcode-block" id="System.count">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.count">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Count how many times an atom object is in the system.</span>
+<span class="w">        </span><span class="sd">"""Count how many times an atom object is in the system.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atom: An atom object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">Atom</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atoms</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">_SystemAtom</span><span class="p">):</span>
@@ -689,7 +689,7 @@
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.load">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a system from PDB files.</span>
+<span class="w">        </span><span class="sd">"""Load a system from PDB files.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            args: The PDB file or list of PDB files with position,</span>
@@ -698,7 +698,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The system generated from the data in the PDB files.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">atoms</span><span class="p">,</span> <span class="n">box</span> <span class="o">=</span> <span class="n">load_system</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">System</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span></div>
 
@@ -706,7 +706,7 @@
 <div class="viewcode-block" id="System.select">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System.select">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a VMD-like selection query into a set of atom indices.</span>
+<span class="w">        </span><span class="sd">"""Convert a VMD-like selection query into a set of atom indices.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            query: The VMD-like selection query.</span>
@@ -714,14 +714,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A set of indices of atoms in the system referenced by the</span>
 <span class="sd">            query.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">FAST_KEYWORDS</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">|</span> <span class="s2">&quot;within&quot;</span><span class="p">):</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">FAST_KEYWORDS</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">|</span> <span class="s2">"within"</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fast_select</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slow_select</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_fast_select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a VMD-like selection query into a set of atom indices.</span>
+<span class="w">        </span><span class="sd">"""Convert a VMD-like selection query into a set of atom indices.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            query: The VMD-like selection query.</span>
@@ -729,14 +729,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A set of indices of atoms in the system referenced by the</span>
 <span class="sd">            query.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">decompose</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">selection</span> <span class="o">=</span> <span class="n">interpret</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">selection</span>
 
     <span class="nd">@system_cache</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">SLOW_KEYWORDS</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">obj_is_system</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_slow_select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a VMD-like selection query into a set of atom indices.</span>
+<span class="w">        </span><span class="sd">"""Convert a VMD-like selection query into a set of atom indices.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            query: The VMD-like selection query.</span>
@@ -744,14 +744,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A set of indices of atoms in the system referenced by the</span>
 <span class="sd">            query.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">decompose</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="n">selection</span> <span class="o">=</span> <span class="n">interpret</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">selection</span>
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">residue_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MappingProxyType</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The set of atom indices corresponding to a residue index.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""The set of atom indices corresponding to a residue index."""</span>
         <span class="n">residue_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">residue</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">residues</span><span class="p">):</span>
             <span class="n">resid</span> <span class="o">=</span> <span class="n">residue_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">residue</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">())</span>

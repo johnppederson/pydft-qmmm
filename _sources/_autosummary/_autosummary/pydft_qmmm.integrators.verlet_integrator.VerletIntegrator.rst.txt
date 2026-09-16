@@ -49,5 +49,5 @@ pydft\_qmmm.integrators.verlet\_integrator.VerletIntegrator
    .. automethod:: VerletIntegrator.register_plugin
    
    
-    
+   
    

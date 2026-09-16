@@ -4,9 +4,9 @@ pydft\_qmmm.plugins.centroid\_partition
 .. automodule:: pydft_qmmm.plugins.centroid_partition
 
    
+
    
    
-    
    
    .. rubric:: Classes
 

@@ -27,7 +27,7 @@ Examples
 Several cases are provided in the example suite.  The CLI and Python API
 are demonstrated in :example:`0`.  Enhanced sampling functionality with
 Plumed is demonstrated in :example:`1`. Using AMBER or GROMACS forcefield
-parameter files is demonstrated in :example:`2`.  
+parameter files is demonstrated in :example:`2`.
 
 Templates
 =========

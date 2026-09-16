@@ -12,7 +12,7 @@ pydft\_qmmm.utils.lattice
       compute_lattice_vectors
       compute_least_mirror
    
-   
+
    
    
    
@@ -22,5 +22,5 @@ pydft\_qmmm.utils.lattice
    
    .. autofunction:: pydft_qmmm.utils.lattice.compute_least_mirror
    
-    
+   
    

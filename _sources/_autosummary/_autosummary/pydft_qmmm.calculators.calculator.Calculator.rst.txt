@@ -42,5 +42,5 @@ pydft\_qmmm.calculators.calculator.Calculator
    .. automethod:: Calculator.register_plugin
    
    
-    
+   
    

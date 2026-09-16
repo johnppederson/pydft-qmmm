@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.plugins.plugin_manager - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,16 +435,16 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.plugins.plugin_manager</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Functionality for importing third-party plugins.</span>
+<span></span><span class="sd">"""Functionality for importing third-party plugins.</span>
 
 <span class="sd">Attributes:</span>
 <span class="sd">    DISCOVERED_PLUGINS: A tuple of entry points into the plugin</span>
 <span class="sd">        architecture of PyDFT-QMMM from installed package metadata.</span>
 <span class="sd">    LOADED_PLUGINS: The loaded plugin modules.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;get_plugins&quot;</span><span class="p">,</span> <span class="s2">&quot;Plugin&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"get_plugins"</span><span class="p">,</span> <span class="s2">"Plugin"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">entry_points</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeAlias</span>
@@ -458,13 +458,13 @@
     <span class="c1"># This is for Python 3.10-3.11.</span>
     <span class="n">DISCOVERED_PLUGINS</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
         <span class="n">entry_points</span><span class="p">(</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pydft_qmmm.plugins&quot;</span><span class="p">,</span> <span class="p">[]),</span>  <span class="c1"># type: ignore[attr-defined]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pydft_qmmm.plugins"</span><span class="p">,</span> <span class="p">[]),</span>  <span class="c1"># type: ignore[attr-defined]</span>
     <span class="p">)</span>
 <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
     <span class="c1"># This is for Python +3.12, importlib.metadata now uses a selectable</span>
     <span class="c1"># EntryPoints object.</span>
     <span class="n">DISCOVERED_PLUGINS</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-        <span class="n">entry_points</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">&quot;pydft_qmmm.plugins&quot;</span><span class="p">),</span>
+        <span class="n">entry_points</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="s2">"pydft_qmmm.plugins"</span><span class="p">),</span>
     <span class="p">)</span>
 
 <span class="n">LOADED_PLUGINS</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
@@ -475,11 +475,11 @@
 <div class="viewcode-block" id="get_plugins">
 <a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.plugins.plugin_manager.html#pydft_qmmm.plugins.plugin_manager.get_plugins">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_plugins</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Plugin</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get third-party PyDFT-QMMM plugins.</span>
+<span class="w">    </span><span class="sd">"""Get third-party PyDFT-QMMM plugins.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary of plugin classes indexed by plugin name.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">plugins</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Plugin</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">mod</span> <span class="ow">in</span> <span class="n">LOADED_PLUGINS</span><span class="p">:</span>
         <span class="n">plugins</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">mod</span><span class="o">.</span><span class="n">PLUGINS</span><span class="p">)))</span>

@@ -35,5 +35,5 @@ pydft\_qmmm.hamiltonians.qmmm\_hamiltonian.QMMMHamiltonian
    .. automethod:: QMMMHamiltonian.modify_calculator
    
    
-    
+   
    

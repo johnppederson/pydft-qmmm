@@ -4,9 +4,9 @@ pydft\_qmmm.utils.exceptions
 .. automodule:: pydft_qmmm.utils.exceptions
 
    
+
    
    
-    
    
    .. rubric:: Exceptions
 

@@ -10,11 +10,11 @@ pydft\_qmmm.interfaces.interface\_manager
    
       get_interfaces
    
-   
+
    
    
    
    .. autofunction:: pydft_qmmm.interfaces.interface_manager.get_interfaces
    
-    
+   
    

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.hamiltonians.qmmm_hamiltonian - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,7 +435,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.hamiltonians.qmmm_hamiltonian</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A Hamiltonian defining the inter-subsystem coupling in QM/MM.</span>
+<span></span><span class="sd">"""A Hamiltonian defining the inter-subsystem coupling in QM/MM.</span>
 
 <span class="sd">Attributes:</span>
 <span class="sd">    _DEFAULT_FORCE_MATRIX: The default force matrix, which has no</span>
@@ -446,10 +446,10 @@
 <span class="sd">        different long-range embedding schemes.</span>
 <span class="sd">    _SUPPORTED_EMBEDDING: Allowed pairs of close-range and long-range</span>
 <span class="sd">        embedding schemes.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QMMMHamiltonian&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"QMMMHamiltonian"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
@@ -491,36 +491,36 @@
 
 
 <span class="n">_CLOSE_EMBEDDING</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;mechanical&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
-    <span class="s2">&quot;electrostatic&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span><span class="p">),</span>
-    <span class="s2">&quot;none&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">),</span>
+    <span class="s2">"mechanical"</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
+    <span class="s2">"electrostatic"</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span><span class="p">),</span>
+    <span class="s2">"none"</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">),</span>
 <span class="p">}</span>
 
 
 <span class="n">_LONG_EMBEDDING</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;mechanical&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
-    <span class="s2">&quot;electrostatic&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
-    <span class="s2">&quot;cutoff&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
-    <span class="s2">&quot;none&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">),</span>
+    <span class="s2">"mechanical"</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
+    <span class="s2">"electrostatic"</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">QM</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
+    <span class="s2">"cutoff"</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">MM</span><span class="p">),</span>
+    <span class="s2">"none"</span><span class="p">:</span> <span class="p">(</span><span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">,</span> <span class="n">TheoryLevel</span><span class="o">.</span><span class="n">NO</span><span class="p">),</span>
 <span class="p">}</span>
 
 
 <span class="n">_SUPPORTED_EMBEDDING</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;mechanical&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;mechanical&quot;</span><span class="p">,</span> <span class="s2">&quot;cutoff&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;mechanical&quot;</span><span class="p">,</span> <span class="s2">&quot;mechanical&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;electrostatic&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;electrostatic&quot;</span><span class="p">,</span> <span class="s2">&quot;cutoff&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;electrostatic&quot;</span><span class="p">,</span> <span class="s2">&quot;mechanical&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;electrostatic&quot;</span><span class="p">,</span> <span class="s2">&quot;electrostatic&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"none"</span><span class="p">,</span> <span class="s2">"none"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"mechanical"</span><span class="p">,</span> <span class="s2">"none"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"mechanical"</span><span class="p">,</span> <span class="s2">"cutoff"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"mechanical"</span><span class="p">,</span> <span class="s2">"mechanical"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"electrostatic"</span><span class="p">,</span> <span class="s2">"none"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"electrostatic"</span><span class="p">,</span> <span class="s2">"cutoff"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"electrostatic"</span><span class="p">,</span> <span class="s2">"mechanical"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"electrostatic"</span><span class="p">,</span> <span class="s2">"electrostatic"</span><span class="p">),</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="QMMMHamiltonian">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian.html#pydft_qmmm.hamiltonians.qmmm_hamiltonian.QMMMHamiltonian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">QMMMHamiltonian</span><span class="p">(</span><span class="n">CouplingHamiltonian</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A Hamiltonian defining inter-subsystem coupling in QM/MM.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A Hamiltonian defining inter-subsystem coupling in QM/MM.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        close_range: The name of the embedding procedure for</span>
@@ -540,13 +540,13 @@
 <span class="sd">            lattice edge for QM/MM/PME.</span>
 <span class="sd">        pme_spline_order: The order of splines used on the FFT grid for</span>
 <span class="sd">            QM/MM/PME.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">close_range</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;electrostatic&quot;</span><span class="p">,</span>
-            <span class="n">long_range</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cutoff&quot;</span><span class="p">,</span>
-            <span class="n">partition</span><span class="p">:</span> <span class="n">PartitionPlugin</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">CentroidPartition</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="mf">14.</span><span class="p">),</span>
+            <span class="n">close_range</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"electrostatic"</span><span class="p">,</span>
+            <span class="n">long_range</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"cutoff"</span><span class="p">,</span>
+            <span class="n">partition</span><span class="p">:</span> <span class="n">PartitionPlugin</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">CentroidPartition</span><span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="mf">14.</span><span class="p">),</span>
             <span class="n">cutoff</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">pme_alpha</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -576,13 +576,13 @@
             <span class="n">calculator</span><span class="p">:</span> <span class="n">CompositeCalculator</span><span class="p">,</span>
             <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify a composite calculator to include the coupling.</span>
+<span class="w">        </span><span class="sd">"""Modify a composite calculator to include the coupling.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            calculator: A composite calculator which is defined in part</span>
 <span class="sd">                by the system.</span>
 <span class="sd">            system: The system corresponding to the calculator.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">partition</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cutoff</span>
@@ -609,9 +609,7 @@
             <span class="p">)</span> <span class="o">=</span> <span class="n">mm_interface</span><span class="o">.</span><span class="n">get_pme_parameters</span><span class="p">()</span>
             <span class="n">advisable_gridnumber</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span>
                 <span class="n">compute_lattice_constants</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>
-                <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-                <span class="n">casting</span><span class="o">=</span><span class="s1">&#39;unsafe&#39;</span><span class="p">,</span>
-            <span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pme_alpha</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pme_alpha</span> <span class="o">=</span> <span class="n">pme_alpha</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pme_gridnumber</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -623,10 +621,10 @@
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pme_gridnumber</span> <span class="o">&lt;</span> <span class="n">advisable_gridnumber</span><span class="p">):</span>
                 <span class="n">warn</span><span class="p">(</span>
                     <span class="p">(</span>
-                        <span class="s2">&quot;QM/MM/PME grids with spacings coarser than 0.5 Å&quot;</span>
-                        <span class="s2">&quot; are known to result in significant numerical&quot;</span>
-                        <span class="s2">&quot; error.  The minimal advisable gridnumbers are:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">advisable_gridnumber</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="s2">"QM/MM/PME grids with spacings coarser than 0.5 Å"</span>
+                        <span class="s2">" are known to result in significant numerical"</span>
+                        <span class="s2">" error.  The minimal advisable gridnumbers are:</span><span class="se">\n</span><span class="s2">"</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">advisable_gridnumber</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">),</span>
                     <span class="ne">RuntimeWarning</span><span class="p">,</span>
                 <span class="p">)</span>
@@ -665,15 +663,15 @@
             <span class="n">interface</span><span class="p">:</span> <span class="n">MMInterface</span><span class="p">,</span>
             <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify an MM interface to reflect the selected embedding.</span>
+<span class="w">        </span><span class="sd">"""Modify an MM interface to reflect the selected embedding.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            interface: The MM interface representing part of the system.</span>
 <span class="sd">            system: The system that will be used to modify the</span>
 <span class="sd">                interface.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">qm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">)</span>
-        <span class="n">mm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem II or subsystem III&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">qm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">)</span>
+        <span class="n">mm_atoms</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem II or subsystem III"</span><span class="p">)</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="n">qm_atoms</span> <span class="o">|</span> <span class="n">mm_atoms</span>
         <span class="n">interface</span><span class="o">.</span><span class="n">zero_intramolecular</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span>
@@ -696,8 +694,8 @@
                     <span class="n">interface</span><span class="o">.</span><span class="n">add_real_elst</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">)</span>
                     <span class="n">warn</span><span class="p">(</span>
                         <span class="p">(</span>
-                            <span class="s2">&quot;I-II Mechanical with I-III None embedding is &quot;</span>
-                            <span class="s2">&quot;known to produce unstable trajectories.&quot;</span>
+                            <span class="s2">"I-II Mechanical with I-III None embedding is "</span>
+                            <span class="s2">"known to produce unstable trajectories."</span>
                         <span class="p">),</span>
                         <span class="ne">RuntimeWarning</span><span class="p">,</span>
                     <span class="p">)</span>
@@ -712,7 +710,7 @@
                 <span class="p">):</span>
                     <span class="n">interface</span><span class="o">.</span><span class="n">add_real_elst</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"..."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">interface</span><span class="o">.</span><span class="n">zero_forces</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">)</span>
             <span class="n">inclusion</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
@@ -738,16 +736,16 @@
             <span class="p">):</span>
                 <span class="n">interface</span><span class="o">.</span><span class="n">add_real_elst</span><span class="p">(</span><span class="n">qm_atoms</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span></div>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"..."</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a LATEX string representation of the Hamiltonian.</span>
+<span class="w">        </span><span class="sd">"""Create a LATEX string representation of the Hamiltonian.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The string representation of the Hamiltonian.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;H^{QM/MM}&quot;</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="s2">"H^{QM/MM}"</span></div>
 
 </pre></div>
         </article>

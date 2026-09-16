@@ -42,5 +42,5 @@ pydft\_qmmm.calculators.potential\_calculator.PotentialCalculator
    .. automethod:: PotentialCalculator.register_plugin
    
    
-    
+   
    

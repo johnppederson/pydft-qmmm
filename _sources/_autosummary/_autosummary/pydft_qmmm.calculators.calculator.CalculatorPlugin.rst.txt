@@ -28,5 +28,5 @@ pydft\_qmmm.calculators.calculator.CalculatorPlugin
    .. automethod:: CalculatorPlugin.modify
    
    
-    
+   
    

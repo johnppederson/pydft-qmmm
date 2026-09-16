@@ -4,9 +4,9 @@ pydft\_qmmm.hamiltonians.qmmm\_hamiltonian
 .. automodule:: pydft_qmmm.hamiltonians.qmmm_hamiltonian
 
    
+
    
    
-    
    
    .. rubric:: Classes
 

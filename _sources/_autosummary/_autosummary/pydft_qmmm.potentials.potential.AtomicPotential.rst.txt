@@ -42,5 +42,5 @@ pydft\_qmmm.potentials.potential.AtomicPotential
    .. automethod:: AtomicPotential.compute_forces
    
    
-    
+   
    

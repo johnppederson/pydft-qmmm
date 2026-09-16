@@ -42,5 +42,5 @@ pydft\_qmmm.calculators.composite\_calculator.PartitionPlugin
    .. automethod:: PartitionPlugin.modify_composite
    
    
-    
+   
    

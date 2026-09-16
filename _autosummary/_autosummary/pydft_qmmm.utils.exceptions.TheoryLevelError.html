@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="pydft_qmmm.utils.lattice" href="../pydft_qmmm.utils.lattice.html"><link rel="prev" title="pydft_qmmm.utils.exceptions.PyDFTQMMMException" href="pydft_qmmm.utils.exceptions.PyDFTQMMMException.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.utils.exceptions.TheoryLevelError - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -445,7 +445,7 @@
 <h1>pydft_qmmm.utils.exceptions.TheoryLevelError<a class="headerlink" href="#pydft-qmmm-utils-exceptions-theorylevelerror" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydft_qmmm.utils.exceptions.TheoryLevelError">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.utils.exceptions.</span></span><span class="sig-name descname"><span class="pre">TheoryLevelError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct_theory_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_theory_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functionality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydft_qmmm/utils/exceptions.html#TheoryLevelError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.utils.exceptions.TheoryLevelError" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.utils.exceptions.</span></span><span class="sig-name descname"><span class="pre">TheoryLevelError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correct_theory_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual_theory_level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functionality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydft_qmmm/utils/exceptions.html#TheoryLevelError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.utils.exceptions.TheoryLevelError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydft_qmmm.utils.exceptions.PyDFTQMMMException.html#pydft_qmmm.utils.exceptions.PyDFTQMMMException" title="pydft_qmmm.utils.exceptions.PyDFTQMMMException"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyDFTQMMMException</span></code></a></p>
 <p>An exception for mismatches in TheoryLevel.</p>
 <dl class="field-list simple">
@@ -455,9 +455,9 @@
 functionality.</p></li>
 <li><p><strong>actual_theory_level</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.utils.constants.TheoryLevel.html#pydft_qmmm.utils.constants.TheoryLevel" title="pydft_qmmm.utils.constants.TheoryLevel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TheoryLevel</span></code></a></span>) – The received TheoryLevel for the given
 functionality.</p></li>
-<li><p><strong>functionality</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A description of the functionality impacted by
+<li><p><strong>functionality</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A description of the functionality impacted by
 an erroneous TheoryLevel.</p></li>
-<li><p><strong>solution</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">''</span></code>) – A description of a proposed solution to avoid the
+<li><p><strong>solution</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">''</span></code>) – A description of a proposed solution to avoid the
 exception.</p></li>
 </ul>
 </dd>

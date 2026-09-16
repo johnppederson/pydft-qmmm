@@ -4,9 +4,9 @@ pydft\_qmmm.plugins.atom\_partition
 .. automodule:: pydft_qmmm.plugins.atom_partition
 
    
+
    
    
-    
    
    .. rubric:: Classes
 

@@ -28,5 +28,5 @@ pydft\_qmmm.potentials.potential.ElectronicPotential
    .. automethod:: ElectronicPotential.compute_potential
    
    
-    
+   
    

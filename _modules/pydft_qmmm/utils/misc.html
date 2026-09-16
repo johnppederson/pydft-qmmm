@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.utils.misc - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,17 +435,17 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.utils.misc</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Helper functions accessed by multiple classes.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Helper functions accessed by multiple classes.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;check_array&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;generate_velocities&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;wrap_positions&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;center_positions&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;residue_partition&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;numerical_gradient&quot;</span><span class="p">,</span>
+    <span class="s2">"check_array"</span><span class="p">,</span>
+    <span class="s2">"generate_velocities"</span><span class="p">,</span>
+    <span class="s2">"wrap_positions"</span><span class="p">,</span>
+    <span class="s2">"center_positions"</span><span class="p">,</span>
+    <span class="s2">"residue_partition"</span><span class="p">,</span>
+    <span class="s2">"numerical_gradient"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
@@ -464,14 +464,14 @@
 <div class="viewcode-block" id="check_array">
 <a class="viewcode-back" href="../../../_autosummary/pydft_qmmm.utils.misc.html#pydft_qmmm.utils.misc.check_array">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_array</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if an array has any NaN or Inf vlaues.</span>
+<span class="w">    </span><span class="sd">"""Check if an array has any NaN or Inf vlaues.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        value: The array to evaluate.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Whether the array has any NaN or Inf values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">())</span></div>
 
 
@@ -483,7 +483,7 @@
         <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate velocities with the Maxwell-Boltzmann distribution.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Generate velocities with the Maxwell-Boltzmann distribution.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        masses: The masses (:math:`\mathrm{AMU}`) of particles.</span>
@@ -493,7 +493,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        A set of velocities (:math:`\mathrm{\mathring{A}\;fs^{-1}}`)</span>
 <span class="sd">        equal in number to the set of masses provided.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">avg_ke</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">*</span> <span class="n">KB</span>
     <span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">seed</span><span class="p">:</span>
@@ -514,7 +514,7 @@
         <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
         <span class="n">residue_map</span><span class="p">:</span> <span class="n">MappingProxyType</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Wrap atom positions in accord with PBC.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Wrap atom positions in accord with PBC.</span>
 
 <span class="sd">    Atoms are wrapped to stay inside of the periodic box.  This</span>
 <span class="sd">    function ensures molecules are not broken up by a periodic</span>
@@ -530,7 +530,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The new wrapped positions of the system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">inverse_box</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
     <span class="n">new_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">residue</span> <span class="ow">in</span> <span class="n">residue_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -556,7 +556,7 @@
         <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
         <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Center positions about the centroid of a set of atoms.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Center positions about the centroid of a set of atoms.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        positions: The positions (:math:`\mathrm{\mathring{A}}`) to</span>
@@ -568,7 +568,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The new centered positions of the system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">center</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">box</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">differential</span> <span class="o">=</span> <span class="n">center</span> <span class="o">-</span> <span class="n">centroid</span>
@@ -587,30 +587,29 @@
         <span class="n">other_metric</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">NDArray</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
         <span class="n">cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the residue-wise system partitioning.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Perform the residue-wise system partitioning.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        atoms: The set of atom indices whose metric will be used to</span>
 <span class="sd">            determine the partition.</span>
 <span class="sd">        positions: The system positions (:math:`\mathrm{\mathring{A}}`).</span>
 <span class="sd">        residue_map: Sets of atom indices indexed by residue index.</span>
-<span class="sd">        atoms_metric: A function to apply to a residue&#39;s positions to</span>
+<span class="sd">        atoms_metric: A function to apply to a residue's positions to</span>
 <span class="sd">            generate a single relevant coordinate.  This metric is</span>
 <span class="sd">            applied to the provided set of atoms.</span>
-<span class="sd">        other_metric: A function to apply to a residue&#39;s positions to</span>
+<span class="sd">        other_metric: A function to apply to a residue's positions to</span>
 <span class="sd">            generate a single relevant coordinate.  This metric is</span>
 <span class="sd">            applied to all residues in the system.</span>
 <span class="sd">        cutoff: The cutoff distance (:math:`\mathrm{\mathring{A}}`) to</span>
 <span class="sd">            apply in the partition.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">atoms_reference</span> <span class="o">=</span> <span class="n">atoms_metric</span><span class="p">(</span>
         <span class="n">positions</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="p">:],</span>
     <span class="p">)</span>
     <span class="n">region_ii</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">residue</span> <span class="ow">in</span> <span class="n">residue_map</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="n">others</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">residue</span><span class="p">)</span>
-        <span class="n">not_atoms</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">isdisjoint</span><span class="p">(</span><span class="n">residue</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">not_atoms</span> <span class="ow">and</span> <span class="n">others</span><span class="p">:</span>
+        <span class="n">others</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">residue</span> <span class="o">-</span> <span class="n">atoms</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">others</span><span class="p">:</span>
             <span class="n">other_reference</span> <span class="o">=</span> <span class="n">other_metric</span><span class="p">(</span>
                 <span class="n">positions</span><span class="p">[</span><span class="n">others</span><span class="p">,</span> <span class="p">:],</span>
             <span class="p">)</span>
@@ -630,7 +629,7 @@
         <span class="n">dist</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0025</span><span class="p">,</span>
         <span class="n">components</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the numerical energy gradients for a set of atoms.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Calculate the numerical energy gradients for a set of atoms.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        calculator: A calculator object used for the energy evaluations.</span>
@@ -644,7 +643,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        The numerical gradients of the energy</span>
 <span class="sd">        (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">atoms</span><span class="p">)):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>

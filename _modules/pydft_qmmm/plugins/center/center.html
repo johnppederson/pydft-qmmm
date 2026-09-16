@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.plugins.center.center - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,13 +435,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.plugins.center.center</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Plugins for centering coordinates.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Plugins for centering coordinates.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;CalculatorCenter&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;IntegratorCenter&quot;</span><span class="p">,</span>
+    <span class="s2">"CalculatorCenter"</span><span class="p">,</span>
+    <span class="s2">"IntegratorCenter"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
@@ -464,7 +464,7 @@
         <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Center positions about the centroid of a query selection.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Center positions about the centroid of a query selection.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        positions: The positions (:math:`\mathrm{\mathring{A}}`) to</span>
@@ -475,7 +475,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The new centered positions of the system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
     <span class="n">box</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">box</span>
     <span class="n">center</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">box</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -488,16 +488,16 @@
 <div class="viewcode-block" id="CalculatorCenter">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.plugins.center.CalculatorCenter.html#pydft_qmmm.plugins.center.CalculatorCenter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CalculatorCenter</span><span class="p">(</span><span class="n">CalculatorPlugin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Center positions before performing a calculation.</span>
+<span class="w">    </span><span class="sd">"""Center positions before performing a calculation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        query: The VMD-like query representing the group of atoms whose</span>
 <span class="sd">            centroid will be taken to be the center of the system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;subsystem I&quot;</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"subsystem I"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
 
@@ -505,7 +505,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">calculate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Results</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Results</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the calculate routine to perform centering beforehand.</span>
+<span class="w">        </span><span class="sd">"""Modify the calculate routine to perform centering beforehand.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            calculate: The calculation routine to modify.</span>
@@ -513,7 +513,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The modified calculation routine which implements the</span>
 <span class="sd">            coordinate-centering before calculation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
                 <span class="n">return_forces</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="n">return_components</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -532,16 +532,16 @@
 <div class="viewcode-block" id="IntegratorCenter">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.plugins.center.IntegratorCenter.html#pydft_qmmm.plugins.center.IntegratorCenter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">IntegratorCenter</span><span class="p">(</span><span class="n">IntegratorPlugin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Center positions after performing an integration.</span>
+<span class="w">    </span><span class="sd">"""Center positions after performing an integration.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        query: The VMD-like query representing the group of atoms whose</span>
 <span class="sd">            centroid will be taken to be the center of the system.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;subsystem I&quot;</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"subsystem I"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
 
@@ -549,7 +549,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">integrate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">System</span><span class="p">],</span> <span class="n">Returns</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">System</span><span class="p">],</span> <span class="n">Returns</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the integrate routine to perform centering afterward.</span>
+<span class="w">        </span><span class="sd">"""Modify the integrate routine to perform centering afterward.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            integrate: The integration routine to modify.</span>
@@ -557,7 +557,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The modified integration routine which implements the</span>
 <span class="sd">            coordinate-centering after integration.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Returns</span><span class="p">:</span>
             <span class="n">positions</span><span class="p">,</span> <span class="n">velocities</span> <span class="o">=</span> <span class="n">integrate</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
             <span class="n">positions</span> <span class="o">=</span> <span class="n">_center_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">system</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>

@@ -399,5 +399,5 @@ pydft\_qmmm.system.variable.ObservedArray
    .. automethod:: ObservedArray.view
    
    
-    
+   
    

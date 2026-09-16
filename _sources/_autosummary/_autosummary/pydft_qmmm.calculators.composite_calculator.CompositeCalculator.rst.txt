@@ -42,5 +42,5 @@ pydft\_qmmm.calculators.composite\_calculator.CompositeCalculator
    .. automethod:: CompositeCalculator.register_plugin
    
    
-    
+   
    

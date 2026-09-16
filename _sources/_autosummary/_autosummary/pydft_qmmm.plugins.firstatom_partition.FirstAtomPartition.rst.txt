@@ -42,5 +42,5 @@ pydft\_qmmm.plugins.firstatom\_partition.FirstAtomPartition
    .. automethod:: FirstAtomPartition.modify_composite
    
    
-    
+   
    

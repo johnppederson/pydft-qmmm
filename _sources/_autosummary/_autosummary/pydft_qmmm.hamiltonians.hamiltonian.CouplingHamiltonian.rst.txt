@@ -28,5 +28,5 @@ pydft\_qmmm.hamiltonians.hamiltonian.CouplingHamiltonian
    .. automethod:: CouplingHamiltonian.modify_calculator
    
    
-    
+   
    

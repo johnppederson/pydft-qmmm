@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.potentials.potential - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,19 +435,19 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.potentials.potential</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Base classes for the potential API.</span>
+<span></span><span class="sd">"""Base classes for the potential API.</span>
 
 <span class="sd">This module contains the atomic potential abstract base class, which</span>
 <span class="sd">represents any method that can be used to calculate energies and forces</span>
 <span class="sd">on atomic centers, and the electronic potential abstract base class,</span>
 <span class="sd">which can be used to evaluate an electronic potential at arbitrary</span>
 <span class="sd">points for the purpose of integration by quadrature.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;AtomicPotential&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ElectronicPotential&quot;</span><span class="p">,</span>
+    <span class="s2">"AtomicPotential"</span><span class="p">,</span>
+    <span class="s2">"ElectronicPotential"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
@@ -463,42 +463,42 @@
 <div class="viewcode-block" id="AtomicPotential">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AtomicPotential</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation of an arbitrary potential on atoms.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Representation of an arbitrary potential on atoms."""</span>
 
 <div class="viewcode-block" id="AtomicPotential.compute_energy">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential.compute_energy">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the system energy associated with the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the system energy associated with the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the potential.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="AtomicPotential.compute_forces">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential.compute_forces">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the forces on the system induced by the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the forces on the system induced by the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The forces</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
 <span class="sd">            on atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="AtomicPotential.compute_components">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.AtomicPotential.html#pydft_qmmm.potentials.potential.AtomicPotential.compute_components">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the components of energy associated with the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the components of energy associated with the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)</span>
 <span class="sd">            of the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 </div>
 
 
@@ -506,11 +506,11 @@
 <div class="viewcode-block" id="ElectronicPotential">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.ElectronicPotential.html#pydft_qmmm.potentials.potential.ElectronicPotential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ElectronicPotential</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representation of an arbitrary potential on electrons.</span>
+<span class="w">    </span><span class="sd">"""Representation of an arbitrary potential on electrons.</span>
 
 <span class="sd">    This class is aimed at providing the necessary tooling for</span>
 <span class="sd">    generating a potential matrix via numerical quadrature.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="ElectronicPotential.compute_potential">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.potential.ElectronicPotential.html#pydft_qmmm.potentials.potential.ElectronicPotential.compute_potential">[docs]</a>
@@ -519,7 +519,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">coordinates</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the potential at arbitrary coordinates.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the potential at arbitrary coordinates.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            coordinates: An array of coordinates</span>
@@ -530,7 +530,7 @@
 <span class="sd">            An array of the potential</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;e^{-1}}`),</span>
 <span class="sd">            corresponding to the provided coordinates.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 </div>
 
 </pre></div>

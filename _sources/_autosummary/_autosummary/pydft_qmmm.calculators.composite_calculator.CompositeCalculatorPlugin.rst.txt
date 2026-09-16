@@ -35,5 +35,5 @@ pydft\_qmmm.calculators.composite\_calculator.CompositeCalculatorPlugin
    .. automethod:: CompositeCalculatorPlugin.modify_composite
    
    
-    
+   
    

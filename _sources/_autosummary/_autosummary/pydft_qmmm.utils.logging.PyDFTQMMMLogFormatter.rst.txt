@@ -70,5 +70,5 @@ pydft\_qmmm.utils.logging.PyDFTQMMMLogFormatter
    .. automethod:: PyDFTQMMMLogFormatter.usesTime
    
    
-    
+   
    

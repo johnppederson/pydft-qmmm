@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="pydft_qmmm.plugins.wrap" href="../pydft_qmmm.plugins.wrap.html"><link rel="prev" title="pydft_qmmm.plugins.settle" href="../pydft_qmmm.plugins.settle.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.plugins.settle.SETTLE - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -445,7 +445,7 @@
 <h1>pydft_qmmm.plugins.settle.SETTLE<a class="headerlink" href="#pydft-qmmm-plugins-settle-settle" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydft_qmmm.plugins.settle.SETTLE">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.plugins.settle.</span></span><span class="sig-name descname"><span class="pre">SETTLE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'resname</span> <span class="pre">HOH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oh_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hh_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.632981</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydft_qmmm/plugins/settle/settle.html#SETTLE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.plugins.settle.SETTLE" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.plugins.settle.</span></span><span class="sig-name descname"><span class="pre">SETTLE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'resname</span> <span class="pre">HOH'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oh_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hh_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.632981</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydft_qmmm/plugins/settle/settle.html#SETTLE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.plugins.settle.SETTLE" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pydft_qmmm.integrators.integrator.IntegratorPlugin.html#pydft_qmmm.integrators.integrator.IntegratorPlugin" title="pydft_qmmm.integrators.integrator.IntegratorPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntegratorPlugin</span></code></a></p>
 <p>Apply the SETTLE algorithm to water residues after integration.</p>
 <p>This plugin is based off of the implementation of OpenMM in
@@ -453,11 +453,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>query</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">'resname</span> <span class="pre">HOH'</span></code>) – The VMD-like selection query which should correspond to
+<li><p><strong>query</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">'resname</span> <span class="pre">HOH'</span></code>) – The VMD-like selection query which should correspond to
 water residues.</p></li>
-<li><p><strong>oh_distance</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>) – The distance between the oxygen and hydrogens
+<li><p><strong>oh_distance</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code>) – The distance between the oxygen and hydrogens
 (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>).</p></li>
-<li><p><strong>hh_distance</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">1.632981</span></code>) – The distance between the hydrogens
+<li><p><strong>hh_distance</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">1.632981</span></code>) – The distance between the hydrogens
 (<span class="math notranslate nohighlight">\(\mathrm{\mathring{A}}\)</span>).</p></li>
 </ul>
 </dd>
@@ -484,7 +484,7 @@ water residues.</p></li>
 <dd class="field-odd"><p><strong>system</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a></span>) – The system whose velocities will be SETTLEd.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a>]]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a>]</span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>New velocities which result from the application of the
@@ -503,7 +503,7 @@ SETTLE algorithm to system velocities.</p>
 modified by the plugin.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -588,6 +588,6 @@ modified by the plugin.</p>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

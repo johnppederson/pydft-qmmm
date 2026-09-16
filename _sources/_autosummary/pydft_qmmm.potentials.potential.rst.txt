@@ -4,9 +4,9 @@ pydft\_qmmm.potentials.potential
 .. automodule:: pydft_qmmm.potentials.potential
 
    
+
    
    
-    
    
    .. rubric:: Classes
 

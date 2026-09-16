@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.integrators.integrator - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,17 +435,17 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.integrators.integrator</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Base classes for integrators and related classes.</span>
+<span></span><span class="sd">"""Base classes for integrators and related classes.</span>
 
 <span class="sd">This module contains the base classes for integrators and integrator</span>
 <span class="sd">plugins, as well as the returns type.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;Integrator&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;IntegratorPlugin&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Returns&quot;</span><span class="p">,</span>
+    <span class="s2">"Integrator"</span><span class="p">,</span>
+    <span class="s2">"IntegratorPlugin"</span><span class="p">,</span>
+    <span class="s2">"Returns"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
@@ -470,7 +470,7 @@
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Integrator</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The abstract integrator base class.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""The abstract integrator base class.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        timestep: The timestep (:math:`\mathrm{fs}`) used to perform</span>
@@ -479,7 +479,7 @@
 <span class="sd">    Attributes:</span>
 <span class="sd">        _plugins: The list of plugins that have been registered by the</span>
 <span class="sd">            integrator.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span>
     <span class="n">_plugins</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">IntegratorPlugin</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
@@ -488,7 +488,7 @@
     <span class="nd">@pluggable_method</span>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Returns</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Integrate forces into new positions and velocities.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Integrate forces into new positions and velocities.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            system: The system whose forces</span>
@@ -502,14 +502,14 @@
 <span class="sd">            (:math:`\mathrm{\mathring{A}\;fs^{-1}}`) integrated from the</span>
 <span class="sd">            forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`)</span>
 <span class="sd">            and existing positions and velocities of the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 <div class="viewcode-block" id="Integrator.compute_kinetic_energy">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator.compute_kinetic_energy">[docs]</a>
     <span class="nd">@pluggable_method</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_kinetic_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate kinetic energy via leapfrog algorithm.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate kinetic energy via leapfrog algorithm.</span>
 
 <span class="sd">        This method is based off of the implementation of OpenMM in</span>
 <span class="sd">        :openmm:`ReferenceKernels.cpp`.</span>
@@ -523,7 +523,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The kinetic energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the</span>
 <span class="sd">            system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">masses</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">masses</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">velocities</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">system</span><span class="o">.</span><span class="n">velocities</span>
@@ -543,17 +543,17 @@
             <span class="n">plugin</span><span class="p">:</span> <span class="n">IntegratorPlugin</span><span class="p">,</span>
             <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Record plugin and apply it to the calculator.</span>
+<span class="w">        </span><span class="sd">"""Record plugin and apply it to the calculator.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            plugin: A plugin that will modify the behavior of the</span>
-<span class="sd">                integrator&#39;s pluggable methods.</span>
+<span class="sd">                integrator's pluggable methods.</span>
 <span class="sd">            index: The index at which to insert the plugin in the</span>
 <span class="sd">                plugin load order, i.e., 0 will be called first,</span>
 <span class="sd">                1 will be called second, etc.  The default behavior</span>
 <span class="sd">                is to append the plugin at the end of the plugin</span>
 <span class="sd">                load order.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_plugins</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">plugin</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -564,11 +564,11 @@
 <div class="viewcode-block" id="Integrator.active_plugins">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.integrator.Integrator.html#pydft_qmmm.integrators.integrator.Integrator.active_plugins">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">active_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">IntegratorPlugin</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the current list of active plugins.</span>
+<span class="w">        </span><span class="sd">"""Get the current list of active plugins.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A list of the active plugins registered by the integrator.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plugins</span></div>
 </div>
 
@@ -577,18 +577,18 @@
 <div class="viewcode-block" id="IntegratorPlugin">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.integrator.IntegratorPlugin.html#pydft_qmmm.integrators.integrator.IntegratorPlugin">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">IntegratorPlugin</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The abstract base class for modifying integrator routines.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""The abstract base class for modifying integrator routines.</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="IntegratorPlugin.modify">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.integrators.integrator.IntegratorPlugin.html#pydft_qmmm.integrators.integrator.IntegratorPlugin.modify">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">modify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">integrator</span><span class="p">:</span> <span class="n">Integrator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the functionality of an integrator.</span>
+<span class="w">        </span><span class="sd">"""Modify the functionality of an integrator.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            integrator: The integrator whose functionality will be</span>
 <span class="sd">                modified by the plugin.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">integrator</span> <span class="o">=</span> <span class="n">integrator</span></div>
 </div>
 

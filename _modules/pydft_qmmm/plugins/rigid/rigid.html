@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.plugins.rigid.rigid - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,11 +435,11 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.plugins.rigid.rigid</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Plugins for implementing stationary or rigid-body residues.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Plugins for implementing stationary or rigid-body residues.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Stationary&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Stationary"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
@@ -457,12 +457,12 @@
 <div class="viewcode-block" id="Stationary">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.plugins.rigid.Stationary.html#pydft_qmmm.plugins.rigid.Stationary">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Stationary</span><span class="p">(</span><span class="n">IntegratorPlugin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Keep select residues stationary during integration.</span>
+<span class="w">    </span><span class="sd">"""Keep select residues stationary during integration.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        query: The VMD-like selection query which corresponds to</span>
 <span class="sd">            residues that should be kept stationary during integration.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -473,7 +473,7 @@
 <div class="viewcode-block" id="Stationary.constrain_velocities">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.plugins.rigid.Stationary.html#pydft_qmmm.plugins.rigid.Stationary.constrain_velocities">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">constrain_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Zero velocities for stationary residues.</span>
+<span class="w">        </span><span class="sd">"""Zero velocities for stationary residues.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            system: The system with stationary residues.</span>
@@ -481,7 +481,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            New velocities which result from zeroing the</span>
 <span class="sd">            velocities of stationary residues.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">velocities</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">velocities</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
         <span class="n">velocities</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -492,7 +492,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">integrate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">System</span><span class="p">],</span> <span class="n">Returns</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">System</span><span class="p">],</span> <span class="n">Returns</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the integrate routine to stop stationary residues.</span>
+<span class="w">        </span><span class="sd">"""Modify the integrate routine to stop stationary residues.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            integrate: The integration routine to modify.</span>
@@ -500,7 +500,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The modified integration routine which keeps stationary</span>
 <span class="sd">            residues in place.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Returns</span><span class="p">:</span>
             <span class="n">positions</span><span class="p">,</span> <span class="n">velocities</span> <span class="o">=</span> <span class="n">integrate</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
             <span class="n">atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
@@ -513,7 +513,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">compute_kinetic_energy</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">System</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">System</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the kinetic energy computation for stationary residues.</span>
+<span class="w">        </span><span class="sd">"""Modify the kinetic energy computation for stationary residues.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            compute_kinetic_energy: The kinetic energy routine to</span>
@@ -522,7 +522,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The modified kinetic energy routine which zeros stationary</span>
 <span class="sd">            residue velocities before the energy calculation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
             <span class="n">masses</span> <span class="o">=</span> <span class="n">system</span><span class="o">.</span><span class="n">masses</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">velocities</span> <span class="o">=</span> <span class="p">(</span>

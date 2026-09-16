@@ -49,5 +49,5 @@ pydft\_qmmm.integrators.langevin\_integrator.LangevinIntegrator
    .. automethod:: LangevinIntegrator.register_plugin
    
    
-    
+   
    

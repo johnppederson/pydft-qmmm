@@ -4,9 +4,9 @@ pydft\_qmmm.wrappers.optimization
 .. automodule:: pydft_qmmm.wrappers.optimization
 
    
+
    
    
-    
    
    .. rubric:: Classes
 

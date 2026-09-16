@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.potentials.pme_potential - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,15 +435,15 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.potentials.pme_potential</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Classes for introducing arbitrary potentials to QM calculations.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Classes for introducing arbitrary potentials to QM calculations.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;HelPMEPyInterface&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PMEElectronicPotential&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PMENuclearPotential&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;PMEExcludedPotential&quot;</span><span class="p">,</span>
+    <span class="s2">"HelPMEPyInterface"</span><span class="p">,</span>
+    <span class="s2">"PMEElectronicPotential"</span><span class="p">,</span>
+    <span class="s2">"PMENuclearPotential"</span><span class="p">,</span>
+    <span class="s2">"PMEExcludedPotential"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
@@ -465,9 +465,9 @@
     <span class="kn">import</span><span class="w"> </span><span class="nn">helpme_py</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span> <span class="n">DependencyImportError</span><span class="p">(</span>
-        <span class="s2">&quot;helPME-py&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;performing QM/MM/PME calculations&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;https://github.com/johnppederson/helpme-py&quot;</span><span class="p">,</span>
+        <span class="s2">"helPME-py"</span><span class="p">,</span>
+        <span class="s2">"performing QM/MM/PME calculations"</span><span class="p">,</span>
+        <span class="s2">"https://github.com/johnppederson/helpme-py"</span><span class="p">,</span>
     <span class="p">)</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
@@ -479,7 +479,7 @@
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.html#pydft_qmmm.potentials.pme_potential.HelPMEPyInterface">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">HelPMEPyInterface</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A mix-in for initializing and storing PME settings for a system.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A mix-in for initializing and storing PME settings for a system.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system which will be tied to the helPME-py</span>
@@ -493,7 +493,7 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        pme: The helPME-py PME object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">system</span><span class="p">:</span> <span class="n">System</span>
     <span class="n">pme_alpha</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
@@ -505,7 +505,7 @@
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform setup for the helPME-py PME object.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Perform setup for the helPME-py PME object."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pme</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
             <span class="mi">1</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pme_alpha</span><span class="p">,</span>
@@ -520,12 +520,12 @@
 <div class="viewcode-block" id="HelPMEPyInterface.update_box">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.html#pydft_qmmm.potentials.pme_potential.HelPMEPyInterface.update_box">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set the lattice vectors used by the helPME-py object.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Set the lattice vectors used by the helPME-py object.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of</span>
 <span class="sd">                the box containing the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pme</span><span class="o">.</span><span class="n">set_lattice_vectors</span><span class="p">(</span>
             <span class="o">*</span><span class="n">compute_lattice_constants</span><span class="p">(</span><span class="n">box</span><span class="p">),</span>
             <span class="n">helpme_py</span><span class="o">.</span><span class="n">LatticeType</span><span class="o">.</span><span class="n">XAligned</span><span class="p">,</span>
@@ -537,7 +537,7 @@
 <div class="viewcode-block" id="PMEElectronicPotential">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html#pydft_qmmm.potentials.pme_potential.PMEElectronicPotential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PMEElectronicPotential</span><span class="p">(</span><span class="n">ElectronicPotential</span><span class="p">,</span> <span class="n">HelPMEPyInterface</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Representation of a PME electrostatic potential on the electrons.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Representation of a PME electrostatic potential on the electrons.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system which will be tied to the helPME-py</span>
@@ -551,7 +551,7 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        pme: The helPME-py PME object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="PMEElectronicPotential.compute_potential">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.html#pydft_qmmm.potentials.pme_potential.PMEElectronicPotential.compute_potential">[docs]</a>
@@ -559,7 +559,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">coordinates</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the PME potential at arbitrary coordinates.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the PME potential at arbitrary coordinates.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            coordinates: An array of coordinates</span>
@@ -570,9 +570,9 @@
 <span class="sd">            An array of the PME potential</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;e^{-1}}`),</span>
 <span class="sd">            corresponding to the provided coordinates.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">potential</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">excluded</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;not subsystem III&quot;</span><span class="p">))</span>
+        <span class="n">excluded</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"not subsystem III"</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pme</span><span class="o">.</span><span class="n">compute_P_rec</span><span class="p">(</span>
             <span class="mi">0</span><span class="p">,</span>
             <span class="n">helpme_py</span><span class="o">.</span><span class="n">MatrixD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
@@ -597,7 +597,7 @@
 <div class="viewcode-block" id="PMENuclearPotential">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PMENuclearPotential</span><span class="p">(</span><span class="n">AtomicPotential</span><span class="p">,</span> <span class="n">HelPMEPyInterface</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Representation of a PME electrostatic potential on the nuclei.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Representation of a PME electrostatic potential on the nuclei.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system which will be tied to the helPME-py</span>
@@ -611,16 +611,16 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        pme: The helPME-py PME object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="PMENuclearPotential.compute_energy">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_energy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the system energy associated with the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the system energy associated with the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the potential.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">nuclear_charges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nuclear_charges</span><span class="p">()</span>
         <span class="n">potential</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_potential_and_derivs</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">potential</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">nuclear_charges</span><span class="p">))</span></div>
@@ -629,17 +629,17 @@
 <div class="viewcode-block" id="PMENuclearPotential.compute_forces">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_forces">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the forces on the system induced by the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the forces on the system induced by the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The forces</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
 <span class="sd">            on atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">nuclear_charges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nuclear_charges</span><span class="p">()</span>
         <span class="n">potential</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_potential_and_derivs</span><span class="p">()</span>
         <span class="n">nuclear_forces</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">potential</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">nuclear_charges</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">))</span>
+        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">))</span>
         <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">forces</span><span class="p">[</span><span class="n">nuclei</span><span class="p">]</span> <span class="o">=</span> <span class="n">nuclear_forces</span>
         <span class="k">return</span> <span class="n">forces</span></div>
@@ -648,12 +648,12 @@
 <div class="viewcode-block" id="PMENuclearPotential.compute_components">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_components">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the components of energy associated with the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the components of energy associated with the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)</span>
 <span class="sd">            of the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">components</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="n">components</span></div>
 
@@ -661,32 +661,34 @@
 <div class="viewcode-block" id="PMENuclearPotential.get_nuclear_charges">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.get_nuclear_charges">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_nuclear_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the nuclear charges of the Subsystem I atoms.</span>
+<span class="w">        </span><span class="sd">"""Get the nuclear charges of the Subsystem I atoms.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The integer nuclear charges of the Subsystem I atoms.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">))</span>
+<span class="sd">        """</span>
+        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">))</span>
         <span class="n">elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ELEMENT_TO_MASS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">nuclear_charges</span> <span class="o">=</span> <span class="p">[</span><span class="n">elements</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">atom</span><span class="p">])</span>
-                           <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">nuclei</span><span class="p">]</span>
+        <span class="n">nuclear_charges</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">elements</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">atom</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">nuclei</span>
+        <span class="p">]</span>
         <span class="k">return</span> <span class="n">nuclear_charges</span></div>
 
 
 <div class="viewcode-block" id="PMENuclearPotential.compute_potential_and_derivs">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMENuclearPotential.html#pydft_qmmm.potentials.pme_potential.PMENuclearPotential.compute_potential_and_derivs">[docs]</a>
-    <span class="nd">@system_cache</span><span class="p">(</span><span class="s2">&quot;subsystems&quot;</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">,</span> <span class="s2">&quot;charges&quot;</span><span class="p">)</span>
+    <span class="nd">@system_cache</span><span class="p">(</span><span class="s2">"subsystems"</span><span class="p">,</span> <span class="s2">"positions"</span><span class="p">,</span> <span class="s2">"charges"</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_potential_and_derivs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the PME potential and derivatives at the nuclei.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Calculate the PME potential and derivatives at the nuclei.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            An array of the PME potential</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;e^{-1}}`) and its derivatives</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;e^{-1}\;\mathring{A}^{-1}}`),</span>
 <span class="sd">            corresponding to the provided coordinates.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">))</span>
-        <span class="n">excluded</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;not subsystem III&quot;</span><span class="p">))</span>
+<span class="sd">        """</span>
+        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">))</span>
+        <span class="n">excluded</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"not subsystem III"</span><span class="p">))</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">nuclei</span><span class="p">]</span>
         <span class="n">potential</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pme</span><span class="o">.</span><span class="n">compute_P_rec</span><span class="p">(</span>
@@ -713,7 +715,7 @@
 <div class="viewcode-block" id="PMEExcludedPotential">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PMEExcludedPotential</span><span class="p">(</span><span class="n">PMENuclearPotential</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Representation of a PME electrostatic potential on excluded atoms.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Representation of a PME electrostatic potential on excluded atoms.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system which will be tied to the helPME-py</span>
@@ -727,17 +729,17 @@
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        pme: The helPME-py PME object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="PMEExcludedPotential.compute_energy">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.compute_energy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the system energy associated with the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the system energy associated with the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the potential.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">))</span>
+<span class="sd">        """</span>
+        <span class="n">nuclei</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">))</span>
         <span class="n">charges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">nuclei</span><span class="p">]</span>
         <span class="n">potential</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_potential_and_derivs</span><span class="p">()</span>
         <span class="k">return</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">potential</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">charges</span><span class="p">))</span></div>
@@ -746,13 +748,13 @@
 <div class="viewcode-block" id="PMEExcludedPotential.compute_forces">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.html#pydft_qmmm.potentials.pme_potential.PMEExcludedPotential.compute_forces">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the forces on the system induced by the potential.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the forces on the system induced by the potential.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The forces</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
 <span class="sd">            on atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">forces</span></div>
 </div>

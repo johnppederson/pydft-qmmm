@@ -35,5 +35,5 @@ pydft\_qmmm.plugins.settle.SETTLE
    .. automethod:: SETTLE.modify
    
    
-    
+   
    

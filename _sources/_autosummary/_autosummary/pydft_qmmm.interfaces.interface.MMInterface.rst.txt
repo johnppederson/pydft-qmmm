@@ -70,5 +70,5 @@ pydft\_qmmm.interfaces.interface.MMInterface
    .. automethod:: MMInterface.zero_intramolecular
    
    
-    
+   
    

@@ -15,7 +15,7 @@ pydft\_qmmm.utils.misc
       residue_partition
       wrap_positions
    
-   
+
    
    
    
@@ -31,5 +31,5 @@ pydft\_qmmm.utils.misc
    
    .. autofunction:: pydft_qmmm.utils.misc.wrap_positions
    
-    
+   
    

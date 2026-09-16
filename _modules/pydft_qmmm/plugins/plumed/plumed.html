@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.plugins.plumed.plumed - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,11 +435,11 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.plugins.plumed.plumed</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A plugin interface to the Plumed enhanced sampling suite.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""A plugin interface to the Plumed enhanced sampling suite.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Plumed&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Plumed"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
@@ -457,13 +457,13 @@
 <div class="viewcode-block" id="Plumed">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.plugins.plumed.Plumed.html#pydft_qmmm.plugins.plumed.Plumed">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Plumed</span><span class="p">(</span><span class="n">CalculatorPlugin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply enhanced sampling biases to energy and force calculations.</span>
+<span class="w">    </span><span class="sd">"""Apply enhanced sampling biases to energy and force calculations.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input_commands: A multi-line string containing all pertinent</span>
 <span class="sd">            instructions for Plumed.</span>
 <span class="sd">        log_file: A directory for recording output from Plumed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -474,14 +474,14 @@
             <span class="kn">import</span><span class="w"> </span><span class="nn">plumed</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DependencyImportError</span><span class="p">(</span>
-                <span class="s2">&quot;plumed&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;performing enhanced sampling&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;https://github.com/plumed/plumed2&quot;</span><span class="p">,</span>
+                <span class="s2">"plumed"</span><span class="p">,</span>
+                <span class="s2">"performing enhanced sampling"</span><span class="p">,</span>
+                <span class="s2">"https://github.com/plumed/plumed2"</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_commands</span> <span class="o">=</span> <span class="n">input_commands</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log_file</span> <span class="o">=</span> <span class="n">log_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span> <span class="o">=</span> <span class="n">plumed</span><span class="o">.</span><span class="n">Plumed</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setMDEngine&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setMDEngine"</span><span class="p">,</span> <span class="s2">"python"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="Plumed.modify">
@@ -490,30 +490,30 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">calculator</span><span class="p">:</span> <span class="n">Calculator</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the functionality of a calculator and set up Plumed.</span>
+<span class="w">        </span><span class="sd">"""Modify the functionality of a calculator and set up Plumed.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            calculator: The calculator whose functionality will be</span>
 <span class="sd">                modified by the plugin.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span> <span class="o">=</span> <span class="n">calculator</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setNatoms&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setMDLengthUnits&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setMDTimeUnits&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setMDMassUnits&quot;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setTimestep&quot;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setKbT&quot;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setLogFile&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_file</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_commands</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;readInputLine&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setNatoms"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setMDLengthUnits"</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setMDTimeUnits"</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setMDMassUnits"</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setTimestep"</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setKbT"</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setLogFile"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"init"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_commands</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"readInputLine"</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_modify_calculate</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">calculate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Results</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Results</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the calculate routine to perform biasing afterward.</span>
+<span class="w">        </span><span class="sd">"""Modify the calculate routine to perform biasing afterward.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            calculate: The calculation routine to modify.</span>
@@ -522,30 +522,30 @@
 <span class="sd">            The modified calculation routine which implements Plumed</span>
 <span class="sd">            enhanced sampling after performing the unbiased calculation</span>
 <span class="sd">            routine.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
                 <span class="n">return_forces</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="n">return_components</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Results</span><span class="p">:</span>
             <span class="n">results</span> <span class="o">=</span> <span class="n">calculate</span><span class="p">(</span><span class="n">return_forces</span><span class="p">,</span> <span class="n">return_components</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setStep&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setStep"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setBox&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setPositions&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setEnergy&quot;</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setMasses&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setBox"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setPositions"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setEnergy"</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setMasses"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">masses</span><span class="p">)</span>
             <span class="n">biased_forces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setForces&quot;</span><span class="p">,</span> <span class="n">biased_forces</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setForces"</span><span class="p">,</span> <span class="n">biased_forces</span><span class="p">)</span>
             <span class="n">virial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;setVirial&quot;</span><span class="p">,</span> <span class="n">virial</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;prepareCalc&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;performCalc&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"setVirial"</span><span class="p">,</span> <span class="n">virial</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"prepareCalc"</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"performCalc"</span><span class="p">)</span>
             <span class="n">biased_energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">&quot;getBias&quot;</span><span class="p">,</span> <span class="n">biased_energy</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plumed</span><span class="o">.</span><span class="n">cmd</span><span class="p">(</span><span class="s2">"getBias"</span><span class="p">,</span> <span class="n">biased_energy</span><span class="p">)</span>
             <span class="n">results</span><span class="o">.</span><span class="n">energy</span> <span class="o">+=</span> <span class="n">biased_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">results</span><span class="o">.</span><span class="n">forces</span> <span class="o">+=</span> <span class="n">biased_forces</span>
             <span class="n">results</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="s2">&quot;Plumed Bias Energy&quot;</span><span class="p">:</span> <span class="n">biased_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
+                <span class="p">{</span><span class="s2">"Plumed Bias Energy"</span><span class="p">:</span> <span class="n">biased_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">]},</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">results</span>
         <span class="k">return</span> <span class="n">inner</span></div>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.interfaces.openmm.openmm_interface - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,17 +435,17 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.interfaces.openmm.openmm_interface</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;The OpenMM software interface and potential.</span>
+<span></span><span class="sd">"""The OpenMM software interface and potential.</span>
 
 <span class="sd">This module contains the software interface for storing and manipulating</span>
 <span class="sd">OpenMM data types and the potential using OpenMM to calculate energies</span>
 <span class="sd">and forces.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;OpenMMInterface&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;OpenMMPotential&quot;</span><span class="p">,</span>
+    <span class="s2">"OpenMMInterface"</span><span class="p">,</span>
+    <span class="s2">"OpenMMPotential"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
@@ -473,7 +473,7 @@
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">OpenMMInterface</span><span class="p">(</span><span class="n">MMInterface</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A mix-in for storing and manipulating OpenMM data types.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A mix-in for storing and manipulating OpenMM data types.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system that will inform the interface to the</span>
@@ -494,7 +494,7 @@
 <span class="sd">            whose masked forces and energy will be included.</span>
 <span class="sd">        aux_forces_group: A force group for the auxiliary OpenMM Context</span>
 <span class="sd">            whose masked forces will be included.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">base_context</span><span class="p">:</span> <span class="n">openmm</span><span class="o">.</span><span class="n">Context</span>
     <span class="n">aux_context</span><span class="p">:</span> <span class="n">openmm</span><span class="o">.</span><span class="n">Context</span>
     <span class="n">base_force_mask</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
@@ -504,7 +504,7 @@
     <span class="n">aux_forces_group</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">set</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Register update methods with relevant system attributes&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Register update methods with relevant system attributes"""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="o">.</span><span class="n">register_notifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_charges</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">register_notifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_positions</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">register_notifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_box</span><span class="p">)</span>
@@ -513,12 +513,12 @@
 <div class="viewcode-block" id="OpenMMInterface.zero_intramolecular">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intramolecular">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">zero_intramolecular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove intra-molecular interactions for the specified atoms.</span>
+<span class="w">        </span><span class="sd">"""Remove intra-molecular interactions for the specified atoms.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atoms: The indices of atoms from which to remove</span>
 <span class="sd">                intra-molecular interactions.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">base_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span>
         <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_exclude_intramolecular</span><span class="p">(</span><span class="n">base_system</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)</span>
         <span class="n">base_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getState</span><span class="p">(</span><span class="n">getPositions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -530,11 +530,11 @@
 <div class="viewcode-block" id="OpenMMInterface.zero_forces">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_forces">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">zero_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Zero forces on the specified atoms.</span>
+<span class="w">        </span><span class="sd">"""Zero forces on the specified atoms.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atoms: The indices of atoms for which to zero forces.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_force_mask</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -549,7 +549,7 @@
             <span class="n">const</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">inclusion</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add Coulomb interaction for the specified atoms.</span>
+<span class="w">        </span><span class="sd">"""Add Coulomb interaction for the specified atoms.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atoms: The indices of atoms for which to add a Coulomb</span>
@@ -559,7 +559,7 @@
 <span class="sd">            inclusion: An Nx3 array with values that will be applied to</span>
 <span class="sd">                the forces of the Coulomb interaction through</span>
 <span class="sd">                element-wise multiplication.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">base_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span>
         <span class="n">forces</span> <span class="o">=</span> <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_real_electrostatic</span><span class="p">(</span><span class="n">base_system</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">const</span><span class="p">)</span>
         <span class="n">aux_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aux_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span>
@@ -586,7 +586,7 @@
             <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
             <span class="n">inclusion</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add non-electrostatic interactions for the specified atoms.</span>
+<span class="w">        </span><span class="sd">"""Add non-electrostatic interactions for the specified atoms.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atoms: The indices of atoms for which to add</span>
@@ -594,7 +594,7 @@
 <span class="sd">            inclusion: An Nx3 array with values that will be applied to</span>
 <span class="sd">                the forces of the non-electrostatic interaction through</span>
 <span class="sd">                element-wise multiplication.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">base_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span>
         <span class="n">forces</span> <span class="o">=</span> <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_non_electrostatic</span><span class="p">(</span><span class="n">base_system</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)</span>
         <span class="n">aux_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">aux_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span>
@@ -617,11 +617,11 @@
 <div class="viewcode-block" id="OpenMMInterface.zero_charges">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_charges">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">zero_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove charges from the specified atoms.</span>
+<span class="w">        </span><span class="sd">"""Remove charges from the specified atoms.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atoms: The indices of atoms from which to remove charges.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">base_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span>
         <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_exclude_electrostatic</span><span class="p">(</span><span class="n">base_system</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)</span>
         <span class="n">base_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getState</span><span class="p">(</span><span class="n">getPositions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -633,12 +633,12 @@
 <div class="viewcode-block" id="OpenMMInterface.zero_intermolecular">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.zero_intermolecular">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">zero_intermolecular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove inter-molecular interactions for the specified atoms.</span>
+<span class="w">        </span><span class="sd">"""Remove inter-molecular interactions for the specified atoms.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            atoms: The indices of atoms from which to remove</span>
 <span class="sd">                inter-molecular interactions.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">base_system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span>
         <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_exclude_intermolecular</span><span class="p">(</span><span class="n">base_system</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)</span>
         <span class="n">base_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getState</span><span class="p">(</span><span class="n">getPositions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -650,14 +650,14 @@
 <div class="viewcode-block" id="OpenMMInterface.get_pme_parameters">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.get_pme_parameters">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_pme_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get the parameters used for PME summation.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Get the parameters used for PME summation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The Gaussian width parameter in Ewald summation</span>
 <span class="sd">            (:math:`\mathrm{\mathring(A)^{-1}}`), the number of grid</span>
 <span class="sd">            points to include along each lattice edge, and the order of</span>
 <span class="sd">            splines used on the FFT grid.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">nonbonded_forces</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">force</span> <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getForces</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">NonbondedForce</span><span class="p">)</span>
@@ -667,7 +667,7 @@
             <span class="k">if</span> <span class="n">force</span><span class="o">.</span><span class="n">getNonbondedMethod</span><span class="p">()</span> <span class="o">==</span> <span class="n">openmm</span><span class="o">.</span><span class="n">NonbondedForce</span><span class="o">.</span><span class="n">PME</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pme_forces</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pme_forces</span><span class="p">)</span><span class="si">}</span><span class="s2"> OpenMM Forces have PME params&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pme_forces</span><span class="p">)</span><span class="si">}</span><span class="s2"> OpenMM Forces have PME params"</span><span class="p">)</span>
         <span class="n">pme_alpha</span><span class="p">,</span> <span class="o">*</span><span class="n">pme_gridnumber</span> <span class="o">=</span> <span class="n">pme_forces</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getPMEParametersInContext</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="p">,</span>
         <span class="p">)</span>
@@ -677,11 +677,11 @@
 <div class="viewcode-block" id="OpenMMInterface.update_charges">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_charges">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_charges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">charges</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the atomic partial charges used by OpenMM.</span>
+<span class="w">        </span><span class="sd">"""Set the atomic partial charges used by OpenMM.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            charges: The partial charges (:math:`e`) of the atoms.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">nonbonded_forces</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">force</span> <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getForces</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">NonbondedForce</span><span class="p">)</span>
@@ -697,7 +697,7 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">CustomNonbondedForce</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="n">custom_nonbonded_forces</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;nn&quot;</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">getEnergyFunction</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">"nn"</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">getEnergyFunction</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">charge</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">charges</span><span class="p">):</span>
                     <span class="n">_</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">getParticleParameters</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                     <span class="n">force</span><span class="o">.</span><span class="n">setParticleParameters</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">[</span><span class="n">charge</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span>
@@ -707,12 +707,12 @@
 <div class="viewcode-block" id="OpenMMInterface.update_positions">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_positions">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set the atomic positions used by OpenMM.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Set the atomic positions used by OpenMM.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            positions: The positions (:math:`\mathrm{\mathring{A}}`) of</span>
 <span class="sd">                the atoms within the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">omm_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">openmm</span><span class="o">.</span><span class="n">Vec3</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="n">openmm</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">angstrom</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">setPositions</span><span class="p">(</span><span class="n">omm_pos</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">aux_context</span><span class="o">.</span><span class="n">setPositions</span><span class="p">(</span><span class="n">omm_pos</span><span class="p">)</span></div>
@@ -721,12 +721,12 @@
 <div class="viewcode-block" id="OpenMMInterface.update_box">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMInterface.update_box">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set the lattice vectors used by OpenMM.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Set the lattice vectors used by OpenMM.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of</span>
 <span class="sd">                the box containing the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">pass</span></div>
 
 
@@ -736,17 +736,17 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">subsystems</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">object_</span><span class="p">]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adjust embedding-related values by subsystem membership.</span>
+<span class="w">        </span><span class="sd">"""Adjust embedding-related values by subsystem membership.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            subsystems: The subsystems of which the atoms are a part.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">custom_nonbonded_forces</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">force</span> <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aux_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getForces</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">CustomNonbondedForce</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="n">custom_nonbonded_forces</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;nn*qq/r&quot;</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">getEnergyFunction</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">"nn*qq/r"</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">getEnergyFunction</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subsystems</span><span class="p">):</span>
                     <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">getParticleParameters</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">Subsystem</span><span class="o">.</span><span class="n">III</span><span class="p">:</span>
@@ -759,7 +759,7 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">openmm</span><span class="o">.</span><span class="n">CustomBondForce</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="n">custom_bond_forces</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;n*q/r&quot;</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">getEnergyFunction</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">"n*q/r"</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">getEnergyFunction</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">force</span><span class="o">.</span><span class="n">getNumBonds</span><span class="p">()):</span>
                     <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">param</span> <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">getBondParameters</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
                     <span class="n">q</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">param</span>
@@ -776,7 +776,7 @@
 <div class="viewcode-block" id="OpenMMPotential">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">OpenMMPotential</span><span class="p">(</span><span class="n">OpenMMInterface</span><span class="p">,</span> <span class="n">AtomicPotential</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A potential wrapping OpenMM functionality.</span>
+<span class="w">    </span><span class="sd">"""A potential wrapping OpenMM functionality.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        system: The system that will inform the interface to the</span>
@@ -797,16 +797,16 @@
 <span class="sd">            whose masked forces and energy will be included.</span>
 <span class="sd">        aux_forces_group: A force group for the auxiliary OpenMM Context</span>
 <span class="sd">            whose masked forces will be included.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="OpenMMPotential.compute_energy">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.compute_energy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the energy of the system using OpenMM.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the energy of the system using OpenMM.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) of the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">base_state</span> <span class="o">=</span> <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_generate_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="p">)</span>
         <span class="n">energy</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">base_state</span><span class="o">.</span><span class="n">getPotentialEnergy</span><span class="p">()</span>
@@ -826,13 +826,13 @@
 <div class="viewcode-block" id="OpenMMPotential.compute_forces">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.compute_forces">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the forces on the system using OpenMM.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the forces on the system using OpenMM.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The forces</span>
 <span class="sd">            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) acting</span>
 <span class="sd">            on atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">base_state</span> <span class="o">=</span> <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_generate_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="p">)</span>
         <span class="n">forces</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">base_force_mask</span> <span class="o">*</span> <span class="n">base_state</span><span class="o">.</span><span class="n">getForces</span><span class="p">(</span><span class="n">asNumpy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -864,18 +864,18 @@
 <div class="viewcode-block" id="OpenMMPotential.compute_components">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.html#pydft_qmmm.interfaces.openmm.openmm_interface.OpenMMPotential.compute_components">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the components of energy using OpenMM.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""Compute the components of energy using OpenMM.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The components of the energy (:math:`\mathrm{kJ\;mol^{-1}}`)</span>
 <span class="sd">            of the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getNumForces</span><span class="p">()):</span>
             <span class="n">key</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getForce</span><span class="p">(</span><span class="n">force</span><span class="p">),</span>
-            <span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Force&quot;</span><span class="p">,</span> <span class="s2">&quot;Energy&quot;</span><span class="p">)</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;Base &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;[A-Z][a-z]*&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+            <span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"Force"</span><span class="p">,</span> <span class="s2">"Energy"</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">"Base "</span> <span class="o">+</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"[A-Z][a-z]*"</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_generate_state</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="p">,</span>
                 <span class="p">{</span><span class="n">force</span><span class="p">},</span>
@@ -884,8 +884,8 @@
         <span class="k">for</span> <span class="n">force</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">aux_energy_group</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">aux_context</span><span class="o">.</span><span class="n">getSystem</span><span class="p">()</span><span class="o">.</span><span class="n">getForce</span><span class="p">(</span><span class="n">force</span><span class="p">),</span>
-            <span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Force&quot;</span><span class="p">,</span> <span class="s2">&quot;Energy&quot;</span><span class="p">)</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;Correction &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;[A-Z][a-z]*&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+            <span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"Force"</span><span class="p">,</span> <span class="s2">"Energy"</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">"Correction "</span> <span class="o">+</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"[A-Z][a-z]*"</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">openmm_utils</span><span class="o">.</span><span class="n">_generate_state</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">aux_context</span><span class="p">,</span>
                 <span class="p">{</span><span class="n">force</span><span class="p">},</span>

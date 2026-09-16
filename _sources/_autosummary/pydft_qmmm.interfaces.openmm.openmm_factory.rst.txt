@@ -10,11 +10,11 @@ pydft\_qmmm.interfaces.openmm.openmm\_factory
    
       openmm_interface_factory
    
-   
+
    
    
    
    .. autofunction:: pydft_qmmm.interfaces.openmm.openmm_factory.openmm_interface_factory
    
-    
+   
    

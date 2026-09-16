@@ -10,11 +10,11 @@ pydft\_qmmm.plugins.plugin\_manager
    
       get_plugins
    
-   
+
    
    
    
    .. autofunction:: pydft_qmmm.plugins.plugin_manager.get_plugins
    
-    
+   
    

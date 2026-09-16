@@ -42,5 +42,5 @@ pydft\_qmmm.plugins.centroid\_partition.CentroidPartition
    .. automethod:: CentroidPartition.modify_composite
    
    
-    
+   
    

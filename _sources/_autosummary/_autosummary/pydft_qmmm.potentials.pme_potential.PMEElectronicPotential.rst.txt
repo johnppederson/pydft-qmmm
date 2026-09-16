@@ -35,5 +35,5 @@ pydft\_qmmm.potentials.pme\_potential.PMEElectronicPotential
    .. automethod:: PMEElectronicPotential.update_box
    
    
-    
+   
    

@@ -35,5 +35,5 @@ pydft\_qmmm.plugins.rigid.Stationary
    .. automethod:: Stationary.modify
    
    
-    
+   
    

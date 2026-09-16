@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.plugins.atom_partition.atom_partition - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,11 +435,11 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.plugins.atom_partition.atom_partition</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;A plugin for performing atom-by-atom system partitioning.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""A plugin for performing atom-by-atom system partitioning.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AtomPartition&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"AtomPartition"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
@@ -456,7 +456,7 @@
 <div class="viewcode-block" id="AtomPartition">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html#pydft_qmmm.plugins.atom_partition.AtomPartition">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">AtomPartition</span><span class="p">(</span><span class="n">PartitionPlugin</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Partition subsystems atom-by-atom.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Partition subsystems atom-by-atom.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        query: The VMD-like query representing the group of atoms whose</span>
@@ -464,7 +464,7 @@
 <span class="sd">            basis.</span>
 <span class="sd">        cutoff: The cutoff distance (:math:`\mathrm{\mathring{A}}`) to</span>
 <span class="sd">            apply in the partition.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -478,7 +478,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">calculate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Results</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">],</span> <span class="n">Results</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Modify the calculate routine to perform atom-wise partitioning.</span>
+<span class="w">        </span><span class="sd">"""Modify the calculate routine to perform atom-wise partitioning.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            calculate: The calculation routine to modify.</span>
@@ -486,7 +486,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The modified calculation routine which implements atom-wise</span>
 <span class="sd">            partitioning before calculation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span>
                 <span class="n">return_forces</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="n">return_components</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -499,9 +499,9 @@
 <div class="viewcode-block" id="AtomPartition.generate_partition">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.plugins.atom_partition.AtomPartition.html#pydft_qmmm.plugins.atom_partition.AtomPartition.generate_partition">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">generate_partition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the atom-wise system partitioning.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">qm_region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Perform the atom-wise system partitioning.</span>
+<span class="sd">        """</span>
+        <span class="n">qm_region</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">)</span>
         <span class="n">qm_centroid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="nb">sorted</span><span class="p">(</span><span class="n">qm_region</span><span class="p">),</span> <span class="p">:],</span>
             <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>

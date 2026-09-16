@@ -4,9 +4,9 @@ pydft\_qmmm.plugins.firstatom\_partition
 .. automodule:: pydft_qmmm.plugins.firstatom_partition
 
    
+
    
    
-    
    
    .. rubric:: Classes
 

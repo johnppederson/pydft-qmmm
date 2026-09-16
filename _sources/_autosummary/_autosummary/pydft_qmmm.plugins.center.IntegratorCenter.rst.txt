@@ -28,5 +28,5 @@ pydft\_qmmm.plugins.center.IntegratorCenter
    .. automethod:: IntegratorCenter.modify
    
    
-    
+   
    

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.utils.logging - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,16 +435,15 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.utils.logging</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Utilities for logging energies and positions and related types.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
+<span></span><span class="sd">"""Utilities for logging energies and positions and related types.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;make_csv_handler&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;make_log_handler&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;make_dcd_handler&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Loggable&quot;</span><span class="p">,</span>
+    <span class="s2">"make_csv_handler"</span><span class="p">,</span>
+    <span class="s2">"make_log_handler"</span><span class="p">,</span>
+    <span class="s2">"make_dcd_handler"</span><span class="p">,</span>
+    <span class="s2">"Loggable"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">array</span>
@@ -469,11 +468,11 @@
 <div class="viewcode-block" id="FrameRecord">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.FrameRecord.html#pydft_qmmm.utils.logging.FrameRecord">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">FrameRecord</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A log record with a frame data.</span>
+<span class="w">    </span><span class="sd">"""A log record with a frame data.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        frame: The current frame of a simulation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">frame</span><span class="p">:</span> <span class="nb">int</span></div>
 
 
@@ -481,11 +480,11 @@
 <div class="viewcode-block" id="EnergyRecord">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.EnergyRecord.html#pydft_qmmm.utils.logging.EnergyRecord">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">EnergyRecord</span><span class="p">(</span><span class="n">FrameRecord</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A log record with an energy data.</span>
+<span class="w">    </span><span class="sd">"""A log record with an energy data.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        energy: The current energy of a simulation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">energy</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></div>
 
 
@@ -493,12 +492,12 @@
 <div class="viewcode-block" id="PositionRecord">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PositionRecord.html#pydft_qmmm.utils.logging.PositionRecord">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PositionRecord</span><span class="p">(</span><span class="n">FrameRecord</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A log record with an position data.</span>
+<span class="w">    </span><span class="sd">"""A log record with an position data.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        position: The current positions of a simulation.</span>
 <span class="sd">        box: The current box vectors of a simulation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">positions</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
     <span class="n">box</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span></div>
 
@@ -507,14 +506,14 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_flatten_dict</span><span class="p">(</span>
         <span class="n">dictionary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a &#39;flat&#39; version of a nested dictionary.</span>
+<span class="w">    </span><span class="sd">"""Create a 'flat' version of a nested dictionary.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        dictionary: The nested dictionary to flatten.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A flattened version of the nested dictionary.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">flat</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">flat</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
@@ -526,12 +525,12 @@
 <div class="viewcode-block" id="PyDFTQMMMIntervalFilter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMIntervalFilter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging filter that grabs logs at a given interval.</span>
+<span class="w">    </span><span class="sd">"""Logging filter that grabs logs at a given interval.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        interval: The interval at which to write logs in terms of</span>
 <span class="sd">            simulation steps.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
@@ -539,7 +538,7 @@
 <div class="viewcode-block" id="PyDFTQMMMIntervalFilter.filter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMIntervalFilter.filter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine whether or not to log the record.</span>
+<span class="w">        </span><span class="sd">"""Determine whether or not to log the record.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            record: The record to log if the simulation frame is</span>
@@ -547,8 +546,8 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Whether or not to log the record.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">):</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">"frame"</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">frame</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span></div>
 </div>
@@ -558,13 +557,13 @@
 <div class="viewcode-block" id="PyDFTQMMMEnergyFilter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMEnergyFilter</span><span class="p">(</span><span class="n">PyDFTQMMMIntervalFilter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging filter that grabs logs with an energy attribute.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Logging filter that grabs logs with an energy attribute.</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="PyDFTQMMMEnergyFilter.filter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMEnergyFilter.filter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine whether or not to log the record.</span>
+<span class="w">        </span><span class="sd">"""Determine whether or not to log the record.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            record: The record to log if the simulation frame is</span>
@@ -573,10 +572,10 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Whether or not to log the record.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">record</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">"energy"</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 </div>
@@ -586,13 +585,13 @@
 <div class="viewcode-block" id="PyDFTQMMMPositionFilter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMPositionFilter</span><span class="p">(</span><span class="n">PyDFTQMMMIntervalFilter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging filter that grab logs with position data.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Logging filter that grab logs with position data.</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="PyDFTQMMMPositionFilter.filter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.html#pydft_qmmm.utils.logging.PyDFTQMMMPositionFilter.filter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine whether or not to log the record.</span>
+<span class="w">        </span><span class="sd">"""Determine whether or not to log the record.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            record: The record to log if the simulation frame is</span>
@@ -601,12 +600,12 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Whether or not to log the record.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">record</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">"positions"</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;box&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">"box"</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">check_array</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">positions</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span>
@@ -618,31 +617,33 @@
 <div class="viewcode-block" id="PyDFTQMMMCSVFormatter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMCSVFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging formatter that formats energy outputs to CSV files.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Logging formatter that formats energy outputs to CSV files.</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="PyDFTQMMMCSVFormatter.format">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMCSVFormatter.format">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format the log record data for output to a CSV file.</span>
+<span class="w">        </span><span class="sd">"""Format the log record data for output to a CSV file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            record: The log record to format.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The message to write to a CSV file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">record</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EnergyRecord</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
         <span class="n">flat_components</span> <span class="o">=</span> <span class="n">_flatten_dict</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
-        <span class="n">round_</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-        <span class="k">if</span> <span class="p">((</span><span class="n">formatting</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\.(\d+)f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">_fmt</span><span class="p">))</span>
-                <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">round_</span> <span class="o">=</span> <span class="s2">"3"</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">formatting</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\.(\d+)f"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">_fmt</span><span class="p">))</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
             <span class="n">round_</span> <span class="o">=</span> <span class="n">formatting</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">round_</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">flat_components</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
-        <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">round_</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">flat_components</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">frame</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">flat_components</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">message</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">flat_components</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">message</span>
         <span class="k">return</span> <span class="n">message</span></div>
 </div>
 
@@ -651,8 +652,8 @@
 <div class="viewcode-block" id="PyDFTQMMMLogFormatter">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter.html#pydft_qmmm.utils.logging.PyDFTQMMMLogFormatter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PyDFTQMMMLogFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Logging formatter that formats energy outputs to log files.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Logging formatter that formats energy outputs to log files.</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_unwrap_energy</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -660,7 +661,7 @@
             <span class="n">spaces</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
             <span class="n">cont</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a log file string from an energy dictionary.</span>
+<span class="w">        </span><span class="sd">"""Generate a log file string from an energy dictionary.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            energy: The energy component dictionary.</span>
@@ -669,8 +670,8 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The tree-like string of energies to write to the log file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="n">message</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unwrap_energy</span><span class="p">(</span>
@@ -678,17 +679,19 @@
                     <span class="n">cont</span> <span class="o">+</span> <span class="p">[</span><span class="n">spaces</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">energy</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">else</span> <span class="n">cont</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">round_</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
-                <span class="k">if</span> <span class="p">((</span><span class="n">formatting</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\.(\d+)f&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">_fmt</span><span class="p">))</span>
-                        <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="n">round_</span> <span class="o">=</span> <span class="s2">"3"</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">formatting</span> <span class="o">:=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\.(\d+)f"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_style</span><span class="o">.</span><span class="n">_fmt</span><span class="p">))</span>
+                    <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">):</span>
                     <span class="n">round_</span> <span class="o">=</span> <span class="n">formatting</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">round_</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> kJ/mol</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s2">.</span><span class="si">{</span><span class="n">round_</span><span class="si">}</span><span class="s2">f</span><span class="si">}</span><span class="s2"> kJ/mol</span><span class="se">\n</span><span class="s2">"</span>
                 <span class="k">if</span> <span class="n">spaces</span><span class="p">:</span>
-                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                        <span class="s2">&quot;| &quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cont</span> <span class="k">else</span> <span class="s2">&quot;  &quot;</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="s2">"| "</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cont</span> <span class="k">else</span> <span class="s2">"  "</span>
                         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">spaces</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                    <span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;|_&quot;</span> <span class="o">+</span> <span class="n">key</span>
-                <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2"> &gt;</span><span class="si">{</span><span class="mi">72</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span> <span class="o">+</span> <span class="s2">"|_"</span> <span class="o">+</span> <span class="n">key</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2"> &gt;</span><span class="si">{</span><span class="mi">72</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}}</span><span class="s2">"</span>
         <span class="k">return</span> <span class="n">message</span>
 
 <div class="viewcode-block" id="PyDFTQMMMLogFormatter.format">
@@ -699,19 +702,19 @@
             <span class="n">spaces</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
             <span class="n">cont</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Format the log record data for output to a log file.</span>
+<span class="w">        </span><span class="sd">"""Format the log record data for output to a log file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            record: The log record to format.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The message to write to a log file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">record</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">EnergyRecord</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">record</span><span class="o">.</span><span class="n">frame</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; PyDFT-QMMM Logger &#39;</span><span class="si">:</span><span class="s2">=^72</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39; Frame &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">0&gt;6</span><span class="si">}</span><span class="s1">&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39; &#39;</span><span class="si">:</span><span class="s2">-^72</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">' PyDFT-QMMM Logger '</span><span class="si">:</span><span class="s2">=^72</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">' Frame '</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">frame</span><span class="si">:</span><span class="s1">0&gt;6</span><span class="si">}</span><span class="s1">'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">' '</span><span class="si">:</span><span class="s2">-^72</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
         <span class="n">message</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unwrap_energy</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">message</span></div>
 </div>
@@ -721,7 +724,7 @@
 <div class="viewcode-block" id="DCDHandler">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DCDHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handler for writing position data to a DCD file.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Handler for writing position data to a DCD file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename: The path of the DCD file.</span>
@@ -729,14 +732,14 @@
 <span class="sd">            of simulation steps.</span>
 <span class="sd">        timestep: The timestep (:math:`\mathrm{fs}`) of the simulation.</span>
 <span class="sd">        mode: The mode in which to access the DCD file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">,</span>
             <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
             <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;w+b&quot;</span><span class="p">,</span>
+            <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"w+b"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
@@ -744,35 +747,35 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_build_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the header to the DCD file.</span>
+<span class="w">        </span><span class="sd">"""Generate the header to the DCD file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            system_size: The number of particles in the system.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The header of the DCD file in binary format.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">header</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
-            <span class="s2">&quot;&lt;i4c9if&quot;</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;O&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+            <span class="s2">"&lt;i4c9if"</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"C"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"O"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"R"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"D"</span><span class="p">,</span>
             <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">interval</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
-            <span class="s2">&quot;&lt;13i&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span>
+            <span class="s2">"&lt;13i"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span>
             <span class="mi">84</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;80s&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;Created by PyDFT-QMMM&quot;</span><span class="p">)</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;80s&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;Created now&quot;</span><span class="p">)</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;4i&quot;</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">system_size</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">"&lt;80s"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"Created by PyDFT-QMMM"</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">"&lt;80s"</span><span class="p">,</span> <span class="sa">b</span><span class="s2">"Created now"</span><span class="p">)</span>
+        <span class="n">header</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">"&lt;4i"</span><span class="p">,</span> <span class="mi">164</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">system_size</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">header</span>
 
 <div class="viewcode-block" id="DCDHandler.emit">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.emit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">LogRecord</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write a record to a DCD file.</span>
+<span class="w">        </span><span class="sd">"""Write a record to a DCD file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            record: The record to write to a DCD file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">record</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">PositionRecord</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
@@ -785,15 +788,15 @@
                 <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_header</span><span class="p">(</span><span class="n">system_size</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">"&lt;i"</span><span class="p">,</span> <span class="n">frame</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">interval</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">"&lt;i"</span><span class="p">,</span> <span class="n">frame</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_END</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i6di&quot;</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="mi">48</span><span class="p">))</span>
-            <span class="n">size</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&quot;&lt;i&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">system_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">"&lt;i6di"</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="mi">48</span><span class="p">))</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">"&lt;i"</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">system_size</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-                <span class="n">coordinate</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">))</span>
+                <span class="n">coordinate</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"f"</span><span class="p">,</span> <span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">))</span>
                 <span class="n">coordinate</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
@@ -806,7 +809,7 @@
 <div class="viewcode-block" id="DCDHandler.close">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.DCDHandler.html#pydft_qmmm.utils.logging.DCDHandler.close">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the DCD file stream.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Close the DCD file stream."""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
@@ -827,7 +830,7 @@
         <span class="n">formatter</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">,</span>
         <span class="n">filter_</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">Filter</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a handler for logging to files.</span>
+<span class="w">    </span><span class="sd">"""Create a handler for logging to files.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_directory: A directory where records are written.</span>
@@ -837,8 +840,8 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The file handler applying the specified filters and formatters.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">outfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">&quot;pydft_qmmm&quot;</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="s2">"pydft_qmmm"</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">)</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
     <span class="n">handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">filter_</span><span class="p">)</span>
     <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
@@ -853,7 +856,7 @@
         <span class="n">decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
         <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a handler for logging to CSV files.</span>
+<span class="w">    </span><span class="sd">"""Create a handler for logging to CSV files.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_directory: A directory where records are written.</span>
@@ -864,11 +867,11 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A CSV file handler.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">make_file_handler</span><span class="p">(</span>
         <span class="n">output_directory</span><span class="p">,</span>
-        <span class="s2">&quot;.csv&quot;</span><span class="p">,</span>
-        <span class="n">PyDFTQMMMCSVFormatter</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%(message).</span><span class="si">{</span><span class="n">decimal_places</span><span class="si">}</span><span class="s2">f&quot;</span><span class="p">),</span>
+        <span class="s2">".csv"</span><span class="p">,</span>
+        <span class="n">PyDFTQMMMCSVFormatter</span><span class="p">(</span><span class="sa">f</span><span class="s2">"%(message).</span><span class="si">{</span><span class="n">decimal_places</span><span class="si">}</span><span class="s2">f"</span><span class="p">),</span>
         <span class="n">PyDFTQMMMEnergyFilter</span><span class="p">(</span><span class="n">interval</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">handler</span></div>
@@ -882,7 +885,7 @@
         <span class="n">decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
         <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a handler for logging to log files.</span>
+<span class="w">    </span><span class="sd">"""Create a handler for logging to log files.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_directory: A directory where records are written.</span>
@@ -893,11 +896,11 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A log file handler.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">make_file_handler</span><span class="p">(</span>
         <span class="n">output_directory</span><span class="p">,</span>
-        <span class="s2">&quot;.log&quot;</span><span class="p">,</span>
-        <span class="n">PyDFTQMMMLogFormatter</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;%(message).</span><span class="si">{</span><span class="n">decimal_places</span><span class="si">}</span><span class="s2">f&quot;</span><span class="p">),</span>
+        <span class="s2">".log"</span><span class="p">,</span>
+        <span class="n">PyDFTQMMMLogFormatter</span><span class="p">(</span><span class="sa">f</span><span class="s2">"%(message).</span><span class="si">{</span><span class="n">decimal_places</span><span class="si">}</span><span class="s2">f"</span><span class="p">),</span>
         <span class="n">PyDFTQMMMEnergyFilter</span><span class="p">(</span><span class="n">interval</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">handler</span></div>
@@ -911,7 +914,7 @@
         <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Handler</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a handler for logging to DCD files.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Create a handler for logging to DCD files.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_directory: A directory where records are written.</span>
@@ -921,8 +924,8 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A DCD file handler.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">outfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;pydft_qmmm.dcd&quot;</span>
+<span class="sd">    """</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_directory</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"pydft_qmmm.dcd"</span>
     <span class="n">handler</span> <span class="o">=</span> <span class="n">DCDHandler</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">interval</span><span class="p">,</span> <span class="n">timestep</span><span class="p">)</span>
     <span class="n">handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">PyDFTQMMMPositionFilter</span><span class="p">(</span><span class="n">interval</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">handler</span></div>
@@ -932,7 +935,7 @@
 <div class="viewcode-block" id="Loggable">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.utils.logging.Loggable.html#pydft_qmmm.utils.logging.Loggable">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Loggable</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A mix-in for generating logging handlers.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A mix-in for generating logging handlers.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_directory: A directory where logs will be written.</span>
@@ -951,11 +954,11 @@
 <span class="sd">            DCD file in terms of simulation steps.</span>
 <span class="sd">        dcd_timestep: The timestep (:math:`\mathrm{fs}`) of the</span>
 <span class="sd">            simulation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+            <span class="n">output_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">,</span>
             <span class="n">log_write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
             <span class="n">log_write_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">log_decimal_places</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>

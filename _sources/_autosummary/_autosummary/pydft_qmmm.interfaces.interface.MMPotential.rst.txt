@@ -91,5 +91,5 @@ pydft\_qmmm.interfaces.interface.MMPotential
    .. automethod:: MMPotential.zero_intramolecular
    
    
-    
+   
    

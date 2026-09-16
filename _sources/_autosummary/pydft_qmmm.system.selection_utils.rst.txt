@@ -15,7 +15,7 @@ pydft\_qmmm.system.selection\_utils
       isvalue
       line_slice
    
-   
+
    
    
    
@@ -31,5 +31,5 @@ pydft\_qmmm.system.selection\_utils
    
    .. autofunction:: pydft_qmmm.system.selection_utils.line_slice
    
-    
+   
    

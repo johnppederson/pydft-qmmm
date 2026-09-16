@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="pydft_qmmm.utils" href="../pydft_qmmm.utils.html"><link rel="prev" title="pydft_qmmm.system.variable.ArrayValue" href="pydft_qmmm.system.variable.ArrayValue.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.system.variable.ObservedArray - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -445,12 +445,12 @@
 <h1>pydft_qmmm.system.variable.ObservedArray<a class="headerlink" href="#pydft-qmmm-system-variable-observedarray" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.system.variable.</span></span><span class="sig-name descname"><span class="pre">ObservedArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydft_qmmm/system/variable.html#ObservedArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">ST</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">DT</span></code>]</p>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.system.variable.</span></span><span class="sig-name descname"><span class="pre">ObservedArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydft_qmmm/system/variable.html#ObservedArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">ST</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">DT</span></code>]</p>
 <p>A data container for arrays implementing the observer pattern.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>array</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><em>numpy.ndarray</em></a><em>[</em><em>ST</em><em>, </em><em>DT</em><em>]</em>)</p>
+<dd class="field-odd"><p><strong>array</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>numpy.ndarray</em></a><em>[</em><em>ST</em><em>, </em><em>DT</em><em>]</em>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray" title="pydft_qmmm.system.variable.ObservedArray">ObservedArray</a>[ST, DT]</p>
@@ -488,7 +488,7 @@ array is changed.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.argpartition" title="pydft_qmmm.system.variable.ObservedArray.argpartition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argpartition</span></code></a>(kth[, axis, kind, order])</p></td>
 <td><p>Returns the indices that would partition this array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.argsort" title="pydft_qmmm.system.variable.ObservedArray.argsort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argsort</span></code></a>([axis, kind, order])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.argsort" title="pydft_qmmm.system.variable.ObservedArray.argsort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argsort</span></code></a>([axis, kind, order, stable, descending])</p></td>
 <td><p>Returns the indices that would sort this array.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.astype" title="pydft_qmmm.system.variable.ObservedArray.astype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">astype</span></code></a>(dtype[, order, casting, subok, copy])</p></td>
@@ -524,8 +524,8 @@ array is changed.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.diagonal" title="pydft_qmmm.system.variable.ObservedArray.diagonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagonal</span></code></a>([offset, axis1, axis2])</p></td>
 <td><p>Return specified diagonals.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.dot" title="pydft_qmmm.system.variable.ObservedArray.dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.dot" title="pydft_qmmm.system.variable.ObservedArray.dot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dot</span></code></a>(other, /[, out])</p></td>
+<td><p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.dot()</span></code></a> for full documentation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.dump" title="pydft_qmmm.system.variable.ObservedArray.dump"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump</span></code></a>(file)</p></td>
 <td><p>Dump a pickle of the array to the specified file.</p></td>
@@ -560,11 +560,11 @@ array is changed.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.partition" title="pydft_qmmm.system.variable.ObservedArray.partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition</span></code></a>(kth[, axis, kind, order])</p></td>
 <td><p>Partially sorts the elements in the array in such a way that the value of the element in k-th position is in the position it would be in a sorted array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.prod" title="pydft_qmmm.system.variable.ObservedArray.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a></p></td>
-<td><p>a.prod(axis=None, dtype=None, out=None, keepdims=False,</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.prod" title="pydft_qmmm.system.variable.ObservedArray.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>([axis, dtype, out, keepdims, initial, ...])</p></td>
+<td><p>Return the product of the array elements over the given axis</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.put" title="pydft_qmmm.system.variable.ObservedArray.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code></a>(indices, values[, mode])</p></td>
-<td><p>Set <code class="docutils literal notranslate"><span class="pre">a.flat[n]</span> <span class="pre">=</span> <span class="pre">values[n]</span></code> for all <cite>n</cite> in indices.</p></td>
+<td><p>Set <code class="docutils literal notranslate"><span class="pre">a.flat[n]</span> <span class="pre">=</span> <span class="pre">values[n]</span></code> for all <code class="docutils literal notranslate"><span class="pre">n</span></code> in indices.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.ravel" title="pydft_qmmm.system.variable.ObservedArray.ravel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ravel</span></code></a>([order])</p></td>
 <td><p>Return a flattened array.</p></td>
@@ -575,17 +575,17 @@ array is changed.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.repeat" title="pydft_qmmm.system.variable.ObservedArray.repeat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repeat</span></code></a>(repeats[, axis])</p></td>
 <td><p>Repeat elements of an array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.reshape" title="pydft_qmmm.system.variable.ObservedArray.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>(shape, /, *[, order, copy])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.reshape" title="pydft_qmmm.system.variable.ObservedArray.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>()</p></td>
 <td><p>Returns an array containing the same data with a new shape.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.resize" title="pydft_qmmm.system.variable.ObservedArray.resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize</span></code></a>(new_shape[, refcheck])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.resize" title="pydft_qmmm.system.variable.ObservedArray.resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize</span></code></a>()</p></td>
 <td><p>Change shape and size of array in-place.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.round" title="pydft_qmmm.system.variable.ObservedArray.round"><code class="xref py py-obj docutils literal notranslate"><span class="pre">round</span></code></a>([decimals, out])</p></td>
 <td><p>Return <cite>a</cite> with each element rounded to the given number of decimals.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.searchsorted" title="pydft_qmmm.system.variable.ObservedArray.searchsorted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searchsorted</span></code></a>(v[, side, sorter])</p></td>
-<td><p>Find indices where elements of v should be inserted in a to maintain order.</p></td>
+<td><p>Find indices where elements of <cite>v</cite> should be inserted in <cite>a</cite> to maintain order.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.setfield" title="pydft_qmmm.system.variable.ObservedArray.setfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setfield</span></code></a>(val, dtype[, offset])</p></td>
 <td><p>Put a value into a specified place in a field defined by a data-type.</p></td>
@@ -593,31 +593,31 @@ array is changed.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.setflags" title="pydft_qmmm.system.variable.ObservedArray.setflags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setflags</span></code></a>([write, align, uic])</p></td>
 <td><p>Set array flags WRITEABLE, ALIGNED, WRITEBACKIFCOPY, respectively.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.sort" title="pydft_qmmm.system.variable.ObservedArray.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([axis, kind, order])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.sort" title="pydft_qmmm.system.variable.ObservedArray.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([axis, kind, order, stable, descending])</p></td>
 <td><p>Sort an array in-place.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.squeeze" title="pydft_qmmm.system.variable.ObservedArray.squeeze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze</span></code></a>([axis])</p></td>
 <td><p>Remove axes of length one from <cite>a</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.std" title="pydft_qmmm.system.variable.ObservedArray.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">std</span></code></a>([axis, dtype, out, ddof, keepdims, where])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.std" title="pydft_qmmm.system.variable.ObservedArray.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">std</span></code></a>([axis, dtype, out, ddof, keepdims, ...])</p></td>
 <td><p>Returns the standard deviation of the array elements along given axis.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.sum" title="pydft_qmmm.system.variable.ObservedArray.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>([axis, dtype, out, keepdims, initial, where])</p></td>
 <td><p>Return the sum of the array elements over the given axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.swapaxes" title="pydft_qmmm.system.variable.ObservedArray.swapaxes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code></a>(axis1, axis2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.swapaxes" title="pydft_qmmm.system.variable.ObservedArray.swapaxes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code></a>(axis1, axis2, /)</p></td>
 <td><p>Return a view of the array with <cite>axis1</cite> and <cite>axis2</cite> interchanged.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.take" title="pydft_qmmm.system.variable.ObservedArray.take"><code class="xref py py-obj docutils literal notranslate"><span class="pre">take</span></code></a>(indices[, axis, out, mode])</p></td>
 <td><p>Return an array formed from the elements of <cite>a</cite> at the given indices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.to_device" title="pydft_qmmm.system.variable.ObservedArray.to_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_device</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.to_device" title="pydft_qmmm.system.variable.ObservedArray.to_device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_device</span></code></a>(device, /, *[, stream])</p></td>
+<td><p>For Array API compatibility.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.tobytes" title="pydft_qmmm.system.variable.ObservedArray.tobytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tobytes</span></code></a>([order])</p></td>
 <td><p>Construct Python bytes containing the raw data bytes in the array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.tofile" title="pydft_qmmm.system.variable.ObservedArray.tofile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tofile</span></code></a>(fid[, sep, format])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.tofile" title="pydft_qmmm.system.variable.ObservedArray.tofile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tofile</span></code></a>(fid, /[, sep, format])</p></td>
 <td><p>Write array to a file as text or binary (default).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.tolist" title="pydft_qmmm.system.variable.ObservedArray.tolist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolist</span></code></a>()</p></td>
@@ -629,7 +629,7 @@ array is changed.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.transpose" title="pydft_qmmm.system.variable.ObservedArray.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>(*axes)</p></td>
 <td><p>Returns a view of the array with axes transposed.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.var" title="pydft_qmmm.system.variable.ObservedArray.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var</span></code></a>([axis, dtype, out, ddof, keepdims, where])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.var" title="pydft_qmmm.system.variable.ObservedArray.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">var</span></code></a>([axis, dtype, out, ddof, keepdims, ...])</p></td>
 <td><p>Returns the variance of the array elements, along given axis.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.system.variable.ObservedArray.view" title="pydft_qmmm.system.variable.ObservedArray.view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code></a>([dtype][, type])</p></td>
@@ -640,9 +640,14 @@ array is changed.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.all">
-<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.all" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.all" title="Link to this definition">¶</a></dt>
 <dd><p>Returns True if all elements evaluate to True.</p>
 <p>Refer to <cite>numpy.all</cite> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
 <section id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
 <p>numpy.all : equivalent function</p>
@@ -651,9 +656,14 @@ array is changed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.any">
-<span class="sig-name descname"><span class="pre">any</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.any" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">any</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.any" title="Link to this definition">¶</a></dt>
 <dd><p>Returns True if any of the elements of <cite>a</cite> evaluate to True.</p>
 <p>Refer to <cite>numpy.any</cite> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
 <section id="id1">
 <h2>See Also<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>numpy.any : equivalent function</p>
@@ -665,6 +675,11 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">argmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argmax" title="Link to this definition">¶</a></dt>
 <dd><p>Return indices of the maximum values along the given axis.</p>
 <p>Refer to <cite>numpy.argmax</cite> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a></span></p>
+</dd>
+</dl>
 <section id="id2">
 <h2>See Also<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>numpy.argmax : equivalent function</p>
@@ -676,6 +691,11 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">argmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argmin" title="Link to this definition">¶</a></dt>
 <dd><p>Return indices of the minimum values along the given axis.</p>
 <p>Refer to <cite>numpy.argmin</cite> for detailed documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a></span></p>
+</dd>
+</dl>
 <section id="id3">
 <h2>See Also<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <p>numpy.argmin : equivalent function</p>
@@ -687,6 +707,11 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">argpartition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'introselect'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argpartition" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the indices that would partition this array.</p>
 <p>Refer to <cite>numpy.argpartition</cite> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _dtype[intp]]</span></p>
+</dd>
+</dl>
 <section id="id4">
 <h2>See Also<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <p>numpy.argpartition : equivalent function</p>
@@ -695,7 +720,7 @@ array is changed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.argsort">
-<span class="sig-name descname"><span class="pre">argsort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argsort" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">argsort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">stable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argsort" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the indices that would sort this array.</p>
 <p>Refer to <cite>numpy.argsort</cite> for full documentation.</p>
 <section id="id5">
@@ -708,9 +733,14 @@ array is changed.</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.astype">
 <span class="sig-name descname"><span class="pre">astype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'K'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">casting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unsafe'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.astype" title="Link to this definition">¶</a></dt>
 <dd><p>Copy of the array, cast to a specified type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_ShapeT_co, _dtype[ScalarT]]</span></p>
+</dd>
+</dl>
 <section id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
-<dl class="simple">
+<dl>
 <dt>dtype<span class="classifier">str or dtype</span></dt><dd><p>Typecode or data-type to which the array is cast.</p>
 </dd>
 <dt>order<span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>Controls the memory layout order of the result.
@@ -720,7 +750,7 @@ means ‘F’ order if all the arrays are Fortran contiguous,
 order the array elements appear in memory as possible.
 Default is ‘K’.</p>
 </dd>
-<dt>casting<span class="classifier">{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional</span></dt><dd><p>Controls what kind of data casting may occur. Defaults to ‘unsafe’
+<dt>casting<span class="classifier">{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘same_value’, ‘unsafe’}, optional</span></dt><dd><p>Controls what kind of data casting may occur. Defaults to ‘unsafe’
 for backwards compatibility.</p>
 <ul class="simple">
 <li><p>‘no’ means the data types should not be cast at all.</p></li>
@@ -729,7 +759,12 @@ for backwards compatibility.</p>
 <li><p>‘same_kind’ means only safe casts or casts within a kind,
 like float64 to float32, are allowed.</p></li>
 <li><p>‘unsafe’ means any data conversions may be done.</p></li>
+<li><p>‘same_value’ means any data conversions may be done, but the values
+must not change, including rounding of floats or overflow of ints</p></li>
 </ul>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.4: </span>Support for <code class="docutils literal notranslate"><span class="pre">'same_value'</span></code> was added.</p>
+</div>
 </dd>
 <dt>subok<span class="classifier">bool, optional</span></dt><dd><p>If True, then sub-classes will be passed-through (default), otherwise
 the returned array will be forced to be a base-class array.</p>
@@ -757,6 +792,9 @@ given by <cite>dtype</cite>, <cite>order</cite>.</p>
 <dt>ComplexWarning</dt><dd><p>When casting from complex to float or int. To avoid this,
 one should use <code class="docutils literal notranslate"><span class="pre">a.real.astype(t)</span></code>.</p>
 </dd>
+<dt>ValueError</dt><dd><p>When casting using <code class="docutils literal notranslate"><span class="pre">'same_value'</span></code> and the values change or would
+overflow</p>
+</dd>
 </dl>
 </section>
 <section id="examples">
@@ -767,8 +805,18 @@ one should use <code class="docutils literal notranslate"><span class="pre">a.re
 <span class="go">array([1. ,  2. ,  2.5])</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">)</span>
 <span class="go">array([1, 2, 2])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">,</span> <span class="n">casting</span><span class="o">=</span><span class="s2">"same_value"</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">could not cast 'same_value' double to long</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int_</span><span class="p">,</span> <span class="n">casting</span><span class="o">=</span><span class="s2">"same_value"</span><span class="p">)</span>
+<span class="go">array([1, 2])</span>
 </pre></div>
 </div>
 </section>
@@ -782,6 +830,11 @@ one should use <code class="docutils literal notranslate"><span class="pre">a.re
 returning a byteswapped array, optionally swapped in-place.
 Arrays of byte-strings are not swapped. The real and imaginary
 parts of a complex number are swapped individually.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
 <section id="id6">
 <h2>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
 <dl class="simple">
@@ -802,17 +855,17 @@ a view to self.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">8755</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span>
-<span class="go">[&#39;0x1&#39;, &#39;0x100&#39;, &#39;0x2233&#39;]</span>
+<span class="go">['0x1', '0x100', '0x2233']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">byteswap</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">array([  256,     1, 13090], dtype=int16)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">A</span><span class="p">))</span>
-<span class="go">[&#39;0x100&#39;, &#39;0x1&#39;, &#39;0x3322&#39;]</span>
+<span class="go">['0x100', '0x1', '0x3322']</span>
 </pre></div>
 </div>
 <p>Arrays of byte-strings are not swapped</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="sa">b</span><span class="s1">&#39;ceg&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;fac&#39;</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="sa">b</span><span class="s1">'ceg'</span><span class="p">,</span> <span class="sa">b</span><span class="s1">'fac'</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">byteswap</span><span class="p">()</span>
-<span class="go">array([b&#39;ceg&#39;, b&#39;fac&#39;], dtype=&#39;|S3&#39;)</span>
+<span class="go">array([b'ceg', b'fac'], dtype='|S3')</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">A.view(A.dtype.newbyteorder()).byteswap()</span></code> produces an array with
@@ -822,7 +875,7 @@ the same values but different representation in memory</p>
 <span class="go">array([1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0,</span>
 <span class="go">       0, 0], dtype=uint8)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">())</span><span class="o">.</span><span class="n">byteswap</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="go">array([1, 2, 3], dtype=&#39;&gt;i8&#39;)</span>
+<span class="go">array([1, 2, 3], dtype='&gt;i8')</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="go">array([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,</span>
 <span class="go">       0, 3], dtype=uint8)</span>
@@ -844,7 +897,7 @@ the same values but different representation in memory</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.clip">
-<span class="sig-name descname"><span class="pre">clip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.clip" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">clip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.clip" title="Link to this definition">¶</a></dt>
 <dd><p>Return an array whose values are limited to <code class="docutils literal notranslate"><span class="pre">[min,</span> <span class="pre">max]</span></code>.
 One of max or min must be given.</p>
 <p>Refer to <cite>numpy.clip</cite> for full documentation.</p>
@@ -897,7 +950,7 @@ One of max or min must be given.</p>
 <dt>order<span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>Controls the memory layout of the copy. ‘C’ means C-order,
 ‘F’ means F-order, ‘A’ means ‘F’ if <cite>a</cite> is Fortran contiguous,
 ‘C’ otherwise. ‘K’ means match the layout of <cite>a</cite> as closely
-as possible. (Note that this function and <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> are very
+as possible. (Note that this function and <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> are very
 similar but have different default values for their order=
 arguments, and this function always passes sub-classes through.)</p>
 </dd>
@@ -911,13 +964,13 @@ numpy.copyto</p>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
 <p>This function is the preferred method for creating an array copy.  The
-function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> is similar, but it defaults to using order ‘K’,
+function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> is similar, but it defaults to using order ‘K’,
 and will not pass sub-classes through by default.</p>
 </section>
 <section id="id16">
 <h2>Examples<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">'F'</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -936,31 +989,31 @@ and will not pass sub-classes through by default.</p>
 <span class="go">       [4, 5, 6]])</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">&#39;C_CONTIGUOUS&#39;</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s1">'C_CONTIGUOUS'</span><span class="p">]</span>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>For arrays containing Python objects (e.g. dtype=object),
+<p>For arrays containing Python objects (e.g. dtype=np.object_),
 the copy is a shallow one. The new array will contain the
 same object which may lead to surprises if that object can
 be modified (is mutable):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">object_</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
-<span class="go">array([1, &#39;m&#39;, list([10, 3, 4])], dtype=object)</span>
+<span class="go">array([1, 'm', list([10, 3, 4])], dtype=object)</span>
 </pre></div>
 </div>
 <p>To ensure all elements within an <code class="docutils literal notranslate"><span class="pre">object</span></code> array are copied,
 use <cite>copy.deepcopy</cite>:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">object_</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
-<span class="go">array([1, &#39;m&#39;, list([10, 3, 4])], dtype=object)</span>
+<span class="go">array([1, 'm', list([10, 3, 4])], dtype=object)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
-<span class="go">array([1, &#39;m&#39;, list([2, 3, 4])], dtype=object)</span>
+<span class="go">array([1, 'm', list([2, 3, 4])], dtype=object)</span>
 </pre></div>
 </div>
 </section>
@@ -971,6 +1024,11 @@ use <cite>copy.deepcopy</cite>:</p>
 <span class="sig-name descname"><span class="pre">cumprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.cumprod" title="Link to this definition">¶</a></dt>
 <dd><p>Return the cumulative product of the elements along the given axis.</p>
 <p>Refer to <cite>numpy.cumprod</cite> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_1D, DTypeT]</span></p>
+</dd>
+</dl>
 <section id="id17">
 <h2>See Also<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h2>
 <p>numpy.cumprod : equivalent function</p>
@@ -982,6 +1040,11 @@ use <cite>copy.deepcopy</cite>:</p>
 <span class="sig-name descname"><span class="pre">cumsum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.cumsum" title="Link to this definition">¶</a></dt>
 <dd><p>Return the cumulative sum of the elements along the given axis.</p>
 <p>Refer to <cite>numpy.cumsum</cite> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_1D, DTypeT]</span></p>
+</dd>
+</dl>
 <section id="id18">
 <h2>See Also<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h2>
 <p>numpy.cumsum : equivalent function</p>
@@ -994,7 +1057,12 @@ use <cite>copy.deepcopy</cite>:</p>
 <dd><p>Return specified diagonals. In NumPy 1.9 the returned array is a
 read-only view instead of a copy as in previous NumPy versions.  In
 a future version the read-only restriction will be removed.</p>
-<p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html#numpy.diagonal" title="(in NumPy v2.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diagonal()</span></code></a> for full documentation.</p>
+<p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html#numpy.diagonal" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diagonal()</span></code></a> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_AnyShape, DTypeT]</span></p>
+</dd>
+</dl>
 <section id="id19">
 <h2>See Also<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h2>
 <p>numpy.diagonal : equivalent function</p>
@@ -1003,16 +1071,26 @@ a future version the read-only restriction will be removed.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.dot">
-<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.dot" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.dot" title="Link to this definition">¶</a></dt>
+<dd><p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.dot()</span></code></a> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
+</dd>
+</dl>
+<section id="id20">
+<h2>See Also<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h2>
+<p>numpy.dot : equivalent function</p>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.dump">
 <span class="sig-name descname"><span class="pre">dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.dump" title="Link to this definition">¶</a></dt>
 <dd><p>Dump a pickle of the array to the specified file.
 The array can be read back with pickle.load or numpy.load.</p>
-<section id="id20">
-<h2>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h2>
+<section id="id21">
+<h2>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>file<span class="classifier">str or Path</span></dt><dd><p>A string naming the dump file.</p>
 </dd>
@@ -1024,9 +1102,9 @@ The array can be read back with pickle.load or numpy.load.</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.dumps">
 <span class="sig-name descname"><span class="pre">dumps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.dumps" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the pickle of the array as a string.
-pickle.loads will convert the string back to an array.</p>
-<section id="id21">
-<h2>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h2>
+<code class="docutils literal notranslate"><span class="pre">pickle.loads</span></code> will convert the string back to an array.</p>
+<section id="id22">
+<h2>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h2>
 <p>None</p>
 </section>
 </dd></dl>
@@ -1035,15 +1113,15 @@ pickle.loads will convert the string back to an array.</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.fill">
 <span class="sig-name descname"><span class="pre">fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.fill" title="Link to this definition">¶</a></dt>
 <dd><p>Fill the array with a scalar value.</p>
-<section id="id22">
-<h2>Parameters<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h2>
+<section id="id23">
+<h2>Parameters<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>value<span class="classifier">scalar</span></dt><dd><p>All elements of <cite>a</cite> will be assigned this value.</p>
 </dd>
 </dl>
 </section>
-<section id="id23">
-<h2>Examples<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h2>
+<section id="id24">
+<h2>Examples<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -1058,7 +1136,7 @@ pickle.loads will convert the string back to an array.</p>
 <p>Fill expects a scalar value and always behaves the same as assigning
 to a single array element.  The following is a rare example where this
 distinction is important:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">object_</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
 <span class="go">array([array(3), None], dtype=object)</span>
@@ -1080,8 +1158,13 @@ distinction is important:</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.flatten">
 <span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.flatten" title="Link to this definition">¶</a></dt>
 <dd><p>Return a copy of the array collapsed into one dimension.</p>
-<section id="id24">
-<h2>Parameters<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
+</dd>
+</dl>
+<section id="id25">
+<h2>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>order<span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>‘C’ means to flatten in row-major (C-style) order.
 ‘F’ means to flatten in column-major (Fortran-
@@ -1093,25 +1176,25 @@ The default is ‘C’.</p>
 </dd>
 </dl>
 </section>
-<section id="id25">
-<h2>Returns<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h2>
+<section id="id26">
+<h2>Returns<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>y<span class="classifier">ndarray</span></dt><dd><p>A copy of the input array, flattened to one dimension.</p>
 </dd>
 </dl>
 </section>
-<section id="id26">
-<h2>See Also<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h2>
+<section id="id27">
+<h2>See Also<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h2>
 <p>ravel : Return a flattened array.
 flat : A 1-D flat iterator over the array.</p>
 </section>
-<section id="id27">
-<h2>Examples<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h2>
+<section id="id28">
+<h2>Examples<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 <span class="go">array([1, 2, 3, 4])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="s1">'F'</span><span class="p">)</span>
 <span class="go">array([1, 3, 2, 4])</span>
 </pre></div>
 </div>
@@ -1128,8 +1211,13 @@ array in bytes. The offset needs to be such that the view dtype fits in the
 array dtype; for example an array of dtype complex128 has 16-byte elements.
 If taking a view with a 32-bit integer (4 bytes), the offset needs to be
 between 0 and 12 bytes.</p>
-<section id="id28">
-<h2>Parameters<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">NDArray[ScalarT]</span></p>
+</dd>
+</dl>
+<section id="id29">
+<h2>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>dtype<span class="classifier">str or dtype</span></dt><dd><p>The data type of the view. The dtype size of the view can not be larger
 than that of the array itself.</p>
@@ -1138,8 +1226,8 @@ than that of the array itself.</p>
 </dd>
 </dl>
 </section>
-<section id="id29">
-<h2>Examples<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h2>
+<section id="id30">
+<h2>Examples<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mf">1.</span><span class="o">+</span><span class="mf">1.</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mf">4.</span><span class="n">j</span>
@@ -1165,8 +1253,13 @@ array for our view:</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.item">
 <span class="sig-name descname"><span class="pre">item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.item" title="Link to this definition">¶</a></dt>
 <dd><p>Copy an element of an array to a standard Python scalar and return it.</p>
-<section id="id30">
-<h2>Parameters<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">T</span></p>
+</dd>
+</dl>
+<section id="id31">
+<h2>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h2>
 <p>*args : Arguments (variable number and type)</p>
 <blockquote>
 <div><ul class="simple">
@@ -1181,16 +1274,16 @@ array.</p></li>
 </ul>
 </div></blockquote>
 </section>
-<section id="id31">
-<h2>Returns<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h2>
+<section id="id32">
+<h2>Returns<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>z<span class="classifier">Standard Python scalar object</span></dt><dd><p>A copy of the specified element of the array as a suitable
 Python scalar</p>
 </dd>
 </dl>
 </section>
-<section id="id32">
-<h2>Notes<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h2>
+<section id="id33">
+<h2>Notes<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h2>
 <p>When the data type of <cite>a</cite> is longdouble or clongdouble, item() returns
 a scalar array object because there is no available Python scalar that
 would not lose information. Void arrays return a buffer object for item(),
@@ -1200,8 +1293,8 @@ a standard Python scalar is returned. This can be useful for speeding up
 access to elements of the array and doing arithmetic on elements of the
 array using Python’s optimized math.</p>
 </section>
-<section id="id33">
-<h2>Examples<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h2>
+<section id="id34">
+<h2>Examples<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -1220,7 +1313,7 @@ array using Python’s optimized math.</p>
 </pre></div>
 </div>
 <p>For an array with object dtype, elements are returned as-is.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">object_</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="c1">#return np.int64</span>
 <span class="go">np.int64(1)</span>
 </pre></div>
@@ -1230,33 +1323,48 @@ array using Python’s optimized math.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.max">
-<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.max" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.max" title="Link to this definition">¶</a></dt>
 <dd><p>Return the maximum along a given axis.</p>
 <p>Refer to <cite>numpy.amax</cite> for full documentation.</p>
-<section id="id34">
-<h2>See Also<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT</span></p>
+</dd>
+</dl>
+<section id="id35">
+<h2>See Also<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h2>
 <p>numpy.amax : equivalent function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.mean">
-<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.mean" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.mean" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the average of the array elements along given axis.</p>
 <p>Refer to <cite>numpy.mean</cite> for full documentation.</p>
-<section id="id35">
-<h2>See Also<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id36">
+<h2>See Also<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h2>
 <p>numpy.mean : equivalent function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.min">
-<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial=&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.min" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.min" title="Link to this definition">¶</a></dt>
 <dd><p>Return the minimum along a given axis.</p>
 <p>Refer to <cite>numpy.amin</cite> for full documentation.</p>
-<section id="id36">
-<h2>See Also<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT</span></p>
+</dd>
+</dl>
+<section id="id37">
+<h2>See Also<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h2>
 <p>numpy.amin : equivalent function</p>
 </section>
 </dd></dl>
@@ -1266,8 +1374,13 @@ array using Python’s optimized math.</p>
 <span class="sig-name descname"><span class="pre">nonzero</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.nonzero" title="Link to this definition">¶</a></dt>
 <dd><p>Return the indices of the elements that are non-zero.</p>
 <p>Refer to <cite>numpy.nonzero</cite> for full documentation.</p>
-<section id="id37">
-<h2>See Also<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">tuple[ndarray[_1D, _dtype[intp]], …]</span></p>
+</dd>
+</dl>
+<section id="id38">
+<h2>See Also<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h2>
 <p>numpy.nonzero : equivalent function</p>
 </section>
 </dd></dl>
@@ -1281,8 +1394,13 @@ array. In the output array, all elements smaller than the k-th element
 are located to the left of this element and all equal or greater are
 located to its right. The ordering of the elements in the two partitions
 on the either side of the k-th element in the output array is undefined.</p>
-<section id="id38">
-<h2>Parameters<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id39">
+<h2>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h2>
 <dl>
 <dt>kth<span class="classifier">int or sequence of ints</span></dt><dd><p>Element index to partition by. The kth element value will be in its
 final sorted position and all smaller elements will be moved before it
@@ -1307,18 +1425,18 @@ they come up in the dtype, to break ties.</p>
 </dd>
 </dl>
 </section>
-<section id="id39">
-<h2>See Also<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h2>
+<section id="id40">
+<h2>See Also<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h2>
 <p>numpy.partition : Return a partitioned copy of an array.
 argpartition : Indirect partition.
 sort : Full sort.</p>
 </section>
-<section id="id40">
-<h2>Notes<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h2>
+<section id="id41">
+<h2>Notes<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h2>
 <p>See <code class="docutils literal notranslate"><span class="pre">np.partition</span></code> for notes on the different algorithms.</p>
 </section>
-<section id="id41">
-<h2>Examples<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h2>
+<section id="id42">
+<h2>Examples<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -1336,15 +1454,16 @@ sort : Full sort.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.prod">
-<span class="sig-name descname"><span class="pre">prod</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.prod" title="Link to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>a.prod(axis=None, dtype=None, out=None, keepdims=False,</dt><dd><p>initial=1, where=True)</p>
+<span class="sig-name descname"><span class="pre">prod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.prod" title="Link to this definition">¶</a></dt>
+<dd><p>Return the product of the array elements over the given axis</p>
+<p>Refer to <cite>numpy.prod</cite> for full documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT</span></p>
 </dd>
 </dl>
-<p>Return the product of the array elements over the given axis</p>
-<p>Refer to <cite>numpy.prod</cite> for full documentation.</p>
-<section id="id42">
-<h2>See Also<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h2>
+<section id="id43">
+<h2>See Also<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h2>
 <p>numpy.prod : equivalent function</p>
 </section>
 </dd></dl>
@@ -1352,23 +1471,28 @@ sort : Full sort.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.put">
 <span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raise'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.put" title="Link to this definition">¶</a></dt>
-<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a.flat[n]</span> <span class="pre">=</span> <span class="pre">values[n]</span></code> for all <cite>n</cite> in indices.</p>
+<dd><p>Set <code class="docutils literal notranslate"><span class="pre">a.flat[n]</span> <span class="pre">=</span> <span class="pre">values[n]</span></code> for all <code class="docutils literal notranslate"><span class="pre">n</span></code> in indices.</p>
 <p>Refer to <cite>numpy.put</cite> for full documentation.</p>
-<section id="id43">
-<h2>See Also<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h2>
+<section id="id44">
+<h2>See Also<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h2>
 <p>numpy.put : equivalent function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.ravel">
-<span class="sig-name descname"><span class="pre">ravel</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.ravel" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ravel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.ravel" title="Link to this definition">¶</a></dt>
 <dd><p>Return a flattened array.</p>
 <p>Refer to <cite>numpy.ravel</cite> for full documentation.</p>
-<section id="id44">
-<h2>See Also<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h2>
-<p>numpy.ravel : equivalent function</p>
-<p>ndarray.flat : a flat iterator on the array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
+</dd>
+</dl>
+<section id="id45">
+<h2>See Also<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h2>
+<p>numpy.ravel : equivalent function
+ndarray.flat : a flat iterator on the array.</p>
 </section>
 </dd></dl>
 
@@ -1378,11 +1502,11 @@ sort : Full sort.</p>
 <dd><p>Register observers to be notified when array data is edited.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>notifier</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ST</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]), <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">DT</span></code>, bound= <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a>, covariant=True)]], <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – A function which will be called when array data
+<dd class="field-odd"><p><strong>notifier</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ST</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]), <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">DT</span></code>, bound= <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a>, covariant=True)]], <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – A function which will be called when array data
 is edited.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1392,8 +1516,13 @@ is edited.</p>
 <span class="sig-name descname"><span class="pre">repeat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repeats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.repeat" title="Link to this definition">¶</a></dt>
 <dd><p>Repeat elements of an array.</p>
 <p>Refer to <cite>numpy.repeat</cite> for full documentation.</p>
-<section id="id45">
-<h2>See Also<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
+</dd>
+</dl>
+<section id="id46">
+<h2>See Also<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h2>
 <p>numpy.repeat : equivalent function</p>
 </section>
 </dd></dl>
@@ -1401,83 +1530,108 @@ is edited.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.reshape">
 <span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.reshape" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Returns an array containing the same data with a new shape.</p>
 <p>Refer to <cite>numpy.reshape</cite> for full documentation.</p>
-<section id="id46">
-<h2>See Also<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
+<section id="id47">
+<h2>See Also<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h2>
 <p>numpy.reshape : equivalent function</p>
 </section>
-<section id="id47">
-<h2>Notes<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h2>
+<section id="id48">
+<h2>Notes<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h2>
 <p>Unlike the free function <cite>numpy.reshape</cite>, this method on <cite>ndarray</cite> allows
 the elements of the shape parameter to be passed in as separate arguments.
-For example, <code class="docutils literal notranslate"><span class="pre">a.reshape(10,</span> <span class="pre">11)</span></code> is equivalent to
-<code class="docutils literal notranslate"><span class="pre">a.reshape((10,</span> <span class="pre">11))</span></code>.</p>
+For example, <code class="docutils literal notranslate"><span class="pre">a.reshape(4,</span> <span class="pre">2)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">a.reshape((4,</span> <span class="pre">2))</span></code>.</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.resize">
-<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refcheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.resize" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">refcheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.resize" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refcheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Change shape and size of array in-place.</p>
-<section id="id48">
-<h2>Parameters<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id49">
+<h2>Parameters<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h2>
 <dl>
 <dt>new_shape<span class="classifier">tuple of ints, or <cite>n</cite> ints</span></dt><dd><p>Shape of resized array.</p>
 </dd>
-<dt>refcheck<span class="classifier">bool, optional</span></dt><dd><p>If False, reference count will not be checked. Default is True.</p>
+<dt>refcheck<span class="classifier">bool, optional</span></dt><dd><p>If False, reference count will not be checked. Default is True.
+See Notes below for more explanation.</p>
 </dd>
 </dl>
-</section>
-<section id="id49">
-<h2>Returns<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h2>
-<p>None</p>
 </section>
 <section id="id50">
-<h2>Raises<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h2>
+<h2>Returns<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h2>
+<p>None</p>
+</section>
+<section id="id51">
+<h2>Raises<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h2>
 <dl class="simple">
-<dt>ValueError</dt><dd><p>If <cite>a</cite> does not own its own data or references or views to it exist,
-and the data memory must be changed.
-PyPy only: will always raise if the data memory must be changed, since
-there is no reliable way to determine if references or views to it
-exist.</p>
-</dd>
-<dt>SystemError</dt><dd><p>If the <cite>order</cite> keyword argument is specified. This behaviour is a
-bug in NumPy.</p>
+<dt>ValueError</dt><dd><p>If <cite>a</cite> does not own its own data or references or views to may exist.</p>
 </dd>
 </dl>
 </section>
-<section id="id51">
-<h2>See Also<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h2>
+<section id="id52">
+<h2>See Also<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h2>
 <p>resize : Return a new array with the specified shape.</p>
 </section>
-<section id="id52">
-<h2>Notes<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h2>
+<section id="id53">
+<h2>Notes<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h2>
 <p>This reallocates space for the data area if necessary.</p>
 <p>Only contiguous arrays (data elements consecutive in memory) can be
 resized.</p>
+<p>Reallocating arrays in-place can often lead to memory fragmentation and
+should be avoided. If the goal is to reclaim over-allocated memory,
+alternatives are to create a view or a copy of just the desired data, or
+using two passes to build the array: one to cheaply determine the shape and
+another to allocate and fill. Benchmark your use case to determine what is
+optimum. You may be surprised to find <code class="docutils literal notranslate"><span class="pre">resize</span></code> actually slows down or
+bloats your application.</p>
 <p>The purpose of the reference count check is to make sure you
 do not use this array as a buffer for another Python object and then
-reallocate the memory. However, reference counts can increase in
-other ways so if you are sure that you have not shared the memory
-for this array with another Python object, then you may safely set
-<cite>refcheck</cite> to False.</p>
+reallocate the memory.</p>
+<p>On Python 3.13 and older, the check allows objects with exactly one
+reference to be reallocated in-place. On Python 3.14 and newer, the array
+must be uniquely referenced. See <a class="footnote-reference brackets" href="#id55" id="id54" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> for more details.</p>
+<p>If you are sure that you have not shared the memory for this array with
+another Python object, then you may safely set <cite>refcheck</cite> to False.</p>
 </section>
-<section id="id53">
-<h2>Examples<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h2>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">¶</a></h2>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id55" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id54">1</a><span class="fn-bracket">]</span></span>
+<p>Python 3.14 What’s New, <a class="reference external" href="https://docs.python.org/3/whatsnew/3.14.html#whatsnew314-refcount">https://docs.python.org/3/whatsnew/3.14.html#whatsnew314-refcount</a></p>
+</aside>
+</aside>
+</section>
+<section id="id56">
+<h2>Examples<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h2>
 <p>Shrinking an array: array is flattened (in the order that the data are
 stored in memory), resized, and reshaped:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
 <span class="go">array([[0],</span>
 <span class="go">       [1]])</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">'F'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
 <span class="go">array([[0],</span>
@@ -1486,7 +1640,7 @@ stored in memory), resized, and reshaped:</p>
 </div>
 <p>Enlarging an array: as above, but missing entries are filled with zeros:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># new_shape parameter doesn&#39;t have to be a tuple</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># new_shape parameter doesn't have to be a tuple</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span>
 <span class="go">array([[0, 1, 2],</span>
 <span class="go">       [3, 0, 0]])</span>
@@ -1516,8 +1670,8 @@ stored in memory), resized, and reshaped:</p>
 <span class="sig-name descname"><span class="pre">round</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decimals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.round" title="Link to this definition">¶</a></dt>
 <dd><p>Return <cite>a</cite> with each element rounded to the given number of decimals.</p>
 <p>Refer to <cite>numpy.around</cite> for full documentation.</p>
-<section id="id54">
-<h2>See Also<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h2>
+<section id="id57">
+<h2>See Also<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h2>
 <p>numpy.around : equivalent function</p>
 </section>
 </dd></dl>
@@ -1525,10 +1679,15 @@ stored in memory), resized, and reshaped:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.searchsorted">
 <span class="sig-name descname"><span class="pre">searchsorted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.searchsorted" title="Link to this definition">¶</a></dt>
-<dd><p>Find indices where elements of v should be inserted in a to maintain order.</p>
-<p>For full documentation, see <cite>numpy.searchsorted</cite></p>
-<section id="id55">
-<h2>See Also<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h2>
+<dd><p>Find indices where elements of <cite>v</cite> should be inserted in <cite>a</cite> to maintain order.</p>
+<p>For full documentation, see <cite>numpy.searchsorted</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id58">
+<h2>See Also<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h2>
 <p>numpy.searchsorted : equivalent function</p>
 </section>
 </dd></dl>
@@ -1539,8 +1698,13 @@ stored in memory), resized, and reshaped:</p>
 <dd><p>Put a value into a specified place in a field defined by a data-type.</p>
 <p>Place <cite>val</cite> into <cite>a</cite>’s field defined by <cite>dtype</cite> and beginning <cite>offset</cite>
 bytes into the field.</p>
-<section id="id56">
-<h2>Parameters<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id59">
+<h2>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>val<span class="classifier">object</span></dt><dd><p>Value to be placed in field.</p>
 </dd>
@@ -1550,16 +1714,16 @@ bytes into the field.</p>
 </dd>
 </dl>
 </section>
-<section id="id57">
-<h2>Returns<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h2>
+<section id="id60">
+<h2>Returns<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h2>
 <p>None</p>
 </section>
-<section id="id58">
-<h2>See Also<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h2>
+<section id="id61">
+<h2>See Also<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h2>
 <p>getfield</p>
 </section>
-<section id="id59">
-<h2>Examples<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h2>
+<section id="id62">
+<h2>Examples<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">getfield</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -1598,8 +1762,8 @@ to True. The flag WRITEABLE can only be set to True if the array owns its
 own memory, or the ultimate owner of the memory exposes a writeable buffer
 interface, or is a string. (The exception for string is made so that
 unpickling can be done without copying memory.)</p>
-<section id="id60">
-<h2>Parameters<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h2>
+<section id="id63">
+<h2>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>write<span class="classifier">bool, optional</span></dt><dd><p>Describes whether or not <cite>a</cite> can be written to.</p>
 </dd>
@@ -1609,8 +1773,8 @@ unpickling can be done without copying memory.)</p>
 </dd>
 </dl>
 </section>
-<section id="id61">
-<h2>Notes<a class="headerlink" href="#id61" title="Link to this heading">¶</a></h2>
+<section id="id64">
+<h2>Notes<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h2>
 <p>Array flags provide information about how the memory area used
 for the array is to be interpreted. There are 7 Boolean flags
 in use, only three of which can be changed by the user:
@@ -1624,8 +1788,8 @@ called, the base array will be updated with the contents of this array.</p>
 <p>All flags can be accessed using the single (upper case) letter as well
 as the full name.</p>
 </section>
-<section id="id62">
-<h2>Examples<a class="headerlink" href="#id62" title="Link to this heading">¶</a></h2>
+<section id="id65">
+<h2>Examples<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
 <span class="gp">... </span>              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
@@ -1651,7 +1815,7 @@ as the full name.</p>
 <span class="go">  WRITEBACKIFCOPY : False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">setflags</span><span class="p">(</span><span class="n">uic</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">"&lt;stdin&gt;"</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
 <span class="gr">ValueError</span>: <span class="n">cannot set WRITEBACKIFCOPY flag to True</span>
 </pre></div>
 </div>
@@ -1660,11 +1824,16 @@ as the full name.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.sort">
-<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.sort" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">stable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.sort" title="Link to this definition">¶</a></dt>
 <dd><p>Sort an array in-place. Refer to <cite>numpy.sort</cite> for full documentation.</p>
-<section id="id63">
-<h2>Parameters<a class="headerlink" href="#id63" title="Link to this heading">¶</a></h2>
-<dl class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id66">
+<h2>Parameters<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h2>
+<dl>
 <dt>axis<span class="classifier">int, optional</span></dt><dd><p>Axis along which to sort. Default is -1, which means sort along the
 last axis.</p>
 </dd>
@@ -1679,22 +1848,30 @@ be specified as a string, and not all fields need be specified,
 but unspecified fields will still be used, in the order in which
 they come up in the dtype, to break ties.</p>
 </dd>
+<dt>stable<span class="classifier">bool, optional</span></dt><dd><p>Sort stability. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the returned array will maintain
+the relative order of <code class="docutils literal notranslate"><span class="pre">a</span></code> values which compare as equal.
+If <code class="docutils literal notranslate"><span class="pre">False</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>, this is not guaranteed. Internally,
+this option selects <code class="docutils literal notranslate"><span class="pre">kind='stable'</span></code>. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.0.0.</span></p>
+</div>
+</dd>
 </dl>
 </section>
-<section id="id64">
-<h2>See Also<a class="headerlink" href="#id64" title="Link to this heading">¶</a></h2>
+<section id="id67">
+<h2>See Also<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h2>
 <p>numpy.sort : Return a sorted copy of an array.
 numpy.argsort : Indirect sort.
 numpy.lexsort : Indirect stable sort on multiple keys.
 numpy.searchsorted : Find elements in sorted array.
 numpy.partition: Partial sort.</p>
 </section>
-<section id="id65">
-<h2>Notes<a class="headerlink" href="#id65" title="Link to this heading">¶</a></h2>
+<section id="id68">
+<h2>Notes<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h2>
 <p>See <cite>numpy.sort</cite> for notes on the different sorting algorithms.</p>
 </section>
-<section id="id66">
-<h2>Examples<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h2>
+<section id="id69">
+<h2>Examples<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1709,11 +1886,11 @@ numpy.partition: Partial sort.</p>
 </div>
 <p>Use the <cite>order</cite> keyword to specify a field to use when sorting a
 structured array:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;S1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="s1">'a'</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s1">'c'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'S1'</span><span class="p">),</span> <span class="p">(</span><span class="s1">'y'</span><span class="p">,</span> <span class="nb">int</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s1">'y'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
-<span class="go">array([(b&#39;c&#39;, 1), (b&#39;a&#39;, 2)],</span>
-<span class="go">      dtype=[(&#39;x&#39;, &#39;S1&#39;), (&#39;y&#39;, &#39;&lt;i8&#39;)])</span>
+<span class="go">array([(b'c', 1), (b'a', 2)],</span>
+<span class="go">      dtype=[('x', 'S1'), ('y', '&lt;i8')])</span>
 </pre></div>
 </div>
 </section>
@@ -1724,41 +1901,61 @@ structured array:</p>
 <span class="sig-name descname"><span class="pre">squeeze</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.squeeze" title="Link to this definition">¶</a></dt>
 <dd><p>Remove axes of length one from <cite>a</cite>.</p>
 <p>Refer to <cite>numpy.squeeze</cite> for full documentation.</p>
-<section id="id67">
-<h2>See Also<a class="headerlink" href="#id67" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_AnyShape, _DTypeT_co]</span></p>
+</dd>
+</dl>
+<section id="id70">
+<h2>See Also<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h2>
 <p>numpy.squeeze : equivalent function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.std">
-<span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.std" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.std" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the standard deviation of the array elements along given axis.</p>
 <p>Refer to <cite>numpy.std</cite> for full documentation.</p>
-<section id="id68">
-<h2>See Also<a class="headerlink" href="#id68" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id71">
+<h2>See Also<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h2>
 <p>numpy.std : equivalent function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.sum">
-<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.sum" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.sum" title="Link to this definition">¶</a></dt>
 <dd><p>Return the sum of the array elements over the given axis.</p>
 <p>Refer to <cite>numpy.sum</cite> for full documentation.</p>
-<section id="id69">
-<h2>See Also<a class="headerlink" href="#id69" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT</span></p>
+</dd>
+</dl>
+<section id="id72">
+<h2>See Also<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h2>
 <p>numpy.sum : equivalent function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.swapaxes">
-<span class="sig-name descname"><span class="pre">swapaxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.swapaxes" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">swapaxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis2</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.swapaxes" title="Link to this definition">¶</a></dt>
 <dd><p>Return a view of the array with <cite>axis1</cite> and <cite>axis2</cite> interchanged.</p>
 <p>Refer to <cite>numpy.swapaxes</cite> for full documentation.</p>
-<section id="id70">
-<h2>See Also<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
+<section id="id73">
+<h2>See Also<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h2>
 <p>numpy.swapaxes : equivalent function</p>
 </section>
 </dd></dl>
@@ -1768,16 +1965,39 @@ structured array:</p>
 <span class="sig-name descname"><span class="pre">take</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raise'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.take" title="Link to this definition">¶</a></dt>
 <dd><p>Return an array formed from the elements of <cite>a</cite> at the given indices.</p>
 <p>Refer to <cite>numpy.take</cite> for full documentation.</p>
-<section id="id71">
-<h2>See Also<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT</span></p>
+</dd>
+</dl>
+<section id="id74">
+<h2>See Also<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h2>
 <p>numpy.take : equivalent function</p>
 </section>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.to_device">
-<span class="sig-name descname"><span class="pre">to_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.to_device" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.to_device" title="Link to this definition">¶</a></dt>
+<dd><p>For Array API compatibility.  Since NumPy only supports CPU arrays, this
+method is a no-op that returns the same array.</p>
+<section id="id75">
+<h2>Parameters<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>device<span class="classifier">“cpu”</span></dt><dd><p>Must be <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code>.</p>
+</dd>
+<dt>stream<span class="classifier">None, optional</span></dt><dd><p>Currently unsupported.</p>
+</dd>
+</dl>
+</section>
+<section id="id76">
+<h2>Returns<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>out<span class="classifier">Self</span></dt><dd><p>Returns the same array.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.tobytes">
@@ -1786,8 +2006,8 @@ structured array:</p>
 <p>Constructs Python bytes showing a copy of the raw contents of
 data memory. The bytes object is produced in C-order by default.
 This behavior is controlled by the <code class="docutils literal notranslate"><span class="pre">order</span></code> parameter.</p>
-<section id="id72">
-<h2>Parameters<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h2>
+<section id="id77">
+<h2>Parameters<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>order<span class="classifier">{‘C’, ‘F’, ‘A’}, optional</span></dt><dd><p>Controls the memory layout of the bytes object. ‘C’ means C-order,
 ‘F’ means F-order, ‘A’ (short for <em>Any</em>) means ‘F’ if <cite>a</cite> is
@@ -1795,31 +2015,31 @@ Fortran contiguous, ‘C’ otherwise. Default is ‘C’.</p>
 </dd>
 </dl>
 </section>
-<section id="id73">
-<h2>Returns<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h2>
+<section id="id78">
+<h2>Returns<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>s<span class="classifier">bytes</span></dt><dd><p>Python bytes exhibiting a copy of <cite>a</cite>’s raw data.</p>
 </dd>
 </dl>
 </section>
-<section id="id74">
-<h2>See also<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h2>
+<section id="id79">
+<h2>See also<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>frombuffer</dt><dd><p>Inverse of this operation, construct a 1-dimensional array from Python
 bytes.</p>
 </dd>
 </dl>
 </section>
-<section id="id75">
-<h2>Examples<a class="headerlink" href="#id75" title="Link to this heading">¶</a></h2>
+<section id="id80">
+<h2>Examples<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;&lt;u2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">'&lt;u2'</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
-<span class="go">b&#39;\x00\x00\x01\x00\x02\x00\x03\x00&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
+<span class="go">b'\x00\x00\x01\x00\x02\x00\x03\x00'</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">'C'</span><span class="p">)</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
-<span class="go">b&#39;\x00\x00\x02\x00\x01\x00\x03\x00&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">tobytes</span><span class="p">(</span><span class="s1">'F'</span><span class="p">)</span>
+<span class="go">b'\x00\x00\x02\x00\x01\x00\x03\x00'</span>
 </pre></div>
 </div>
 </section>
@@ -1827,13 +2047,13 @@ bytes.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.tofile">
-<span class="sig-name descname"><span class="pre">tofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%s'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.tofile" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">tofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fid</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%s'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.tofile" title="Link to this definition">¶</a></dt>
 <dd><p>Write array to a file as text or binary (default).</p>
 <p>Data is always written in ‘C’ order, independent of the order of <cite>a</cite>.
 The data produced by this method can be recovered using the function
 fromfile().</p>
-<section id="id76">
-<h2>Parameters<a class="headerlink" href="#id76" title="Link to this heading">¶</a></h2>
+<section id="id81">
+<h2>Parameters<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>fid<span class="classifier">file or str or Path</span></dt><dd><p>An open file object, or a string containing a filename.</p>
 </dd>
@@ -1847,8 +2067,8 @@ it to the closest Python type, and then using “format” % item.</p>
 </dd>
 </dl>
 </section>
-<section id="id77">
-<h2>Notes<a class="headerlink" href="#id77" title="Link to this heading">¶</a></h2>
+<section id="id82">
+<h2>Notes<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h2>
 <p>This is a convenience function for quick storage of array data.
 Information on endianness and precision is lost, so this method is not a
 good choice for files intended to archive data or transport data between
@@ -1868,27 +2088,32 @@ or file-like objects that do not support <code class="docutils literal notransla
 <dd><p>Return the array as an <code class="docutils literal notranslate"><span class="pre">a.ndim</span></code>-levels deep nested list of Python scalars.</p>
 <p>Return a copy of the array data as a (nested) Python list.
 Data items are converted to the nearest compatible builtin Python type, via
-the <cite>~numpy.ndarray.item</cite> function.</p>
+the <cite>~numpy.ndarray.item</cite> method.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">a.ndim</span></code> is 0, then since the depth of the nested list is 0, it will
 not be a list at all, but a simple Python scalar.</p>
-<section id="id78">
-<h2>Parameters<a class="headerlink" href="#id78" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id83">
+<h2>Parameters<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h2>
 <p>none</p>
 </section>
-<section id="id79">
-<h2>Returns<a class="headerlink" href="#id79" title="Link to this heading">¶</a></h2>
+<section id="id84">
+<h2>Returns<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>y<span class="classifier">object, or list of object, or list of list of object, or …</span></dt><dd><p>The possibly nested list of array elements.</p>
 </dd>
 </dl>
 </section>
-<section id="id80">
-<h2>Notes<a class="headerlink" href="#id80" title="Link to this heading">¶</a></h2>
+<section id="id85">
+<h2>Notes<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h2>
 <p>The array may be recreated via <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">np.array(a.tolist())</span></code>, although this
 may sometimes lose precision.</p>
 </section>
-<section id="id81">
-<h2>Examples<a class="headerlink" href="#id81" title="Link to this heading">¶</a></h2>
+<section id="id86">
+<h2>Examples<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h2>
 <p>For a 1D array, <code class="docutils literal notranslate"><span class="pre">a.tolist()</span></code> is almost the same as <code class="docutils literal notranslate"><span class="pre">list(a)</span></code>,
 except that <code class="docutils literal notranslate"><span class="pre">tolist</span></code> changes numpy scalars to Python scalars:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -1897,12 +2122,12 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a_list</span>
 <span class="go">[np.uint32(1), np.uint32(2)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">a_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="go">&lt;class &#39;numpy.uint32&#39;&gt;</span>
+<span class="go">&lt;class 'numpy.uint32'&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a_tolist</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a_tolist</span>
 <span class="go">[1, 2]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">a_tolist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="go">&lt;class &#39;int&#39;&gt;</span>
+<span class="go">&lt;class 'int'&gt;</span>
 </pre></div>
 </div>
 <p>Additionally, for a 2D array, <code class="docutils literal notranslate"><span class="pre">tolist</span></code> applies recursively:</p>
@@ -1931,8 +2156,13 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <span class="sig-name descname"><span class="pre">trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.trace" title="Link to this definition">¶</a></dt>
 <dd><p>Return the sum along diagonals of the array.</p>
 <p>Refer to <cite>numpy.trace</cite> for full documentation.</p>
-<section id="id82">
-<h2>See Also<a class="headerlink" href="#id82" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id87">
+<h2>See Also<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h2>
 <p>numpy.trace : equivalent function</p>
 </section>
 </dd></dl>
@@ -1942,8 +2172,13 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <span class="sig-name descname"><span class="pre">transpose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">axes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.transpose" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a view of the array with axes transposed.</p>
 <p>Refer to <cite>numpy.transpose</cite> for full documentation.</p>
-<section id="id83">
-<h2>Parameters<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
+<section id="id88">
+<h2>Parameters<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h2>
 <p>axes : None, tuple of ints, or <cite>n</cite> ints</p>
 <blockquote>
 <div><ul class="simple">
@@ -1955,21 +2190,21 @@ intended simply as a “convenience” alternative to the tuple form).</p></li>
 </ul>
 </div></blockquote>
 </section>
-<section id="id84">
-<h2>Returns<a class="headerlink" href="#id84" title="Link to this heading">¶</a></h2>
+<section id="id89">
+<h2>Returns<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>p<span class="classifier">ndarray</span></dt><dd><p>View of the array with its axes suitably permuted.</p>
 </dd>
 </dl>
 </section>
-<section id="id85">
-<h2>See Also<a class="headerlink" href="#id85" title="Link to this heading">¶</a></h2>
+<section id="id90">
+<h2>See Also<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h2>
 <p>transpose : Equivalent function.
 ndarray.T : Array property returning the array transposed.
-ndarray.reshape : Give a new shape to an array without changing its data.</p>
+ndarray.reshape : Return a reshaped ndarray without changing data.</p>
 </section>
-<section id="id86">
-<h2>Examples<a class="headerlink" href="#id86" title="Link to this heading">¶</a></h2>
+<section id="id91">
+<h2>Examples<a class="headerlink" href="#id91" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
@@ -1998,11 +2233,16 @@ ndarray.reshape : Give a new shape to an array without changing its data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.var">
-<span class="sig-name descname"><span class="pre">var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.var" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.var" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the variance of the array elements, along given axis.</p>
 <p>Refer to <cite>numpy.var</cite> for full documentation.</p>
-<section id="id87">
-<h2>See Also<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a></span></p>
+</dd>
+</dl>
+<section id="id92">
+<h2>See Also<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h2>
 <p>numpy.var : equivalent function</p>
 </section>
 </dd></dl>
@@ -2015,10 +2255,10 @@ ndarray.reshape : Give a new shape to an array without changing its data.</p>
 <p class="admonition-title">Note</p>
 <p>Passing None for <code class="docutils literal notranslate"><span class="pre">dtype</span></code> is different from omitting the parameter,
 since the former invokes <code class="docutils literal notranslate"><span class="pre">dtype(None)</span></code> which is an alias for
-<code class="docutils literal notranslate"><span class="pre">dtype('float64')</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">dtype(np.float64)</span></code>.</p>
 </div>
-<section id="id88">
-<h2>Parameters<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h2>
+<section id="id93">
+<h2>Parameters<a class="headerlink" href="#id93" title="Link to this heading">¶</a></h2>
 <dl class="simple">
 <dt>dtype<span class="classifier">data-type or ndarray sub-class, optional</span></dt><dd><p>Data-type descriptor of the returned view, e.g., float32 or int16.
 Omitting it results in the view having the same data-type as <cite>a</cite>.
@@ -2031,8 +2271,8 @@ of the parameter results in type preservation.</p>
 </dd>
 </dl>
 </section>
-<section id="id89">
-<h2>Notes<a class="headerlink" href="#id89" title="Link to this heading">¶</a></h2>
+<section id="id94">
+<h2>Notes<a class="headerlink" href="#id94" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">a.view()</span></code> is used two different ways:</p>
 <p><code class="docutils literal notranslate"><span class="pre">a.view(some_dtype)</span></code> or <code class="docutils literal notranslate"><span class="pre">a.view(dtype=some_dtype)</span></code> constructs a view
 of the array’s memory with a different data-type.  This can cause a
@@ -2050,23 +2290,23 @@ contiguous. This axis will be resized in the result.</p>
 had to be C-contiguous.</p>
 </div>
 </section>
-<section id="id90">
-<h2>Examples<a class="headerlink" href="#id90" title="Link to this heading">¶</a></h2>
+<section id="id95">
+<h2>Examples<a class="headerlink" href="#id95" title="Link to this heading">¶</a></h2>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">),</span> <span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)])</span>
 </pre></div>
 </div>
 <p>Viewing array data using a different type and dtype:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nonneg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nonneg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">([(</span><span class="s2">"a"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="p">(</span><span class="s2">"b"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">nonneg</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="s2">"a"</span><span class="p">]</span>
 <span class="go">array([-1], dtype=int8)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">a</span>
 <span class="go">array([255], dtype=uint8)</span>
 </pre></div>
 </div>
 <p>Creating a view on a structured array so it can be used in calculations</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">),</span> <span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xv</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">xv</span>
 <span class="go">array([[1, 2],</span>
@@ -2078,7 +2318,7 @@ had to be C-contiguous.</p>
 <p>Making changes to the view changes the underlying array</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">xv</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
-<span class="go">array([(1, 20), (3,  4)], dtype=[(&#39;a&#39;, &#39;i1&#39;), (&#39;b&#39;, &#39;i1&#39;)])</span>
+<span class="go">array([(1, 20), (3,  4)], dtype=[('a', 'i1'), ('b', 'i1')])</span>
 </pre></div>
 </div>
 <p>Using a view to convert an array to a recarray:</p>
@@ -2090,7 +2330,7 @@ had to be C-contiguous.</p>
 <p>Views share data:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">np.record((9, 10), dtype=[(&#39;a&#39;, &#39;i1&#39;), (&#39;b&#39;, &#39;i1&#39;)])</span>
+<span class="go">np.record((9, 10), dtype=[('a', 'i1'), ('b', 'i1')])</span>
 </pre></div>
 </div>
 <p>Views that change the dtype size (bytes per entry) should normally be
@@ -2100,14 +2340,14 @@ avoided on arrays defined by slices, transposes, fortran-ordering, etc.:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span>
 <span class="go">array([[1, 3],</span>
 <span class="go">       [4, 6]], dtype=int16)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">'width'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">),</span> <span class="p">(</span><span class="s1">'length'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)])</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="w">    </span><span class="o">...</span>
 <span class="gr">ValueError</span>: <span class="n">To change to a dtype of a different size, the last axis must be contiguous</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">z</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;length&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">'width'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">),</span> <span class="p">(</span><span class="s1">'length'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">)])</span>
 <span class="go">array([[(1, 3)],</span>
-<span class="go">       [(4, 6)]], dtype=[(&#39;width&#39;, &#39;&lt;i2&#39;), (&#39;length&#39;, &#39;&lt;i2&#39;)])</span>
+<span class="go">       [(4, 6)]], dtype=[('width', '&lt;i2'), ('length', '&lt;i2')])</span>
 </pre></div>
 </div>
 <p>However, views that change dtype are totally fine for arrays with a
@@ -2124,6 +2364,11 @@ contiguous last axis, even if the rest of the axes are not C-contiguous:</p>
 <span class="go">        [5396, 5910]]], dtype=int16)</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">rtype<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+</dd>
+</dl>
 </section>
 </dd></dl>
 

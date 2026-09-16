@@ -28,5 +28,5 @@ pydft\_qmmm.utils.logging.EnergyRecord
    .. automethod:: EnergyRecord.getMessage
    
    
-    
+   
    

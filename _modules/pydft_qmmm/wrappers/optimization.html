@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>pydft_qmmm.wrappers.optimization - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=506bd67a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -435,11 +435,11 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for pydft_qmmm.wrappers.optimization</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;The class for organizing and running optimizations.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""The class for organizing and running optimizations.</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Optimization&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Optimization"</span><span class="p">]</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -469,7 +469,7 @@
 <div class="viewcode-block" id="Optimization">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html#pydft_qmmm.wrappers.optimization.Optimization">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Optimization</span><span class="p">(</span><span class="n">Loggable</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Organizes and performs optimizations.</span>
+<span class="w">    </span><span class="sd">"""Organizes and performs optimizations.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        query: A VMD-like selection query describing the atoms to</span>
@@ -488,7 +488,7 @@
 <span class="sd">    Attributes:</span>
 <span class="sd">        _frame: The current frame of the optimization, defaults to zero</span>
 <span class="sd">            upon instantiation.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">_frame</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -519,7 +519,7 @@
         <span class="c1"># Todo: See if this is desirable or necessary.</span>
         <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">register_plugin</span><span class="p">(</span><span class="n">CalculatorWrap</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;subsystem I&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">register_plugin</span><span class="p">(</span><span class="n">CalculatorCenter</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">system</span>
         <span class="c1"># Apply plugins.</span>
@@ -529,15 +529,15 @@
 <div class="viewcode-block" id="Optimization.optimize">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html#pydft_qmmm.wrappers.optimization.Optimization.optimize">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform the optimization using geomeTRIC.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Perform the optimization using geomeTRIC."""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">geometric</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">geometric.molecule</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DependencyImportError</span><span class="p">(</span>
-                <span class="s2">&quot;geomeTRIC&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;performing geometry optimizations&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;https://github.com/leeping/geomeTRIC&quot;</span><span class="p">,</span>
+                <span class="s2">"geomeTRIC"</span><span class="p">,</span>
+                <span class="s2">"performing geometry optimizations"</span><span class="p">,</span>
+                <span class="s2">"https://github.com/leeping/geomeTRIC"</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="n">opt_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
 
@@ -550,7 +550,7 @@
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">calculate_energy_forces</span><span class="p">()</span>
             <span class="c1"># geomeTRIC wants energies and gradients in a.u.</span>
-            <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="s2">&quot;Total Energy&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">KJMOL_PER_EH</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="s2">"Total Energy"</span><span class="p">]</span> <span class="o">/</span> <span class="n">KJMOL_PER_EH</span>
             <span class="n">G</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">forces</span> <span class="o">/</span> <span class="n">KJMOL_PER_EH</span> <span class="o">/</span> <span class="n">BOHR_PER_ANGSTROM</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">return</span> <span class="n">e</span><span class="p">,</span> <span class="n">G</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]</span>
@@ -562,7 +562,7 @@
 
             <span class="k">def</span><span class="w"> </span><span class="nf">calc_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">dirname</span><span class="p">):</span>
                 <span class="n">energy</span><span class="p">,</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">coords</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-                <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;energy&#39;</span><span class="p">:</span> <span class="n">energy</span><span class="p">,</span> <span class="s1">&#39;gradient&#39;</span><span class="p">:</span> <span class="n">gradient</span><span class="o">.</span><span class="n">ravel</span><span class="p">()}</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s1">'energy'</span><span class="p">:</span> <span class="n">energy</span><span class="p">,</span> <span class="s1">'gradient'</span><span class="p">:</span> <span class="n">gradient</span><span class="o">.</span><span class="n">ravel</span><span class="p">()}</span>
 
         <span class="c1"># Instantiate optimizer.</span>
         <span class="n">molecule</span> <span class="o">=</span> <span class="n">geometric</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">Molecule</span><span class="p">()</span>
@@ -571,7 +571,7 @@
         <span class="n">customengine</span> <span class="o">=</span> <span class="n">CustomEngine</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
 
         <span class="c1"># Run the optimizer.</span>
-        <span class="n">fd</span><span class="p">,</span> <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.tmp&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fd</span><span class="p">,</span> <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">".tmp"</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -585,42 +585,45 @@
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
 
         <span class="c1"># Set positions ot the optimized positions.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">xyzs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">xyzs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">[</span><span class="n">opt_indices</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Optimization.calculate_energy_forces">
 <a class="viewcode-back" href="../../../_autosummary/_autosummary/pydft_qmmm.wrappers.optimization.Optimization.html#pydft_qmmm.wrappers.optimization.Optimization.calculate_energy_forces">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">calculate_energy_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update total system energy and forces on atoms in the system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Update total system energy and forces on atoms in the system.</span>
+<span class="sd">        """</span>
         <span class="n">unwrapped_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">""</span><span class="p">,</span>
             <span class="n">extra</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
-                <span class="s2">&quot;positions&quot;</span><span class="p">:</span> <span class="n">unwrapped_positions</span><span class="p">,</span>
-                <span class="s2">&quot;box&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
+                <span class="s2">"frame"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
+                <span class="s2">"positions"</span><span class="p">:</span> <span class="n">unwrapped_positions</span><span class="p">,</span>
+                <span class="s2">"box"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">base</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">)</span>
         <span class="n">temp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">forces</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">forces</span>
         <span class="n">energy</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;Total Energy&quot;</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span>
-            <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
+            <span class="s2">"Total Energy"</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span>
+            <span class="s2">"."</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">+=</span> <span class="n">temp</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">base</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="s2">&quot;energy&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="p">})</span></div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">"frame"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="s2">"energy"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="p">})</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_register_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plugins</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CalculatorPlugin</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dynamically load plugins for calculators.</span>
+<span class="w">        </span><span class="sd">"""Dynamically load plugins for calculators.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            plugins: A list of plugins to apply to the calculator</span>
 <span class="sd">                object before optimization.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="n">CalculatorPlugin</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">calculator</span><span class="o">.</span><span class="n">register_plugin</span><span class="p">(</span><span class="n">plugin</span><span class="p">)</span>

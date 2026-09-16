@@ -28,5 +28,5 @@ pydft\_qmmm.hamiltonians.hamiltonian.CompositeHamiltonian
    .. automethod:: CompositeHamiltonian.build_calculator
    
    
-    
+   
    

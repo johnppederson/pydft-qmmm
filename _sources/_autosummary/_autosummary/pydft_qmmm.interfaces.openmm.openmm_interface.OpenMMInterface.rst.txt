@@ -98,5 +98,5 @@ pydft\_qmmm.interfaces.openmm.openmm\_interface.OpenMMInterface
    .. automethod:: OpenMMInterface.zero_intramolecular
    
    
-    
+   
    
