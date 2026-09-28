@@ -443,17 +443,19 @@
 <span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">psi4.core</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.interfaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">QMInterface</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.potentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">AtomicPotential</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">BOHR_PER_ANGSTROM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">KJMOL_PER_EH</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDFTQMMMException</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">system_cache</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
@@ -675,20 +677,49 @@
 <span class="sd">            acting on atoms in the system.</span>
 <span class="sd">        """</span>
         <span class="n">wfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="p">()</span>
-        <span class="n">forces</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
+        <span class="n">grads</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">,</span>
             <span class="n">ref_wfn</span><span class="o">=</span><span class="n">wfn</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">forces</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
+        <span class="n">forces</span> <span class="o">=</span> <span class="n">grads</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
         <span class="n">forces_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">qm_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">))</span>
         <span class="n">forces_temp</span><span class="p">[</span><span class="n">qm_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">forces</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potential</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">embed_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem II"</span><span class="p">))</span>
-            <span class="n">forces</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">gradient_on_charges</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
-                <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
-            <span class="p">)</span>
+            <span class="n">grads</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">gradient_on_charges</span><span class="p">()</span>
+            <span class="c1"># `grads` will be `None` if a numerical gradient is</span>
+            <span class="c1"># performed in Psi4, and so the following block</span>
+            <span class="c1"># restores the analytic gradient on from and on the</span>
+            <span class="c1"># embedded point charges.  This requires at least Psi4 1.11.</span>
+            <span class="k">if</span> <span class="n">grads</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span>
+                        <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">(),</span>
+                        <span class="s2">"computePotentialGradients"</span><span class="p">,</span>
+                <span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">PyDFTQMMMException</span><span class="p">(</span>
+                        <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span>
+                            <span class="s2">"</span><span class="se">\n</span><span class="s2">Gradients on embedded point charges "</span>
+                            <span class="s2">"were not calculated, likely because Psi4 "</span>
+                            <span class="s2">"opted for finite-difference gradients.  "</span>
+                            <span class="s2">"PyDFT-QMMM can still calculate the "</span>
+                            <span class="s2">"gradients on embedded point charges, but "</span>
+                            <span class="s2">"only using Psi4 v1.11 or higher.  The "</span>
+                            <span class="s2">"current Psi4 installation does not meet "</span>
+                            <span class="sa">f</span><span class="s2">"this requirement (v</span><span class="si">{</span><span class="n">psi4</span><span class="o">.</span><span class="n">__version__</span><span class="si">}</span><span class="s2"> is "</span>
+                            <span class="s2">"currently installed)."</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span>
+                <span class="n">D</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+                <span class="n">grads</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">computePotentialGradients</span><span class="p">(</span>
+                    <span class="n">wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">(),</span>
+                    <span class="n">D</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">forces</span> <span class="o">=</span> <span class="n">grads</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
+                <span class="n">forces_temp</span><span class="p">[</span><span class="n">qm_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">forces</span>
+                <span class="n">grads</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">gradient_on_charges</span><span class="p">()</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="n">grads</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
             <span class="n">forces_temp</span><span class="p">[</span><span class="n">embed_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">forces</span>
         <span class="k">return</span> <span class="n">forces_temp</span></div>
 
