@@ -6,17 +6,19 @@ and forces.
 """
 from __future__ import annotations
 
+import textwrap
 from dataclasses import dataclass
 from dataclasses import field
 from typing import TYPE_CHECKING
 
 import numpy as np
-import psi4.core
+import psi4
 
 from pydft_qmmm.interfaces import QMInterface
 from pydft_qmmm.potentials import AtomicPotential
 from pydft_qmmm.utils import BOHR_PER_ANGSTROM
 from pydft_qmmm.utils import KJMOL_PER_EH
+from pydft_qmmm.utils import PyDFTQMMMException
 from pydft_qmmm.utils import system_cache
 
 if TYPE_CHECKING:
@@ -222,20 +224,49 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
             acting on atoms in the system.
         """
         wfn = self._generate_wavefunction()
-        forces = psi4.gradient(
+        grads = psi4.gradient(
             self.functional,
             ref_wfn=wfn,
         )
-        forces = forces.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
+        forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
         forces_temp = np.zeros(self.system.positions.shape)
         qm_indices = sorted(self.system.select("subsystem I"))
         forces_temp[qm_indices, :] = forces
         if self._generate_external_potential() is not None:
             embed_indices = sorted(self.system.select("subsystem II"))
-            forces = (
-                wfn.external_pot().gradient_on_charges().np
-                * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
-            )
+            grads = wfn.external_pot().gradient_on_charges()
+            # `grads` will be `None` if a numerical gradient is
+            # performed in Psi4, and so the following block
+            # restores the analytic gradient on from and on the
+            # embedded point charges.  This requires at least Psi4 1.11.
+            if grads is None:
+                if not hasattr(
+                        wfn.external_pot(),
+                        "computePotentialGradients",
+                ):
+                    raise PyDFTQMMMException(
+                        textwrap.fill(
+                            "\nGradients on embedded point charges "
+                            "were not calculated, likely because Psi4 "
+                            "opted for finite-difference gradients.  "
+                            "PyDFT-QMMM can still calculate the "
+                            "gradients on embedded point charges, but "
+                            "only using Psi4 v1.11 or higher.  The "
+                            "current Psi4 installation does not meet "
+                            f"this requirement (v{psi4.__version__} is "
+                            "currently installed).",
+                        ),
+                    )
+                D = wfn.Da()
+                D.add(wfn.Db())
+                grads = wfn.external_pot().computePotentialGradients(
+                    wfn.basisset(),
+                    D,
+                )
+                forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
+                forces_temp[qm_indices, :] += forces
+                grads = wfn.external_pot().gradient_on_charges()
+            forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
             forces_temp[embed_indices, :] = forces
         return forces_temp
 

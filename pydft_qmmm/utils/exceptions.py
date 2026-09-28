@@ -3,6 +3,7 @@ r"""A module containing PyDFT-QMMM exception classes.
 from __future__ import annotations
 
 __all__ = [
+    "PyDFTQMMMException",
     "DependencyImportError",
     "PluginImportError",
     "InterfaceImportError",
