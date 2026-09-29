@@ -22,6 +22,8 @@ from pydft_qmmm.utils import PyDFTQMMMException
 from pydft_qmmm.utils import system_cache
 
 if TYPE_CHECKING:
+    from typing import Any
+
     from numpy.typing import NDArray
     from pydft_qmmm.potentials import ElectronicPotential
     from pydft_qmmm import System  # noqa: F401
@@ -71,7 +73,6 @@ class Psi4Interface(QMInterface):
                 QM calculations.
         """
         self.potentials.append(potential)
-        self.update_options(perturb_h=True, perturb_with="EMBPOT")
 
     @system_cache("positions", "charges", "elements", "subsystems")
     def _generate_wavefunction(self) -> psi4.core.Wavefunction:
@@ -84,33 +85,11 @@ class Psi4Interface(QMInterface):
         if not self.frame[0] % self.output_interval:
             psi4.core.set_output_file(self.output_file, True)
         molecule = self._generate_molecule()
-        if self.potentials:
-            basis_set = psi4.core.BasisSet.build(
-                molecule,
-                "BASIS",
-                psi4.core.get_global_option("BASIS"),
-            )
-            grid = psi4.core.DFTGrid.build(molecule, basis_set)
-            blocks = []
-            for block in grid.blocks():
-                x = block.x().np
-                y = block.y().np
-                z = block.z().np
-                w = block.w().np
-                blocks.append(np.stack((x, y, z, w), axis=-1))
-            xyzw = np.concatenate(tuple(blocks), axis=0)
-            v = np.zeros_like(xyzw[:, 0]).reshape(-1, 1)
-            for potential in self.potentials:
-                v += potential.compute_potential(
-                    xyzw[:, :-1] / BOHR_PER_ANGSTROM,
-                )
-            data = np.concatenate((xyzw, v), axis=1)
-            np.savetxt("EMBPOT", data, header=f"{len(data)}", comments="")
         _, wfn = psi4.energy(
             self.functional,
             return_wfn=True,
             molecule=molecule,
-            external_potentials=self._generate_external_potential(),
+            external_potentials=self._generate_external_potentials(),
         )
         wfn.to_file(
             wfn.get_scratch_filename(180),
@@ -153,7 +132,7 @@ class Psi4Interface(QMInterface):
         return c1_molecule
 
     @system_cache("positions", "charges", "subsystems")
-    def _generate_external_potential(self) -> NDArray[np.float64] | None:
+    def _generate_external_potentials(self) -> list[Any] | None:
         r"""Generate the data structure needed to perform embedding.
 
         Returns:
@@ -161,20 +140,83 @@ class Psi4Interface(QMInterface):
             (:math:`e`) that will be electrostatically embedded by Psi4
             during calculations.
         """
-        external_potential = []
         embedding = sorted(self.system.select("subsystem II"))
+        external_potentials: list[Any] = []
+        point_charges = []
         for i in embedding:
-            external_potential.append(
+            point_charges.append(
                 (
                     self.system.charges[i],
-                    self.system.positions[i, 0] * BOHR_PER_ANGSTROM,
-                    self.system.positions[i, 1] * BOHR_PER_ANGSTROM,
-                    self.system.positions[i, 2] * BOHR_PER_ANGSTROM,
+                    [
+                        self.system.positions[i, 0] * BOHR_PER_ANGSTROM,
+                        self.system.positions[i, 1] * BOHR_PER_ANGSTROM,
+                        self.system.positions[i, 2] * BOHR_PER_ANGSTROM,
+                    ],
                 ),
             )
-        if not external_potential:
+        if embedding:
+            external_potentials.append(point_charges)
+        else:
+            external_potentials.append(None)
+        # PyDFT-QMMM does not currently support diffuse embedding.
+        external_potentials.append(None)
+        if self.potentials:
+            numint = self._generate_numinthelper()
+            v_grid = self._generate_potential()
+            potential = numint.potential_integral(v_grid).np
+            external_potentials.append(potential)
+        else:
+            external_potentials.append(None)
+        if external_potentials is [None, None, None]:
             return None
-        return np.array(external_potential)
+        return external_potentials
+
+    @system_cache("positions", "elements", "subsystems")
+    def _generate_numinthelper(self) -> psi4.core.NumIntHelper:
+        """Generate the Psi4 NumIntHelper object.
+
+        Returns:
+            The Psi4 NumIntHelper object, which can evaluate integrals
+            for arbitrary potentials via numerical quadrature.
+        """
+        molecule = self._generate_molecule()
+        basis_set = psi4.core.BasisSet.build(
+            molecule,
+            "BASIS",
+            psi4.core.get_global_option("BASIS"),
+        )
+        grid = psi4.core.DFTGrid.build(molecule, basis_set)
+        numinthelper = psi4.core.NumIntHelper(grid)
+        return numinthelper
+
+    @system_cache("positions", "elements", "subsystems")
+    def _generate_potential(self) -> list[psi4.core.Vector]:
+        """Generate the potential grid from ElectronicPotential objects.
+
+        Returns:
+            A list of Psi4 Vector objects containing the potential
+            evaluated at the points on the Psi4 DFTGrid object.
+        """
+        numint = self._generate_numinthelper()
+        blocks = []
+        indices = []
+        i = 0
+        for block in numint.numint_grid().blocks():
+            x = block.x().np
+            y = block.y().np
+            z = block.z().np
+            blocks.append(np.stack((x, y, z), axis=-1))
+            indices.append(i)
+            i += block.npoints()
+        xyz = np.concatenate(tuple(blocks), axis=0)
+        v = np.zeros_like(xyz[:, 0])
+        for potential in self.potentials:
+            v += potential.compute_potential(
+                xyz / BOHR_PER_ANGSTROM,
+            ).flatten()
+        v_split = np.split(v, indices)
+        v_grid = [psi4.core.Vector.from_array(x) for x in v_split[1:]]
+        return v_grid
 
     def update_options(self, **kwargs: psi4_utils.Psi4Options) -> None:
         """Set additional options for Psi4.
@@ -223,16 +265,18 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
             The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`)
             acting on atoms in the system.
         """
+        qm_indices = sorted(self.system.select("subsystem I"))
+        forces_temp = np.zeros(self.system.positions.shape)
         wfn = self._generate_wavefunction()
         grads = psi4.gradient(
             self.functional,
             ref_wfn=wfn,
         )
         forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
-        forces_temp = np.zeros(self.system.positions.shape)
-        qm_indices = sorted(self.system.select("subsystem I"))
-        forces_temp[qm_indices, :] = forces
-        if self._generate_external_potential() is not None:
+        forces_temp[qm_indices, :] += forces
+        if self._generate_external_potentials() is None:
+            return forces_temp
+        if self._generate_external_potentials()[0] is not None:
             embed_indices = sorted(self.system.select("subsystem II"))
             grads = wfn.external_pot().gradient_on_charges()
             # `grads` will be `None` if a numerical gradient is
@@ -267,7 +311,15 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
                 forces_temp[qm_indices, :] += forces
                 grads = wfn.external_pot().gradient_on_charges()
             forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
-            forces_temp[embed_indices, :] = forces
+            forces_temp[embed_indices, :] += forces
+        if self._generate_external_potentials()[2] is not None:
+            numint = self._generate_numinthelper()
+            v_grid = self._generate_potential()
+            D = wfn.Da()
+            D.add(wfn.Db())
+            grads = numint.potential_gradient(v_grid, D)
+            forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
+            forces_temp[qm_indices, :] += forces
         return forces_temp
 
     def compute_components(self) -> dict[str, float]:
