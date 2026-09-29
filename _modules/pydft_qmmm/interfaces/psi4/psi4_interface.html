@@ -459,6 +459,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">system_cache</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
     <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.potentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">ElectronicPotential</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm</span><span class="w"> </span><span class="kn">import</span> <span class="n">System</span>  <span class="c1"># noqa: F401</span>
@@ -511,8 +513,7 @@
 <span class="sd">            potential: The electronic potential to incorporate into</span>
 <span class="sd">                QM calculations.</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">potential</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_options</span><span class="p">(</span><span class="n">perturb_h</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">perturb_with</span><span class="o">=</span><span class="s2">"EMBPOT"</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">potential</span><span class="p">)</span></div>
 
 
     <span class="nd">@system_cache</span><span class="p">(</span><span class="s2">"positions"</span><span class="p">,</span> <span class="s2">"charges"</span><span class="p">,</span> <span class="s2">"elements"</span><span class="p">,</span> <span class="s2">"subsystems"</span><span class="p">)</span>
@@ -526,33 +527,11 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_interval</span><span class="p">:</span>
             <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">set_output_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="n">molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_molecule</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="p">:</span>
-            <span class="n">basis_set</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
-                <span class="n">molecule</span><span class="p">,</span>
-                <span class="s2">"BASIS"</span><span class="p">,</span>
-                <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s2">"BASIS"</span><span class="p">),</span>
-            <span class="p">)</span>
-            <span class="n">grid</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">DFTGrid</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">basis_set</span><span class="p">)</span>
-            <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">grid</span><span class="o">.</span><span class="n">blocks</span><span class="p">():</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">x</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">y</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
-                <span class="n">z</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">z</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
-                <span class="n">w</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">w</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
-                <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">w</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
-            <span class="n">xyzw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">blocks</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xyzw</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">potential</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="p">:</span>
-                <span class="n">v</span> <span class="o">+=</span> <span class="n">potential</span><span class="o">.</span><span class="n">compute_potential</span><span class="p">(</span>
-                    <span class="n">xyzw</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">xyzw</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">"EMBPOT"</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">wfn</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">energy</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">,</span>
             <span class="n">return_wfn</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">molecule</span><span class="o">=</span><span class="n">molecule</span><span class="p">,</span>
-            <span class="n">external_potentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potential</span><span class="p">(),</span>
+            <span class="n">external_potentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potentials</span><span class="p">(),</span>
         <span class="p">)</span>
         <span class="n">wfn</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span>
             <span class="n">wfn</span><span class="o">.</span><span class="n">get_scratch_filename</span><span class="p">(</span><span class="mi">180</span><span class="p">),</span>
@@ -595,7 +574,7 @@
         <span class="k">return</span> <span class="n">c1_molecule</span>
 
     <span class="nd">@system_cache</span><span class="p">(</span><span class="s2">"positions"</span><span class="p">,</span> <span class="s2">"charges"</span><span class="p">,</span> <span class="s2">"subsystems"</span><span class="p">)</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_external_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_external_potentials</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">"""Generate the data structure needed to perform embedding.</span>
 
 <span class="sd">        Returns:</span>
@@ -603,20 +582,83 @@
 <span class="sd">            (:math:`e`) that will be electrostatically embedded by Psi4</span>
 <span class="sd">            during calculations.</span>
 <span class="sd">        """</span>
-        <span class="n">external_potential</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">embedding</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem II"</span><span class="p">))</span>
+        <span class="n">external_potentials</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">point_charges</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">embedding</span><span class="p">:</span>
-            <span class="n">external_potential</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">point_charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+                    <span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+                    <span class="p">],</span>
                 <span class="p">),</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">external_potential</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">embedding</span><span class="p">:</span>
+            <span class="n">external_potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point_charges</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">external_potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># PyDFT-QMMM does not currently support diffuse embedding.</span>
+        <span class="n">external_potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="p">:</span>
+            <span class="n">numint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_numinthelper</span><span class="p">()</span>
+            <span class="n">v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_potential</span><span class="p">()</span>
+            <span class="n">potential</span> <span class="o">=</span> <span class="n">numint</span><span class="o">.</span><span class="n">potential_integral</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span><span class="o">.</span><span class="n">np</span>
+            <span class="n">external_potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">potential</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">external_potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">external_potentials</span> <span class="ow">is</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">external_potential</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">external_potentials</span>
+
+    <span class="nd">@system_cache</span><span class="p">(</span><span class="s2">"positions"</span><span class="p">,</span> <span class="s2">"elements"</span><span class="p">,</span> <span class="s2">"subsystems"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_numinthelper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">NumIntHelper</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Generate the Psi4 NumIntHelper object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The Psi4 NumIntHelper object, which can evaluate integrals</span>
+<span class="sd">            for arbitrary potentials via numerical quadrature.</span>
+<span class="sd">        """</span>
+        <span class="n">molecule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_molecule</span><span class="p">()</span>
+        <span class="n">basis_set</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">BasisSet</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+            <span class="n">molecule</span><span class="p">,</span>
+            <span class="s2">"BASIS"</span><span class="p">,</span>
+            <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s2">"BASIS"</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">DFTGrid</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">molecule</span><span class="p">,</span> <span class="n">basis_set</span><span class="p">)</span>
+        <span class="n">numinthelper</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">NumIntHelper</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">numinthelper</span>
+
+    <span class="nd">@system_cache</span><span class="p">(</span><span class="s2">"positions"</span><span class="p">,</span> <span class="s2">"elements"</span><span class="p">,</span> <span class="s2">"subsystems"</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_potential</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Generate the potential grid from ElectronicPotential objects.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of Psi4 Vector objects containing the potential</span>
+<span class="sd">            evaluated at the points on the Psi4 DFTGrid object.</span>
+<span class="sd">        """</span>
+        <span class="n">numint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_numinthelper</span><span class="p">()</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">numint</span><span class="o">.</span><span class="n">numint_grid</span><span class="p">()</span><span class="o">.</span><span class="n">blocks</span><span class="p">():</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">x</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">y</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">z</span><span class="p">()</span><span class="o">.</span><span class="n">np</span>
+            <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="n">block</span><span class="o">.</span><span class="n">npoints</span><span class="p">()</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">blocks</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">potential</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">+=</span> <span class="n">potential</span><span class="o">.</span><span class="n">compute_potential</span><span class="p">(</span>
+                <span class="n">xyz</span> <span class="o">/</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">v_split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="n">v_grid</span> <span class="o">=</span> <span class="p">[</span><span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Vector</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_split</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+        <span class="k">return</span> <span class="n">v_grid</span>
 
 <div class="viewcode-block" id="Psi4Interface.update_options">
 <a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.update_options">[docs]</a>
@@ -676,16 +718,18 @@
 <span class="sd">            The forces (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`)</span>
 <span class="sd">            acting on atoms in the system.</span>
 <span class="sd">        """</span>
+        <span class="n">qm_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">))</span>
+        <span class="n">forces_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">wfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="p">()</span>
         <span class="n">grads</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">functional</span><span class="p">,</span>
             <span class="n">ref_wfn</span><span class="o">=</span><span class="n">wfn</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">forces</span> <span class="o">=</span> <span class="n">grads</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
-        <span class="n">forces_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="n">qm_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem I"</span><span class="p">))</span>
-        <span class="n">forces_temp</span><span class="p">[</span><span class="n">qm_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">forces</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potential</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">forces_temp</span><span class="p">[</span><span class="n">qm_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">forces</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potentials</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">forces_temp</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potentials</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">embed_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"subsystem II"</span><span class="p">))</span>
             <span class="n">grads</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">gradient_on_charges</span><span class="p">()</span>
             <span class="c1"># `grads` will be `None` if a numerical gradient is</span>
@@ -720,7 +764,15 @@
                 <span class="n">forces_temp</span><span class="p">[</span><span class="n">qm_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">forces</span>
                 <span class="n">grads</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">gradient_on_charges</span><span class="p">()</span>
             <span class="n">forces</span> <span class="o">=</span> <span class="n">grads</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
-            <span class="n">forces_temp</span><span class="p">[</span><span class="n">embed_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">forces</span>
+            <span class="n">forces_temp</span><span class="p">[</span><span class="n">embed_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">forces</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potentials</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">numint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_numinthelper</span><span class="p">()</span>
+            <span class="n">v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_potential</span><span class="p">()</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span>
+            <span class="n">D</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+            <span class="n">grads</span> <span class="o">=</span> <span class="n">numint</span><span class="o">.</span><span class="n">potential_gradient</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+            <span class="n">forces</span> <span class="o">=</span> <span class="n">grads</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
+            <span class="n">forces_temp</span><span class="p">[</span><span class="n">qm_indices</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">forces</span>
         <span class="k">return</span> <span class="n">forces_temp</span></div>
 
 
