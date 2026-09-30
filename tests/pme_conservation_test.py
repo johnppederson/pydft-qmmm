@@ -72,6 +72,32 @@ def test_force_mixing_exclusion_preserves_energy_without_extra_forces() -> None:
         )
 
 
+@pytest.mark.parametrize("atom", [1, 2])
+def test_engine_exclusion_force_differentiates_energy_on_mm_atoms(atom) -> None:
+    """Engine force mixing zeroes subsystem I only; MM atoms keep the gradient."""
+    potential = replace(
+        _excluded_potential(), include_forces=False, real_space_cutoff=7.5,
+    )
+    # Off the half-box plane, where the nearest image would flip mid-step.
+    positions = np.asarray(potential.system.positions).copy()
+    positions[2] = [6.5, 6.0, 5.0]
+    potential.system.positions = positions
+    step = 0.001
+    numerical = np.zeros(3)
+    for axis in range(3):
+        potential.system.positions[atom, axis] += step
+        plus = potential.compute_energy()
+        potential.system.positions[atom, axis] -= 2 * step
+        minus = potential.compute_energy()
+        potential.system.positions[atom, axis] += step
+        numerical[axis] = -(plus - minus) / (2 * step)
+
+    forces = potential.compute_forces()
+    assert np.abs(numerical).max() > 1e-3
+    assert forces[atom] == pytest.approx(numerical, abs=1e-4)
+    np.testing.assert_array_equal(forces[0], np.zeros(3))
+
+
 @pytest.mark.parametrize("engine", ["vasp", "pyscf-pbc"])
 def test_engine_coupling_uses_energy_only_exclusion(
         spce_system, tmp_path, engine,

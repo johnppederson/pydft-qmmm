@@ -404,13 +404,16 @@ class PMEExcludedPotential(PMENuclearPotential):
         pme: The helPME-py PME object.
     """
 
-    # Force mixing already removes the matching classical forces.  In
-    # that case the double-counting correction contributes energy only
+    # Force mixing removes the matching classical forces on subsystem I.
+    # With include_forces=False, omit those correction forces; when
+    # real_space_cutoff is set, retain the correction forces on MM atoms.
+    # Without a cutoff, the correction remains energy only
     # (Pederson and McDaniel, JCP 161, 034103, Eq. 9).
     include_forces: bool = True
     # Periodic-engine force mixing removes the complete classical QM
-    # electrostatic force. Its energy correction must include the real-space
-    # remainder and count QM-QM periodic interactions only once.
+    # electrostatic force on subsystem I. Its energy correction must include
+    # the real-space remainder and count QM-QM periodic interactions only
+    # once; subsystem II and III atoms keep its derivative.
     real_space_cutoff: float | None = None
 
     def compute_energy(self) -> float:
@@ -421,8 +424,6 @@ class PMEExcludedPotential(PMENuclearPotential):
         if self.include_forces:
             raise ValueError("Periodic exclusion correction requires energy-only force mixing")
         nuclei = sorted(self.system.select("subsystem I"))
-        mm = sorted(self.system.select("subsystem II or subsystem III"))
-        near = self.system.select("subsystem II")
         positions = np.asarray(self.system.positions)
         charges = np.asarray(self.system.charges)
         coords = np.ascontiguousarray(positions[nuclei])
@@ -440,10 +441,38 @@ class PMEExcludedPotential(PMENuclearPotential):
         # The inherited -q_I phi(all) counts I-I twice. OpenMM contains
         # one half q_I phi(I), with direct intramolecular terms excluded.
         energy += float(0.5 * q[:, 0] @ potential[:, 0])
-        # Base OpenMM retains erfc inside its periodic cutoff. The I-II
-        # Coulomb subtraction plus erf exclusion removes direct erfc for
-        # all II pairs. Cancel the difference, including III real-space tails.
+        return energy + self._real_space_remainder()[0]
+
+    def _real_space_remainder(self) -> tuple[float, NDArray[np.float64]]:
+        r"""Energy and forces of the I-(II, III) real-space remainder.
+
+        Base OpenMM retains erfc inside its periodic cutoff. The I-II
+        Coulomb subtraction plus erf exclusion removes direct erfc for
+        all II pairs. This term cancels the difference, including III
+        real-space tails.
+
+        Returns:
+            The energy (:math:`\mathrm{kJ\;mol^{-1}}`) and the forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) on
+            every atom in the system.
+        """
+        nuclei = sorted(self.system.select("subsystem I"))
+        mm = sorted(self.system.select("subsystem II or subsystem III"))
+        near = self.system.select("subsystem II")
+        positions = np.asarray(self.system.positions)
+        charges = np.asarray(self.system.charges)
+        alpha = self.pme_alpha
         box = np.asarray(self.system.box).T
+
+        def value_and_slope(r: float) -> tuple[float, float]:
+            """erfc(alpha r)/r and its derivative with respect to r."""
+            value = erfc(alpha * r) / r
+            slope = -(value + 2 * alpha / np.sqrt(np.pi)
+                      * np.exp(-(alpha * r) ** 2)) / r
+            return value, slope
+
+        energy = 0.0
+        forces = np.zeros(positions.shape)
         for i in nuclei:
             for j in mm:
                 delta = positions[i] - positions[j]
@@ -452,19 +481,43 @@ class PMEExcludedPotential(PMENuclearPotential):
                 for axis in (2, 1, 0):
                     nearest -= box[axis] * np.floor(nearest[axis] / box[axis, axis] + 0.5)
                 distance = np.linalg.norm(nearest)
-                remainder = (erfc(self.pme_alpha * distance) / distance
-                             if distance < self.real_space_cutoff else 0.0)
+                prefactor = 1389.3545764438198 * charges[i] * charges[j]
+                # dE/dR_i; the image shift is constant, so dE/dR_j = -dE/dR_i.
+                gradient = np.zeros(3)
+                if distance < self.real_space_cutoff:
+                    value, slope = value_and_slope(distance)
+                    energy -= prefactor * value
+                    gradient -= prefactor * slope * nearest / distance
                 if j in near:
-                    remainder -= erfc(self.pme_alpha * direct) / direct
-                energy -= 1389.3545764438198 * charges[i] * charges[j] * remainder
-        return energy
+                    value, slope = value_and_slope(direct)
+                    energy += prefactor * value
+                    gradient += prefactor * slope * delta / direct
+                forces[i] -= gradient
+                forces[j] += gradient
+        return energy, forces
 
 
     def compute_forces(self) -> NDArray[np.float64]:
-        """Differentiate the correction only when its partner forces remain."""
-        if not self.include_forces:
-            return np.zeros_like(self.system.positions)
-        return super().compute_forces()
+        """Differentiate the correction only when its partner forces remain.
+
+        Periodic-engine force mixing removes the classical forces on
+        subsystem I only. The correction energy also depends on the
+        subsystem II and III positions, and OpenMM keeps the matching
+        classical forces there, so those atoms get the full derivative.
+        """
+        if self.include_forces:
+            return super().compute_forces()
+        # A plain array: in-place updates to an observed copy of the
+        # positions would notify the interfaces.
+        forces = np.zeros(np.shape(self.system.positions))
+        if self.real_space_cutoff is None:
+            return forces
+        # The I-I self term depends on subsystem I alone and is dropped
+        # with the other subsystem I forces below.
+        forces += super().compute_forces()
+        forces += self._real_space_remainder()[1]
+        forces[sorted(self.system.select("subsystem I"))] = 0.0
+        return forces
 
     def source_charges(self) -> NDArray[np.float64]:
         r"""Get the excluded force-field charges of Subsystem I.
