@@ -355,7 +355,37 @@ def _non_electrostatic(
             atoms,
             other_atoms,
         )
-        forces.append(new_force)
+        if force.getNonbondedMethod() != force.NoCutoff:
+            # The auxiliary context also contains an uncut Coulomb force.
+            # OpenMM CPU cannot mix cut and uncut CustomNonbondedForces.
+            # Explicit LJ pairs preserve the base cutoff and periodic metric
+            # without changing the Coulomb subtraction's distance convention.
+            cutoff = force.getCutoffDistance() / nanometer
+            expression = "step(rc-r)*4*epsilon*((sigma/r)^12-(sigma/r)^6)"
+            if force.getUseSwitchingFunction():
+                switch = force.getSwitchingDistance() / nanometer
+                expression = (expression + "*(1-10*x^3+15*x^4-6*x^5);"
+                              "x=min(1,max(0,(r-rs)/(rc-rs)))")
+            pairs = openmm.CustomBondForce(expression)
+            pairs.addGlobalParameter("rc", cutoff)
+            if force.getUseSwitchingFunction():
+                pairs.addGlobalParameter("rs", switch)
+            pairs.addPerBondParameter("epsilon")
+            pairs.addPerBondParameter("sigma")
+            pairs.setUsesPeriodicBoundaryConditions(force.usesPeriodicBoundaryConditions())
+            excluded_pairs = {frozenset(pair) for pair in exclusions}
+            for i in sorted(atoms):
+                ei, si = new_force.getParticleParameters(i)
+                for j in sorted(other_atoms):
+                    if frozenset((i, j)) in excluded_pairs:
+                        continue
+                    ej, sj = new_force.getParticleParameters(j)
+                    epsilon = (ei * ej) ** 0.5
+                    if epsilon:
+                        pairs.addBond(i, j, [epsilon, 0.5 * (si + sj)])
+            forces.append(pairs)
+        else:
+            forces.append(new_force)
         if cbf_force.getNumBonds():
             forces.append(cbf_force)
     return forces
@@ -423,11 +453,11 @@ def _exclude_lennard_jones(
     for force in nonbonded_forces:
         for i in atoms:
             q, s, e = force.getParticleParameters(i)
-            force.setParticleParameters(i, q, s/s._value, e*0)
+            force.setParticleParameters(i, q, 1.*s.unit, e*0)
         for i in range(force.getNumExceptions()):
             *p, q, s, e = force.getExceptionParameters(i)
             if set(p) & atoms:
-                force.setExceptionParameters(i, *p, q, s/s._value, e*0)
+                force.setExceptionParameters(i, *p, q, 1.*s.unit, e*0)
 
 
 def _exclude_custom_nonbonded(

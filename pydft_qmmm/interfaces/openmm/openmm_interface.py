@@ -190,6 +190,15 @@ class OpenMMInterface(MMInterface):
         self.base_context.reinitialize()
         self.base_context.setPositions(omm_pos)
 
+    def get_nonbonded_cutoff(self) -> float:
+        """Return the PME real-space cutoff in Å."""
+        forces = [force for force in self.base_context.getSystem().getForces()
+                  if isinstance(force, openmm.NonbondedForce)
+                  and force.getNonbondedMethod() == openmm.NonbondedForce.PME]
+        if len(forces) != 1:
+            raise TypeError(f"{len(forces)} OpenMM Forces have PME cutoffs")
+        return float(forces[0].getCutoffDistance() / openmm.unit.angstrom)
+
     def get_pme_parameters(self) -> tuple[float, tuple[int, int, int], int]:
         r"""Get the parameters used for PME summation.
 
@@ -209,6 +218,12 @@ class OpenMMInterface(MMInterface):
         ]
         if len(pme_forces) != 1:
             raise TypeError(f"{len(pme_forces)} OpenMM Forces have PME params")
+        # getPMEParametersInContext reaches the CPU platform's nonbonded
+        # kernel through a dynamic_cast.  On a node where helpme_py is
+        # loaded -- which QM/MM/PME always does, one import above this
+        # call -- that cast throws std::bad_cast if the kernel has never
+        # run.  Evaluating the context once binds it and the cast holds.
+        self.base_context.getState(getEnergy=True)
         pme_alpha, *pme_gridnumber = pme_forces[0].getPMEParametersInContext(
             self.base_context,
         )

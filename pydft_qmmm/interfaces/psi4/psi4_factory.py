@@ -41,7 +41,9 @@ def psi4_interface_factory(
             written, e.g., the default value of 1 means that output
             will be written every calculation.
         options: Additional options to provide to Psi4.  See
-            `Psi4 options`_ for additional Psi4 options.
+            `Psi4 options`_ for additional Psi4 options.  A ``reference``
+            given here is respected; otherwise one is chosen from the
+            multiplicity.
 
     Returns:
         The Psi4 interface.
@@ -52,6 +54,11 @@ def psi4_interface_factory(
         basis = basis
     psi4.basis_helper(basis, name="default")
     options["basis"] = "default"
+    # Select an unrestricted reference for open-shell calculations.
+    if not any(key.lower() == "reference" for key in options):
+        options["reference"] = "rhf" if multiplicity == 1 else "uhf"
+    if not any(key.lower() == "guess" for key in options):
+        options["guess"] = "sad"
     psi4_utils.set_options(**options)
     output_file = "stdout" if output_file is None else output_file
     wrapper = psi4_interface.Psi4Potential(

@@ -1,0 +1,55 @@
+<ForceField>
+ <AtomTypes>
+  <Type name="OW"    class="OW"    element="O"  mass="15.9994"/>
+  <Type name="HW"    class="HW"    element="H"  mass="1.008"  />
+  <Type name="MC_Cl" class="MC_Cl" element="Cl" mass="35.450" />
+  <Type name="MC_C"  class="MC_C"  element="C"  mass="12.011" />
+  <Type name="MC_H"  class="MC_H"  element="H"  mass="1.008"  />
+ </AtomTypes>
+ <Residues>
+   <Residue name="HOH">
+    <Atom name="O"  type="OW"/>
+    <Atom name="H1" type="HW"/>
+    <Atom name="H2" type="HW"/>
+    <Bond from="0"  to="1"/>
+    <Bond from="0"  to="2"/>
+   </Residue>
+ <Residue name="MCL">
+   <Atom name="CT"  type="MC_C" />
+   <Atom name="Cl1" type="MC_Cl"/>
+   <Atom name="Cl2" type="MC_Cl"/>
+   <Atom name="H1"  type="MC_H" />
+   <Atom name="H2"  type="MC_H" />
+   <Atom name="H3"  type="MC_H" />
+   <Bond from="0"   to="1"/>
+   <Bond from="0"   to="2"/>
+   <Bond from="0"   to="3"/>
+   <Bond from="0"   to="4"/>
+   <Bond from="0"   to="5"/>
+  </Residue>
+ </Residues>
+ <HarmonicBondForce>
+  <Bond type1="OW"    type2="HW"   length="0.09572"  k="502416"  />
+ </HarmonicBondForce>
+ <HarmonicAngleForce>
+  <Angle type1="HW"    type2="OW"   type3="HW"    angle="1.82421"   k="628.02"  />
+ </HarmonicAngleForce>
+ <PeriodicTorsionForce>
+ </PeriodicTorsionForce>
+ <NonbondedForce coulomb14scale="0.5" lj14scale="0.0">
+  <Atom type="OW"    charge="-0.834"  sigma="0.0" epsilon="0.0" />
+  <Atom type="HW"    charge="0.417"   sigma="0.0" epsilon="0.0" />
+  <Atom type="MC_Cl" charge="-1.0" sigma="0.0" epsilon="0.0" />
+  <Atom type="MC_C"  charge="0.25" sigma="0.0" epsilon="0.0" />
+  <Atom type="MC_H"  charge="0.25"  sigma="0.0" epsilon="0.0" />
+ </NonbondedForce>
+ <CustomNonbondedForce energy="4*E*((S/r)^12-(S/r)^6); E=sqrt(eps1*eps2); S=sqrt(sig1*sig2)" bondCutoff="3">
+  <PerParticleParameter name="eps"/>
+  <PerParticleParameter name="sig"/>
+  <Atom type="OW"    sig="0.315061" eps="0.636386" />
+  <Atom type="HW"    sig="0.0"      eps="0.0"      />
+  <Atom type="MC_Cl" sig="0.34"     eps="1.255200" />
+  <Atom type="MC_C"  sig="0.35"     eps="0.276144" />
+  <Atom type="MC_H"  sig="0.25"     eps="0.125520" />
+ </CustomNonbondedForce>
+</ForceField>

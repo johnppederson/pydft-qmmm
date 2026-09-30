@@ -1,0 +1,33 @@
+<ForceField>
+ <AtomTypes>
+  <Type name="spce-O" class="OW" element="O" mass="15.99943"/>
+  <Type name="spce-H" class="HW" element="H" mass="1.007947"/>
+  <Type name="iodide-I" class="IM" element="I" mass="126.90447"/>
+ </AtomTypes>
+ <Residues>
+  <Residue name="HOH">
+   <Atom name="O" type="spce-O"/>
+   <Atom name="H1" type="spce-H"/>
+   <Atom name="H2" type="spce-H"/>
+   <Bond atomName1="O" atomName2="H1"/>
+   <Bond atomName1="O" atomName2="H2"/>
+  </Residue>
+  <Residue name="IOD">
+   <Atom name="I" type="iodide-I"/>
+  </Residue>
+ </Residues>
+ <HarmonicBondForce>
+  <Bond class1="OW" class2="HW" length="0.1" k="462750.4"/>
+ </HarmonicBondForce>
+ <HarmonicAngleForce>
+  <Angle class1="HW" class2="OW" class3="HW" angle="1.91061193216" k="836.8"/>
+ </HarmonicAngleForce>
+ <!-- Water is SPC/E, as in spce.xml.  The iodide Lennard-Jones
+      parameters are the OPLS halide set of Jensen and Jorgensen (2006),
+      sigma = 5.40 Angstrom and epsilon = 0.07 kcal/mol. -->
+ <NonbondedForce coulomb14scale="0.833333" lj14scale="0.5">
+  <Atom type="spce-O" charge="-0.8476" sigma="0.31657195050398818" epsilon="0.6497752"/>
+  <Atom type="spce-H" charge="0.4238" sigma="1" epsilon="0"/>
+  <Atom type="iodide-I" charge="-1.0" sigma="0.540" epsilon="0.29288"/>
+ </NonbondedForce>
+</ForceField>

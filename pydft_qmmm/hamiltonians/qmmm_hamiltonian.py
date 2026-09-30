@@ -20,10 +20,12 @@ from warnings import warn
 import numpy as np
 
 from .hamiltonian import CouplingHamiltonian
+from pydft_qmmm.calculators import PartitionPlugin
 from pydft_qmmm.calculators import PotentialCalculator
 from pydft_qmmm.utils import Subsystem
 from pydft_qmmm.utils import TheoryLevel
 from pydft_qmmm.interfaces import MMInterface
+from pydft_qmmm.interfaces import ElectrostaticCouplingMode
 from pydft_qmmm.interfaces import QMInterface
 from pydft_qmmm.plugins import CentroidPartition
 from pydft_qmmm.utils import compute_lattice_constants
@@ -31,7 +33,6 @@ from pydft_qmmm.utils import compute_lattice_constants
 if TYPE_CHECKING:
     from pydft_qmmm import System
     from pydft_qmmm.calculators import CompositeCalculator
-    from pydft_qmmm.calculators import PartitionPlugin
 
 
 _DEFAULT_FORCE_MATRIX = {
@@ -79,6 +80,8 @@ _SUPPORTED_EMBEDDING = [
     ("electrostatic", "electrostatic"),
 ]
 
+_DEFAULT_PARTITION = object()
+
 
 class QMMMHamiltonian(CouplingHamiltonian):
     r"""A Hamiltonian defining inter-subsystem coupling in QM/MM.
@@ -101,22 +104,51 @@ class QMMMHamiltonian(CouplingHamiltonian):
             lattice edge for QM/MM/PME.
         pme_spline_order: The order of splines used on the FFT grid for
             QM/MM/PME.
+        coupling_mode: ``"conservative"`` removes retained OpenMM energy
+            terms together with their forces. ``"force"`` preserves the
+            historical directional force-mixing behavior.
     """
 
     def __init__(
             self,
             close_range: str = "electrostatic",
             long_range: str = "cutoff",
-            partition: PartitionPlugin | None = CentroidPartition("all", 14.),
+            partition: PartitionPlugin | None | object = _DEFAULT_PARTITION,
             cutoff: int | float | None = None,
             pme_alpha: int | float | None = None,
             pme_gridnumber: int | tuple[int, int, int] | None = None,
             pme_spline_order: int | None = None,
+            coupling_mode: str = "conservative",
     ) -> None:
         if (close_range, long_range) not in _SUPPORTED_EMBEDDING:
-            raise TypeError  # Todo: Make this informative.
-        self.force_matrix = _DEFAULT_FORCE_MATRIX.copy()
-        self.partition = partition
+            raise TypeError # Todo: Make this informative.
+        if coupling_mode not in {"conservative", "force"}:
+            raise ValueError(
+                "coupling_mode must be 'conservative' or 'force'",
+            )
+        if coupling_mode == "force":
+            warn(
+                "coupling_mode='force' is nonconservative because retained "
+                "OpenMM energies have selected force components masked",
+                RuntimeWarning,
+            )
+        self.coupling_mode = coupling_mode
+        # Every Hamiltonian must own its inner mappings.  A shallow copy
+        # would leave them shared with the module template and with other
+        # instances, so configuring one Hamiltonian would mutate all of
+        # them.
+        self.force_matrix = {
+            subsystem: interactions.copy()
+            for subsystem, interactions in _DEFAULT_FORCE_MATRIX.items()
+        }
+        # Build a fresh default for each Hamiltonian while preserving
+        # partition=None as the public way to disable dynamic partitioning.
+        if partition is _DEFAULT_PARTITION:
+            self.partition: PartitionPlugin | None = CentroidPartition(
+                "all", 14.,
+            )
+        else:
+            self.partition = partition
         self.cutoff = cutoff
         self.pme_alpha = pme_alpha
         self.pme_gridnumber = pme_gridnumber
@@ -146,12 +178,36 @@ class QMMMHamiltonian(CouplingHamiltonian):
             if self.cutoff is not None:
                 self.partition.cutoff = self.cutoff
             calculator.register_plugin(self.partition)
+        qm_interface = None
         for calc in calculator.calculators:
             if isinstance(calc, PotentialCalculator):
                 if isinstance(calc.potential, MMInterface):
                     mm_interface = calc.potential
                 if isinstance(calc.potential, QMInterface):
                     qm_interface = calc.potential
+        qm_electrostatics = any(
+            self.force_matrix[Subsystem.I][subsystem] == TheoryLevel.QM
+            for subsystem in (Subsystem.II, Subsystem.III)
+        )
+        # Unlike mm_interface, this runs for every embedding scheme, so a
+        # calculator without a QM interface would otherwise raise
+        # UnboundLocalError rather than anything a reader can act on.
+        if qm_interface is not None:
+            capability = qm_interface.electrostatic_coupling_mode()
+            if (
+                qm_electrostatics
+                and capability is ElectrostaticCouplingMode.UNSUPPORTED
+            ):
+                engine = type(qm_interface).__name__
+                engine = engine.removesuffix("Potential").removesuffix(
+                    "Interface",
+                )
+                raise NotImplementedError(
+                    f"{engine} does not support electrostatic QM/MM coupling",
+                )
+            qm_interface.configure_electrostatic_embedding(qm_electrostatics)
+        else:
+            capability = ElectrostaticCouplingMode.UNSUPPORTED
         if (
             self.force_matrix[Subsystem.I][Subsystem.III]
             == TheoryLevel.QM
@@ -187,24 +243,48 @@ class QMMMHamiltonian(CouplingHamiltonian):
                     ),
                     RuntimeWarning,
                 )
-            pme_nuclei = PMENuclearPotential(
-                system,
-                self.pme_alpha,
-                self.pme_gridnumber,
-                self.pme_spline_order,
-            )
-            pme_exclusion = PMEExcludedPotential(
-                system,
-                pme_alpha,
-                pme_gridnumber,
-                pme_spline_order,
-            )
-            calculator.calculators.extend(
-                [
+            pme_calculators = []
+            # The nuclear term is not universal.  An interface that
+            # applies the electronic potential to its own nuclei -- VASP,
+            # whose plugin adds -sum(ZVAL * V_ext) in force_and_stress --
+            # has already accounted for it, and adding this potential on
+            # top counts the QM nuclei in the reciprocal field twice.
+            if qm_interface is None or not (
+                qm_interface.applies_nuclear_potential()
+            ):
+                pme_nuclei = PMENuclearPotential(
+                    system,
+                    self.pme_alpha,
+                    self.pme_gridnumber,
+                    self.pme_spline_order,
+                    # Use effective nuclear charges for ECP methods.
+                    qm_interface,
+                )
+                pme_calculators.append(
                     PotentialCalculator(system, pme_nuclei),
+                )
+            if not (
+                self.coupling_mode == "conservative"
+                and capability is ElectrostaticCouplingMode.MOLECULAR
+            ):
+                pme_exclusion = PMEExcludedPotential(
+                    system,
+                    self.pme_alpha,
+                    self.pme_gridnumber,
+                    self.pme_spline_order,
+                    include_forces=(
+                        capability is not ElectrostaticCouplingMode.ENGINE
+                    ),
+                    real_space_cutoff=(
+                        mm_interface.get_nonbonded_cutoff()
+                        if capability is ElectrostaticCouplingMode.ENGINE
+                        else None
+                    ),
+                )
+                pme_calculators.append(
                     PotentialCalculator(system, pme_exclusion),
-                ],
-            )
+                )
+            calculator.calculators.extend(pme_calculators)
             pme_electrons = PMEElectronicPotential(
                 system,
                 self.pme_alpha,
@@ -212,7 +292,24 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 self.pme_spline_order,
             )
             qm_interface.add_electronic_potential(pme_electrons)
-        self.apply_exclusions(mm_interface, system)
+        if (
+            self.coupling_mode == "conservative"
+            and capability is ElectrostaticCouplingMode.MOLECULAR
+            and qm_electrostatics
+        ):
+            self.apply_conservative_exclusions(mm_interface, system)
+        else:
+            self.apply_exclusions(mm_interface, system)
+
+    def apply_conservative_exclusions(
+            self,
+            interface: MMInterface,
+            system: System,
+    ) -> None:
+        """Remove molecular QM terms from both OpenMM energy and forces."""
+        qm_atoms = system.select("subsystem I")
+        interface.zero_intramolecular(qm_atoms)
+        interface.zero_charges(qm_atoms)
 
     def apply_exclusions(
             self,

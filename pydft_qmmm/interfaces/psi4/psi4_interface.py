@@ -9,11 +9,13 @@ from __future__ import annotations
 import textwrap
 from dataclasses import dataclass
 from dataclasses import field
+from typing import Any
 from typing import TYPE_CHECKING
 
 import numpy as np
 import psi4
 
+from pydft_qmmm.interfaces import ElectrostaticCouplingMode
 from pydft_qmmm.interfaces import QMInterface
 from pydft_qmmm.potentials import AtomicPotential
 from pydft_qmmm.utils import BOHR_PER_ANGSTROM
@@ -22,12 +24,23 @@ from pydft_qmmm.utils import PyDFTQMMMException
 from pydft_qmmm.utils import system_cache
 
 if TYPE_CHECKING:
-    from typing import Any
-
     from numpy.typing import NDArray
     from pydft_qmmm.potentials import ElectronicPotential
     from pydft_qmmm import System  # noqa: F401
     from . import psi4_utils
+
+
+@dataclass(frozen=True)
+class _Psi4Quadrature:
+    """The quadrature used to integrate the external potential."""
+
+    coordinates: NDArray[np.float64]
+    weights: NDArray[np.float64]
+    blocks: tuple[Any, ...]
+    # Psi4 blocks hold non-owning pointers to the grid's coordinate and
+    # weight arrays.  Keep the grid alive so _quadrature_density does not
+    # read freed memory through those pointers.
+    grid: Any
 
 
 @dataclass(frozen=True)
@@ -64,6 +77,14 @@ class Psi4Interface(QMInterface):
         default_factory=lambda: [0],
         init=False,
     )
+    quadrature: list[_Psi4Quadrature | None] = field(
+        default_factory=lambda: [None],
+        init=False,
+    )
+
+    def electrostatic_coupling_mode(self) -> ElectrostaticCouplingMode:
+        """Use the shared molecular electrostatic coupling."""
+        return ElectrostaticCouplingMode.MOLECULAR
 
     def add_electronic_potential(self, potential: ElectronicPotential) -> None:
         """Add an electronic potential to apply before calculations.
@@ -73,6 +94,26 @@ class Psi4Interface(QMInterface):
                 QM calculations.
         """
         self.potentials.append(potential)
+
+    def nuclear_charges(self) -> NDArray[np.float64]:
+        r"""Get the effective nuclear charges used by Psi4.
+
+        Building the basis applies any effective core potential to
+        ``Molecule.Z``.
+
+        Returns:
+            The nuclear charges (:math:`e`) of the Subsystem I atoms,
+            ordered by ascending system index.
+        """
+        molecule = self._generate_molecule()
+        psi4.core.BasisSet.build(
+            molecule,
+            "BASIS",
+            psi4.core.get_global_option("BASIS"),
+        )
+        return np.array(
+            [molecule.Z(i) for i in range(molecule.natom())], dtype=float,
+        )
 
     @system_cache("positions", "charges", "elements", "subsystems")
     def _generate_wavefunction(self) -> psi4.core.Wavefunction:
@@ -98,6 +139,41 @@ class Psi4Interface(QMInterface):
             psi4.core.set_output_file("/dev/null", True)
         self.frame[0] += 1
         return wfn
+
+    def _quadrature_density(
+            self,
+            wfn: psi4.core.Wavefunction,
+    ) -> NDArray[np.float64]:
+        """Evaluate the converged electron density on the external-potential grid."""
+        quadrature = self.quadrature[0]
+        if quadrature is None:
+            raise RuntimeError("no external-potential quadrature is available")
+        density_matrix = np.asarray(wfn.Da()) + np.asarray(wfn.Db())
+        # The wavefunction's own PointFunctions is sized for the grid
+        # Psi4 built for the SCF, which does not always partition into
+        # the same blocks as the external-potential grid.  Pushing
+        # our blocks through it overruns its buffers.  Size a
+        # BasisFunctions for our own grid instead; only PHI is needed.
+        points = psi4.core.BasisFunctions(
+            wfn.basisset(),
+            quadrature.grid.max_points(),
+            quadrature.grid.max_functions(),
+        )
+        density = []
+        for block in quadrature.blocks:
+            points.compute_functions(block)
+            npoints = block.npoints()
+            local = np.asarray(
+                block.functions_local_to_global(), dtype=int,
+            )
+            phi = np.asarray(points.basis_values()["PHI"])[
+                :npoints, :len(local)
+            ]
+            local_density = density_matrix[np.ix_(local, local)]
+            density.append(
+                np.einsum("pi,ij,pj->p", phi, local_density, phi),
+            )
+        return np.concatenate(density)
 
     @system_cache("positions", "elements", "subsystems")
     def _generate_molecule(self) -> psi4.core.Molecule:
@@ -167,7 +243,7 @@ class Psi4Interface(QMInterface):
             external_potentials.append(potential)
         else:
             external_potentials.append(None)
-        if external_potentials is [None, None, None]:
+        if all(potential is None for potential in external_potentials):
             return None
         return external_potentials
 
@@ -187,9 +263,20 @@ class Psi4Interface(QMInterface):
         )
         grid = psi4.core.DFTGrid.build(molecule, basis_set)
         numinthelper = psi4.core.NumIntHelper(grid)
+        grid_blocks = tuple(grid.blocks())
+        xyzw = np.concatenate([
+            np.stack((block.x().np, block.y().np, block.z().np, block.w().np), axis=-1)
+            for block in grid_blocks
+        ])
+        self.quadrature[0] = _Psi4Quadrature(
+            xyzw[:, :3] / BOHR_PER_ANGSTROM,
+            xyzw[:, 3],
+            grid_blocks,
+            grid,
+        )
         return numinthelper
 
-    @system_cache("positions", "elements", "subsystems")
+    @system_cache("positions", "charges", "elements", "subsystems", "box")
     def _generate_potential(self) -> list[psi4.core.Vector]:
         """Generate the potential grid from ElectronicPotential objects.
 
@@ -268,6 +355,11 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
         qm_indices = sorted(self.system.select("subsystem I"))
         forces_temp = np.zeros(self.system.positions.shape)
         wfn = self._generate_wavefunction()
+        quadrature = self.quadrature[0]
+        source_charges = None
+        if self.potentials and quadrature is not None:
+            density = self._quadrature_density(wfn)
+            source_charges = -density * quadrature.weights
         grads = psi4.gradient(
             self.functional,
             ref_wfn=wfn,
@@ -301,7 +393,7 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
                             "currently installed).",
                         ),
                     )
-                D = wfn.Da()
+                D = wfn.Da().clone()
                 D.add(wfn.Db())
                 grads = wfn.external_pot().computePotentialGradients(
                     wfn.basisset(),
@@ -315,11 +407,16 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
         if self._generate_external_potentials()[2] is not None:
             numint = self._generate_numinthelper()
             v_grid = self._generate_potential()
-            D = wfn.Da()
+            D = wfn.Da().clone()
             D.add(wfn.Db())
             grads = numint.potential_gradient(v_grid, D)
             forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
             forces_temp[qm_indices, :] += forces
+        if quadrature is not None and source_charges is not None:
+            for potential in self.potentials:
+                forces_temp += potential.compute_source_forces(
+                    quadrature.coordinates, source_charges,
+                )
         return forces_temp
 
     def compute_components(self) -> dict[str, float]:

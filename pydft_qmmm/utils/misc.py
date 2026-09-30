@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 __all__ = [
+    "atomic_number",
     "check_array",
     "generate_velocities",
     "wrap_positions",
@@ -15,6 +16,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
+from .constants import ELEMENT_TO_MASS
 from .constants import KB
 
 if TYPE_CHECKING:
@@ -22,6 +24,18 @@ if TYPE_CHECKING:
     from collections.abc import Callable
     from numpy.typing import NDArray
     from pydft_qmmm.calculators import Calculator
+
+
+def atomic_number(element: str) -> int:
+    """Get an element's atomic number.
+
+    Args:
+        element: The element symbol.
+
+    Returns:
+        The number of protons in the nucleus.
+    """
+    return list(ELEMENT_TO_MASS.keys()).index(str(element))
 
 
 def check_array(value: NDArray[np.float64]) -> bool:

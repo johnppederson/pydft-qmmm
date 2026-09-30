@@ -1,0 +1,17 @@
+"""Compatibility exports for the shared embedding helpers."""
+from pydft_qmmm.embedding.grid_potential import EPS0 as EPS0
+from pydft_qmmm.embedding.grid_potential import KJMOL_PER_EV as KJMOL_PER_EV
+from pydft_qmmm.embedding.grid_potential import build_external_potential as build_external_potential
+from pydft_qmmm.embedding.grid_potential import contract_gaussian_gradient as contract_gaussian_gradient
+from pydft_qmmm.embedding.grid_potential import electron_interaction_energy as electron_interaction_energy
+from pydft_qmmm.embedding.grid_potential import electrostatic_potential_from_vasp as electrostatic_potential_from_vasp
+from pydft_qmmm.embedding.grid_potential import erfc_potential as erfc_potential
+from pydft_qmmm.embedding.grid_potential import gradient_at as gradient_at
+from pydft_qmmm.embedding.grid_potential import interpolant_gradient_at as interpolant_gradient_at
+from pydft_qmmm.embedding.grid_potential import interpolate_at as interpolate_at
+from pydft_qmmm.embedding.grid_potential import interpolate_onto_grid as interpolate_onto_grid
+from pydft_qmmm.embedding.grid_potential import poisson_fft as poisson_fft
+from pydft_qmmm.embedding.grid_potential import read_mm_charges as read_mm_charges
+from pydft_qmmm.embedding.grid_potential import spectral_value_and_gradient as spectral_value_and_gradient
+from pydft_qmmm.embedding.grid_potential import spline_value_and_gradient as spline_value_and_gradient
+from pydft_qmmm.embedding.grid_potential import spread_gaussian as spread_gaussian

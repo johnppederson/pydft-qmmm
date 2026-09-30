@@ -31,6 +31,7 @@ optional-dependencies.arbitrary-topologies = [ "parmed" ]
 optional-dependencies.dev = [ "pre-commit" ]
 optional-dependencies.docs = [ "furo", "sphinx", "sphinx-autodoc-typehints" ]
 optional-dependencies.enhanced-sampling = [ "plumed" ]
+optional-dependencies.pyscf = [ "pyscf>=2.14" ]
 optional-dependencies.qmmm-pme = [ "helpme-py" ]
 optional-dependencies.tests = [ "pytest", "pytest-cov" ]
 urls.Documentation = "https://johnppederson.com/pydft-qmmm/"
@@ -46,3 +47,8 @@ packages = [ "pydft_qmmm" ]
 [tool.mypy]
 ignore_missing_imports = true
 exclude = [ "__main__.py" ]
+
+[tool.pytest.ini_options]
+markers = [
+  "slow: runs an SCF; submit with sbatch, not on the login node",
+]
