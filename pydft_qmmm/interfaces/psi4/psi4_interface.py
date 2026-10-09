@@ -6,9 +6,10 @@ and forces.
 """
 from __future__ import annotations
 
-import textwrap
 from dataclasses import dataclass
 from dataclasses import field
+import logging
+import textwrap
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -64,6 +65,12 @@ class Psi4Interface(QMInterface):
         default_factory=lambda: [0],
         init=False,
     )
+
+    def __post_init__(self) -> None:
+        """Perform post-initialization setup.
+        """
+        # This currently suppresses the Psi4 task planner output.
+        logging.getLogger("psi4").setLevel(logging.CRITICAL + 1)
 
     def add_electronic_potential(self, potential: ElectronicPotential) -> None:
         """Add an electronic potential to apply before calculations.
@@ -145,17 +152,13 @@ class Psi4Interface(QMInterface):
         point_charges = []
         for i in embedding:
             point_charges.append(
-                (
-                    self.system.charges[i],
-                    [
-                        self.system.positions[i, 0] * BOHR_PER_ANGSTROM,
-                        self.system.positions[i, 1] * BOHR_PER_ANGSTROM,
-                        self.system.positions[i, 2] * BOHR_PER_ANGSTROM,
-                    ],
-                ),
+                [self.system.charges[i],
+                 self.system.positions[i, 0] * BOHR_PER_ANGSTROM,
+                 self.system.positions[i, 1] * BOHR_PER_ANGSTROM,
+                 self.system.positions[i, 2] * BOHR_PER_ANGSTROM],
             )
         if embedding:
-            external_potentials.append(point_charges)
+            external_potentials.append(np.array(point_charges))
         else:
             external_potentials.append(None)
         # PyDFT-QMMM does not currently support diffuse embedding.
