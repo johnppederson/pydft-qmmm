@@ -59,3 +59,49 @@ embedding ran, and `PLUGIN_ERROR.txt` records callback failures.
 
 For Gaussian-basis alternatives, see [case 5](../case_5_pyscf) for
 `pyscf-mol` and [case 8](../case_8_pyscf_pbc) for `pyscf-pbc`.
+
+Persistent VASP (experimental)
+-----------------------------
+
+To keep orbitals and charge-density prediction in memory across QM/MM steps,
+pass these options to `QMHamiltonian(interface="vasp", ...)`:
+
+```python
+persistent=True,
+persistent_steps=11,       # initial geometry + 10 MD steps
+persistent_timeout=3600.,  # timeout per SCF / driver exchange, seconds
+incar={"ISYM": 0, "IWAVPR": 11},
+```
+
+The interface sets `IBRION=12`, `PLUGINS/STRUCTURE=True`, and `NSW` to the
+number of force evaluations. PyDFT-QMMM still integrates the full system;
+VASP receives the next QM geometry through its Python structure callback.
+The driver rewrites MM charges and PME sources before releasing that callback,
+which invalidates the cached external potential. Changes in MM coordinates,
+charges, and the II/III partition are supported, even when QM atoms do not
+move. Changing the cell, QM membership/species, or electronic settings requires
+a new calculator. Use a separate working directory for each live calculator.
+
+`IWAVPR=11` predicts charge density; `12` also predicts orbitals and requires
+more memory. `0` retains in-memory reuse without prediction and is useful as
+a control. These settings do not remove the computational cost of the FFT
+and embedding grids. Validate energies, forces, and convergence before judging
+speed. The protocol returns completed ionic energies and forces; it does not
+certify electronic convergence, so inspect OUTCAR as with the restart path.
+
+Call `calculator.potential.close()` in a `finally` block (for a composite
+QM/MM calculator, use `calculator.calculators[0].potential.close()`). After
+exactly `persistent_steps` evaluations VASP exits normally and writes its
+final outputs. Closing earlier terminates the process group and does not
+guarantee a final WAVECAR. A timeout or process failure aborts the session;
+create a new calculator to restart. Energy/force requests for unchanged
+system state reuse the usual calculator cache and do not count as new steps.
+
+`persistent_check.py` compares three embedded-water frames against separate
+VASP runs for `IWAVPR=0,11,12`, including a frame that moves only MM atoms and
+one that changes the partition. Run it on a compute node with the same
+environment as `run.py`. Set `CHECK_DIR` to select its output directory.
+The result and comparison JSON files contain energies, forces, and timings.
+
+References: [VASP structure plugin](https://vasp.at/wiki/PLUGINS/STRUCTURE)
+and [IWAVPR](https://vasp.at/wiki/IWAVPR).

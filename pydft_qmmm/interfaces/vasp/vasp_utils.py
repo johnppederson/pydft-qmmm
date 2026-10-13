@@ -368,6 +368,7 @@ def run_vasp(
             command,
             shell=True,
             cwd=directory,
+            env=env,
             stdout=out,
             stderr=err,
         )

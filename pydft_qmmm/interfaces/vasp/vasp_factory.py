@@ -48,6 +48,9 @@ def vasp_interface_factory(
         incar: dict[str, Any] | None = None,
         embedding: bool = False,
         embedding_sigma: float = 0.3,
+        persistent: bool = False,
+        persistent_steps: int = 1000,
+        persistent_timeout: float = 3600.,
         **options: Any,
 ) -> VaspPotential:
     r"""Build the interface to VASP.
@@ -88,6 +91,13 @@ def vasp_interface_factory(
             default is ~2x the grid spacing of a typical run; below one
             spacing the deposited charge stops being conserved and
             starts depending on where the atom sits between nodes.
+        persistent: Keep a VASP process alive using the structure plugin
+            (IBRION=12). Requires a VASP binary built with Python plugins.
+            PyDFT-QMMM still owns integration and embedding updates.
+        persistent_steps: Number of force evaluations in the persistent run,
+            including the initial geometry (MD steps + 1). Call close() if
+            stopping early. The cell and QM membership must remain fixed.
+        persistent_timeout: Maximum seconds to wait for each SCF or geometry.
         options: Additional INCAR tags given as keyword arguments; the
             names are upper-cased, so ``encut=520`` sets ``ENCUT``.
             These take precedence over ``incar``.
@@ -118,6 +128,10 @@ def vasp_interface_factory(
         raise ValueError(
             f"embedding_sigma must be positive, got {embedding_sigma}.",
         )
+    if persistent_steps < 1 or int(persistent_steps) != persistent_steps:
+        raise ValueError("persistent_steps must be a positive integer")
+    if not 0 < persistent_timeout < float('inf'):
+        raise ValueError("persistent_timeout must be finite and positive")
     tags = dict(DEFAULT_INCAR)
     if incar is not None:
         tags.update(incar)
@@ -133,4 +147,7 @@ def vasp_interface_factory(
         {} if potcar_map is None else dict(potcar_map),
         embedding,
         embedding_sigma,
+        persistent=persistent,
+        persistent_steps=int(persistent_steps),
+        persistent_timeout=float(persistent_timeout),
     )

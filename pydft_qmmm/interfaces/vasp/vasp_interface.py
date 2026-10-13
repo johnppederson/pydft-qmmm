@@ -79,6 +79,10 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
     potcar_map: dict[str, str]
     embedding: bool = False
     embedding_sigma: float = 0.3
+    persistent: bool = False
+    persistent_steps: int = 1000
+    persistent_timeout: float = 3600.
+    _session: list = field(default_factory=list, init=False, repr=False)
     potentials: list[ElectronicPotential] = field(
         default_factory=list,
         init=False,
@@ -141,6 +145,16 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         tags = dict(self.incar)
         # Single point only; PyDFT-QMMM owns the dynamics.
         tags.update({"NSW": 0, "IBRION": -1})
+        if self.persistent:
+            if self.incar.get("PLUGINS/MODE", "serial").lower() != "serial":
+                raise ValueError("Persistent VASP requires serial plugins")
+            if int(self.incar.get("ISYM", 0)) != 0:
+                raise ValueError("Persistent VASP requires ISYM=0")
+            if int(self.incar.get("IWAVPR", 11)) not in (0, 11, 12, 13):
+                raise ValueError("Persistent VASP requires IWAVPR=0,11,12,13")
+            tags.update({"NSW": self.persistent_steps, "IBRION": 12,
+                         "EDIFFG": 0., "PLUGINS/STRUCTURE": True,
+                         "IWAVPR": self.incar.get("IWAVPR", 11)})
         if self.embedding:
             # PLUGINS/MODE is deliberately left unset.  It defaults to
             # "serial", which is what makes this correct under MPI: only
@@ -174,6 +188,10 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
                 stale_path = os.path.join(self.directory, stale)
                 if os.path.isfile(stale_path):
                     os.remove(stale_path)
+        if self.persistent:
+            mode = "a" if self.embedding else "w"
+            with open(os.path.join(self.directory, "vasp_plugin.py"), mode) as fh:
+                fh.write("\nfrom pydft_qmmm.interfaces.vasp.vasp_persistent import structure\n")
         # Reuse the previous step's orbitals and density once they exist.
         if self.frame[0] and os.path.isfile(
                 os.path.join(self.directory, "WAVECAR"),
@@ -247,6 +265,8 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         """Environment for the VASP subprocess."""
         env = dict(os.environ)
         here = os.path.dirname(os.path.abspath(__file__))
+        package_root = os.path.dirname(os.path.dirname(os.path.dirname(here)))
+        here = os.path.abspath(self.directory) + os.pathsep + package_root + os.pathsep + here
         existing = env.get("PYTHONPATH", "")
         env["PYTHONPATH"] = f"{here}:{existing}" if existing else here
         return env
@@ -358,6 +378,8 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             the QM atoms only, ordered to match
             ``sorted(system.select("subsystem I"))``.
         """
+        if self.persistent:
+            return self._run_persistent()
         order = self._write_input()
         if self.embedding:
             self._write_mm_charges()
@@ -384,6 +406,70 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         self.frame[0] += 1
         return energy * KJMOL_PER_EV, qm_forces * KJMOL_PER_EV
 
+
+    def _persistent_configuration(self):
+        """Settings that VASP cannot change while its process is running."""
+        qm = sorted(self.system.select("subsystem I"))
+        tags = {k: v for k, v in self.incar.items() if k not in ("ISTART", "ICHARG")}
+        return (tuple(qm), tuple(self.system.elements[qm]),
+                np.asarray(self.system.box).tobytes(), repr(sorted(tags.items())),
+                self.kpts, self.pp_path, repr(sorted(self.potcar_map.items())),
+                self.embedding, self.embedding_sigma)
+
+    def _run_persistent(self):
+        from .vasp_persistent import PersistentVasp
+        configuration = self._persistent_configuration()
+        if self._session:
+            session, initial, order = self._session
+            if configuration != initial:
+                session.close()
+                raise ValueError(
+                    "Persistent VASP cell, QM membership, or electronic settings changed",
+                )
+            if session.closed:
+                raise ValueError("Persistent VASP session is closed; create a new calculator")
+        else:
+            order = self._write_input()
+        try:
+            # VASP is either not launched yet or blocked inside structure().
+            if self.embedding:
+                from .vasp_plugin import SENTINEL
+                for name in ("MM_FORCES", "QM_NET_FORCE", SENTINEL):
+                    path = os.path.join(self.directory, name)
+                    if os.path.isfile(path):
+                        os.remove(path)
+                self._write_mm_charges()
+                if self.potentials:
+                    self._write_pme_data()
+            if not self._session:
+                session = PersistentVasp(self.command, self.directory, self._plugin_env(),
+                                         self.persistent_steps, self.persistent_timeout)
+                self._session.extend([session, configuration, order])
+            indices = sorted(self.system.select("subsystem I"))
+            positions = np.asarray(self.system.positions)[indices][order]
+            fractional = positions @ np.linalg.inv(np.asarray(self.system.box).T)
+            energy, forces = session.evaluate(fractional)
+            if self.embedding:
+                self._check_plugin_fired()
+        except BaseException:
+            if self._session:
+                self._session[0].close()
+            raise
+        qm_forces = np.empty_like(forces)
+        qm_forces[order, :] = forces
+        self.frame[0] += 1
+        return energy * KJMOL_PER_EV, qm_forces * KJMOL_PER_EV
+
+    def close(self):
+        """Release the persistent process, including on early termination."""
+        if self._session:
+            self._session[0].close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        self.close()
 
 class VaspPotential(VaspInterface, AtomicPotential):
     """A potential wrapping VASP functionality.
