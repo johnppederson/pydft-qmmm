@@ -15,7 +15,7 @@ from pydft_qmmm.utils import BOHR_PER_ANGSTROM, KJMOL_PER_EH, system_cache
 from ..pyscf.pyscf_backend import load_backend, load_submodule, to_like, to_numpy
 from .pbc_cell import build_cell, valence_charges
 from .pbc_interface import PySCFPBCPotential, _SCFState, _nuclear_coupling
-from .pbc_embedding import grid_coordinates, external_potential, ao_operator
+from .pbc_embedding import grid_coordinates, external_potential, near_potential, ao_operator
 
 
 @dataclass(frozen=True)
@@ -284,14 +284,80 @@ class KSCEDPBCPotential(PySCFPBCPotential):
         return (float(state.method.energy_potential()) + state.nuclear_energy) * KJMOL_PER_EH
 
     def compute_components(self) -> dict[str, float]:
+        """Return additive energy components in kJ/mol, at the embedded density.
+
+        B's self energy is omitted. B-C terms belong to the MM calculator.
+        Validate even on a cache hit, and do not expose the cached dictionary.
+        """
+        self._scf_state()
+        return dict(self._cached_components())
+
+    @system_cache("positions", "charges", "elements", "subsystems", "box")
+    def _cached_components(self) -> dict[str, float]:
         state = self._scf_state()
-        return {
-            "KSCED Embedded Energy": (
-                float(state.method.energy_potential()) - state.electronic_energy
-            ) * KJMOL_PER_EH,
-            "A-C Electronic Embedding": state.electronic_energy * KJMOL_PER_EH,
-            "A-C Nuclear Embedding": state.nuclear_energy * KJMOL_PER_EH,
+        mf, cell = state.method, state.cell
+        summary = {key: float(to_numpy(value))
+                   for key, value in mf.scf_summary.items()}
+        total_dm = np.asarray(to_numpy(state.dm))
+        if total_dm.ndim == 3:
+            total_dm = total_dm.sum(axis=0)
+        # Evaluate A's XC at its embedded density, without another SCF.
+        ni = mf._numint
+        nr = ni.nr_uks if state.dm.ndim == 3 else ni.nr_rks
+        exc_a = float(to_numpy(nr(
+            cell, mf.grids, mf.xc, state.dm, 0, 1, mf.kpt, None,
+            max_memory=mf.max_memory,
+        )[1]))
+        v_b = np.asarray(to_numpy(mf.with_env.get_vne_b(cell, mf.kpt)))
+        a_electrons_b_nuclei = float(np.einsum("ij,ji->", total_dm, v_b).real)
+        half_j_ab = summary["ksced_coul_ab_half"]
+        t_nad = float(to_numpy(mf.e_tnad))
+        nuclear_a = float(cell.energy_nuc())
+        components = {
+            "KSCED Active Energy": (
+                summary["e1"] - state.electronic_energy - a_electrons_b_nuclei
+                + summary["coul"] - half_j_ab + exc_a + nuclear_a
+            ),
+            "A-B Nuclear Interaction": float(mf.energy_nuc()) - nuclear_a,
+            "A-B Electron-Nuclear Interaction": (
+                a_electrons_b_nuclei + summary["ksced_vne_a_rho_b"]
+            ),
+            "A-B Hartree Interaction": 2 * half_j_ab,
+            "Non-additive XC": summary["exc"] - t_nad - exc_a,
+            "Non-additive Kinetic": t_nad,
+            "Electronic Entropy Correction": float(mf.energy_potential()) - float(mf.e_tot),
+            "A-C Near Electronic Embedding": 0.0,
+            "A-C Near Nuclear Embedding": 0.0,
+            "A-C Reciprocal Electronic Embedding": 0.0,
+            "A-C Reciprocal Nuclear Embedding": 0.0,
         }
+        embedded = state.embedding_state
+        if embedded is not None:
+            if not embedded.potentials:
+                near_electronic = state.electronic_energy
+                near_nuclear = state.nuclear_energy
+            elif not embedded.embed_indices:
+                near_electronic = near_nuclear = 0.0
+            else:
+                # Split the linear external operator at the SAME converged
+                # density. Separate SCFs would include polarization twice.
+                field = near_potential(
+                    self.system, embedded.embed_indices, tuple(cell.mesh),
+                    np.asarray(self.system.box), self.embedding_sigma,
+                ).reshape(-1)
+                matrix = ao_operator(
+                    load_backend(self.device), cell, embedded.kpts,
+                    embedded.coords, embedded.weights, field,
+                )[0]
+                near_electronic = float(np.einsum("ij,ji->", total_dm, matrix).real)
+                near_nuclear = _nuclear_coupling(cell, field, self.system.box)
+            components.update({
+                "A-C Near Electronic Embedding": near_electronic,
+                "A-C Near Nuclear Embedding": near_nuclear,
+                "A-C Reciprocal Electronic Embedding": state.electronic_energy - near_electronic,
+                "A-C Reciprocal Nuclear Embedding": state.nuclear_energy - near_nuclear,
+            })
+        return {key: value * KJMOL_PER_EH for key, value in components.items()}
 
     def compute_forces(self) -> Any:
         from .pbc_forces import pulay_forces, nuclear_forces, mm_forces

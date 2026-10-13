@@ -35,18 +35,17 @@ Install the optional dependencies with:
 
     $ python -m pip install 'pydft_qmmm[pyscf,qmmm-pme]'
 
-The supported model is a **molecular** QM region embedded in a
-periodically replicated, fixed-charge MM environment.  The wavefunction
-is restricted Kohn-Sham for a singlet and unrestricted Kohn-Sham for any
-higher multiplicity.  This is not a :mod:`pyscf.pbc` periodic
-wavefunction: there are no k-points, and the periodicity enters only
-through the electrostatic environment that OpenMM and the PME machinery
-provide.
+The ``pyscf-mol`` interface uses a molecular QM region embedded in a
+periodically replicated, fixed-charge MM environment.  The QM wavefunction
+has no periodic boundary conditions or k-points.  Periodicity enters through
+the electrostatic environment that OpenMM and the PME machinery provide.
 
-The ``pyscf-pbc`` interface uses the simulation box as the QM cell.
+The ``pyscf-pbc`` interface uses a periodic QM cell embedded in a periodically
+replicated, fixed-charge MM environment.  Both use the same simulation box
+and periodic boundary conditions.  The QM calculation uses :mod:`pyscf.pbc`
+with Gamma-point sampling.
 It requires a GTH ``pseudo`` and a matching basis; ``ecp`` is unsupported.
 Set ``ke_cutoff`` (Hartree) or ``mesh`` for the uniform FFT grid.
-Sampling is a single k-point.
 
 .. code-block:: python
 
@@ -118,6 +117,27 @@ source exclusions and force derivatives cannot be guaranteed.
 Configure embedding before the first SCF. The Gaussian near field is periodic,
 with its width set by ``embedding_sigma``; it is not an unsmoothed isolated
 point-charge interaction. The returned components sum to the total energy.
+
+``compute_components()`` reports additive terms in kJ/mol:
+
+* KSCED Active Energy: A's own energy evaluated at the embedded density,
+  including its internal nuclear repulsion, but excluding A-B and A-C terms.
+* A-B Nuclear Interaction, A-B Electron-Nuclear Interaction, and
+  A-B Hartree Interaction.
+* Non-additive XC and Non-additive Kinetic.
+* Electronic Entropy Correction: free energy minus internal energy (zero
+  without smearing).
+* A-C Near Electronic Embedding and A-C Near Nuclear Embedding.
+* A-C Reciprocal Electronic Embedding and A-C Reciprocal Nuclear Embedding.
+
+The near and reciprocal fields are evaluated at the same converged A density.
+All component keys remain present when embedding is disabled or a field is
+absent, with zero values for absent contributions. Components are cached until
+positions, charges, elements, partitions, or the box change. Asking for them
+neither reconverges B nor changes the energy or force operator. They replace
+the former three aggregate component labels. B's constant self energy is
+omitted; B-C MM energy must be reported by the MM calculator.
+
 Full OpenMM assembly still requires excluding A–B force-field terms while
 retaining B–C terms; this interface does not perform that setup or freeze B.
 
