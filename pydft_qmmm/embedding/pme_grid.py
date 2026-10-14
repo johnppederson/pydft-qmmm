@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from .grid_potential import EPS0  # noqa: F401
+from .grid_potential import _g_squared
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -180,3 +181,89 @@ def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20):
     # helPME reports the electrostatic potential in kJ/mol/e; VASP wants
     # the electron potential ENERGY in eV, hence the negation.
     return (-potential / KJMOL_PER_EV).reshape(shape)
+
+
+def charge_from_potential(phi, cell):
+    """Grid charges whose periodic potential is ``phi``.
+
+    Inverts ``poisson_fft``.  The G=0 term is lost, which the PME
+    reciprocal sum ignores anyway.
+
+    Args:
+        phi: The electrostatic potential on the grid (volts).
+        cell: A 3x3 array whose rows are lattice vectors (Angstrom).
+
+    Returns:
+        The charge (e) on each grid point, shaped like ``phi``.
+    """
+    phi = np.asarray(phi, dtype=np.float64)
+    rho_g = np.fft.fftn(phi) * EPS0 * _g_squared(phi.shape, cell)
+    rho_g[0, 0, 0] = 0.0
+    rho = np.fft.ifftn(rho_g).real
+    return rho * abs(np.linalg.det(cell)) / phi.size
+
+
+def pme_source_forces(
+        path, grid_charges, shape, cell,
+        points=None, point_charges=None, expect_step=None,
+):
+    """Forces on the PME_DATA charges from the QM charge.
+
+    The transpose of ``build_pme_potential``.  The QM energy in that
+    field is sum_s q_s V(r_s) over grid charges and point charges s, and
+    the reciprocal operator is symmetric in sources and targets, so
+    helPME evaluates the field of s at the PME_DATA atoms instead.
+
+    Args:
+        path: The PME_DATA file the field was built from.
+        grid_charges: The QM charge (e) on each point of the grid.
+        shape: The grid dimensions.
+        cell: A 3x3 array whose rows are lattice vectors (Angstrom).
+        points: Optional Nx3 positions (Angstrom) of extra point charges,
+            such as nuclei the engine couples to the field as points.
+        point_charges: The charges (e) at ``points``.
+        expect_step: Optional step stamp to verify.
+
+    Returns:
+        An Nx3 array of forces
+        (:math:`\\mathrm{kJ\;mol^{-1}\;\\mathring{A}^{-1}}`), one row per
+        PME_DATA atom; atoms with zero charge get zero.
+    """
+    import helpme_py
+
+    positions, charges, excluded, alpha, gridnumber, spline_order, _ = (
+        read_pme_data(path, expect_step)
+    )
+    pme = helpme_py.PMEInstanceD()
+    pme.setup(1, alpha, spline_order, *gridnumber, COULOMB_CONSTANT, 0)
+    pme.set_lattice_vectors(
+        *_lattice_constants(np.asarray(cell, dtype=np.float64)),
+        helpme_py.LatticeType.XAligned,
+    )
+    sources = np.asarray(grid_charges, dtype=np.float64).reshape(-1)
+    coordinates = grid_coordinates(shape, cell)
+    if points is not None and len(points):
+        coordinates = np.vstack([coordinates, np.asarray(points).reshape(-1, 3)])
+        sources = np.concatenate([sources, np.asarray(point_charges).reshape(-1)])
+    sources = helpme_py.MatrixD(np.ascontiguousarray(sources.reshape(-1, 1)))
+    coordinates = helpme_py.MatrixD(np.ascontiguousarray(coordinates))
+    forces = np.zeros((len(charges), 3))
+    targets = np.flatnonzero(charges)
+    if targets.size:
+        field = np.zeros((targets.size, 4))
+        pme.compute_P_rec(
+            0, sources, coordinates,
+            helpme_py.MatrixD(np.ascontiguousarray(positions[targets])),
+            1, helpme_py.MatrixD(field),
+        )
+        forces[targets] = -field[:, 1:] * charges[targets, None]
+    if excluded.size:
+        # The transpose of the erf subtraction in build_pme_potential.
+        adjustment = np.zeros((excluded.size, 4))
+        pme.compute_PDP_adj(
+            0, sources, coordinates,
+            helpme_py.MatrixD(np.ascontiguousarray(positions[excluded])),
+            helpme_py.MatrixD(adjustment), _minimum_image(),
+        )
+        forces[excluded] -= adjustment[:, 1:] * charges[excluded, None]
+    return forces

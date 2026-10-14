@@ -40,6 +40,7 @@ for step in range(int(os.environ[STEPS_ENV])):
         assert pme_step==step
         constants.total_energy+=float(np.sum(points)+np.sum(charges)+np.sum(pme_charges))
         Path('MM_FORCES').write_text(f'{len(points)} {step}\\n'+'1 2 3\\n'*len(points))
+        Path('PME_FORCES').write_text(f'{len(pme_charges)} {step}\\n'+'4 5 6\\n'*len(pme_charges))
         Path('QM_NET_FORCE').write_text('2\\n0 0 0\\n')
         Path('PLUGIN_FIRED.txt').write_text(str(step))
     additions=SimpleNamespace(positions=np.zeros_like(positions))
@@ -146,7 +147,8 @@ def test_embedding_updates_without_qm_motion(potential):
         p.system.subsystems[1] = Subsystem.III
         e2 = p.compute_energy()
         assert e2 != e1
-        np.testing.assert_array_equal(p.compute_forces()[1], 0)
+        # Subsystem III gets the plugin's reciprocal reaction.
+        np.testing.assert_array_equal(p.compute_forces()[1], [4,5,6])
         assert p.frame[0] == 3 and p._session[0].closed
     finally:
         p.close()

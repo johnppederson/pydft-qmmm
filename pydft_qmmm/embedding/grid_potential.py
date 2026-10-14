@@ -349,6 +349,56 @@ def _cardinal_bspline(x, degree):
     ) / degree
 
 
+def _spline_coefficients(field):
+    """Apply the periodic, self-adjoint quintic spline prefilter."""
+    shape = np.asarray(field.shape)
+    coefficients_g = np.fft.rfftn(field)
+    for axis, size in enumerate(shape):
+        frequency = (np.fft.rfftfreq(size) if axis == 2
+                     else np.fft.fftfreq(size))
+        angle = 2.0 * np.pi * frequency
+        response = (66 + 52 * np.cos(angle) + 2 * np.cos(2 * angle)) / 120
+        dimensions = [1, 1, 1]
+        dimensions[axis] = len(response)
+        coefficients_g /= response.reshape(dimensions)
+    return np.fft.irfftn(coefficients_g, s=field.shape, axes=(0, 1, 2))
+
+
+def nuclear_charge_on_grid(shape, cell, points, charges, method="spline"):
+    """Transpose nuclear interpolation into charges per grid point.
+
+    For any grid field V, sum(q_grid * V) equals sum(Z * V(R)).
+    This identity makes MM reaction forces differentiate the same nuclear
+    energy as the force callback. A local ionic pseudopotential generally
+    does not represent these interpolated point charges.
+    """
+    points = np.asarray(points, dtype=float).reshape(-1, 3)
+    charges = np.asarray(charges, dtype=float).reshape(-1)
+    shape = tuple(int(n) for n in shape)
+    if len(points) != len(charges):
+        raise ValueError("Nuclear positions and charges have different lengths")
+    if method == "spectral":
+        axes = [np.fft.fftfreq(n) * n for n in shape]
+        reciprocal = 2 * np.pi * np.linalg.inv(cell).T
+        coefficients = np.zeros(shape, dtype=complex)
+        for point, charge in zip(points, charges):
+            phase = [np.exp(-1j * n * x) for n, x in zip(axes, reciprocal @ point)]
+            coefficients += charge * np.einsum("i,j,k->ijk", *phase)
+        return np.fft.ifftn(coefficients).real
+    if method != "spline":
+        raise ValueError("Nuclear interpolation must be spline or spectral")
+    dimensions = np.asarray(shape)
+    scaled = ((points @ np.linalg.inv(cell)) % 1.) * dimensions
+    nodes = np.floor(scaled).astype(int)[..., None] + np.arange(-2, 4)
+    weights = _cardinal_bspline(scaled[..., None] - nodes + 3., 5)
+    nodes %= dimensions[None, :, None]
+    deposited = np.zeros(shape)
+    for indices, weight, charge in zip(nodes, weights, charges):
+        # add.at also handles repeated indices on grids smaller than the stencil.
+        np.add.at(deposited, np.ix_(*indices), charge * np.einsum("i,j,k->ijk", *weight))
+    return _spline_coefficients(deposited)
+
+
 def spline_value_and_gradient(field, cell, points):
     """Periodic quintic B-spline value and its Cartesian derivative.
 
@@ -363,17 +413,7 @@ def spline_value_and_gradient(field, cell, points):
     if not len(points):
         return np.zeros(0), np.zeros((0, 3))
     shape = np.asarray(field.shape)
-    coefficients_g = np.fft.rfftn(field)
-    # Samples of the centered quintic spline are [1, 26, 66, 26, 1]/120.
-    for axis, size in enumerate(shape):
-        frequency = (np.fft.rfftfreq(size) if axis == 2
-                     else np.fft.fftfreq(size))
-        angle = 2.0 * np.pi * frequency
-        response = (66 + 52 * np.cos(angle) + 2 * np.cos(2 * angle)) / 120
-        dimensions = [1, 1, 1]
-        dimensions[axis] = len(response)
-        coefficients_g /= response.reshape(dimensions)
-    coefficients = np.fft.irfftn(coefficients_g, s=field.shape, axes=(0, 1, 2))
+    coefficients = _spline_coefficients(field)
     inverse = np.linalg.inv(cell)
     scaled = ((points @ inverse) % 1.0) * shape
     nodes = np.floor(scaled).astype(int)[..., None] + np.arange(-2, 4)

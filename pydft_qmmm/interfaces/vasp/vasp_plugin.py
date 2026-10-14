@@ -21,13 +21,15 @@ from pydft_qmmm.embedding.grid_potential import gradient_at
 from pydft_qmmm.embedding.grid_potential import interpolant_gradient_at
 from pydft_qmmm.embedding.grid_potential import interpolate_at
 from pydft_qmmm.embedding.grid_potential import interpolate_onto_grid
+from pydft_qmmm.embedding.grid_potential import nuclear_charge_on_grid
+from pydft_qmmm.embedding.grid_potential import poisson_fft
 from pydft_qmmm.embedding.grid_potential import read_mm_charges
 from pydft_qmmm.embedding.grid_potential import spectral_value_and_gradient
 from pydft_qmmm.embedding.grid_potential import spline_value_and_gradient
 
 __all__ = [
     "EPS0", "KJMOL_PER_EV", "CHARGE_FILE", "FORCE_FILE",
-    "NET_FORCE_FILE", "SENTINEL",
+    "NET_FORCE_FILE", "PME_FORCE_FILE", "SENTINEL",
     "ERROR_FILE",
     "build_external_potential", "contract_gaussian_gradient",
     "electron_interaction_energy", "electrostatic_potential_from_vasp",
@@ -41,6 +43,7 @@ __all__ = [
 CHARGE_FILE = "MM_CHARGES"
 FORCE_FILE = "MM_FORCES"
 NET_FORCE_FILE = "QM_NET_FORCE"
+PME_FORCE_FILE = "PME_FORCES"
 SENTINEL = "PLUGIN_FIRED.txt"
 ERROR_FILE = "PLUGIN_ERROR.txt"
 PME_FILE = "PME_DATA"
@@ -214,16 +217,16 @@ def force_and_stress(constants, additions):
         cell = np.asarray(constants.lattice_vectors, dtype=np.float64)
         shape = tuple(int(n) for n in constants.shape_grid)
         positions = np.asarray(constants.positions) @ cell
+        valence = np.asarray(constants.ZVAL, dtype=np.float64)[
+            np.asarray(constants.ion_types, dtype=int)
+        ]
+        route = os.environ.get(NUCLEAR_FIELD_ENV, "spline").strip().lower()
+        if route not in ("spline", "spectral"):
+            raise ValueError(f"{NUCLEAR_FIELD_ENV} must be spline or spectral")
         if len(positions) > 0:
             v_ext = _external_potential(constants)
-            valence = np.asarray(constants.ZVAL, dtype=np.float64)[
-                np.asarray(constants.ion_types, dtype=int)
-            ]
             # Differentiate the same interpolant used for the energy.
             # The spectral route remains a reference for grid convergence.
-            route = os.environ.get(NUCLEAR_FIELD_ENV, "spline").strip().lower()
-            if route not in ("spline", "spectral"):
-                raise ValueError(f"{NUCLEAR_FIELD_ENV} must be spline or spectral")
             evaluate = (spline_value_and_gradient if route == "spline"
                         else spectral_value_and_gradient)
             potential, gradient = evaluate(
@@ -240,18 +243,41 @@ def force_and_stress(constants, additions):
             with open(NET_FORCE_FILE, "w") as fh:
                 fh.write(f"{len(positions)}\n")
                 fh.write(f"{net[0]:.12e} {net[1]:.12e} {net[2]:.12e}\n")
-        # The QM->MM back-reaction.
-        phi_qm = electrostatic_potential_from_vasp(
-            _CACHE.get("hartree"), _CACHE.get("ion"),
-        )
+        # Differentiate the discrete electronic and nuclear embedding energy.
+        # VASP supplies N * electron charge per grid point in charge_density.
+        # Use the final force-callback density, not a cached SCF input field.
+        # Nuclear charges must transpose the SAME interpolant as -sum(Z*V).
         mm_positions, mm_charges, step, sigma = read_mm_charges(CHARGE_FILE)
-        mm_forces = contract_gaussian_gradient(
-            phi_qm, mm_positions, mm_charges, shape, cell, sigma,
-        ) * KJMOL_PER_EV
+        use_pme = os.path.isfile(PME_FILE)
+        charge = None
+        if len(mm_charges) or use_pme:
+            density = np.asarray(constants.charge_density, dtype=np.float64)
+            if density.shape != shape or not np.isfinite(density).all():
+                raise ValueError("Invalid final VASP charge density")
+            charge = nuclear_charge_on_grid(shape, cell, positions, valence, route)
+            charge -= density / np.prod(shape)
+        mm_forces = np.zeros((len(mm_charges), 3))
+        if len(mm_charges):
+            if erfc_near_enabled() or _coarse_near_gridnumber() is not None:
+                raise ValueError("Consistent MM forces require the full-grid Gaussian near field")
+            rho = charge * np.prod(shape) / abs(np.linalg.det(cell))
+            phi_qm = poisson_fft(rho, cell)
+            mm_forces = contract_gaussian_gradient(
+                phi_qm, mm_positions, mm_charges, shape, cell, sigma,
+            ) * KJMOL_PER_EV
         with open(FORCE_FILE, "w") as fh:
             fh.write(f"{len(mm_forces)} {step}\n")
             for fx, fy, fz in mm_forces:
                 fh.write(f"{fx:.12e} {fy:.12e} {fz:.12e}\n")
+        # The reciprocal back-reaction on the PME_DATA sources, from the
+        # same grid charge: the transpose of build_pme_potential.
+        if use_pme:
+            from pydft_qmmm.embedding.pme_grid import pme_source_forces
+            pme_forces = pme_source_forces(PME_FILE, charge, shape, cell)
+            with open(PME_FORCE_FILE, "w") as fh:
+                fh.write(f"{len(pme_forces)} {step}\n")
+                for fx, fy, fz in pme_forces:
+                    fh.write(f"{fx:.12e} {fy:.12e} {fz:.12e}\n")
     except Exception as exc:
         _record_error(exc)
         raise

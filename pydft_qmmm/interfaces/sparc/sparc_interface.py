@@ -208,13 +208,12 @@ class SPARCInterface(EngineEmbeddingMixin, QMInterface):
         # echoes it into) actually carries.
         self.vext_step[0] = step
 
-    def _read_mm_forces(self) -> NDArray[np.float64]:
-        r"""Contract SPARC's potential against the MM Gaussians.
+    def _read_phi(self) -> NDArray[np.float64]:
+        r"""Read the electrostatic potential of SPARC's QM charge.
 
         Returns:
-            An Nx3 array of forces
-            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) ordered to
-            match ``sorted(system.select("subsystem II"))``.
+            The potential (:math:`\mathrm{V}`) of the electrons and
+            pseudocharges, shaped like ``fd_grid``.
 
         Raises:
             SparcExecutionError: If SPARC wrote no potential, so the
@@ -231,7 +230,17 @@ class SPARCInterface(EngineEmbeddingMixin, QMInterface):
         phi_hartree, _, _ = sparc_utils.read_grid_file(
             path, expect_shape=self.fd_grid, expect_step=self.vext_step[0],
         )
-        phi = sparc_grid.phi_from_sparc(phi_hartree)
+        return sparc_grid.phi_from_sparc(phi_hartree)
+
+    def _read_mm_forces(self) -> NDArray[np.float64]:
+        r"""Contract SPARC's potential against the MM Gaussians.
+
+        Returns:
+            An Nx3 array of forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`) ordered to
+            match ``sorted(system.select("subsystem II"))``.
+        """
+        phi = self._read_phi()
         indices = sorted(self.system.select("subsystem II"))
         positions = np.asarray(self.system.positions)[indices]
         charges = np.asarray(self.system.charges)[indices]
@@ -240,6 +249,27 @@ class SPARCInterface(EngineEmbeddingMixin, QMInterface):
             self._cell_angstrom(), self.embedding_sigma,
         )
         return forces * KJMOL_PER_EV
+
+    def _read_pme_forces(self) -> NDArray[np.float64]:
+        r"""Reciprocal forces of SPARC's QM charge on the PME sources.
+
+        The fork couples V_ext to the electrons and pseudocharges, and
+        PHI is their potential, so its Poisson source is the QM charge
+        the PME field acts on.
+
+        Returns:
+            An Nx3 array of forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`), one row
+            per system atom, nonzero only for the PME_DATA sources.
+        """
+        from pydft_qmmm.embedding.pme_grid import charge_from_potential
+        from pydft_qmmm.embedding.pme_grid import pme_source_forces
+        cell = self._cell_angstrom()
+        charge = charge_from_potential(self._read_phi(), cell)
+        return pme_source_forces(
+            os.path.join(self.directory, PME_FILE), charge, self.fd_grid,
+            cell, expect_step=self.vext_step[0],
+        )
 
     @system_cache("positions", "elements", "subsystems", "box", "charges")
     def _run(self) -> tuple[float, NDArray[np.float64]]:
@@ -330,12 +360,14 @@ class SPARCPotential(SPARCInterface, AtomicPotential):
         qm_indices = sorted(self.system.select("subsystem I"))
         forces[qm_indices, :] = qm_forces
         if self.embedding:
-            # Subsystem III is deliberately left at zero: under direct
-            # QM/MM/PME its force from the QM region is the "Y = MM"
-            # term, which OpenMM supplies from the static forcefield
-            # charges.  See John et al., JCP 161, 034103 (2024), Table I.
             embed_indices = sorted(self.system.select("subsystem II"))
             forces[embed_indices, :] = self._read_mm_forces()
+            if self.potentials:
+                # PMEExcluded cancels OpenMM's force-field QM charges on
+                # subsystem III, so its force from the QM density and
+                # pseudocharges comes from the reciprocal sum here.
+                third = sorted(self.system.select("subsystem III"))
+                forces[third, :] = self._read_pme_forces()[third]
         return forces
 
     def compute_components(self) -> dict[str, float]:

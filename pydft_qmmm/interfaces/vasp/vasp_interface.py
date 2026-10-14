@@ -184,7 +184,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             # run which dies before the plugin fires leaves a missing
             # file rather than the previous step's forces to be
             # silently reread.
-            for stale in ("MM_FORCES", "QM_NET_FORCE"):
+            for stale in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE"):
                 stale_path = os.path.join(self.directory, stale)
                 if os.path.isfile(stale_path):
                     os.remove(stale_path)
@@ -314,6 +314,37 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             )
         return forces
 
+    def _read_pme_forces(self) -> NDArray[np.float64]:
+        r"""Read the reciprocal QM->MM forces the plugin wrote.
+
+        Returns:
+            An Nx3 array of forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`), one row
+            per system atom, nonzero only for the PME_DATA sources.
+
+        Raises:
+            VaspExecutionError: If the file is absent or does not cover
+                every atom.
+        """
+        path = os.path.join(self.directory, "PME_FORCES")
+        if not os.path.isfile(path):
+            raise vasp_utils.VaspExecutionError(
+                self.directory,
+                "PME_FORCES is absent, so the reciprocal QM->MM "
+                "back-reaction on subsystem III was never computed.",
+            )
+        # Stamped like MM_FORCES, with the previous frame counter.
+        forces, _ = vasp_utils.read_mm_forces(
+            path, expect_step=self.frame[0] - 1,
+        )
+        if len(forces) != len(self.system):
+            raise vasp_utils.VaspExecutionError(
+                self.directory,
+                f"PME_FORCES holds {len(forces)} rows but the system "
+                f"has {len(self.system)} atoms.",
+            )
+        return forces
+
     def _read_qm_net_force(self) -> NDArray[np.float64]:
         r"""Read the net force VASP removed from the QM ions.
 
@@ -434,7 +465,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             # VASP is either not launched yet or blocked inside structure().
             if self.embedding:
                 from .vasp_plugin import SENTINEL
-                for name in ("MM_FORCES", "QM_NET_FORCE", SENTINEL):
+                for name in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE", SENTINEL):
                     path = os.path.join(self.directory, name)
                     if os.path.isfile(path):
                         os.remove(path)
@@ -514,12 +545,14 @@ class VaspPotential(VaspInterface, AtomicPotential):
             forces[qm_indices, :] += (
                 self._read_qm_net_force() / len(qm_indices)
             )
-            # Subsystem III is deliberately left at zero: under direct
-            # QM/MM/PME its force from the QM region is the "Y = MM"
-            # term, which OpenMM supplies from the static forcefield
-            # charges.  See John et al., JCP 161, 034103 (2024), Table I.
             embed_indices = sorted(self.system.select("subsystem II"))
             forces[embed_indices, :] = self._read_mm_forces()
+            if self.potentials:
+                # PMEExcluded cancels OpenMM's force-field QM charges on
+                # subsystem III, so its force from the QM density and
+                # nuclei comes from the reciprocal sum here.
+                third = sorted(self.system.select("subsystem III"))
+                forces[third, :] = self._read_pme_forces()[third]
         return forces
 
     def compute_components(self) -> dict[str, float]:
