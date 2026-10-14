@@ -208,6 +208,14 @@ class QMMMHamiltonian(CouplingHamiltonian):
             qm_interface.configure_electrostatic_embedding(qm_electrostatics)
         else:
             capability = ElectrostaticCouplingMode.UNSUPPORTED
+        conservative_electrostatics = (
+            self.coupling_mode == "conservative"
+            and qm_electrostatics
+            and capability in {
+                ElectrostaticCouplingMode.MOLECULAR,
+                ElectrostaticCouplingMode.ENGINE,
+            }
+        )
         if (
             self.force_matrix[Subsystem.I][Subsystem.III]
             == TheoryLevel.QM
@@ -263,10 +271,9 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 pme_calculators.append(
                     PotentialCalculator(system, pme_nuclei),
                 )
-            if not (
-                self.coupling_mode == "conservative"
-                and capability is ElectrostaticCouplingMode.MOLECULAR
-            ):
+            # Zeroing the OpenMM QM charges removes these classical terms
+            # entirely; a PME exclusion would subtract them a second time.
+            if not conservative_electrostatics:
                 pme_exclusion = PMEExcludedPotential(
                     system,
                     self.pme_alpha,
@@ -292,11 +299,7 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 self.pme_spline_order,
             )
             qm_interface.add_electronic_potential(pme_electrons)
-        if (
-            self.coupling_mode == "conservative"
-            and capability is ElectrostaticCouplingMode.MOLECULAR
-            and qm_electrostatics
-        ):
+        if conservative_electrostatics:
             self.apply_conservative_exclusions(mm_interface, system)
         else:
             self.apply_exclusions(mm_interface, system)
@@ -306,7 +309,12 @@ class QMMMHamiltonian(CouplingHamiltonian):
             interface: MMInterface,
             system: System,
     ) -> None:
-        """Remove molecular QM terms from both OpenMM energy and forces."""
+        """Remove QM terms from both OpenMM energy and forces.
+
+        Keep QM/MM non-electrostatic interactions and their forces. Only
+        the OpenMM charges are zeroed; engine embedding still uses the
+        original system charges for its MM sources.
+        """
         qm_atoms = system.select("subsystem I")
         interface.zero_intramolecular(qm_atoms)
         interface.zero_charges(qm_atoms)

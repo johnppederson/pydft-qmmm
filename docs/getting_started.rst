@@ -170,8 +170,14 @@ into a one-electron operator.  Forces are analytic on both the QM atoms
 and the MM sites.
 
 The default conservative mode removes QM fixed-charge electrostatics
-from both the OpenMM energy and its forces before adding the molecular
-QM/MM terms.  ``coupling_mode="force"`` retains the historical
+from both the OpenMM energy and its forces before adding the QM/MM
+terms. This applies to molecular engines and periodic engines (VASP,
+SPARC, and PySCF-PBC, including KSCED). QM/MM Lennard-Jones interactions
+retain both their energy and forces, and the original system charges
+remain available to the embedding engine. Conservative PME omits the
+classical PME exclusion correction because the OpenMM QM charges are
+already zero. Each engine keeps ownership of its existing nuclear and
+electronic embedding terms. ``coupling_mode="force"`` retains the historical
 directional force mixing for compatibility, emits a warning, and is not
 suitable when forces must be derivatives of the reported energy.
 
