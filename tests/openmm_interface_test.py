@@ -2,6 +2,7 @@
 
 import numpy as np
 import openmm
+import openmm.app
 from openmm import unit
 import pytest
 
@@ -115,3 +116,19 @@ def test_pme_forces_after_zero_charges_are_energy_derivatives():
     # PME retains the remaining ion's background energy.
     assert np.isfinite(energy)
     assert analytical == pytest.approx(numerical, abs=1e-4)
+
+
+def test_context_platform_and_precision_options():
+    """The factory builds a Context on the requested platform."""
+    from pydft_qmmm.interfaces.openmm import openmm_factory
+
+    system, _ = _two_particle_system(periodic=True)
+    modeller = openmm.app.Modeller(
+        openmm.app.Topology(), [openmm.Vec3(0, 0, 0)] * 2 * unit.nanometer,
+    )
+    context = openmm_factory._build_omm_context(system, modeller, "Reference")
+    assert context.getPlatform().getName() == "Reference"
+    with pytest.raises(ValueError, match="no precision setting"):
+        openmm_factory._build_omm_context(
+            system, modeller, "Reference", "double",
+        )

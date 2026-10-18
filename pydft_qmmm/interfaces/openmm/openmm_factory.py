@@ -46,6 +46,8 @@ def openmm_interface_factory(
         nonbonded_cutoff: float | int = 14.,
         pme_gridnumber: int | tuple[int, int, int] | None = None,
         pme_alpha: float | int | None = None,
+        platform: str = "CPU",
+        precision: str | None = None,
 ) -> openmm_interface.OpenMMPotential:
     r"""Build the interface to OpenMM.
 
@@ -62,6 +64,11 @@ def openmm_interface_factory(
             lattice edge in PME summation.
         pme_alpha: The Gaussian width parameter in Ewald summation
             (:math:`\mathrm{nm^{-1}}`).
+        platform: The OpenMM platform name ("CPU", "CUDA", "OpenCL",
+            or "Reference").
+        precision: The OpenMM precision ("single", "mixed", or
+            "double") for platforms that support it.  None keeps the
+            platform default.
 
     Returns:
         The OpenMM interface.
@@ -123,8 +130,12 @@ def openmm_interface_factory(
     _adjust_system(system, base_system)
     aux_system = _empty_omm_system(system)
     aux_system.setDefaultPeriodicBoxVectors(*base_system.getDefaultPeriodicBoxVectors())
-    base_context = _build_omm_context(base_system, omm_modeller)
-    aux_context = _build_omm_context(aux_system, omm_modeller)
+    base_context = _build_omm_context(
+        base_system, omm_modeller, platform, precision,
+    )
+    aux_context = _build_omm_context(
+        aux_system, omm_modeller, platform, precision,
+    )
     wrapper = openmm_interface.OpenMMPotential(
         system,
         base_context=base_context,
@@ -322,6 +333,8 @@ def _adjust_system(
 def _build_omm_context(
         omm_system: openmm.System,
         omm_modeller: openmm.app.Modeller,
+        platform: str = "CPU",
+        precision: str | None = None,
 ) -> openmm.Context:
     """Build the OpenMM Context object.
 
@@ -329,15 +342,26 @@ def _build_omm_context(
         omm_system: The OpenMM representation of forces, constraints,
             and particles.
         omm_modeller: The OpenMM representation of the system.
+        platform: The OpenMM platform name.
+        precision: The OpenMM precision, or None for the platform
+            default.
 
     Returns:
         The OpenMM machinery required to perform energy and force
         calculations, containing the System object and the specific
-        platform to use, which is currently just the CPU platform.
+        platform to use.
     """
     omm_integrator = openmm.VerletIntegrator(1. * openmm.unit.femtosecond)
-    # We currently only support the CPU platform.
-    omm_platform = openmm.Platform.getPlatformByName("CPU")
-    omm_context = openmm.Context(omm_system, omm_integrator, omm_platform)
+    omm_platform = openmm.Platform.getPlatformByName(platform)
+    properties = {}
+    if precision is not None:
+        if "Precision" not in omm_platform.getPropertyNames():
+            raise ValueError(
+                f"OpenMM platform {platform} has no precision setting",
+            )
+        properties["Precision"] = precision
+    omm_context = openmm.Context(
+        omm_system, omm_integrator, omm_platform, properties,
+    )
     omm_context.setPositions(omm_modeller.positions)
     return omm_context
