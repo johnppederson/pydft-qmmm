@@ -162,3 +162,38 @@ def test_periodic_self_cell_guards(tmp_path, condition):
     else:
         with pytest.raises(ValueError,match='QM slab correction'):
             potential._write_input()
+
+
+def test_qm_neutrality_allowance_scales_with_electron_count():
+    # 4000 valence electrons: 1e-7 per electron allows 4e-4 e, above the 1e-4 floor.
+    shape=(4,4,8);cell=np.diag([4.,4.,8.]);origin=np.zeros(3)
+    ions=np.array([[1.,1.,2.],[2.,1.,3.]]);valence=[2000.,2000.]
+    density=np.zeros(shape);density[1,1,2]=(4000.+2.3e-4)*np.prod(shape)
+    qm_dipole(density,ions,valence,cell,origin)
+    density[1,1,2]=(4000.+1e-3)*np.prod(shape)
+    with pytest.raises(ValueError,match='neutral QM'):
+        qm_dipole(density,ions,valence,cell,origin)
+
+
+@pytest.mark.parametrize('condition', ['valid', 'idipol', 'dipol', 'truncated'])
+def test_vasp_ldipol_replaces_qm_self_term(tmp_path, condition):
+    from pydft_qmmm import Atom, System
+    from pydft_qmmm.utils import Subsystem
+    from pydft_qmmm.interfaces.vasp.vasp_factory import vasp_interface_factory
+    pp=tmp_path/'pp'/'H';pp.mkdir(parents=True);(pp/'POTCAR').write_text('test\n')
+    cell=np.diag([8.,8.,16.])
+    system=System([Atom(element='H',position=np.array([1.,2.,1.]),subsystem=Subsystem.I)],box=cell)
+    tags=dict(NGXF=8,NGYF=8,NGZF=16,LDIPOL=True,IDIPOL=3,DIPOL=[0.5,0.5,0.5])
+    if condition=='idipol':tags['IDIPOL']=4
+    if condition=='dipol':tags['DIPOL']=[0.5,0.5,0.3]
+    if condition=='truncated':tags['KERNEL_TRUNCATION/LTRUNCATE']=True
+    potential=vasp_interface_factory(system,pp_path=str(pp.parent),directory=str(tmp_path/'work'),
+                                    embedding=True,qm_box=cell,qm_origin=[0,0,-2],
+                                    embedding_grid_shape=(8,8,16),incar=tags)
+    object.__setattr__(potential,'slab_correction',True)
+    if condition=='valid':
+        potential._write_input()
+        assert json.loads((tmp_path/'work/SLAB_DATA.json').read_text())['qm_self'] is False
+    else:
+        with pytest.raises(ValueError,match='LDIPOL slab correction'):
+            potential._write_input()

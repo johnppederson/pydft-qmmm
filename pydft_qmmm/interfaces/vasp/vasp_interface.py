@@ -161,10 +161,18 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
                     raise ValueError("QM slab correction requires periodic QM without Coulomb truncation")
                 if self.incar.get("LDIPOL", False):
                     raise ValueError("QM slab correction requires LDIPOL=False to avoid double counting")
+            elif self.incar.get("LDIPOL", False):
+                # VASP's own dipole correction handles QM-QM; the step must sit
+                # at the QM cell face, mid-vacuum.
+                dipol = np.asarray(self.incar.get("DIPOL", []), dtype=float)
+                if (truncated or self.incar.get("IDIPOL") != 3 or dipol.shape != (3,)
+                        or not np.isclose(dipol[2] % 1.0, 0.5)):
+                    raise ValueError("LDIPOL slab correction requires IDIPOL=3, "
+                                     "DIPOL z=0.5, and no Coulomb truncation")
             elif (truncated is not True
                     or self.incar.get("KERNEL_TRUNCATION/IDIMENSIONALITY") != 2
                     or self.incar.get("KERNEL_TRUNCATION/ISURFACE") != 3):
-                raise ValueError("Slab correction requires z kernel truncation or qm_slab_correction=True")
+                raise ValueError("Slab correction requires z kernel truncation, LDIPOL, or qm_slab_correction=True")
             charges = np.array(self.system.charges, copy=True)
             charges[qm_indices] = 0.
             moment = neutral_dipole(self.system.positions, charges)

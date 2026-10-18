@@ -10,6 +10,8 @@ from .grid_potential import EPS0
 
 # Allow small integration residuals in the VASP grid; never renormalize it.
 QM_NEUTRALITY_TOLERANCE = 1e-4
+# VASP's grid residual grows with system size (2.3e-4 e for 3980 electrons).
+QM_NEUTRALITY_RELATIVE = 1e-7
 
 
 def coefficient(cell):
@@ -48,7 +50,8 @@ def qm_dipole(density, positions, valence, cell, origin):
     """Use VASP's final positive electron density and analytic ionic charges."""
     density = np.asarray(density)
     electrons = density / density.size
-    if not np.isfinite(density).all() or abs(electrons.sum() - np.sum(valence)) > QM_NEUTRALITY_TOLERANCE:
+    if not np.isfinite(density).all() or abs(electrons.sum() - np.sum(valence)) > max(
+            QM_NEUTRALITY_TOLERANCE, QM_NEUTRALITY_RELATIVE * np.sum(valence)):
         raise ValueError(f'Slab correction requires a neutral QM density: '
                          f'electrons={electrons.sum():.12g}, ions={np.sum(valence):.12g}')
     return float(np.dot(valence, positions[:, 2] + origin[2])

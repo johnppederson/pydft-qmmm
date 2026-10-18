@@ -317,12 +317,12 @@ def force_and_stress(constants, additions):
             charge -= density / np.prod(shape)
         slab = _slab_data()
         if slab is not None:
-            from pydft_qmmm.embedding.slab import qm_dipole, QM_NEUTRALITY_TOLERANCE
+            from pydft_qmmm.embedding.slab import qm_dipole, QM_NEUTRALITY_TOLERANCE, QM_NEUTRALITY_RELATIVE
             if slab["step"] != step:
                 raise ValueError("Stale slab metadata")
             import json
             electron_profile = np.asarray(constants.charge_density).sum(axis=(0, 1)) / np.prod(shape)
-            diagnostic = dict(step=step, neutrality_tolerance_e=QM_NEUTRALITY_TOLERANCE,
+            diagnostic = dict(step=step, neutrality_tolerance_e=max(QM_NEUTRALITY_TOLERANCE, QM_NEUTRALITY_RELATIVE * float(valence.sum())),
                               charge_residual_e=float(valence.sum()-electron_profile.sum()), electron_count=float(electron_profile.sum()),
                               ionic_charge=float(valence.sum()), origin=slab["origin"],
                               electron_count_by_z=electron_profile.tolist(),
