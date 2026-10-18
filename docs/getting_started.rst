@@ -262,3 +262,80 @@ Templates
 
 Templates for writing third-party plugins and interfaces are provided in
 the templates folder in the project root directory.
+
+Separate VASP and MM cells
+-------------------------
+
+For a slab, the VASP interface can use a shorter QM cell along z while
+``System.box`` remains the full periodic MM cell. Pass ``qm_box`` (lattice
+vectors as columns), ``qm_origin`` (Cartesian Angstrom), and
+``embedding_grid_shape`` (the full MM Gaussian grid) to ``QMHamiltonian``.
+Set ``NGXF``, ``NGYF``, and ``NGZF`` explicitly in ``incar`` so that the QM
+and MM grids have identical spacing. The z origin must lie on that grid.
+Only orthorhombic cells with identical x/y vectors are currently supported;
+``persistent`` must be false. Both region I and region II must lie strictly
+inside the QM cell's z faces. Coordinates in ``System`` remain global.
+
+Enable slab Coulomb truncation through the INCAR keys
+``KERNEL_TRUNCATION/LTRUNCATE=True``,
+``KERNEL_TRUNCATION/IDIMENSIONALITY=2``,
+``KERNEL_TRUNCATION/ISURFACE=3``, and
+``KERNEL_TRUNCATION/LCOARSEN=True``. These settings affect VASP's QM
+self-interactions. MM embedding retains the original MM periodic lattice.
+The Gaussian field is restricted to the QM grid and its reaction force uses
+the transpose of that restriction. PME uses the MM lattice and global QM
+grid coordinates in both directions. Cell metadata is written to
+``QM_CELL.json`` and checked against the actual VASP callback grid.
+
+Converge the QM z height against a full-height truncated reference. Also
+compare that reference against the original periodic model: truncation
+changes the physical boundary condition. Dispersion image interactions
+require a separate cell-size check.
+
+Neutral water slabs with separate QM and MM cells
+------------------------------------------------
+
+For fixed-region VASP/OpenMM calculations, the optional
+``QMMMHamiltonian("electrostatic", "electrostatic", partition=None,
+slab_correction=True)`` adds the neutral Yeh--Berkowitz correction to
+MM electrostatics and the matching QM/MM cross term. The correction is
+disabled by default. Configure VASP with an explicit aligned ``qm_box``,
+``qm_origin`` and ``embedding_grid_shape``, ``persistent=False``, and
+``KERNEL_TRUNCATION/LTRUNCATE=True``, ``IDIMENSIONALITY=2``, ``ISURFACE=3``.
+The last two tags also use the ``KERNEL_TRUNCATION/`` prefix.
+
+The MM term is C M_MM² and the cross term is 2 C M_MM M_QM, with
+C = 1/(2 ε₀ V_MM). M_QM includes the final electron density and ionic
+valence charges. The electronic cross term enters the SCF potential;
+ionic energy, ionic forces and MM reaction forces follow the same energy.
+There is no extra QM self correction in this mode because VASP already truncates it.
+The OpenMM wrapper evaluates the MM energy and its analytic derivative
+using the current charges after QM exclusions; no new integrator or
+MDCraft dependency is required.
+
+This implementation requires separately neutral QM and MM regions,
+orthorhombic cells, PME for MM, and continuous slab coordinates along z.
+Keep the cell and region membership fixed. It does not resize the cell
+or add vacuum. The approximation still needs vacuum-convergence checks;
+it is not an exact two-periodic solver. No slab stress correction is
+provided, so pressure-coupled dynamics are not supported. Water tests
+with VASP kernel coarsening disabled passed the current finite-difference
+tolerance before adding this correction; full coupled validation remains
+necessary.
+
+The QM grid neutrality check allows an absolute residual of 1e-4 electrons
+(the water test showed a 2.16e-5 electron integration residual). The density
+is never renormalized; larger discrepancies fail. ``SLAB_DIAGNOSTICS.json``
+records the residual, tolerance and electron count by z plane.
+
+For periodic QM with a full-height or smaller aligned QM cell, additionally set
+``qm_slab_correction=True`` on the coupling Hamiltonian. Disable kernel
+truncation and keep ``LDIPOL=False``. The plugin adds C_QM M_QM², updating
+its potential -2 C_QM M_QM z at each SCF step. Its energy correction removes
+the potential contribution already counted in the band energy. The
+ionic force is -2 C_QM M_QM Z along z. Here C_QM = 1/(2 ε₀ V_QM);
+the MM and cross terms retain C_MM = 1/(2 ε₀ V_MM). The total correction
+is C_QM M_QM² + 2 C_MM M_QM M_MM + C_MM M_MM². For equal cell volumes
+this reduces to C (M_QM + M_MM)². Place the QM cell faces in vacuum so the
+linear potential's discontinuity does not cut through the QM density.
+This mode requires full coupled finite-difference validation before MD.

@@ -51,6 +51,9 @@ def vasp_interface_factory(
         persistent: bool = False,
         persistent_steps: int = 1000,
         persistent_timeout: float = 3600.,
+        qm_box=None,
+        qm_origin=None,
+        embedding_grid_shape=None,
         **options: Any,
 ) -> VaspPotential:
     r"""Build the interface to VASP.
@@ -98,6 +101,11 @@ def vasp_interface_factory(
             including the initial geometry (MD steps + 1). Call close() if
             stopping early. The cell and QM membership must remain fixed.
         persistent_timeout: Maximum seconds to wait for each SCF or geometry.
+        qm_box: Optional orthorhombic QM lattice, with vectors as columns.
+            The system lattice remains the MM lattice. Only z may differ.
+        qm_origin: Fixed Cartesian origin of the QM cell in MM coordinates.
+        embedding_grid_shape: Full MM Gaussian grid dimensions. QM grid
+            spacing and origin must align with this grid.
         options: Additional INCAR tags given as keyword arguments; the
             names are upper-cased, so ``encut=520`` sets ``ENCUT``.
             These take precedence over ``incar``.
@@ -132,6 +140,12 @@ def vasp_interface_factory(
         raise ValueError("persistent_steps must be a positive integer")
     if not 0 < persistent_timeout < float('inf'):
         raise ValueError("persistent_timeout must be finite and positive")
+    if qm_box is not None and persistent:
+        raise ValueError("Separate QM cells currently require persistent=False")
+    if qm_box is None and (qm_origin is not None or embedding_grid_shape is not None):
+        raise ValueError("qm_origin and embedding_grid_shape require qm_box")
+    if qm_box is not None and (qm_origin is None or embedding_grid_shape is None):
+        raise ValueError("qm_box requires qm_origin and embedding_grid_shape")
     tags = dict(DEFAULT_INCAR)
     if incar is not None:
         tags.update(incar)
@@ -147,6 +161,8 @@ def vasp_interface_factory(
         {} if potcar_map is None else dict(potcar_map),
         embedding,
         embedding_sigma,
+        qm_box=qm_box, qm_origin=qm_origin,
+        embedding_grid_shape=embedding_grid_shape,
         persistent=persistent,
         persistent_steps=int(persistent_steps),
         persistent_timeout=float(persistent_timeout),

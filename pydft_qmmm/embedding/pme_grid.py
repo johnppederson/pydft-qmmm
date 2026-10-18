@@ -133,7 +133,8 @@ def grid_coordinates(shape, cell):
     return fractional.reshape(-1, 3) @ cell
 
 
-def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20):
+def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20,
+                        source_cell=None, origin=None):
     """Build V_ext on VASP's grid from the PME reciprocal-space sum.
 
     Mirrors PMEElectronicPotential.compute_potential.
@@ -144,6 +145,8 @@ def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20):
         cell: A 3x3 array whose rows are lattice vectors (Angstrom).
         expect_step: Optional step stamp to verify.
         chunk: Number of grid points evaluated per helPME call.
+        source_cell: Optional MM lattice (rows); defaults to cell.
+        origin: Optional global Cartesian origin of the target grid.
 
     Returns:
         V_ext on the grid (eV), with shape ``shape``.
@@ -156,7 +159,7 @@ def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20):
     pme = helpme_py.PMEInstanceD()
     pme.setup(1, alpha, spline_order, *gridnumber, COULOMB_CONSTANT, 0)
     pme.set_lattice_vectors(
-        *_lattice_constants(np.asarray(cell, dtype=np.float64)),
+        *_lattice_constants(np.asarray(cell if source_cell is None else source_cell, dtype=np.float64)),
         helpme_py.LatticeType.XAligned,
     )
     all_charges = helpme_py.MatrixD(charges.reshape(-1, 1))
@@ -166,6 +169,8 @@ def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20):
         excluded_positions = helpme_py.MatrixD(positions[excluded, :])
 
     coordinates = grid_coordinates(shape, cell)
+    if origin is not None:
+        coordinates += np.asarray(origin)
     potential = np.zeros(len(coordinates))
     for start in range(0, len(coordinates), chunk):
         block = np.ascontiguousarray(coordinates[start:start + chunk])
@@ -206,6 +211,7 @@ def charge_from_potential(phi, cell):
 def pme_source_forces(
         path, grid_charges, shape, cell,
         points=None, point_charges=None, expect_step=None,
+        source_cell=None, origin=None,
 ):
     """Forces on the PME_DATA charges from the QM charge.
 
@@ -221,7 +227,9 @@ def pme_source_forces(
         cell: A 3x3 array whose rows are lattice vectors (Angstrom).
         points: Optional Nx3 positions (Angstrom) of extra point charges,
             such as nuclei the engine couples to the field as points.
-        point_charges: The charges (e) at ``points``.
+        point_charges: The charges (e) at ``points``. Points are global.
+        source_cell: Optional MM lattice (rows); defaults to cell.
+        origin: Optional global Cartesian origin of the QM grid.
         expect_step: Optional step stamp to verify.
 
     Returns:
@@ -237,11 +245,13 @@ def pme_source_forces(
     pme = helpme_py.PMEInstanceD()
     pme.setup(1, alpha, spline_order, *gridnumber, COULOMB_CONSTANT, 0)
     pme.set_lattice_vectors(
-        *_lattice_constants(np.asarray(cell, dtype=np.float64)),
+        *_lattice_constants(np.asarray(cell if source_cell is None else source_cell, dtype=np.float64)),
         helpme_py.LatticeType.XAligned,
     )
     sources = np.asarray(grid_charges, dtype=np.float64).reshape(-1)
     coordinates = grid_coordinates(shape, cell)
+    if origin is not None:
+        coordinates += np.asarray(origin)
     if points is not None and len(points):
         coordinates = np.vstack([coordinates, np.asarray(points).reshape(-1, 3)])
         sources = np.concatenate([sources, np.asarray(point_charges).reshape(-1)])
