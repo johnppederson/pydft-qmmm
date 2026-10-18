@@ -64,6 +64,20 @@ class OpenMMInterface(MMInterface):
     aux_energy_group: set[int] = field(default_factory=set)
     aux_forces_group: set[int] = field(default_factory=set)
 
+    slab_correction: bool = False
+
+    def _slab_terms(self):
+        from pydft_qmmm.embedding.slab import mm_correction
+        from pydft_qmmm.utils import KJMOL_PER_EV
+        forces = [f for f in self.base_context.getSystem().getForces()
+                  if isinstance(f, openmm.NonbondedForce)]
+        if len(forces) != 1 or forces[0].getNonbondedMethod() != openmm.NonbondedForce.PME:
+            raise ValueError("Slab correction requires one PME NonbondedForce")
+        charges = np.array([forces[0].getParticleParameters(i)[0].value_in_unit(
+            openmm.unit.elementary_charge) for i in range(len(self.system))])
+        energy, force = mm_correction(self.system.positions, charges, self.system.box)
+        return energy * KJMOL_PER_EV, force * KJMOL_PER_EV
+
     def __post_init__(self) -> None:
         """Register update methods with relevant system attributes"""
         self.system.charges.register_notifier(self.update_charges)
@@ -358,6 +372,8 @@ class OpenMMPotential(OpenMMInterface, AtomicPotential):
                 aux_state.getPotentialEnergy()
                 / openmm.unit.kilojoule_per_mole
             )
+        if self.slab_correction:
+            energy += self._slab_terms()[0]
         return energy
 
     def compute_forces(self) -> NDArray[np.float64]:
@@ -393,6 +409,8 @@ class OpenMMPotential(OpenMMInterface, AtomicPotential):
                 / openmm.unit.kilojoule_per_mole
                 * openmm.unit.angstrom
             )
+        if self.slab_correction:
+            forces += self._slab_terms()[1]
         return forces
 
     def compute_components(self) -> dict[str, float]:
@@ -423,4 +441,6 @@ class OpenMMPotential(OpenMMInterface, AtomicPotential):
                 {force},
             ).getPotentialEnergy() / openmm.unit.kilojoule_per_mole
             components[key] = value
+        if self.slab_correction:
+            components["Slab MM Energy"] = self._slab_terms()[0]
         return components

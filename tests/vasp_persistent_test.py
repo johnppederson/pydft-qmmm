@@ -43,6 +43,8 @@ for step in range(int(os.environ[STEPS_ENV])):
         Path('PME_FORCES').write_text(f'{len(pme_charges)} {step}\\n'+'4 5 6\\n'*len(pme_charges))
         Path('QM_NET_FORCE').write_text('2\\n0 0 0\\n')
         Path('PLUGIN_FIRED.txt').write_text(str(step))
+        with open('PLUGIN_ENERGY','a') as fh:
+            fh.write('local_potential 0.0\\nforce_and_stress 0.0\\n')
     additions=SimpleNamespace(positions=np.zeros_like(positions))
     structure(constants,additions)
     positions=positions+additions.positions

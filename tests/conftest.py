@@ -354,32 +354,11 @@ def sparc_qm_embedded(sparc_workdir):
 
 @pytest.fixture
 def sparc_embedded_total(sparc_qmmm_system, sparc_qm_embedded, mm_spce_water4):
-    """SPARC QM + SPCE MM, electrostatic close range, MM long range.
+    """Conservative SPARC coupling with populated subsystems II and III.
 
-    long_range="mechanical" puts I-III at TheoryLevel.MM, which is
-    SYMMETRIC with III-I (see _LONG_EMBEDDING).  "cutoff" is (NO, MM):
-    subsystem III feels the QM atoms but the QM atoms are masked from
-    feeling III (openmm_interface.zero_forces), so the total energy is
-    not the potential of the total force and a full-energy finite
-    difference cannot match the analytic force.  Upstream works around
-    that by restricting numerical_gradient to components=["Psi4"];
-    using a conservative scheme instead lets the gradient tests below
-    check the whole energy, which is the stronger statement.
-
-    Deliberately shares sparc_pme_total's 2.5 A partition cutoff so
-    that the two fixtures differ in exactly one variable: the
-    long-range treatment ("cutoff" here, "electrostatic" there).  The
-    default CentroidPartition("all", 14.) would put all nine MM atoms
-    in subsystem II and leave III empty, and then
-    test_pme_changes_the_energy would be comparing a 9-Gaussian V_ext
-    against a 3-Gaussian V_ext -- it would pass even if the PME
-    reciprocal sum returned identically zero, which is no evidence
-    about PME at all.
-
-    Both subsystem assertions are checks, not assumptions: an empty II
-    means V_ext is identically zero and the physics tests downstream
-    verify nothing (F1); an empty III means the long-range term has
-    nothing to act on.
+    Conservative mode removes the fixed QM charges for every long-range
+    choice. This fixture retains the mechanical setting to cover that
+    assembly path while full-energy gradients test the retained terms.
     """
     from pydft_qmmm import QMMMHamiltonian
     qmmm = QMMMHamiltonian("electrostatic", "mechanical", cutoff=2.5)
@@ -418,16 +397,10 @@ def sparc_newton_total(sparc_qmmm_system, sparc_qm_embedded, mm_spce_water4):
 
 @pytest.fixture
 def sparc_cutoff_total(sparc_qmmm_system, sparc_qm_embedded, mm_spce_water4):
-    """The matched control for the PME comparisons.
+    """Conservative control with the same partition as the PME fixture.
 
-    sparc_embedded_total uses long_range="mechanical" so that the
-    gradient tests can difference the whole energy.  That is the wrong
-    control for "does PME change anything", because "mechanical" leaves
-    base_force_mask[QM] == 1 while "electrostatic" zeroes it -- the two
-    would differ in the QM forces even if the PME reciprocal sum
-    returned zero.  "cutoff" shares "electrostatic"'s mask (both are
-    asymmetric, both zero it), so the ONLY difference against
-    sparc_pme_total is whether subsystem III reaches the QM engine.
+    Both retain the same OpenMM energy and forces. Only the PME fixture
+    supplies subsystem III's reciprocal field to the QM engine.
     """
     from pydft_qmmm import QMMMHamiltonian
     qmmm = QMMMHamiltonian("electrostatic", "cutoff", cutoff=2.5)

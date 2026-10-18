@@ -33,14 +33,16 @@ class TestSparcEmbeddingConfiguration:
         monkeypatch.setattr(
             pme_potential, "PMEExcludedPotential", record,
         )
-        coupling = QMMMHamiltonian(
-            "electrostatic",
-            "electrostatic",
-            cutoff=2.5,
-            pme_alpha=requested[0],
-            pme_gridnumber=requested[1],
-            pme_spline_order=requested[2],
-        )
+        with pytest.warns(RuntimeWarning, match="nonconservative"):
+            coupling = QMMMHamiltonian(
+                "electrostatic",
+                "electrostatic",
+                cutoff=2.5,
+                pme_alpha=requested[0],
+                pme_gridnumber=requested[1],
+                pme_spline_order=requested[2],
+                coupling_mode="force",
+            )
         total = mm_spce_water4[3:] + sparc_qm_embedded[0:3] + coupling
         total.build_calculator(sparc_qmmm_system)
 
@@ -359,12 +361,7 @@ class TestSparcPME:
         from pydft_qmmm.utils import numerical_gradient
         calculator = sparc_pme_total.build_calculator(sparc_qmmm_system)
         analytical = -calculator.calculate().forces[0]
-        # Engine coupling supplies the QM embedding forces itself.
-        # PMEExcluded corrects OpenMM's energy only, so its derivative
-        # must not enter this force-mixed gradient comparison.
-        numerical = numerical_gradient(
-            calculator, {0}, components=["SPARC"],
-        )
+        numerical = numerical_gradient(calculator, {0})
         assert analytical - numerical == pytest.approx(0, abs=2.0)
 
 

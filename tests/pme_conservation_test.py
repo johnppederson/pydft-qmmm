@@ -114,11 +114,13 @@ def test_engine_coupling_uses_energy_only_exclusion(
         nonbonded_method="PME", nonbonded_cutoff=7.0,
         pme_gridnumber=(40, 40, 40), pme_alpha=5.0,
     )
-    coupling = QMMMHamiltonian(
-        "electrostatic", "electrostatic",
-        partition=CentroidPartition("all", 6.0),
-        pme_gridnumber=(40, 40, 40), pme_alpha=0.5,
-    )
+    with pytest.warns(RuntimeWarning, match="nonconservative"):
+        coupling = QMMMHamiltonian(
+            "electrostatic", "electrostatic",
+            partition=CentroidPartition("all", 6.0),
+            pme_gridnumber=(40, 40, 40), pme_alpha=0.5,
+            coupling_mode="force",
+        )
     calculator = (qm[:3] + mm[3:] + coupling).build_calculator(spce_system)
     exclusions = [
         c.potential for c in calculator.calculators
