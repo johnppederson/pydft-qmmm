@@ -16,12 +16,14 @@ __all__ = [
     "write_pme_data",
     "read_mm_forces",
     "read_vasprun",
+    "plugin_energy_rounding",
     "run_vasp",
     "VaspExecutionError",
 ]
 
 import gzip
 import os
+import re
 import shutil
 import subprocess
 import xml.etree.ElementTree as ET
@@ -291,6 +293,72 @@ def read_mm_forces(
             f"{path} is at step {step}, expected {expect_step}.",
         )
     return data.copy(), step
+
+
+def plugin_energy_rounding(directory: str, frame: int | None = None) -> float:
+    r"""Return the plugin energy (eV) that VASP lost to single precision.
+
+    VASP's C++ plugin interface stores each callback's ``total_energy``
+    with ``cast<float>()``.  The plugin logs its exact additions to
+    ``PLUGIN_ENERGY``; this returns the sum of ``x - float32(x)`` for the
+    force callback and for the local-potential call that VASP used in its
+    final energy: the last one logged before that force callback.
+
+    Args:
+        directory: The VASP working directory.
+        frame: For a persistent run, the zero-based force evaluation to
+            correct; the log then holds every frame.  None uses the last
+            one and also checks the local call against OUTCAR.
+
+    Returns:
+        The correction (:math:`\mathrm{eV}`) to add to VASP's energy.
+
+    Raises:
+        VaspExecutionError: If the plugin log is missing or has no entry
+            for the requested frame.
+    """
+    path = os.path.join(directory, "PLUGIN_ENERGY")
+    if not os.path.isfile(path):
+        raise VaspExecutionError(
+            directory,
+            "PLUGIN_ENERGY is absent, so the single-precision rounding of "
+            "the plugin energy cannot be undone.",
+        )
+    with open(path) as fh:
+        entries = [(kind, float(value)) for kind, value in (line.split() for line in fh)]
+    forces = [i for i, (kind, _) in enumerate(entries) if kind == "force_and_stress"]
+    if frame is None:
+        end = forces[-1] if forces else len(entries)
+        start = 0
+    elif frame < len(forces):
+        end = forces[frame]
+        start = forces[frame - 1] + 1 if frame else 0
+    else:
+        raise VaspExecutionError(
+            directory, f"PLUGIN_ENERGY has no force entry for frame {frame}.",
+        )
+
+    def lost(x):
+        return x - float(np.float32(x))
+
+    correction = lost(entries[end][1]) if end < len(entries) else 0.0
+    # VASP calls local_potential again after the force callback (setup for
+    # the next step); only the calls before it can be in TOTEN.
+    local = [value for kind, value in entries[start:end] if kind == "local_potential"]
+    if local:
+        used = local[-1]
+        outcar = os.path.join(directory, "OUTCAR")
+        if frame is None and os.path.isfile(outcar):
+            with open(outcar) as fh:
+                printed = re.findall(r"EPLUGINS =\s+(\S+)", fh.read())
+            if printed:
+                # OUTCAR prints the stored float32 value with 8 decimals.
+                matches = [x for x in local
+                           if abs(float(np.float32(x)) - float(printed[-1])) < 6e-9]
+                if matches:
+                    used = matches[-1]
+        correction += lost(used)
+    return correction
 
 
 def read_vasprun(

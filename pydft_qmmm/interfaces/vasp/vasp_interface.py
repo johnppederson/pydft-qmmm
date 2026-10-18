@@ -234,7 +234,8 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             # run which dies before the plugin fires leaves a missing
             # file rather than the previous step's forces to be
             # silently reread.
-            for stale in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE", "SLAB_FORCES"):
+            for stale in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE", "SLAB_FORCES",
+                          "PLUGIN_ENERGY"):
                 stale_path = os.path.join(self.directory, stale)
                 if os.path.isfile(stale_path):
                     os.remove(stale_path)
@@ -475,6 +476,9 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         energy, forces = vasp_utils.read_vasprun(
             os.path.join(self.directory, "vasprun.xml"),
         )
+        if self.embedding:
+            # VASP stores the plugin energy in single precision.
+            energy += vasp_utils.plugin_energy_rounding(self.directory)
         if len(forces) != len(order):
             raise vasp_utils.VaspExecutionError(
                 self.directory,
@@ -511,6 +515,10 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
                 raise ValueError("Persistent VASP session is closed; create a new calculator")
         else:
             order = self._write_input()
+            # One log for the whole session; frames are told apart below.
+            energy_log = os.path.join(self.directory, "PLUGIN_ENERGY")
+            if os.path.isfile(energy_log):
+                os.remove(energy_log)
         try:
             # VASP is either not launched yet or blocked inside structure().
             if self.embedding:
@@ -532,6 +540,10 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             energy, forces = session.evaluate(fractional)
             if self.embedding:
                 self._check_plugin_fired()
+                # VASP stores the plugin energy in single precision.
+                energy += vasp_utils.plugin_energy_rounding(
+                    self.directory, frame=session.frame - 1,
+                )
         except BaseException:
             if self._session:
                 self._session[0].close()

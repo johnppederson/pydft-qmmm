@@ -31,7 +31,7 @@ from pydft_qmmm.embedding.grid_potential import spline_value_and_gradient
 
 __all__ = [
     "EPS0", "KJMOL_PER_EV", "CHARGE_FILE", "FORCE_FILE",
-    "NET_FORCE_FILE", "PME_FORCE_FILE", "SENTINEL",
+    "NET_FORCE_FILE", "PME_FORCE_FILE", "SENTINEL", "ENERGY_FILE",
     "ERROR_FILE",
     "build_external_potential", "contract_gaussian_gradient",
     "electron_interaction_energy", "electrostatic_potential_from_vasp",
@@ -49,6 +49,10 @@ PME_FORCE_FILE = "PME_FORCES"
 SENTINEL = "PLUGIN_FIRED.txt"
 ERROR_FILE = "PLUGIN_ERROR.txt"
 PME_FILE = "PME_DATA"
+# VASP's C++ plugin interface stores each callback's total_energy with
+# cast<float>(), i.e. in single precision.  The exact values are logged
+# here so that the driver can add back what the rounding removed.
+ENERGY_FILE = "PLUGIN_ENERGY"
 
 # Opt-in: build the analytic near field on an N**3 grid and interpolate
 # it onto VASP's.
@@ -194,6 +198,12 @@ def _external_potential(constants):
     return v_ext
 
 
+def _log_energy(kind, value):
+    """Append one callback's exact energy addition (eV) to ENERGY_FILE."""
+    with open(ENERGY_FILE, "a") as fh:
+        fh.write(f"{kind} {float(value)!r}\n")
+
+
 def _slab_data():
     import json
     path = Path("SLAB_DATA.json")
@@ -229,7 +239,7 @@ def local_potential(constants, additions):
                 # The band energy includes integral(n*v). Replace it with C*Mq^2.
                 additions.total_energy += (slab["qm_coefficient"] * moment**2
                                            - np.sum(density / density.size * potential))
-
+        _log_energy("local_potential", additions.total_energy)
     except Exception as exc:
         _record_error(exc)
         raise
@@ -352,6 +362,7 @@ def force_and_stress(constants, additions):
                 fh.write(f"{len(pme_forces)} {step}\n")
                 for fx, fy, fz in pme_forces:
                     fh.write(f"{fx:.12e} {fy:.12e} {fz:.12e}\n")
+        _log_energy("force_and_stress", additions.total_energy)
     except Exception as exc:
         _record_error(exc)
         raise
