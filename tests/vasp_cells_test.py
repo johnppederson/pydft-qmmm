@@ -21,12 +21,14 @@ def test_restriction_transpose():
     assert m.transpose(q).sum() == pytest.approx(q.sum())
 
 
-def test_gaussian_force_derivative():
+@pytest.mark.parametrize('source_z', [5.2, 6.0, 9.2])
+def test_gaussian_force_derivative(source_z):
     m = mapping()
     rng = np.random.default_rng(8)
     q = rng.normal(size=m.qm_shape)*1e-3
     q -= q.mean()
-    positions = np.array([[3.2, 4.1, 1.7], [2.8, 3.7, 5.2]])
+    # The second source may lie outside the cropped QM cell (z=-2..6).
+    positions = np.array([[3.2, 4.1, 1.7], [2.8, 3.7, source_z]])
     charges = np.array([0.7, -0.7])
     rho = m.transpose(q)*np.prod(m.mm_shape)/np.linalg.det(m.mm_cell)
     phi = poisson_fft(rho, m.mm_cell)
@@ -125,7 +127,10 @@ def test_interface_keeps_global_system_and_writes_local_poscar(tmp_path):
     np.testing.assert_array_equal(system.positions,positions)
     np.testing.assert_array_equal(system.box,m.mm_cell.T)
     assert json.loads((tmp_path/'work'/'QM_CELL.json').read_text())['mm_shape']==list(m.mm_shape)
-    with pytest.raises(ValueError,match='persistent'):
-        vasp_interface_factory(system,persistent=True,**kwargs)
+    persistent = vasp_interface_factory(system,persistent=True,**kwargs)
+    persistent._write_input()
+    assert 'IBRION = 12' in (tmp_path/'work'/'INCAR').read_text()
     system.positions[1,2]=6.
-    with pytest.raises(ValueError,match='Regions I and II'):p._write_input()
+    p._write_input()  # Region II sources may cross the QM faces.
+    system.positions[0,2]=6.
+    with pytest.raises(ValueError,match='QM atoms'):p._write_input()

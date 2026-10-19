@@ -19,6 +19,7 @@ FAKE_ENGINE = '''
 import os
 from pathlib import Path
 from types import SimpleNamespace
+import json
 import numpy as np
 from pydft_qmmm.interfaces.vasp.vasp_persistent import structure, STEPS_ENV
 from pydft_qmmm.interfaces.vasp import vasp_plugin
@@ -38,6 +39,13 @@ for step in range(int(os.environ[STEPS_ENV])):
         assert stamp==step
         _,pme_charges,_,_,_,_,pme_step=read_pme_data('PME_DATA')
         assert pme_step==step
+        if Path('SLAB_DATA.json').exists():
+            slab=json.loads(Path('SLAB_DATA.json').read_text())
+            assert slab['step']==step
+            assert abs(slab['moment']-float(charges @ points[:,2]))<1e-12
+            Path(f'slab_{step}.json').write_text(json.dumps(slab))
+            Path('SLAB_FORCES').write_text(f'{len(slab["charges"])} {step}\\n'
+                                         +'0 0 0\\n'*len(slab['charges']))
         constants.total_energy+=float(np.sum(points)+np.sum(charges)+np.sum(pme_charges))
         Path('MM_FORCES').write_text(f'{len(points)} {step}\\n'+'1 2 3\\n'*len(points))
         Path('PME_FORCES').write_text(f'{len(pme_charges)} {step}\\n'+'4 5 6\\n'*len(pme_charges))
@@ -88,6 +96,40 @@ def test_reuses_process_and_maps_forces(potential):
     with pytest.raises(ValueError,match='closed'):p.compute_energy()
 
 
+def test_persistent_slab_refreshes_each_frame(potential):
+    """Moving MM sources must update the slab field before each SCF."""
+    import json
+    from pydft_qmmm.interfaces.vasp.vasp_factory import vasp_interface_factory
+    system = System([
+        Atom(element='H', position=np.array([1., 2., 3.]), subsystem=Subsystem.I),
+        Atom(element='O', position=np.array([2., 3., 4.]), subsystem=Subsystem.I),
+        Atom(element='H', position=np.array([3., 4., 5.]), charge=1., subsystem=Subsystem.II),
+        Atom(element='H', position=np.array([4., 5., 6.]), charge=-1., subsystem=Subsystem.II),
+    ], box=np.eye(3)*10)
+    p = vasp_interface_factory(
+        system, pp_path=potential.pp_path, directory=potential.directory,
+        command=potential.command, embedding=True, persistent=True,
+        persistent_steps=3, persistent_timeout=15,
+        incar=dict(ISYM=0, LDIPOL=True, IDIPOL=3, DIPOL=[.5, .5, .5]))
+    object.__setattr__(p, 'slab_correction', True)
+    p.potentials.append(SimpleNamespace(pme_alpha=.5, pme_gridnumber=(8, 8, 8),
+                                       pme_spline_order=5))
+    try:
+        for step in range(3):
+            system.positions[2, 2] += .2
+            assert np.isfinite(p.compute_forces()).all()
+            slab = json.loads((Path(p.directory)/f'slab_{step}.json').read_text())
+            assert slab['moment'] == pytest.approx(-1 + .2*(step+1))
+            assert slab['origin'] == [0., 0., 0.]
+            assert slab['qm_self'] is False
+            if step == 0:
+                pid = p._session[0].process.pid
+            assert p._session[0].process.pid == pid
+        assert p._session[0].process.returncode == 0
+    finally:
+        p.close()
+
+
 @pytest.mark.parametrize('change',['box','membership','incar'])
 def test_rejects_changes_to_running_hamiltonian(potential,change):
     p=potential;p.compute_energy()
@@ -104,6 +146,41 @@ def test_early_close_reaps_waiting_process(potential):
     potential.compute_energy();session=potential._session[0]
     potential.close();potential.close()
     assert session.closed and session.process.poll() is not None
+
+
+def test_persistent_short_cell_coordinates(potential):
+    """Requests use local QM fractional positions, while MM remains global."""
+    p = potential
+    object.__setattr__(p, 'qm_box', np.diag([10., 10., 6.]))
+    object.__setattr__(p, 'qm_origin', np.array([0., 0., 1.]))
+    object.__setattr__(p, 'embedding_grid_shape', (10, 10, 10))
+    p.incar.update(NGXF=10, NGYF=10, NGZF=6)
+    for step in range(3):
+        p.system.positions[0, 2] += .1
+        forces = p.compute_forces()
+        local = (np.asarray(p.system.positions)[[0, 2]] - p.qm_origin) / [10., 10., 6.]
+        np.testing.assert_allclose(forces[[0, 2]], -2*local*KJMOL_PER_EV)
+        if step == 0:
+            pid = p._session[0].process.pid
+        assert p._session[0].process.pid == pid
+    assert p._session[0].process.returncode == 0
+
+
+@pytest.mark.parametrize('change', ['qm_box', 'qm_origin', 'embedding_grid_shape'])
+def test_persistent_rejects_mapping_changes(potential, change):
+    p = potential
+    object.__setattr__(p, 'qm_box', np.diag([10., 10., 6.]))
+    object.__setattr__(p, 'qm_origin', np.array([0., 0., 1.]))
+    object.__setattr__(p, 'embedding_grid_shape', (10, 10, 10))
+    p.incar.update(NGXF=10, NGYF=10, NGZF=6)
+    p.compute_energy()
+    changes = dict(qm_box=np.diag([10., 10., 7.]), qm_origin=np.zeros(3),
+                   embedding_grid_shape=(10, 10, 20))
+    object.__setattr__(p, change, changes[change])
+    p.system.positions[0, 0] += .1
+    with pytest.raises(ValueError, match='changed'):
+        p.compute_energy()
+    assert p._session[0].process.poll() is not None
 
 
 def test_dead_process_fails_instead_of_hanging(tmp_path):

@@ -41,6 +41,8 @@ class Simulation(Loggable):
             may be provided in place of a Hamiltonian object.
         plugins: A list of plugins to apply to the calculator or
             integrator objects before simulation.
+        center: Center the QM region automatically. Disable for a fixed QM origin.
+        wrap: Wrap residues into the periodic box automatically.
         kwargs: Additional options to provide to the logging
             functionality, see :class:`pydft_qmmm.utils.logging.Loggable`
             for a list of options.
@@ -58,6 +60,8 @@ class Simulation(Loggable):
             hamiltonian: StandaloneHamiltonian | None = None,
             calculator: Calculator | None = None,
             plugins: list[Plugin] | None = None,
+            center: bool = True,
+            wrap: bool = True,
             **kwargs: Any,
     ) -> None:
         # Perform logging setup
@@ -73,9 +77,9 @@ class Simulation(Loggable):
             raise TypeError
         # Perform additional simulation setup.
         self._offset = np.zeros(system.positions.shape)
-        if system.box.any():
+        if wrap and system.box.any():
             self.calculator.register_plugin(CalculatorWrap(), 0)
-        if system.select("subsystem I"):
+        if center and system.select("subsystem I"):
             self.calculator.register_plugin(CalculatorCenter(), 0)
         if system.masses[system.masses == 0].size > 0:
             query = "atom"
