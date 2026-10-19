@@ -2,6 +2,7 @@
 """
 from __future__ import annotations
 
+from itertools import combinations
 from typing import TYPE_CHECKING
 from warnings import warn
 
@@ -60,29 +61,23 @@ def _exclude_intramolecular(
     _exclude_periodic_torsion(omm_system, atoms)
     _exclude_rb_torsion(omm_system, atoms)
     _exclude_custom_bond(omm_system, atoms)
-    nonbonded_forces = [
-        force for force in omm_system.getForces()
-        if isinstance(force, openmm.NonbondedForce)
-    ]
-    custom_nonbonded_forces = [
-        force for force in omm_system.getForces()
-        if isinstance(force, openmm.CustomNonbondedForce)
-    ]
+    _exclude_nonbonded(omm_system, atoms)
+
+
+def _exclude_nonbonded(omm_system: openmm.System, atoms: frozenset[int]) -> None:
+    """Exclude nonbonded pairs within a group; keep interactions across groups."""
     atom_list = sorted(atoms)
-    for force in nonbonded_forces:
-        for i, j in enumerate(atom_list):
-            for k in atom_list[i+1:]:
-                force.addException(j, k, 0, 1, 0, True)
-    for force in custom_nonbonded_forces:
-        exclusions = [
-            set(
-                force.getExclusionParticles(i),
-            ) for i in range(force.getNumExclusions())
-        ]
-        for i, j in enumerate(atom_list):
-            for k in atom_list[i+1:]:
-                if not {j, k} in exclusions:
-                    force.addExclusion(j, k)
+    for force in omm_system.getForces():
+        if isinstance(force, openmm.NonbondedForce):
+            for i, j in combinations(atom_list, 2):
+                force.addException(i, j, 0, 1, 0, True)
+        elif isinstance(force, openmm.CustomNonbondedForce):
+            excluded = {tuple(sorted(force.getExclusionParticles(i)))
+                        for i in range(force.getNumExclusions())}
+            for pair in combinations(atom_list, 2):
+                if pair not in excluded:
+                    force.addExclusion(*pair)
+                    excluded.add(pair)
 
 
 def _exclude_harmonic_bond(

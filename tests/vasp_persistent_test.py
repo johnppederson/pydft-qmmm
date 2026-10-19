@@ -53,6 +53,8 @@ for step in range(int(os.environ[STEPS_ENV])):
         Path('PLUGIN_FIRED.txt').write_text(str(step))
         with open('PLUGIN_ENERGY','a') as fh:
             fh.write('local_potential 0.0\\nforce_and_stress 0.0\\n')
+    with open('OUTCAR', 'a') as fh:
+        fh.write('aborting loop because EDIFF is reached\\n')
     additions=SimpleNamespace(positions=np.zeros_like(positions))
     structure(constants,additions)
     positions=positions+additions.positions
@@ -238,3 +240,29 @@ def test_run_vasp_forwards_environment(tmp_path):
     env = dict(os.environ, PYDFT_ENV_TEST='expected')
     script = "import os; assert os.environ['PYDFT_ENV_TEST']=='expected'"
     run_vasp(f'{shlex.quote(sys.executable)} -c {shlex.quote(script)}', str(tmp_path), env)
+
+
+@pytest.mark.parametrize('missing_step', [False, True])
+def test_persistent_convergence_check(potential, missing_step):
+    p = potential
+    object.__setattr__(p, 'check_convergence', True)
+    if missing_step:
+        engine = Path(p.directory).parent / 'fake_engine.py'
+        source = engine.read_text().replace("with open('OUTCAR', 'a') as fh:",
+                                           "with open('OUTCAR', 'w') as fh:")
+        engine.write_text(source)
+    for step in range(2):
+        p.system.positions[0, 0] += .1
+        p.compute_energy()
+    p.system.positions[0, 0] += .1
+    if missing_step:
+        with pytest.raises(VaspExecutionError, match='Only 1/3 SCFs converged'):
+            p.compute_energy()
+    else:
+        assert np.isfinite(p.compute_energy())
+    assert p._session[0].process.returncode == 0
+
+
+def test_convergence_check_requires_outcar(potential):
+    with pytest.raises(VaspExecutionError, match='Cannot read OUTCAR'):
+        potential._check_convergence(1)

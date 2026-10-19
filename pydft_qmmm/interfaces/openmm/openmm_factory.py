@@ -48,6 +48,10 @@ def openmm_interface_factory(
         pme_alpha: float | int | None = None,
         platform: str = "CPU",
         precision: str | None = None,
+        lj_mixing: str = "default",
+        lj_lorentz_classes: tuple[str, ...] = (),
+        lj_zero_classes: tuple[str, ...] = (),
+        nonbonded_exclusions: tuple[str, ...] = (),
 ) -> openmm_interface.OpenMMPotential:
     r"""Build the interface to OpenMM.
 
@@ -70,11 +74,30 @@ def openmm_interface_factory(
             "double") for platforms that support it.  None keeps the
             platform default.
 
+        lj_mixing: "default" keeps the supplied force field. "geometric"
+            uses geometric LJ sigma with XML NBFixPair overrides (XML only).
+        lj_lorentz_classes: Atom classes whose pairs use arithmetic sigma
+            when lj_mixing is "geometric".
+        lj_zero_classes: Atom classes with zero pair-table epsilon, even if
+            an XML pair override exists. Existing 1-4 exceptions are retained.
+        nonbonded_exclusions: Selection queries defining groups whose internal
+            nonbonded interactions are excluded. Cross-group pairs remain.
+
     Returns:
         The OpenMM interface.
     """
     if isinstance(forcefield, str):
         forcefield = [forcefield]
+    else:
+        forcefield = list(forcefield)
+    if lj_mixing not in {"default", "geometric"}:
+        raise ValueError("lj_mixing must be 'default' or 'geometric'")
+    if lj_mixing == "geometric" and not all(f.endswith('.xml') for f in forcefield):
+        raise ValueError("Geometric LJ mixing currently requires XML force fields")
+    if lj_mixing == "default" and (lj_lorentz_classes or lj_zero_classes):
+        raise ValueError("LJ class options require lj_mixing='geometric'")
+    if isinstance(nonbonded_exclusions, str):
+        nonbonded_exclusions = (nonbonded_exclusions,)
     if isinstance(pme_gridnumber, int):
         pme_gridnumber = (pme_gridnumber,) * 3
     omm_box = [openmm.Vec3(*x)*openmm.unit.angstrom for x in system.box.T]
@@ -118,6 +141,14 @@ def openmm_interface_factory(
                 "forcefield file formats is not currently supported."
             ),
         )
+    if lj_mixing == "geometric":
+        from .lj_mixing import apply_geometric_lj
+        apply_geometric_lj(base_system, omm_topology, forcefield,
+                           lorentz_classes=lj_lorentz_classes,
+                           zero_classes=lj_zero_classes)
+    from .openmm_utils import _exclude_nonbonded
+    for query in nonbonded_exclusions:
+        _exclude_nonbonded(base_system, system.select(query))
     if nonbonded_method.upper() in PERIODIC:
         base_system.setDefaultPeriodicBoxVectors(*omm_box)
     _adjust_omm_forces(

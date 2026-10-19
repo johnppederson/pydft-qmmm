@@ -68,6 +68,9 @@ class Calculator(ABC):
     system: System
     _plugins: list[CalculatorPlugin] = field(default_factory=list, init=False)
 
+    def close(self) -> None:
+        """Release resources owned by this calculator, if any."""
+
     @pluggable_method
     @abstractmethod
     def calculate(
