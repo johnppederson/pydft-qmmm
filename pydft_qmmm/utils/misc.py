@@ -54,6 +54,9 @@ def generate_velocities(
         masses: NDArray[np.float64],
         temperature: float | int,
         seed: int | None = None,
+        *,
+        frozen: list[int] | tuple[int, ...] = (),
+        rescale: bool = False,
 ) -> NDArray[np.float64]:
     r"""Generate velocities with the Maxwell-Boltzmann distribution.
 
@@ -61,20 +64,41 @@ def generate_velocities(
         masses: The masses (:math:`\mathrm{AMU}`) of particles.
         temperature: The temperature (:math:`\mathrm{K}`) of the system.
         seed: A seed for the random number generator.
+        frozen: Atom indices whose velocities must be zero. Zero-mass
+            particles are also left at rest.
+        rescale: Scale the mobile velocities to exactly 3 N kB T / 2,
+            where N is the number of mobile atoms. No COM removal.
 
     Returns:
         A set of velocities (:math:`\mathrm{\mathring{A}\;fs^{-1}}`)
         equal in number to the set of masses provided.
     """
+    masses = np.asarray(masses, dtype=float).reshape((-1, 1))
+    if not np.isfinite(masses).all() or np.any(masses < 0):
+        raise ValueError("Masses must be finite and nonnegative")
+    if not np.isfinite(temperature) or temperature < 0:
+        raise ValueError("Temperature must be finite and nonnegative")
+    indices = np.asarray(frozen)
+    if indices.size and (indices.dtype.kind not in 'iu' or indices.ndim != 1
+                         or np.any(indices < 0) or np.any(indices >= len(masses))):
+        raise ValueError("frozen must contain valid atom indices")
+    mobile = masses[:, 0] > 0
+    mobile[indices.astype(int)] = False
     avg_ke = temperature * KB
-    masses = masses.reshape((-1, 1)) * (10**-3)
-    if seed:
+    masses = masses * (10**-3)
+    if seed is not None:
         np.random.seed(seed)
     z = np.random.standard_normal((len(masses), 3))
     momenta = z * np.sqrt(avg_ke * masses)
-    velocities = (momenta / masses) * (10**-5)
-    zero_mass = np.where(masses == 0)
-    velocities[zero_mass, :] = np.array([0., 0., 0.])
+    velocities = np.divide(momenta, masses, out=np.zeros_like(momenta),
+                           where=masses > 0) * (10**-5)
+    velocities[~mobile] = 0.
+    if rescale and temperature > 0:
+        if not mobile.any():
+            raise ValueError("Cannot set a positive temperature without mobile atoms")
+        kinetic = 0.5e7 * np.sum(masses[mobile] * velocities[mobile]**2)
+        target = 0.5 * 3 * mobile.sum() * KB / 1000 * temperature
+        velocities *= np.sqrt(target / kinetic)
     return velocities
 
 

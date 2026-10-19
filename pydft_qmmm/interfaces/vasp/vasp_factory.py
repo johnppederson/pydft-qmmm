@@ -51,6 +51,7 @@ def vasp_interface_factory(
         persistent: bool = False,
         persistent_steps: int = 1000,
         persistent_timeout: float = 3600.,
+        check_convergence: bool = False,
         qm_box=None,
         qm_origin=None,
         embedding_grid_shape=None,
@@ -101,6 +102,8 @@ def vasp_interface_factory(
             including the initial geometry (MD steps + 1). Call close() if
             stopping early. The cell and QM membership must remain fixed.
         persistent_timeout: Maximum seconds to wait for each SCF or geometry.
+        check_convergence: Require EDIFF convergence in OUTCAR. For persistent
+            runs, check all evaluations after the final frame and normal exit.
         qm_box: Optional orthorhombic QM lattice, with vectors as columns.
             The system lattice remains the MM lattice. Only z may differ.
         qm_origin: Fixed Cartesian origin of the QM cell in MM coordinates.
@@ -164,4 +167,5 @@ def vasp_interface_factory(
         persistent=persistent,
         persistent_steps=int(persistent_steps),
         persistent_timeout=float(persistent_timeout),
+        check_convergence=check_convergence,
     )

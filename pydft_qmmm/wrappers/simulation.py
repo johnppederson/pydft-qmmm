@@ -32,6 +32,9 @@ logger.setLevel(20)
 class Simulation(Loggable):
     """Organizes and performs simulations.
 
+    Use as a context manager to close engine processes and output files,
+    including when a calculation raises an exception.
+
     Args:
         system: The system to simulate.
         integrator: The integrator describing how the system evolves.
@@ -66,8 +69,10 @@ class Simulation(Loggable):
     ) -> None:
         # Perform logging setup
         super().__init__(**kwargs)
+        self._logger = logging.Logger(__name__, level=logger.level)
         for handler in self.handlers:
-            logger.addHandler(handler)
+            self._logger.addHandler(handler)
+        self._closed = False
         # Set calculator and build if necessary.
         if calculator is not None:
             self.calculator = calculator
@@ -102,6 +107,8 @@ class Simulation(Loggable):
         Args:
             steps: The number of steps to take.
         """
+        if self._closed:
+            raise RuntimeError("Simulation is closed")
         self.calculate_energy_forces()
         for i in range(steps):
             new_positions, new_velocities = self.integrator.integrate(
@@ -110,7 +117,7 @@ class Simulation(Loggable):
             self.system.positions = new_positions
             self.system.velocities = new_velocities
             unwrapped_positions = self.system.positions.base + self._offset
-            logger.info(
+            self._logger.info(
                 "",
                 extra={
                     "frame": self._frame,
@@ -126,6 +133,8 @@ class Simulation(Loggable):
         """
         temp = self.system.positions.base.copy()
         results = self.calculator.calculate()
+        if not np.isfinite(results.energy) or not np.isfinite(results.forces).all():
+            raise RuntimeError(f"Nonfinite energy or forces at step {self._frame}")
         self.system.forces = results.forces
         kinetic_energy = self.integrator.compute_kinetic_energy(
             self.system,
@@ -140,7 +149,27 @@ class Simulation(Loggable):
         }
         self.energy = energy
         self._offset += temp - self.system.positions.base
-        logger.info("", extra={"frame": self._frame, "energy": self.energy})
+        self._logger.info("", extra={"frame": self._frame, "energy": self.energy})
+
+    def close(self) -> None:
+        """Close the calculator and flush output files. Safe to call twice."""
+        if self._closed:
+            return
+        self._closed = True
+        try:
+            self.calculator.close()
+        finally:
+            for handler in self.handlers:
+                self._logger.removeHandler(handler)
+                handler.close()
+
+    def __enter__(self) -> Simulation:
+        if self._closed:
+            raise RuntimeError("Simulation is closed")
+        return self
+
+    def __exit__(self, *exc: Any) -> None:
+        self.close()
 
     def _register_plugins(self, plugins: list[Plugin]) -> None:
         """Dynamically load plugins for calculators and integrators.

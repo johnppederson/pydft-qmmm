@@ -61,7 +61,4 @@ def test_fixed_slab_matches_manual_langevin(tmp_path):
             assert (tmp_path / f'pydft_qmmm.{suffix}').stat().st_size > 0
         assert not list(tmp_path.glob('*.npz'))
     finally:
-        from pydft_qmmm.wrappers.simulation import logger
-        for handler in simulation.handlers:
-            logger.removeHandler(handler)
-            handler.close()
+        simulation.close()

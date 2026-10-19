@@ -88,6 +88,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
     embedding_grid_shape: Any = None
     slab_correction: bool = False
     qm_slab_correction: bool = False
+    check_convergence: bool = False
     _session: list = field(default_factory=list, init=False, repr=False)
     potentials: list[ElectronicPotential] = field(
         default_factory=list,
@@ -485,6 +486,8 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         )
         if self.embedding:
             self._check_plugin_fired()
+        if self.check_convergence:
+            self._check_convergence(1)
         energy, forces = vasp_utils.read_vasprun(
             os.path.join(self.directory, "vasprun.xml"),
         )
@@ -564,6 +567,8 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
                 positions = positions - np.asarray(self.qm_origin)
             fractional = positions @ np.linalg.inv(cell)
             energy, forces = session.evaluate(fractional)
+            if self.check_convergence and session.frame == self.persistent_steps:
+                self._check_convergence(self.persistent_steps)
             if self.embedding:
                 self._check_plugin_fired()
                 # VASP stores the plugin energy in single precision.
@@ -578,6 +583,22 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         qm_forces[order, :] = forces
         self.frame[0] += 1
         return energy * KJMOL_PER_EV, qm_forces * KJMOL_PER_EV
+
+    def _check_convergence(self, expected_steps: int) -> None:
+        """Validate completed SCFs after VASP has flushed its output."""
+        path = os.path.join(self.directory, "OUTCAR")
+        try:
+            with open(path) as stream:
+                count = sum('aborting loop because EDIFF is reached' in line
+                            for line in stream)
+        except OSError as error:
+            raise vasp_utils.VaspExecutionError(
+                self.directory, "Cannot read OUTCAR to check SCF convergence",
+            ) from error
+        if count != expected_steps:
+            raise vasp_utils.VaspExecutionError(
+                self.directory, f"Only {count}/{expected_steps} SCFs converged",
+            )
 
     def close(self):
         """Release the persistent process, including on early termination."""
