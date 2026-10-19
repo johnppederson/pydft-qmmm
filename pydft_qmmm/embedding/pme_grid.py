@@ -156,6 +156,9 @@ def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20,
     positions, charges, excluded, alpha, gridnumber, spline_order, _ = (
         read_pme_data(path, expect_step)
     )
+    # Empty region III needs no reciprocal field or grid coordinates.
+    if not np.any(charges):
+        return np.zeros(shape, dtype=np.float64)
     pme = helpme_py.PMEInstanceD()
     pme.setup(1, alpha, spline_order, *gridnumber, COULOMB_CONSTANT, 0)
     pme.set_lattice_vectors(
@@ -242,6 +245,9 @@ def pme_source_forces(
     positions, charges, excluded, alpha, gridnumber, spline_order, _ = (
         read_pme_data(path, expect_step)
     )
+    # Validate the frame above even when there are no charged targets.
+    if not np.any(charges):
+        return np.zeros((len(charges), 3), dtype=np.float64)
     pme = helpme_py.PMEInstanceD()
     pme.setup(1, alpha, spline_order, *gridnumber, COULOMB_CONSTANT, 0)
     pme.set_lattice_vectors(

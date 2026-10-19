@@ -135,55 +135,19 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         metadata = os.path.join(self.directory, "QM_CELL.json")
         if self.qm_box is not None:
             from pydft_qmmm.embedding.cell_mapping import CellMapping
-            if self.persistent:
-                raise ValueError("Separate QM cells require persistent=False")
             cell = np.asarray(self.qm_box, dtype=float).T
             origin = np.asarray(self.qm_origin, dtype=float)
             shape = tuple(int(self.incar[k]) for k in ("NGXF", "NGYF", "NGZF"))
             mapping = CellMapping(np.asarray(self.system.box).T, cell,
                                   origin, self.embedding_grid_shape, shape)
-            contained = sorted(self.system.select("subsystem I") |
-                               self.system.select("subsystem II"))
-            mapping.validate_positions(np.asarray(self.system.positions)[contained])
+            # MM sources live on the full MM grid, including outside the QM cell.
+            mapping.validate_positions(np.asarray(self.system.positions)[qm_indices])
             positions = positions - origin
             with open(metadata, "w") as fh:
                 json.dump(mapping.metadata(), fh)
         elif os.path.exists(metadata):
             os.remove(metadata)
-        slab_path = os.path.join(self.directory, "SLAB_DATA.json")
-        if self.slab_correction:
-            from pydft_qmmm.embedding.slab import coefficient, neutral_dipole
-            if not self.embedding or self.persistent or self.qm_box is None:
-                raise ValueError("Slab correction requires nonpersistent embedded VASP with explicit QM cell")
-            truncated = self.incar.get("KERNEL_TRUNCATION/LTRUNCATE", False)
-            if self.qm_slab_correction:
-                if truncated:
-                    raise ValueError("QM slab correction requires periodic QM without Coulomb truncation")
-                if self.incar.get("LDIPOL", False):
-                    raise ValueError("QM slab correction requires LDIPOL=False to avoid double counting")
-            elif self.incar.get("LDIPOL", False):
-                # VASP's own dipole correction handles QM-QM; the step must sit
-                # at the QM cell face, mid-vacuum.
-                dipol = np.asarray(self.incar.get("DIPOL", []), dtype=float)
-                if (truncated or self.incar.get("IDIPOL") != 3 or dipol.shape != (3,)
-                        or not np.isclose(dipol[2] % 1.0, 0.5)):
-                    raise ValueError("LDIPOL slab correction requires IDIPOL=3, "
-                                     "DIPOL z=0.5, and no Coulomb truncation")
-            elif (truncated is not True
-                    or self.incar.get("KERNEL_TRUNCATION/IDIMENSIONALITY") != 2
-                    or self.incar.get("KERNEL_TRUNCATION/ISURFACE") != 3):
-                raise ValueError("Slab correction requires z kernel truncation, LDIPOL, or qm_slab_correction=True")
-            charges = np.array(self.system.charges, copy=True)
-            charges[qm_indices] = 0.
-            moment = neutral_dipole(self.system.positions, charges)
-            with open(slab_path, "w") as fh:
-                json.dump(dict(coefficient=coefficient(self.system.box), moment=moment,
-                               charges=charges.tolist(), origin=origin.tolist(),
-                               qm_self=self.qm_slab_correction,
-                               qm_coefficient=coefficient(cell),
-                               step=self.frame[0]), fh)
-        elif os.path.exists(slab_path):
-            os.remove(slab_path)
+        self._write_slab_data()
         species, _, order = vasp_utils.write_poscar(
             os.path.join(self.directory, "POSCAR"),
             symbols,
@@ -261,6 +225,46 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             tags,
         )
         return order
+
+    def _write_slab_data(self) -> None:
+        """Refresh the slab moment and frame stamp before a force evaluation."""
+        qm_indices = sorted(self.system.select("subsystem I"))
+        cell = np.asarray(self.system.box if self.qm_box is None else self.qm_box).T
+        origin = np.zeros(3) if self.qm_origin is None else np.asarray(self.qm_origin)
+        slab_path = os.path.join(self.directory, "SLAB_DATA.json")
+        if self.slab_correction:
+            from pydft_qmmm.embedding.slab import coefficient, neutral_dipole
+            if not self.embedding:
+                raise ValueError("Slab correction requires embedded VASP")
+            truncated = self.incar.get("KERNEL_TRUNCATION/LTRUNCATE", False)
+            if self.qm_slab_correction:
+                if truncated:
+                    raise ValueError("QM slab correction requires periodic QM without Coulomb truncation")
+                if self.incar.get("LDIPOL", False):
+                    raise ValueError("QM slab correction requires LDIPOL=False to avoid double counting")
+            elif self.incar.get("LDIPOL", False):
+                # VASP's own dipole correction handles QM-QM; the step must sit
+                # at the QM cell face, mid-vacuum.
+                dipol = np.asarray(self.incar.get("DIPOL", []), dtype=float)
+                if (truncated or self.incar.get("IDIPOL") != 3 or dipol.shape != (3,)
+                        or not np.isclose(dipol[2] % 1.0, 0.5)):
+                    raise ValueError("LDIPOL slab correction requires IDIPOL=3, "
+                                     "DIPOL z=0.5, and no Coulomb truncation")
+            elif (truncated is not True
+                    or self.incar.get("KERNEL_TRUNCATION/IDIMENSIONALITY") != 2
+                    or self.incar.get("KERNEL_TRUNCATION/ISURFACE") != 3):
+                raise ValueError("Slab correction requires z kernel truncation, LDIPOL, or qm_slab_correction=True")
+            charges = np.array(self.system.charges, copy=True)
+            charges[qm_indices] = 0.
+            moment = neutral_dipole(self.system.positions, charges)
+            with open(slab_path, "w") as fh:
+                json.dump(dict(coefficient=coefficient(self.system.box), moment=moment,
+                               charges=charges.tolist(), origin=origin.tolist(),
+                               qm_self=self.qm_slab_correction,
+                               qm_coefficient=coefficient(cell),
+                               step=self.frame[0]), fh)
+        elif os.path.exists(slab_path):
+            os.remove(slab_path)
 
     def _write_mm_charges(self) -> int:
         r"""Write subsystem II point charges for the plugin.
@@ -507,7 +511,11 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         return (tuple(qm), tuple(self.system.elements[qm]),
                 np.asarray(self.system.box).tobytes(), repr(sorted(tags.items())),
                 self.kpts, self.pp_path, repr(sorted(self.potcar_map.items())),
-                self.embedding, self.embedding_sigma)
+                self.embedding, self.embedding_sigma, self.slab_correction,
+                self.qm_slab_correction,
+                None if self.qm_box is None else np.asarray(self.qm_box).tobytes(),
+                None if self.qm_origin is None else np.asarray(self.qm_origin).tobytes(),
+                None if self.embedding_grid_shape is None else tuple(self.embedding_grid_shape))
 
     def _run_persistent(self):
         from .vasp_persistent import PersistentVasp
@@ -531,20 +539,30 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             # VASP is either not launched yet or blocked inside structure().
             if self.embedding:
                 from .vasp_plugin import SENTINEL
-                for name in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE", SENTINEL):
+                for name in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE", "SLAB_FORCES", SENTINEL):
                     path = os.path.join(self.directory, name)
                     if os.path.isfile(path):
                         os.remove(path)
                 self._write_mm_charges()
                 if self.potentials:
                     self._write_pme_data()
+            self._write_slab_data()
             if not self._session:
                 session = PersistentVasp(self.command, self.directory, self._plugin_env(),
                                          self.persistent_steps, self.persistent_timeout)
                 self._session.extend([session, configuration, order])
             indices = sorted(self.system.select("subsystem I"))
             positions = np.asarray(self.system.positions)[indices][order]
-            fractional = positions @ np.linalg.inv(np.asarray(self.system.box).T)
+            cell = np.asarray(self.system.box).T
+            if self.qm_box is not None:
+                from pydft_qmmm.embedding.cell_mapping import CellMapping
+                cell = np.asarray(self.qm_box).T
+                mapping = CellMapping(np.asarray(self.system.box).T, cell, self.qm_origin,
+                                      self.embedding_grid_shape,
+                                      tuple(int(self.incar[k]) for k in ("NGXF", "NGYF", "NGZF")))
+                mapping.validate_positions(positions)
+                positions = positions - np.asarray(self.qm_origin)
+            fractional = positions @ np.linalg.inv(cell)
             energy, forces = session.evaluate(fractional)
             if self.embedding:
                 self._check_plugin_fired()

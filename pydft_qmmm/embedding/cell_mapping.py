@@ -42,7 +42,7 @@ class CellMapping:
     def validate_positions(self, positions):
         local = np.asarray(positions) - self.origin
         if not np.isfinite(local).all() or np.any(local[:, 2] <= 0) or np.any(local[:, 2] >= self.qm_cell[2, 2]):
-            raise ValueError("Regions I and II must lie strictly inside the QM z faces")
+            raise ValueError("QM atoms must lie strictly inside the QM z faces")
 
     def restrict(self, values):
         if np.shape(values) != self.mm_shape:

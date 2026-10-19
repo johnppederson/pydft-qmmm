@@ -66,6 +66,32 @@ def test_charge_from_potential_inverts_poisson():
     )
 
 
+@pytest.mark.parametrize("count,excluded", [(0, ()), (6, ()), (6, (2,))])
+def test_zero_sources_skip_pme_and_grid_setup(tmp_path, monkeypatch, count, excluded):
+    import helpme_py
+    from pydft_qmmm.embedding import pme_grid
+
+    def unexpected_work(*args, **kwargs):
+        raise AssertionError("Zero sources must skip PME and grid setup")
+
+    monkeypatch.setattr(helpme_py, "PMEInstanceD", unexpected_work)
+    monkeypatch.setattr(pme_grid, "grid_coordinates", unexpected_work)
+    path = tmp_path / "PME_DATA"
+    write_pme_data(path, np.zeros((count, 3)), np.zeros(count), excluded, *PME, 7)
+    field = build_pme_potential(path, SHAPE, CELL, expect_step=7)
+    forces = pme_source_forces(
+        path, np.ones(SHAPE), SHAPE, CELL,
+        points=NUCLEI, point_charges=VALENCE, expect_step=7,
+    )
+    np.testing.assert_array_equal(field, np.zeros(SHAPE))
+    np.testing.assert_array_equal(forces, np.zeros((count, 3)))
+    # Skipping zero fields must not allow stale persistent frames.
+    with pytest.raises(ValueError, match="expected 8"):
+        build_pme_potential(path, SHAPE, CELL, expect_step=8)
+    with pytest.raises(ValueError, match="expected 8"):
+        pme_source_forces(path, np.ones(SHAPE), SHAPE, CELL, expect_step=8)
+
+
 @pytest.mark.parametrize("excluded", [(), (2,)])
 def test_grid_source_forces_are_the_energy_gradient(tmp_path, excluded):
     path = tmp_path / "PME_DATA"

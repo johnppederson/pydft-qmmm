@@ -140,8 +140,6 @@ def vasp_interface_factory(
         raise ValueError("persistent_steps must be a positive integer")
     if not 0 < persistent_timeout < float('inf'):
         raise ValueError("persistent_timeout must be finite and positive")
-    if qm_box is not None and persistent:
-        raise ValueError("Separate QM cells currently require persistent=False")
     if qm_box is None and (qm_origin is not None or embedding_grid_shape is not None):
         raise ValueError("qm_origin and embedding_grid_shape require qm_box")
     if qm_box is not None and (qm_origin is None or embedding_grid_shape is None):
