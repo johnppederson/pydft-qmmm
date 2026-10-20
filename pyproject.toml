@@ -50,6 +50,3 @@ exclude = [ "__main__.py" ]
 
 [tool.pytest.ini_options]
 testpaths = [ "tests" ]
-markers = [
-  "slow: runs an SCF; submit with sbatch, not on the login node",
-]

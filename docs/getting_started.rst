@@ -56,7 +56,6 @@ are demonstrated in :example:`0`.  Enhanced sampling functionality with
 Plumed is demonstrated in :example:`1`. Using AMBER or GROMACS forcefield
 parameter files is demonstrated in :example:`2`.
 
-
 Templates
 =========
 
