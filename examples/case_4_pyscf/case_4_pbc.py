@@ -1,4 +1,4 @@
-"""Periodic PySCF QM/MM single point in a 12 Å water box."""
+"""Periodic PySCF QM/MM single point on a GPU in a 12 Å water box."""
 from __future__ import annotations
 
 from pydft_qmmm import *
@@ -16,8 +16,8 @@ qm = QMHamiltonian(
     charge=0,
     multiplicity=1,
     ke_cutoff=200.0,
-    conv_tol=1e-10,
-    # device="gpu",   # needs GPU4PySCF and a CUDA runtime
+    conv_tol=1e-8,
+    device="gpu",
 )
 
 mm = MMHamiltonian(

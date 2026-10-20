@@ -9,20 +9,7 @@ from pydft_qmmm import MMHamiltonian, QMHamiltonian, QMMMHamiltonian
 from pydft_qmmm.interfaces import MMInterface, QMInterface
 
 
-@pytest.fixture(autouse=True)
-def reference_platform(monkeypatch):
-    from pydft_qmmm.interfaces.openmm import openmm_factory
-
-    def context(system, modeller, platform="CPU", precision=None):
-        # Always Reference (double precision), whatever the factory asks for.
-        result = openmm.Context(
-            system, openmm.VerletIntegrator(0.001),
-            openmm.Platform.getPlatformByName("Reference"),
-        )
-        result.setPositions(modeller.positions)
-        return result
-
-    monkeypatch.setattr(openmm_factory, "_build_omm_context", context)
+pytestmark = pytest.mark.usefixtures("reference_platform")
 
 
 @pytest.fixture(params=["vasp", "sparc", "pyscf-pbc", "ksced"])

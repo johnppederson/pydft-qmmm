@@ -1,47 +1,33 @@
-# SPARC water examples
+Example Case 3 (SPARC)
+======================
 
-The first water (atoms 0–2) is QM; the other three waters are SPC/E MM
-in a 12 Å periodic cell. Both SPARC examples calculate one energy and
-force evaluation using PBE, a target spacing of 0.12 Bohr (189³), SCF
-tolerance 1e-8, and density mixing without a preconditioner (parameter 0.3).
-The interface accepts `h` in Å, so the scripts convert from Bohr explicitly.
+Summary
+-------
 
-| Script | Coupling |
-|---|---|
-| `sparc/case_3_sparc_api.py` | Mechanical QM/MM |
-| `sparc_electrostatic/case_3_sparc_electrostatic.py` | Electrostatic QM/MM/PME |
+Calculate the energy and forces of one QM water in a 12 Å box of four
+SPC/E waters using SPARC, PBE, and electrostatic QM/MM/PME coupling.
 
-Install this repository and `sparc-x-api`; QM/MM/PME also needs `helpme-py`.
-Use a SPARC binary containing the QM/MM embedding implementation for the
-electrostatic example. Set `SPARC_PSP_PATH` if pseudopotentials are not
-already available to SPARC-X-API.
+Requires `sparc-x-api`, `helpme-py`, and a SPARC binary with the QM/MM
+embedding implementation.
+Set `SPARC_PSP_PATH` to the pseudopotential library if needed.
 
-From this directory, check the setup without launching SPARC:
+How to Run
+----------
+
+From this directory, set the engine command for your allocated resources:
 
 ```bash
-python sparc_electrostatic/case_3_sparc_electrostatic.py --prepare-only
-python sparc/case_3_sparc_api.py --prepare-only
+export ASE_SPARC_COMMAND="mpirun -np 8 /path/to/sparc"
+python case_3_pme.py --workdir sparc_pme_workdir
 ```
 
-Run on allocated compute resources. For an existing four-node Slurm
-allocation with 24 ranks per node:
+Add `--prepare-only` to check the setup without running SPARC. For
+multi-node runs, use a working directory on shared storage.
 
-```bash
-export OMP_NUM_THREADS=1
-export OPENBLAS_NUM_THREADS=1
-export OPENMM_CPU_THREADS=1
-export ASE_SPARC_COMMAND="srun --exclusive -N 4 -n 96 /path/to/SPARC/lib/sparc"
-python sparc_electrostatic/case_3_sparc_electrostatic.py --workdir sparc_pme_workdir
-python sparc/case_3_sparc_api.py --workdir sparc_mechanical_workdir
-```
+What to Expect
+--------------
 
-On a workstation, use `mpirun -np 8 /path/to/SPARC/lib/sparc` instead.
-Working directories must be on shared storage for multi-node runs.
-Input paths are resolved relative to each script, so the examples can be
-launched from another directory. Energies and QM forces print to stdout;
-SPARC inputs and outputs go to `--workdir`. Preparation builds the
-calculator and partition but does not write the external grid or run SCF.
-
-The `psi4/` directory retains a short molecular mechanical-embedding
-MD example. Its basis and boundary conditions differ from SPARC's;
-it is not a numerical reference for periodic SPARC energies or forces.
+The script prints the total energy, subsystem sizes, and QM forces.
+SPARC inputs and outputs go to the selected working directory.
+The target grid spacing is 0.12 Bohr, with an SCF tolerance of 1e-8.
+Converge the grid for the system before running production calculations.

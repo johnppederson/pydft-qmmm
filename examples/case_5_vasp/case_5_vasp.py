@@ -38,7 +38,7 @@ mm = MMHamiltonian(
 
 qmmm = QMMMHamiltonian(
     "electrostatic", "electrostatic",
-    partition=CentroidPartition("all", 3.0),
+    partition=CentroidPartition("all", 6.0),
     pme_gridnumber=(40, 40, 40),
     pme_alpha=0.5,  # Å⁻¹ in helPME
 )
