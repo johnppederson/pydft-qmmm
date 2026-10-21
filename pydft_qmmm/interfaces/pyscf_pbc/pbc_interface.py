@@ -10,7 +10,9 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from pydft_qmmm.potentials.embedding.grid_potential import spectral_value_and_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    spectral_value_and_gradient,
+)
 from pydft_qmmm.interfaces import ElectrostaticCouplingMode
 from pydft_qmmm.interfaces import QMInterface
 from pydft_qmmm.potentials import AtomicPotential
@@ -76,7 +78,9 @@ def _nuclear_coupling(
 
 @dataclass(frozen=True)
 class PySCFPBCInterface(QMInterface):
-    """Periodic SCF configuration; see pyscf_pbc_interface_factory for arguments.
+    """Periodic SCF configuration.
+
+    See pyscf_pbc_interface_factory for the arguments.
 
     potentials holds added electronic fields; density_guess stores the last
     SCF density. frame tracks log writes and embedding enables QM/MM fields.
@@ -124,7 +128,8 @@ class PySCFPBCInterface(QMInterface):
         Raises ValueError if active embedding conflicts with MM-only coupling.
         """
         if enabled:
-            # Set configuration on the frozen interface during calculator setup.
+            # Set configuration on the frozen interface during calculator
+            # setup.
             object.__setattr__(self, "embedding", True)
         elif self.embedding:
             raise ValueError(
@@ -137,13 +142,21 @@ class PySCFPBCInterface(QMInterface):
     def add_electronic_potential(
             self, potential: ElectronicPotential,
     ) -> None:
-        """Register an electronic field, adapting molecular PME to region III only."""
+        """Register an electronic field.
+
+        Molecular PME is adapted to region III only.
+        """
         # Other electronic fields do not require helPME.
         if hasattr(potential, "pme"):
-            from pydft_qmmm.potentials.pme_potential import PMEElectronicPotential
+            from pydft_qmmm.potentials.pme_potential import (
+                PMEElectronicPotential,
+            )
             from .pbc_pme import PeriodicPMEElectronicPotential
-            if isinstance(potential, PMEElectronicPotential) and not isinstance(
-                    potential, PeriodicPMEElectronicPotential,
+            if (
+                    isinstance(potential, PMEElectronicPotential)
+                    and not isinstance(
+                        potential, PeriodicPMEElectronicPotential,
+                    )
             ):
                 potential = PeriodicPMEElectronicPotential(
                     potential.system, potential.pme_alpha,

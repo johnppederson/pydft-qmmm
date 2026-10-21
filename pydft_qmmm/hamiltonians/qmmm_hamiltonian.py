@@ -123,7 +123,7 @@ class QMMMHamiltonian(CouplingHamiltonian):
             qm_slab_correction: bool = False,
     ) -> None:
         if (close_range, long_range) not in _SUPPORTED_EMBEDDING:
-            raise TypeError # Todo: Make this informative.
+            raise TypeError  # Todo: Make this informative.
         if coupling_mode not in {"conservative", "force"}:
             raise ValueError(
                 "coupling_mode must be 'conservative' or 'force'",
@@ -134,12 +134,20 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 "OpenMM energies have selected force components masked",
                 RuntimeWarning,
             )
-        if slab_correction and (close_range != "electrostatic" or long_range != "electrostatic"
-                                or coupling_mode != "conservative" or partition is not None):
-            raise ValueError("Slab correction requires electrostatic/electrostatic "
-                             "conservative coupling and partition=None")
+        if slab_correction and (
+                close_range != "electrostatic"
+                or long_range != "electrostatic"
+                or coupling_mode != "conservative"
+                or partition is not None
+        ):
+            raise ValueError(
+                "Slab correction requires electrostatic/electrostatic "
+                "conservative coupling and partition=None",
+            )
         if qm_slab_correction and not slab_correction:
-            raise ValueError("QM slab correction requires slab_correction=True")
+            raise ValueError(
+                "QM slab correction requires slab_correction=True",
+            )
         self.qm_slab_correction = qm_slab_correction
         self.slab_correction = slab_correction
         self.coupling_mode = coupling_mode
@@ -310,16 +318,28 @@ class QMMMHamiltonian(CouplingHamiltonian):
             )
             qm_interface.add_electronic_potential(pme_electrons)
         if self.slab_correction:
-            from pydft_qmmm.interfaces.vasp.vasp_interface import VaspInterface
-            from pydft_qmmm.interfaces.openmm.openmm_interface import OpenMMInterface
-            if (not conservative_electrostatics or self.partition is not None
-                    or not isinstance(qm_interface, VaspInterface)
-                    or not isinstance(mm_interface, OpenMMInterface)
-                    or self.force_matrix[Subsystem.I][Subsystem.III] != TheoryLevel.QM):
-                raise ValueError("Slab correction requires fixed-partition conservative "
-                                 "VASP/OpenMM electrostatic/electrostatic coupling")
+            from pydft_qmmm.interfaces.vasp.vasp_interface import (
+                VaspInterface,
+            )
+            from pydft_qmmm.interfaces.openmm.openmm_interface import (
+                OpenMMInterface,
+            )
+            if (
+                not conservative_electrostatics
+                or self.partition is not None
+                or not isinstance(qm_interface, VaspInterface)
+                or not isinstance(mm_interface, OpenMMInterface)
+                or self.force_matrix[Subsystem.I][Subsystem.III]
+                != TheoryLevel.QM
+            ):
+                raise ValueError(
+                    "Slab correction requires fixed-partition conservative "
+                    "VASP/OpenMM electrostatic/electrostatic coupling",
+                )
             object.__setattr__(qm_interface, "slab_correction", True)
-            object.__setattr__(qm_interface, "qm_slab_correction", self.qm_slab_correction)
+            object.__setattr__(
+                qm_interface, "qm_slab_correction", self.qm_slab_correction,
+            )
             object.__setattr__(mm_interface, "slab_correction", True)
         if conservative_electrostatics:
             self.apply_conservative_exclusions(mm_interface, system)

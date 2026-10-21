@@ -5,23 +5,33 @@ VASP imports this module and calls into it; never run it directly.
 from __future__ import annotations
 
 import os
-from pathlib import Path
 import traceback
 import warnings
+from pathlib import Path
 
 import numpy as np
 
 from pydft_qmmm.potentials.embedding.cell_mapping import read_mapping
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    build_external_potential,
+)
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    contract_gaussian_gradient,
+)
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    electrostatic_potential_from_vasp,
+)
 from pydft_qmmm.potentials.embedding.grid_potential import EPS0
-from pydft_qmmm.potentials.embedding.grid_potential import KJMOL_PER_EV
-from pydft_qmmm.potentials.embedding.grid_potential import build_external_potential
-from pydft_qmmm.potentials.embedding.grid_potential import contract_gaussian_gradient
-from pydft_qmmm.potentials.embedding.grid_potential import electrostatic_potential_from_vasp
 from pydft_qmmm.potentials.embedding.grid_potential import interpolate_at
-from pydft_qmmm.potentials.embedding.grid_potential import nuclear_charge_on_grid
+from pydft_qmmm.potentials.embedding.grid_potential import KJMOL_PER_EV
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    nuclear_charge_on_grid,
+)
 from pydft_qmmm.potentials.embedding.grid_potential import poisson_fft
 from pydft_qmmm.potentials.embedding.grid_potential import read_mm_charges
-from pydft_qmmm.potentials.embedding.grid_potential import spline_value_and_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    spline_value_and_gradient,
+)
 
 __all__ = [
     "EPS0", "KJMOL_PER_EV", "CHARGE_FILE", "FORCE_FILE",
@@ -98,21 +108,33 @@ def _external_potential(constants):
     shape = tuple(int(n) for n in constants.shape_grid)
     cell = np.asarray(constants.lattice_vectors, dtype=np.float64)
     mapping = read_mapping(shape, cell)
-    metadata = Path("QM_CELL.json").read_bytes() if mapping is not None else b""
+    metadata = (
+        Path("QM_CELL.json").read_bytes() if mapping is not None else b""
+    )
     key = (shape, cell.tobytes(), metadata)
     if _CACHE.get("cell_key") == key and _CACHE.get("v_ext") is not None:
         return _CACHE["v_ext"]
     if os.path.isfile(PME_FILE):
         # PME path: the driver shipped the whole system and the Ewald
         # parameters, and helPME evaluates on VASP's own grid.
-        from pydft_qmmm.potentials.embedding.pme_grid import build_pme_potential
-        kwargs = {} if mapping is None else dict(source_cell=mapping.mm_cell, origin=mapping.origin)
+        from pydft_qmmm.potentials.embedding.pme_grid import (
+            build_pme_potential,
+        )
+        kwargs = {} if mapping is None else dict(
+            source_cell=mapping.mm_cell, origin=mapping.origin,
+        )
         v_pme = build_pme_potential(PME_FILE, shape, cell, **kwargs)
         # PME supplies III; the Gaussian field supplies II and its images.
         positions, charges, _, sigma = read_mm_charges(CHARGE_FILE)
-        v_near = (build_external_potential(positions, charges, shape, cell, sigma)
-                  if mapping is None else mapping.restrict(build_external_potential(
-                      positions, charges, mapping.mm_shape, mapping.mm_cell, sigma)))
+        v_near = (
+            build_external_potential(positions, charges, shape, cell, sigma)
+            if mapping is None else mapping.restrict(
+                build_external_potential(
+                    positions, charges, mapping.mm_shape, mapping.mm_cell,
+                    sigma,
+                ),
+            )
+        )
         v_ext = v_pme + v_near
         _CACHE["cell_key"] = key
         _CACHE["shape"] = shape
@@ -132,9 +154,14 @@ def _external_potential(constants):
             RuntimeWarning,
             stacklevel=2,
         )
-    v_ext = (build_external_potential(positions, charges, shape, cell, sigma)
-             if mapping is None else mapping.restrict(build_external_potential(
-                 positions, charges, mapping.mm_shape, mapping.mm_cell, sigma)))
+    v_ext = (
+        build_external_potential(positions, charges, shape, cell, sigma)
+        if mapping is None else mapping.restrict(
+            build_external_potential(
+                positions, charges, mapping.mm_shape, mapping.mm_cell, sigma,
+            ),
+        )
+    )
     _CACHE["cell_key"] = key
     _CACHE["shape"] = shape
     _CACHE["v_ext"] = v_ext
@@ -169,21 +196,32 @@ def local_potential(constants, additions):
         slab = _slab_data()
         if slab is not None:
             from pydft_qmmm.potentials.embedding.slab import grid_z
-            z = grid_z(tuple(constants.shape_grid), np.asarray(constants.lattice_vectors),
-                       slab["origin"])
-            additions.total_potential += -2 * slab["coefficient"] * slab["moment"] * z
+            z = grid_z(
+                tuple(constants.shape_grid), np.asarray(
+                    constants.lattice_vectors,
+                ),
+                slab["origin"],
+            )
+            additions.total_potential += (
+                -2 * slab["coefficient"] * slab["moment"] * z
+            )
             if slab.get("qm_self", False):
                 from pydft_qmmm.potentials.embedding.slab import qm_dipole
                 cell = np.asarray(constants.lattice_vectors)
                 positions = np.asarray(constants.positions) @ cell
-                valence = np.asarray(constants.ZVAL)[np.asarray(constants.ion_types, dtype=int)]
+                valence = np.asarray(constants.ZVAL)[
+                    np.asarray(constants.ion_types, dtype=int)]
                 density = np.asarray(constants.charge_density)
-                moment = qm_dipole(density, positions, valence, cell, slab["origin"])
+                moment = qm_dipole(density, positions,
+                                   valence, cell, slab["origin"])
                 potential = -2 * slab["qm_coefficient"] * moment * z
                 additions.total_potential += potential
-                # The band energy includes integral(n*v). Replace it with C*Mq^2.
-                additions.total_energy += (slab["qm_coefficient"] * moment**2
-                                           - np.sum(density / density.size * potential))
+                # The band energy includes integral(n*v). Replace it with
+                # C*Mq^2.
+                additions.total_energy += (
+                    slab["qm_coefficient"] * moment**2
+                    - np.sum(density / density.size * potential)
+                )
         _log_energy("local_potential", additions.total_energy)
     except Exception as exc:
         _record_error(exc)
@@ -225,13 +263,19 @@ def force_and_stress(constants, additions):
             slab = _slab_data()
             if slab is not None:
                 field = 2 * slab["coefficient"] * slab["moment"]
-                additions.total_energy += field * np.dot(valence, positions[:, 2] + slab["origin"][2])
+                additions.total_energy += field * np.dot(
+                    valence, positions[:, 2] + slab["origin"][2],
+                )
                 nuclear[:, 2] -= field * valence
                 if slab.get("qm_self", False):
                     from pydft_qmmm.potentials.embedding.slab import qm_dipole
-                    moment = qm_dipole(constants.charge_density, positions, valence,
-                                       cell, slab["origin"])
-                    nuclear[:, 2] -= 2 * slab["qm_coefficient"] * moment * valence
+                    moment = qm_dipole(
+                        constants.charge_density, positions, valence,
+                        cell, slab["origin"],
+                    )
+                    nuclear[:, 2] -= (
+                        2 * slab["qm_coefficient"] * moment * valence
+                    )
 
             additions.forces += nuclear
             # VASP DESTROYS the net force on the QM ions.
@@ -257,22 +301,43 @@ def force_and_stress(constants, additions):
             charge -= density / np.prod(shape)
         slab = _slab_data()
         if slab is not None:
-            from pydft_qmmm.potentials.embedding.slab import qm_dipole, QM_NEUTRALITY_TOLERANCE, QM_NEUTRALITY_RELATIVE
+            from pydft_qmmm.potentials.embedding.slab import (
+                QM_NEUTRALITY_RELATIVE,
+            )
+            from pydft_qmmm.potentials.embedding.slab import (
+                QM_NEUTRALITY_TOLERANCE,
+            )
+            from pydft_qmmm.potentials.embedding.slab import qm_dipole
             if slab["step"] != step:
                 raise ValueError("Stale slab metadata")
             import json
-            electron_profile = np.asarray(constants.charge_density).sum(axis=(0, 1)) / np.prod(shape)
-            diagnostic = dict(step=step, neutrality_tolerance_e=max(QM_NEUTRALITY_TOLERANCE, QM_NEUTRALITY_RELATIVE * float(valence.sum())),
-                              charge_residual_e=float(valence.sum()-electron_profile.sum()), electron_count=float(electron_profile.sum()),
-                              ionic_charge=float(valence.sum()), origin=slab["origin"],
-                              electron_count_by_z=electron_profile.tolist(),
-                              z_spacing_A=float(cell[2, 2]/shape[2]))
-            Path("SLAB_DIAGNOSTICS.json").write_text(json.dumps(diagnostic, indent=2)+"\n")
-            moment = qm_dipole(constants.charge_density, positions, valence,
-                               cell, slab["origin"])
+            electron_profile = np.asarray(constants.charge_density).sum(
+                axis=(0, 1),
+            ) / np.prod(shape)
+            diagnostic = dict(
+                step=step,
+                neutrality_tolerance_e=max(
+                    QM_NEUTRALITY_TOLERANCE,
+                    QM_NEUTRALITY_RELATIVE * float(valence.sum()),
+                ),
+                charge_residual_e=float(valence.sum()-electron_profile.sum()),
+                electron_count=float(electron_profile.sum()),
+                ionic_charge=float(valence.sum()), origin=slab["origin"],
+                electron_count_by_z=electron_profile.tolist(),
+                z_spacing_A=float(cell[2, 2]/shape[2]),
+            )
+            Path("SLAB_DIAGNOSTICS.json").write_text(
+                json.dumps(diagnostic, indent=2)+"\n",
+            )
+            moment = qm_dipole(
+                constants.charge_density, positions, valence,
+                cell, slab["origin"],
+            )
             reaction = np.zeros((len(slab["charges"]), 3))
-            reaction[:, 2] = (-2 * slab["coefficient"] * moment
-                              * np.asarray(slab["charges"]) * KJMOL_PER_EV)
+            reaction[:, 2] = (
+                -2 * slab["coefficient"] * moment
+                * np.asarray(slab["charges"]) * KJMOL_PER_EV
+            )
             with open("SLAB_FORCES", "w") as fh:
                 fh.write(f"{len(reaction)} {step}\n")
                 np.savetxt(fh, reaction, fmt="%.12e")
@@ -280,8 +345,13 @@ def force_and_stress(constants, additions):
         if len(mm_charges):
             near_shape = shape if mapping is None else mapping.mm_shape
             near_cell = cell if mapping is None else mapping.mm_cell
-            near_charge = charge if mapping is None else mapping.transpose(charge)
-            rho = near_charge * np.prod(near_shape) / abs(np.linalg.det(near_cell))
+            near_charge = (
+                charge if mapping is None else mapping.transpose(charge)
+            )
+            rho = (
+                near_charge * np.prod(near_shape)
+                / abs(np.linalg.det(near_cell))
+            )
             phi_qm = poisson_fft(rho, near_cell)
             mm_forces = contract_gaussian_gradient(
                 phi_qm, mm_positions, mm_charges, near_shape, near_cell, sigma,
@@ -293,9 +363,15 @@ def force_and_stress(constants, additions):
         # The reciprocal back-reaction on the PME_DATA sources, from the
         # same grid charge: the transpose of build_pme_potential.
         if use_pme:
-            from pydft_qmmm.potentials.embedding.pme_grid import pme_source_forces
-            kwargs = {} if mapping is None else dict(source_cell=mapping.mm_cell, origin=mapping.origin)
-            pme_forces = pme_source_forces(PME_FILE, charge, shape, cell, **kwargs)
+            from pydft_qmmm.potentials.embedding.pme_grid import (
+                pme_source_forces,
+            )
+            kwargs = {} if mapping is None else dict(
+                source_cell=mapping.mm_cell, origin=mapping.origin,
+            )
+            pme_forces = pme_source_forces(
+                PME_FILE, charge, shape, cell, **kwargs,
+            )
             with open(PME_FORCE_FILE, "w") as fh:
                 fh.write(f"{len(pme_forces)} {step}\n")
                 for fx, fy, fz in pme_forces:

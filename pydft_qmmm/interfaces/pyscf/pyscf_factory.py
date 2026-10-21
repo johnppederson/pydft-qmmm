@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 
 from . import pyscf_backend
 from . import pyscf_interface
-from . import pyscf_utils
 
 if TYPE_CHECKING:
     from pydft_qmmm import System

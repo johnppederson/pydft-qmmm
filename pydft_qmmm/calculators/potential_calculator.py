@@ -64,6 +64,13 @@ class PotentialCalculator(Calculator):
         if close is not None:
             close()
 
+    def calculation_run(self, evaluations: int):
+        """Let the potential prepare and finish a sequence of evaluations."""
+        run = getattr(self.potential, "calculation_run", None)
+        if run is not None:
+            return run(evaluations)
+        return super().calculation_run(evaluations)
+
     @property
     def name(self) -> str:
         """The name of the calculator, for logging purposes.

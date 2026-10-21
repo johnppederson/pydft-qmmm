@@ -37,7 +37,9 @@ class MMHamiltonian(PotentialHamiltonian):
             **options: dict[str, Any],
     ) -> None:
         if subsystem not in (Subsystem.II, Subsystem.III):
-            raise ValueError("MM subsystem must be Subsystem.II or Subsystem.III")
+            raise ValueError(
+                "MM subsystem must be Subsystem.II or Subsystem.III",
+            )
         self.subsystem = subsystem
         self.interface = interface
         self.options = options

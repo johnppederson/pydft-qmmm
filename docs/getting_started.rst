@@ -28,6 +28,12 @@ Psi4 is the default QM engine. VASP, SPARC, and PySCF are also supported.
 Select VASP with ``interface="vasp"`` or SPARC with ``interface="sparc"``
 in ``QMHamiltonian``; each requires its external engine installation.
 
+VASP requires a build with Python plugins. Use ``simulation.run_dynamics(10)``
+to run ten dynamics steps. The simulation counts the starting geometry,
+keeps VASP alive throughout the run, and closes it afterward. No separate
+VASP mode or step count is needed. Calling ``calculator.calculate()`` alone
+performs one energy/force evaluation and lets VASP finish normally.
+
 To use PySCF, install:
 
 .. code-block:: bash

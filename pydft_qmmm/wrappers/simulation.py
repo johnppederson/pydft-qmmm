@@ -5,6 +5,7 @@ from __future__ import annotations
 __all__ = ["Simulation"]
 
 import logging
+import operator
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -44,7 +45,8 @@ class Simulation(Loggable):
             may be provided in place of a Hamiltonian object.
         plugins: A list of plugins to apply to the calculator or
             integrator objects before simulation.
-        center: Center the QM region automatically. Disable for a fixed QM origin.
+        center: Center the QM region automatically.  Disable for a fixed
+            QM origin.
         wrap: Wrap residues into the periodic box automatically.
         kwargs: Additional options to provide to the logging
             functionality, see :class:`pydft_qmmm.utils.logging.Loggable`
@@ -104,37 +106,49 @@ class Simulation(Loggable):
     def run_dynamics(self, steps: int) -> None:
         """Perform a given number of simulation steps.
 
+        Engine runs include the starting geometry and finish when this
+        call returns. A later call starts another segment.
+
         Args:
             steps: The number of steps to take.
         """
         if self._closed:
             raise RuntimeError("Simulation is closed")
-        self.calculate_energy_forces()
-        for i in range(steps):
-            new_positions, new_velocities = self.integrator.integrate(
-                self.system,
-            )
-            self.system.positions = new_positions
-            self.system.velocities = new_velocities
-            unwrapped_positions = self.system.positions.base + self._offset
-            self._logger.info(
-                "",
-                extra={
-                    "frame": self._frame,
-                    "positions": unwrapped_positions,
-                    "box": self.system.box.base,
-                },
-            )
-            self._frame += 1
+        steps = operator.index(steps)
+        if steps < 0:
+            raise ValueError("steps must be nonnegative")
+        with self.calculator.calculation_run(steps + 1):
             self.calculate_energy_forces()
+            for i in range(steps):
+                new_positions, new_velocities = self.integrator.integrate(
+                    self.system,
+                )
+                self.system.positions = new_positions
+                self.system.velocities = new_velocities
+                unwrapped_positions = self.system.positions.base + self._offset
+                self._logger.info(
+                    "",
+                    extra={
+                        "frame": self._frame,
+                        "positions": unwrapped_positions,
+                        "box": self.system.box.base,
+                    },
+                )
+                self._frame += 1
+                self.calculate_energy_forces()
 
     def calculate_energy_forces(self) -> None:
         """Update total system energy and forces on atoms in the system.
         """
         temp = self.system.positions.base.copy()
         results = self.calculator.calculate()
-        if not np.isfinite(results.energy) or not np.isfinite(results.forces).all():
-            raise RuntimeError(f"Nonfinite energy or forces at step {self._frame}")
+        if (
+            not np.isfinite(results.energy)
+            or not np.isfinite(results.forces).all()
+        ):
+            raise RuntimeError(
+                f"Nonfinite energy or forces at step {self._frame}",
+            )
         self.system.forces = results.forces
         kinetic_energy = self.integrator.compute_kinetic_energy(
             self.system,
@@ -149,7 +163,9 @@ class Simulation(Loggable):
         }
         self.energy = energy
         self._offset += temp - self.system.positions.base
-        self._logger.info("", extra={"frame": self._frame, "energy": self.energy})
+        self._logger.info(
+            "", extra={"frame": self._frame, "energy": self.energy},
+        )
 
     def close(self) -> None:
         """Close the calculator and flush output files. Safe to call twice."""

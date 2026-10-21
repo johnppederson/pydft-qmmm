@@ -13,8 +13,8 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from .grid_potential import EPS0  # noqa: F401
 from .grid_potential import _g_squared
+from .grid_potential import EPS0  # noqa: F401
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -133,8 +133,10 @@ def grid_coordinates(shape, cell):
     return fractional.reshape(-1, 3) @ cell
 
 
-def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20,
-                        source_cell=None, origin=None):
+def build_pme_potential(
+    path, shape, cell, expect_step=None, chunk=1 << 20,
+    source_cell=None, origin=None,
+):
     """Build V_ext on VASP's grid from the PME reciprocal-space sum.
 
     Mirrors PMEElectronicPotential.compute_potential.
@@ -162,7 +164,9 @@ def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20,
     pme = helpme_py.PMEInstanceD()
     pme.setup(1, alpha, spline_order, *gridnumber, COULOMB_CONSTANT, 0)
     pme.set_lattice_vectors(
-        *_lattice_constants(np.asarray(cell if source_cell is None else source_cell, dtype=np.float64)),
+        *_lattice_constants(np.asarray(
+            cell if source_cell is None else source_cell, dtype=np.float64,
+        )),
         helpme_py.LatticeType.XAligned,
     )
     all_charges = helpme_py.MatrixD(charges.reshape(-1, 1))
@@ -179,12 +183,16 @@ def build_pme_potential(path, shape, cell, expect_step=None, chunk=1 << 20,
         block = np.ascontiguousarray(coordinates[start:start + chunk])
         values = np.zeros((len(block), 1))
         matrix = helpme_py.MatrixD(values)
-        pme.compute_P_rec(0, all_charges, all_positions,
-                          helpme_py.MatrixD(block), 0, matrix)
+        pme.compute_P_rec(
+            0, all_charges, all_positions,
+            helpme_py.MatrixD(block), 0, matrix,
+        )
         if excluded.size:
-            pme.compute_P_adj(0, excluded_charges, excluded_positions,
-                              helpme_py.MatrixD(block), matrix,
-                              _minimum_image())
+            pme.compute_P_adj(
+                0, excluded_charges, excluded_positions,
+                helpme_py.MatrixD(block), matrix,
+                _minimum_image(),
+            )
         potential[start:start + chunk] = values[:, 0]
     # helPME reports the electrostatic potential in kJ/mol/e; VASP wants
     # the electron potential ENERGY in eV, hence the negation.
@@ -237,7 +245,7 @@ def pme_source_forces(
 
     Returns:
         An Nx3 array of forces
-        (:math:`\\mathrm{kJ\;mol^{-1}\;\\mathring{A}^{-1}}`), one row per
+        (:math:`\\mathrm{kJ\\;mol^{-1}\\;\\mathring{A}^{-1}}`), one row per
         PME_DATA atom; atoms with zero charge get zero.
     """
     import helpme_py
@@ -251,7 +259,9 @@ def pme_source_forces(
     pme = helpme_py.PMEInstanceD()
     pme.setup(1, alpha, spline_order, *gridnumber, COULOMB_CONSTANT, 0)
     pme.set_lattice_vectors(
-        *_lattice_constants(np.asarray(cell if source_cell is None else source_cell, dtype=np.float64)),
+        *_lattice_constants(np.asarray(
+            cell if source_cell is None else source_cell, dtype=np.float64,
+        )),
         helpme_py.LatticeType.XAligned,
     )
     sources = np.asarray(grid_charges, dtype=np.float64).reshape(-1)
@@ -259,8 +269,12 @@ def pme_source_forces(
     if origin is not None:
         coordinates += np.asarray(origin)
     if points is not None and len(points):
-        coordinates = np.vstack([coordinates, np.asarray(points).reshape(-1, 3)])
-        sources = np.concatenate([sources, np.asarray(point_charges).reshape(-1)])
+        coordinates = np.vstack(
+            [coordinates, np.asarray(points).reshape(-1, 3)],
+        )
+        sources = np.concatenate(
+            [sources, np.asarray(point_charges).reshape(-1)],
+        )
     sources = helpme_py.MatrixD(np.ascontiguousarray(sources.reshape(-1, 1)))
     coordinates = helpme_py.MatrixD(np.ascontiguousarray(coordinates))
     forces = np.zeros((len(charges), 3))

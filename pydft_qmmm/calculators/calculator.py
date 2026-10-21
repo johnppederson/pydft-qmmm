@@ -14,6 +14,7 @@ __all__ = [
 
 from abc import ABC
 from abc import abstractmethod
+from contextlib import nullcontext
 from dataclasses import dataclass
 from dataclasses import field
 from typing import TYPE_CHECKING
@@ -70,6 +71,10 @@ class Calculator(ABC):
 
     def close(self) -> None:
         """Release resources owned by this calculator, if any."""
+
+    def calculation_run(self, evaluations: int):
+        """Manage engine resources for a known number of evaluations."""
+        return nullcontext()
 
     @pluggable_method
     @abstractmethod

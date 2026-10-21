@@ -149,7 +149,9 @@ class MMInterface(SoftwareInterface):
 
     def get_nonbonded_cutoff(self) -> float:
         """Return the real-space nonbonded cutoff in Å."""
-        raise NotImplementedError("This MM interface does not expose its cutoff")
+        raise NotImplementedError(
+            "This MM interface does not expose its cutoff",
+        )
 
     @abstractmethod
     def get_pme_parameters(self) -> tuple[float, tuple[int, int, int], int]:

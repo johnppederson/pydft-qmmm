@@ -151,7 +151,7 @@ class Psi4Interface(QMInterface):
             self,
             wfn: psi4.core.Wavefunction,
     ) -> NDArray[np.float64]:
-        """Evaluate the converged electron density on the external-potential grid."""
+        """Evaluate the converged density on the external-potential grid."""
         quadrature = self.quadrature[0]
         if quadrature is None:
             raise RuntimeError("no external-potential quadrature is available")
@@ -268,7 +268,10 @@ class Psi4Interface(QMInterface):
         numinthelper = psi4.core.NumIntHelper(grid)
         grid_blocks = tuple(grid.blocks())
         xyzw = np.concatenate([
-            np.stack((block.x().np, block.y().np, block.z().np, block.w().np), axis=-1)
+            np.stack(
+                (block.x().np, block.y().np, block.z().np, block.w().np),
+                axis=-1,
+            )
             for block in grid_blocks
         ])
         self.quadrature[0] = _Psi4Quadrature(

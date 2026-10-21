@@ -422,7 +422,10 @@ class PMEExcludedPotential(PMENuclearPotential):
         if self.real_space_cutoff is None:
             return energy
         if self.include_forces:
-            raise ValueError("Periodic exclusion correction requires energy-only force mixing")
+            raise ValueError(
+                "Periodic exclusion correction requires energy-only force "
+                "mixing",
+            )
         nuclei = sorted(self.system.select("subsystem I"))
         positions = np.asarray(self.system.positions)
         charges = np.asarray(self.system.charges)
@@ -479,7 +482,9 @@ class PMEExcludedPotential(PMENuclearPotential):
                 direct = np.linalg.norm(delta)
                 nearest = delta.copy()
                 for axis in (2, 1, 0):
-                    nearest -= box[axis] * np.floor(nearest[axis] / box[axis, axis] + 0.5)
+                    nearest -= box[axis] * np.floor(
+                        nearest[axis] / box[axis, axis] + 0.5,
+                    )
                 distance = np.linalg.norm(nearest)
                 prefactor = 1389.3545764438198 * charges[i] * charges[j]
                 # dE/dR_i; the image shift is constant, so dE/dR_j = -dE/dR_i.
@@ -495,7 +500,6 @@ class PMEExcludedPotential(PMENuclearPotential):
                 forces[i] -= gradient
                 forces[j] += gradient
         return energy, forces
-
 
     def compute_forces(self) -> NDArray[np.float64]:
         """Differentiate the correction only when its partner forces remain.

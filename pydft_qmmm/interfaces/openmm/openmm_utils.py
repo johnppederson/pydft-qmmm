@@ -64,8 +64,11 @@ def _exclude_intramolecular(
     _exclude_nonbonded(omm_system, atoms)
 
 
-def _exclude_nonbonded(omm_system: openmm.System, atoms: frozenset[int]) -> None:
-    """Exclude nonbonded pairs within a group; keep interactions across groups."""
+def _exclude_nonbonded(
+        omm_system: openmm.System,
+        atoms: frozenset[int],
+) -> None:
+    """Exclude nonbonded pairs within a group; keep pairs across groups."""
     atom_list = sorted(atoms)
     for force in omm_system.getForces():
         if isinstance(force, openmm.NonbondedForce):
@@ -367,7 +370,9 @@ def _non_electrostatic(
                 pairs.addGlobalParameter("rs", switch)
             pairs.addPerBondParameter("epsilon")
             pairs.addPerBondParameter("sigma")
-            pairs.setUsesPeriodicBoundaryConditions(force.usesPeriodicBoundaryConditions())
+            pairs.setUsesPeriodicBoundaryConditions(
+                force.usesPeriodicBoundaryConditions(),
+            )
             excluded_pairs = {frozenset(pair) for pair in exclusions}
             for i in sorted(atoms):
                 ei, si = new_force.getParticleParameters(i)

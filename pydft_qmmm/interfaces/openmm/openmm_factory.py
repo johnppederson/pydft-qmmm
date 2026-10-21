@@ -92,8 +92,12 @@ def openmm_interface_factory(
         forcefield = list(forcefield)
     if lj_mixing not in {"default", "geometric"}:
         raise ValueError("lj_mixing must be 'default' or 'geometric'")
-    if lj_mixing == "geometric" and not all(f.endswith('.xml') for f in forcefield):
-        raise ValueError("Geometric LJ mixing currently requires XML force fields")
+    if lj_mixing == "geometric" and not all(
+            f.endswith(".xml") for f in forcefield
+    ):
+        raise ValueError(
+            "Geometric LJ mixing currently requires XML force fields",
+        )
     if lj_mixing == "default" and (lj_lorentz_classes or lj_zero_classes):
         raise ValueError("LJ class options require lj_mixing='geometric'")
     if isinstance(nonbonded_exclusions, str):
@@ -160,7 +164,9 @@ def openmm_interface_factory(
     )
     _adjust_system(system, base_system)
     aux_system = _empty_omm_system(system)
-    aux_system.setDefaultPeriodicBoxVectors(*base_system.getDefaultPeriodicBoxVectors())
+    aux_system.setDefaultPeriodicBoxVectors(
+        *base_system.getDefaultPeriodicBoxVectors(),
+    )
     base_context = _build_omm_context(
         base_system, omm_modeller, platform, precision,
     )

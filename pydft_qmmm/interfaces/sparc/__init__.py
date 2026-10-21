@@ -2,8 +2,8 @@
 """
 from __future__ import annotations
 
-from pydft_qmmm.utils import TheoryLevel
 from .sparc_factory import sparc_interface_factory as FACTORY
+from pydft_qmmm.utils import TheoryLevel
 
 THEORY_LEVEL = TheoryLevel.QM
 NAME = "sparc"

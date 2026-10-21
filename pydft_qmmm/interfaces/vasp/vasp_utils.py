@@ -17,7 +17,6 @@ __all__ = [
     "read_mm_forces",
     "read_vasprun",
     "plugin_energy_rounding",
-    "run_vasp",
     "VaspExecutionError",
 ]
 
@@ -25,7 +24,6 @@ import gzip
 import os
 import re
 import shutil
-import subprocess
 import xml.etree.ElementTree as ET
 from typing import TYPE_CHECKING
 
@@ -325,8 +323,10 @@ def plugin_energy_rounding(directory: str, frame: int | None = None) -> float:
             "the plugin energy cannot be undone.",
         )
     with open(path) as fh:
-        entries = [(kind, float(value)) for kind, value in (line.split() for line in fh)]
-    forces = [i for i, (kind, _) in enumerate(entries) if kind == "force_and_stress"]
+        entries = [(kind, float(value))
+                   for kind, value in (line.split() for line in fh)]
+    forces = [i for i, (kind, _) in enumerate(entries)
+              if kind == "force_and_stress"]
     if frame is None:
         end = forces[-1] if forces else len(entries)
         start = 0
@@ -344,7 +344,8 @@ def plugin_energy_rounding(directory: str, frame: int | None = None) -> float:
     correction = lost(entries[end][1]) if end < len(entries) else 0.0
     # VASP calls local_potential again after the force callback (setup for
     # the next step); only the calls before it can be in TOTEN.
-    local = [value for kind, value in entries[start:end] if kind == "local_potential"]
+    local = [value for kind, value in entries[start:end]
+             if kind == "local_potential"]
     if local:
         used = local[-1]
         outcar = os.path.join(directory, "OUTCAR")
@@ -353,8 +354,10 @@ def plugin_energy_rounding(directory: str, frame: int | None = None) -> float:
                 printed = re.findall(r"EPLUGINS =\s+(\S+)", fh.read())
             if printed:
                 # OUTCAR prints the stored float32 value with 8 decimals.
-                matches = [x for x in local
-                           if abs(float(np.float32(x)) - float(printed[-1])) < 6e-9]
+                matches = [
+                    x for x in local
+                    if abs(float(np.float32(x)) - float(printed[-1])) < 6e-9
+                ]
                 if matches:
                     used = matches[-1]
         correction += lost(used)
@@ -416,33 +419,3 @@ def read_vasprun(
             "suppressing force evaluation.",
         )
     return energy, forces
-
-
-def run_vasp(
-        command: str,
-        directory: str,
-        env: dict[str, str] | None = None,
-) -> None:
-    """Run VASP in the given directory.
-
-    Args:
-        command: The shell command that launches VASP, e.g.
-            ``"srun vasp_std"``.
-        directory: The working directory of the calculation.
-    """
-    with open(os.path.join(directory, "vasp.out"), "w") as out, \
-            open(os.path.join(directory, "vasp.err"), "w") as err:
-        process = subprocess.run(
-            command,
-            shell=True,
-            cwd=directory,
-            env=env,
-            stdout=out,
-            stderr=err,
-        )
-    if process.returncode != 0:
-        raise VaspExecutionError(
-            directory,
-            f"the command '{command}' exited with code "
-            f"{process.returncode}.",
-        )

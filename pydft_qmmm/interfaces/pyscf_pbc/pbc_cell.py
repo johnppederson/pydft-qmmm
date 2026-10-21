@@ -25,13 +25,17 @@ def build_cell(
         verbose: int,
         indices: tuple[int, ...] | None = None,
 ) -> tuple[Any, tuple[int, ...]]:
-    """Build subsystem I in the simulation box; return its cell and atom indices.
+    """Build subsystem I in the simulation box.
+
+    Returns the cell and the atom indices.
 
     Both backends use a PySCF Cell. Positions and lattice vectors are in Å;
     ke_cutoff is in Hartree. Supply either ke_cutoff or an explicit FFT mesh.
     """
-    qm_indices = (tuple(sorted(system.select("subsystem I")))
-                  if indices is None else indices)
+    qm_indices = (
+        tuple(sorted(system.select("subsystem I")))
+        if indices is None else indices
+    )
     positions = np.asarray(system.positions)
     elements = system.elements
     cell = gto.Cell()

@@ -5,8 +5,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from pydft_qmmm.potentials.pme_potential import PMEElectronicPotential
 from pydft_qmmm.potentials.pme_potential import helpme_py
+from pydft_qmmm.potentials.pme_potential import PMEElectronicPotential
 from pydft_qmmm.utils import KJMOL_PER_EH
 
 
@@ -21,7 +21,8 @@ class PeriodicPMEElectronicPotential(PMEElectronicPotential):
     excluded_indices: tuple[int, ...] = ()
 
     def _source_indices(self):
-        return sorted(set(self.system.select("subsystem III")) - set(self.excluded_indices))
+        region_iii = set(self.system.select("subsystem III"))
+        return sorted(region_iii - set(self.excluded_indices))
 
     def compute_potential(self, coordinates):
         """Return the region III electron potential in Hartree."""
@@ -30,12 +31,16 @@ class PeriodicPMEElectronicPotential(PMEElectronicPotential):
         if indices:
             self.pme.compute_P_rec(
                 0,
-                helpme_py.MatrixD(np.ascontiguousarray(
-                    self.system.charges[indices].reshape(-1, 1),
-                )),
-                helpme_py.MatrixD(np.ascontiguousarray(
-                    self.system.positions[indices],
-                )),
+                helpme_py.MatrixD(
+                    np.ascontiguousarray(
+                        self.system.charges[indices].reshape(-1, 1),
+                    ),
+                ),
+                helpme_py.MatrixD(
+                    np.ascontiguousarray(
+                        self.system.positions[indices],
+                    ),
+                ),
                 helpme_py.MatrixD(np.ascontiguousarray(coordinates)),
                 0,
                 helpme_py.MatrixD(potential),
@@ -53,13 +58,17 @@ class PeriodicPMEElectronicPotential(PMEElectronicPotential):
             potential = np.zeros((len(indices), 4))
             self.pme.compute_P_rec(
                 0,
-                helpme_py.MatrixD(np.ascontiguousarray(
-                    np.asarray(weights, dtype=float).reshape(-1, 1),
-                )),
+                helpme_py.MatrixD(
+                    np.ascontiguousarray(
+                        np.asarray(weights, dtype=float).reshape(-1, 1),
+                    ),
+                ),
                 helpme_py.MatrixD(np.ascontiguousarray(coordinates)),
-                helpme_py.MatrixD(np.ascontiguousarray(
-                    self.system.positions[indices],
-                )),
+                helpme_py.MatrixD(
+                    np.ascontiguousarray(
+                        self.system.positions[indices],
+                    ),
+                ),
                 1,
                 helpme_py.MatrixD(potential),
             )

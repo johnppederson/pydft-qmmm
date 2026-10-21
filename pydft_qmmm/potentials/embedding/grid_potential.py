@@ -69,7 +69,9 @@ def _axis_spacings(shape, cell):
     return widths / np.array(shape, dtype=np.float64)
 
 
-def _gaussian_box(position, inverse, dimensions, cell, sigma, prefactor, offsets):
+def _gaussian_box(
+        position, inverse, dimensions, cell, sigma, prefactor, offsets,
+):
     """The local Gaussian box for one charge.
 
     Factors out the ~25-line block shared, verbatim apart from what is
@@ -253,8 +255,10 @@ def _spline_coefficients(field):
     shape = np.asarray(field.shape)
     coefficients_g = np.fft.rfftn(field)
     for axis, size in enumerate(shape):
-        frequency = (np.fft.rfftfreq(size) if axis == 2
-                     else np.fft.fftfreq(size))
+        frequency = (
+            np.fft.rfftfreq(size) if axis == 2
+            else np.fft.fftfreq(size)
+        )
         angle = 2.0 * np.pi * frequency
         response = (66 + 52 * np.cos(angle) + 2 * np.cos(2 * angle)) / 120
         dimensions = [1, 1, 1]
@@ -275,9 +279,14 @@ def nuclear_charge_on_grid(shape, cell, points, charges, method="spline"):
     charges = np.asarray(charges, dtype=float).reshape(-1)
     shape = tuple(int(n) for n in shape)
     if len(points) != len(charges):
-        raise ValueError("Nuclear positions and charges have different lengths")
+        raise ValueError(
+            "Nuclear positions and charges have different lengths",
+        )
     if method != "spline":
-        raise ValueError("Nuclear grid deposition supports only spline; the VASP spectral route is archived")
+        raise ValueError(
+            "Nuclear grid deposition supports only spline; the VASP "
+            "spectral route is archived",
+        )
     dimensions = np.asarray(shape)
     scaled = ((points @ np.linalg.inv(cell)) % 1.) * dimensions
     nodes = np.floor(scaled).astype(int)[..., None] + np.arange(-2, 4)
@@ -285,8 +294,12 @@ def nuclear_charge_on_grid(shape, cell, points, charges, method="spline"):
     nodes %= dimensions[None, :, None]
     deposited = np.zeros(shape)
     for indices, weight, charge in zip(nodes, weights, charges):
-        # add.at also handles repeated indices on grids smaller than the stencil.
-        np.add.at(deposited, np.ix_(*indices), charge * np.einsum("i,j,k->ijk", *weight))
+        # add.at also handles repeated indices on grids smaller than the
+        # stencil.
+        np.add.at(
+            deposited, np.ix_(*indices),
+            charge * np.einsum("i,j,k->ijk", *weight),
+        )
     return _spline_coefficients(deposited)
 
 

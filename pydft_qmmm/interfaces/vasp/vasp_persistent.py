@@ -8,11 +8,11 @@ from __future__ import annotations
 
 import atexit
 import os
-from pathlib import Path
 import signal
 import subprocess
 import time
 import uuid
+from pathlib import Path
 
 import numpy as np
 
@@ -43,11 +43,15 @@ class PersistentVasp:
         self.closed = False
         self.process = None
         env = dict(env)
-        env.update({SESSION_ENV: str(self.exchange), STEPS_ENV: str(steps),
-                    TIMEOUT_ENV: str(timeout)})
+        env.update({
+            SESSION_ENV: str(self.exchange), STEPS_ENV: str(steps),
+            TIMEOUT_ENV: str(timeout),
+        })
         try:
-            with (self.directory/'vasp.out').open('w') as out, \
-                    (self.directory/'vasp.err').open('w') as err:
+            with (
+                (self.directory/'vasp.out').open('w') as out,
+                (self.directory/'vasp.err').open('w') as err,
+            ):
                 self.process = subprocess.Popen(
                     command, shell=True, cwd=self.directory, env=env,
                     stdout=out, stderr=err, start_new_session=True,
@@ -64,12 +68,16 @@ class PersistentVasp:
     def evaluate(self, positions):
         """Advance the waiting structure callback, or receive the first SCF."""
         if self.closed or self.frame >= self.steps:
-            raise self._failure('Persistent VASP session is closed or exhausted.')
+            raise self._failure(
+                'Persistent VASP session is closed or exhausted.',
+            )
         if self.frame:
             if self.process.poll() is not None:
                 raise self._failure('VASP exited before the next geometry.')
-            publish(self.exchange/f'request_{self.frame:06d}.npz',
-                    step=self.frame, positions=positions)
+            publish(
+                self.exchange/f'request_{self.frame:06d}.npz',
+                step=self.frame, positions=positions,
+            )
         result = self.exchange/f'result_{self.frame:06d}.npz'
         deadline = time.monotonic() + self.timeout
         while not result.is_file():
@@ -79,10 +87,13 @@ class PersistentVasp:
                 if result.is_file():
                     break
                 raise self._failure(
-                    f'Persistent VASP exited with code {code} before frame {self.frame}.',
+                    f'Persistent VASP exited with code {code} before '
+                    f'frame {self.frame}.',
                 )
             if time.monotonic() >= deadline:
-                raise self._failure(f'Timed out waiting for VASP frame {self.frame}.')
+                raise self._failure(
+                    f'Timed out waiting for VASP frame {self.frame}.',
+                )
             time.sleep(.05)
         try:
             with np.load(result, allow_pickle=False) as data:
@@ -90,16 +101,20 @@ class PersistentVasp:
                     raise ValueError('Incorrect frame number in VASP reply')
                 energy = float(data['energy'])
                 forces = np.array(data['forces'], copy=True)
-            if (forces.shape != positions.shape
-                    or not np.isfinite(forces).all()
-                    or not np.isfinite(energy)):
+            if (
+                forces.shape != positions.shape
+                or not np.isfinite(forces).all()
+                or not np.isfinite(energy)
+            ):
                 raise ValueError('Invalid energy or force array in VASP reply')
             result.unlink()
             self.frame += 1
             if self.frame == self.steps:
                 code = self.process.wait(timeout=self.timeout)
                 if code:
-                    raise ValueError(f'VASP exited with code {code} after its final frame')
+                    raise ValueError(
+                        f'VASP exited with code {code} after its final frame',
+                    )
                 self.close()
             return energy, forces
         except BaseException:
@@ -137,22 +152,28 @@ _plugin_frame = 0
 
 
 def structure(constants, additions):
-    """Publish completed energy/forces and receive the next fractional geometry."""
+    """Publish energy/forces and receive the next fractional geometry."""
     global _plugin_frame
     exchange = Path(os.environ[SESSION_ENV])
     steps = int(os.environ[STEPS_ENV])
     timeout = float(os.environ[TIMEOUT_ENV])
     frame = _plugin_frame
-    publish(exchange/f'result_{frame:06d}.npz', step=frame,
-            energy=float(constants.total_energy), forces=np.asarray(constants.forces))
+    publish(
+        exchange/f'result_{frame:06d}.npz', step=frame,
+        energy=float(constants.total_energy),
+        forces=np.asarray(constants.forces),
+    )
     _plugin_frame += 1
     if _plugin_frame >= steps:
-        return  # NSW ends this process normally, with final output/checkpoints.
+        # NSW ends this process normally, with final output/checkpoints.
+        return
     request = exchange/f'request_{_plugin_frame:06d}.npz'
     deadline = time.monotonic() + timeout
     while not request.is_file():
         if time.monotonic() >= deadline:
-            raise TimeoutError('Timed out waiting for the next PyDFT-QMMM geometry')
+            raise TimeoutError(
+                'Timed out waiting for the next PyDFT-QMMM geometry',
+            )
         time.sleep(.05)
     with np.load(request, allow_pickle=False) as data:
         if int(data['step']) != _plugin_frame:
@@ -162,9 +183,11 @@ def structure(constants, additions):
     current = np.asarray(constants.positions)
     if positions.shape != current.shape or not np.isfinite(positions).all():
         raise ValueError('Invalid geometry request')
-    # VASP uses fractional coordinates and expects increments, not replacements.
+    # VASP uses fractional coordinates and expects increments, not
+    # replacements.
     additions.positions += positions - current
-    # The external potential depends on both positions and the II/III partition.
-    # Its grid shape can stay fixed even though every MM source has changed.
+    # The external potential depends on both positions and the II/III
+    # partition. Its grid shape can stay fixed even though every MM source
+    # has changed.
     from .vasp_plugin import reset_cache
     reset_cache()

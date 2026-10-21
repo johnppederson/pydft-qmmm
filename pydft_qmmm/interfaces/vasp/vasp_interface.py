@@ -10,6 +10,7 @@ __all__ = ["VaspInterface", "VaspPotential"]
 
 import os
 import json
+from contextlib import contextmanager
 from dataclasses import dataclass
 from dataclasses import field
 from typing import ClassVar
@@ -80,8 +81,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
     potcar_map: dict[str, str]
     embedding: bool = False
     embedding_sigma: float = 0.3
-    persistent: bool = False
-    persistent_steps: int = 1000
+    persistent_steps: int = 1
     persistent_timeout: float = 3600.
     qm_box: Any = None
     qm_origin: Any = None
@@ -90,6 +90,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
     qm_slab_correction: bool = False
     check_convergence: bool = False
     _session: list = field(default_factory=list, init=False, repr=False)
+    _run_steps: list[int] = field(default_factory=list, init=False, repr=False)
     potentials: list[ElectronicPotential] = field(
         default_factory=list,
         init=False,
@@ -138,14 +139,21 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         cell = np.asarray(self.system.box).T
         metadata = os.path.join(self.directory, "QM_CELL.json")
         if self.qm_box is not None:
-            from pydft_qmmm.potentials.embedding.cell_mapping import CellMapping
+            from pydft_qmmm.potentials.embedding.cell_mapping import (
+                CellMapping,
+            )
             cell = np.asarray(self.qm_box, dtype=float).T
             origin = np.asarray(self.qm_origin, dtype=float)
             shape = tuple(int(self.incar[k]) for k in ("NGXF", "NGYF", "NGZF"))
-            mapping = CellMapping(np.asarray(self.system.box).T, cell,
-                                  origin, self.embedding_grid_shape, shape)
-            # MM sources live on the full MM grid, including outside the QM cell.
-            mapping.validate_positions(np.asarray(self.system.positions)[qm_indices])
+            mapping = CellMapping(
+                np.asarray(self.system.box).T, cell,
+                origin, self.embedding_grid_shape, shape,
+            )
+            # MM sources live on the full MM grid, including outside the QM
+            # cell.
+            mapping.validate_positions(np.asarray(
+                self.system.positions,
+            )[qm_indices])
             positions = positions - origin
             with open(metadata, "w") as fh:
                 json.dump(mapping.metadata(), fh)
@@ -169,18 +177,18 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             self.kpts,
         )
         tags = dict(self.incar)
-        # Single point only; PyDFT-QMMM owns the dynamics.
-        tags.update({"NSW": 0, "IBRION": -1})
-        if self.persistent:
-            if self.incar.get("PLUGINS/MODE", "serial").lower() != "serial":
-                raise ValueError("Persistent VASP requires serial plugins")
-            if int(self.incar.get("ISYM", 0)) != 0:
-                raise ValueError("Persistent VASP requires ISYM=0")
-            if int(self.incar.get("IWAVPR", 11)) not in (0, 11, 12, 13):
-                raise ValueError("Persistent VASP requires IWAVPR=0,11,12,13")
-            tags.update({"NSW": self.persistent_steps, "IBRION": 12,
-                         "EDIFFG": 0., "PLUGINS/STRUCTURE": True,
-                         "IWAVPR": self.incar.get("IWAVPR", 11)})
+        # PyDFT-QMMM owns the dynamics; VASP waits for each new geometry.
+        if self.incar.get("PLUGINS/MODE", "serial").lower() != "serial":
+            raise ValueError("Persistent VASP requires serial plugins")
+        if int(self.incar.get("ISYM", 0)) != 0:
+            raise ValueError("Persistent VASP requires ISYM=0")
+        if int(self.incar.get("IWAVPR", 11)) not in (0, 11, 12, 13):
+            raise ValueError("Persistent VASP requires IWAVPR=0,11,12,13")
+        tags.update({
+            "NSW": self._evaluation_count, "IBRION": 12,
+            "EDIFFG": 0., "PLUGINS/STRUCTURE": True,
+            "IWAVPR": self.incar.get("IWAVPR", 11),
+        })
         if self.embedding:
             # PLUGINS/MODE is deliberately left unset.  It defaults to
             # "serial", which is what makes this correct under MPI: only
@@ -210,20 +218,20 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             # run which dies before the plugin fires leaves a missing
             # file rather than the previous step's forces to be
             # silently reread.
-            for stale in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE", "SLAB_FORCES",
-                          "PLUGIN_ENERGY"):
+            for stale in (
+                "MM_FORCES", "PME_FORCES", "QM_NET_FORCE", "SLAB_FORCES",
+                "PLUGIN_ENERGY",
+            ):
                 stale_path = os.path.join(self.directory, stale)
                 if os.path.isfile(stale_path):
                     os.remove(stale_path)
-        if self.persistent:
-            mode = "a" if self.embedding else "w"
-            with open(os.path.join(self.directory, "vasp_plugin.py"), mode) as fh:
-                fh.write("\nfrom pydft_qmmm.interfaces.vasp.vasp_persistent import structure\n")
-        # Reuse the previous step's orbitals and density once they exist.
-        if self.frame[0] and os.path.isfile(
-                os.path.join(self.directory, "WAVECAR"),
-        ):
-            tags.setdefault("ISTART", 1)
+        mode = "a" if self.embedding else "w"
+        plugin = os.path.join(self.directory, "vasp_plugin.py")
+        with open(plugin, mode) as fh:
+            fh.write(
+                "\nfrom pydft_qmmm.interfaces.vasp.vasp_persistent "
+                "import structure\n",
+            )
         vasp_utils.write_incar(
             os.path.join(self.directory, "INCAR"),
             tags,
@@ -231,42 +239,69 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         return order
 
     def _write_slab_data(self) -> None:
-        """Refresh the slab moment and frame stamp before a force evaluation."""
+        """Refresh the slab moment and frame stamp before evaluating forces."""
         qm_indices = sorted(self.system.select("subsystem I"))
-        cell = np.asarray(self.system.box if self.qm_box is None else self.qm_box).T
-        origin = np.zeros(3) if self.qm_origin is None else np.asarray(self.qm_origin)
+        cell = np.asarray(
+            self.system.box if self.qm_box is None else self.qm_box,
+        ).T
+        origin = (
+            np.zeros(3) if self.qm_origin is None
+            else np.asarray(self.qm_origin)
+        )
         slab_path = os.path.join(self.directory, "SLAB_DATA.json")
         if self.slab_correction:
-            from pydft_qmmm.potentials.embedding.slab import coefficient, neutral_dipole
+            from pydft_qmmm.potentials.embedding.slab import coefficient
+            from pydft_qmmm.potentials.embedding.slab import neutral_dipole
             if not self.embedding:
                 raise ValueError("Slab correction requires embedded VASP")
             truncated = self.incar.get("KERNEL_TRUNCATION/LTRUNCATE", False)
             if self.qm_slab_correction:
                 if truncated:
-                    raise ValueError("QM slab correction requires periodic QM without Coulomb truncation")
+                    raise ValueError(
+                        "QM slab correction requires periodic QM without "
+                        "Coulomb truncation",
+                    )
                 if self.incar.get("LDIPOL", False):
-                    raise ValueError("QM slab correction requires LDIPOL=False to avoid double counting")
+                    raise ValueError(
+                        "QM slab correction requires LDIPOL=False to avoid "
+                        "double counting",
+                    )
             elif self.incar.get("LDIPOL", False):
                 # VASP's own dipole correction handles QM-QM; the step must sit
                 # at the QM cell face, mid-vacuum.
                 dipol = np.asarray(self.incar.get("DIPOL", []), dtype=float)
-                if (truncated or self.incar.get("IDIPOL") != 3 or dipol.shape != (3,)
-                        or not np.isclose(dipol[2] % 1.0, 0.5)):
-                    raise ValueError("LDIPOL slab correction requires IDIPOL=3, "
-                                     "DIPOL z=0.5, and no Coulomb truncation")
-            elif (truncated is not True
-                    or self.incar.get("KERNEL_TRUNCATION/IDIMENSIONALITY") != 2
-                    or self.incar.get("KERNEL_TRUNCATION/ISURFACE") != 3):
-                raise ValueError("Slab correction requires z kernel truncation, LDIPOL, or qm_slab_correction=True")
+                if (
+                    truncated or self.incar.get("IDIPOL") != 3
+                    or dipol.shape != (3,)
+                    or not np.isclose(dipol[2] % 1.0, 0.5)
+                ):
+                    raise ValueError(
+                        "LDIPOL slab correction requires IDIPOL=3, "
+                        "DIPOL z=0.5, and no Coulomb truncation",
+                    )
+            elif (
+                truncated is not True
+                or self.incar.get("KERNEL_TRUNCATION/IDIMENSIONALITY") != 2
+                or self.incar.get("KERNEL_TRUNCATION/ISURFACE") != 3
+            ):
+                raise ValueError(
+                    "Slab correction requires z kernel truncation, LDIPOL, "
+                    "or qm_slab_correction=True",
+                )
             charges = np.array(self.system.charges, copy=True)
             charges[qm_indices] = 0.
             moment = neutral_dipole(self.system.positions, charges)
             with open(slab_path, "w") as fh:
-                json.dump(dict(coefficient=coefficient(self.system.box), moment=moment,
-                               charges=charges.tolist(), origin=origin.tolist(),
-                               qm_self=self.qm_slab_correction,
-                               qm_coefficient=coefficient(cell),
-                               step=self.frame[0]), fh)
+                json.dump(
+                    dict(
+                        coefficient=coefficient(self.system.box),
+                        moment=moment,
+                        charges=charges.tolist(), origin=origin.tolist(),
+                        qm_self=self.qm_slab_correction,
+                        qm_coefficient=coefficient(cell),
+                        step=self.frame[0],
+                    ), fh,
+                )
         elif os.path.exists(slab_path):
             os.remove(slab_path)
 
@@ -328,7 +363,9 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         env = dict(os.environ)
         here = os.path.dirname(os.path.abspath(__file__))
         package_root = os.path.dirname(os.path.dirname(os.path.dirname(here)))
-        here = os.path.abspath(self.directory) + os.pathsep + package_root + os.pathsep + here
+        here = os.pathsep.join(
+            (os.path.abspath(self.directory), package_root, here),
+        )
         existing = env.get("PYTHONPATH", "")
         env["PYTHONPATH"] = f"{here}:{existing}" if existing else here
         return env
@@ -471,65 +508,55 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             the QM atoms only, ordered to match
             ``sorted(system.select("subsystem I"))``.
         """
-        if self.persistent:
-            return self._run_persistent()
-        order = self._write_input()
-        if self.embedding:
-            self._write_mm_charges()
-            if self.potentials:
-                self._write_pme_data()
-        vasp_utils.run_vasp(
-            self.command, self.directory,
-            env=self._plugin_env() if self.embedding else None,
-        )
-        if self.embedding:
-            self._check_plugin_fired()
-        if self.check_convergence:
-            self._check_convergence(1)
-        energy, forces = vasp_utils.read_vasprun(
-            os.path.join(self.directory, "vasprun.xml"),
-        )
-        if self.embedding:
-            # VASP stores the plugin energy in single precision.
-            energy += vasp_utils.plugin_energy_rounding(self.directory)
-        if len(forces) != len(order):
-            raise vasp_utils.VaspExecutionError(
-                self.directory,
-                f"VASP returned forces for {len(forces)} atoms, but "
-                f"{len(order)} QM atoms were submitted.",
-            )
-        # Undo the species grouping applied when writing the POSCAR.
-        qm_forces = np.empty_like(forces)
-        qm_forces[order, :] = forces
-        self.frame[0] += 1
-        return energy * KJMOL_PER_EV, qm_forces * KJMOL_PER_EV
-
+        return self._run_persistent()
 
     def _persistent_configuration(self):
         """Settings that VASP cannot change while its process is running."""
         qm = sorted(self.system.select("subsystem I"))
-        tags = {k: v for k, v in self.incar.items() if k not in ("ISTART", "ICHARG")}
-        return (tuple(qm), tuple(self.system.elements[qm]),
-                np.asarray(self.system.box).tobytes(), repr(sorted(tags.items())),
-                self.kpts, self.pp_path, repr(sorted(self.potcar_map.items())),
-                self.embedding, self.embedding_sigma, self.slab_correction,
-                self.qm_slab_correction,
-                None if self.qm_box is None else np.asarray(self.qm_box).tobytes(),
-                None if self.qm_origin is None else np.asarray(self.qm_origin).tobytes(),
-                None if self.embedding_grid_shape is None else tuple(self.embedding_grid_shape))
+        tags = {
+            k: v for k, v in self.incar.items()
+            if k not in ("ISTART", "ICHARG")
+        }
+        return (
+            tuple(qm), tuple(self.system.elements[qm]),
+            np.asarray(self.system.box).tobytes(), repr(sorted(tags.items())),
+            self.kpts, self.pp_path, repr(sorted(self.potcar_map.items())),
+            self.embedding, self.embedding_sigma, self.slab_correction,
+            self.qm_slab_correction,
+            None if self.qm_box is None else np.asarray(self.qm_box).tobytes(),
+            None if self.qm_origin is None else np.asarray(
+                self.qm_origin,
+            ).tobytes(),
+            None if self.embedding_grid_shape is None else tuple(
+                self.embedding_grid_shape,
+            ),
+        )
 
     def _run_persistent(self):
         from .vasp_persistent import PersistentVasp
+        if (
+                self._session and not self._run_steps
+                and self.persistent_steps == 1
+        ):
+            session = self._session[0]
+            if session.closed and session.frame == session.steps:
+                # A completed single point may be followed by another one.
+                self._session.clear()
+                self.frame[0] = 0
         configuration = self._persistent_configuration()
         if self._session:
             session, initial, order = self._session
             if configuration != initial:
                 session.close()
                 raise ValueError(
-                    "Persistent VASP cell, QM membership, or electronic settings changed",
+                    "Persistent VASP cell, QM membership, or electronic "
+                    "settings changed",
                 )
             if session.closed:
-                raise ValueError("Persistent VASP session is closed; create a new calculator")
+                raise ValueError(
+                    "Persistent VASP session is closed; create a new "
+                    "calculator",
+                )
         else:
             order = self._write_input()
             # One log for the whole session; frames are told apart below.
@@ -540,7 +567,10 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             # VASP is either not launched yet or blocked inside structure().
             if self.embedding:
                 from .vasp_plugin import SENTINEL
-                for name in ("MM_FORCES", "PME_FORCES", "QM_NET_FORCE", "SLAB_FORCES", SENTINEL):
+                for name in (
+                        "MM_FORCES", "PME_FORCES", "QM_NET_FORCE",
+                        "SLAB_FORCES", SENTINEL,
+                ):
                     path = os.path.join(self.directory, name)
                     if os.path.isfile(path):
                         os.remove(path)
@@ -549,24 +579,34 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
                     self._write_pme_data()
             self._write_slab_data()
             if not self._session:
-                session = PersistentVasp(self.command, self.directory, self._plugin_env(),
-                                         self.persistent_steps, self.persistent_timeout)
+                session = PersistentVasp(
+                    self.command, self.directory, self._plugin_env(),
+                    self._evaluation_count, self.persistent_timeout,
+                )
                 self._session.extend([session, configuration, order])
             indices = sorted(self.system.select("subsystem I"))
             positions = np.asarray(self.system.positions)[indices][order]
             cell = np.asarray(self.system.box).T
             if self.qm_box is not None:
-                from pydft_qmmm.potentials.embedding.cell_mapping import CellMapping
+                from pydft_qmmm.potentials.embedding.cell_mapping import (
+                    CellMapping,
+                )
                 cell = np.asarray(self.qm_box).T
-                mapping = CellMapping(np.asarray(self.system.box).T, cell, self.qm_origin,
-                                      self.embedding_grid_shape,
-                                      tuple(int(self.incar[k]) for k in ("NGXF", "NGYF", "NGZF")))
+                mapping = CellMapping(
+                    np.asarray(self.system.box).T, cell, self.qm_origin,
+                    self.embedding_grid_shape,
+                    tuple(int(self.incar[k])
+                          for k in ("NGXF", "NGYF", "NGZF")),
+                )
                 mapping.validate_positions(positions)
                 positions = positions - np.asarray(self.qm_origin)
             fractional = positions @ np.linalg.inv(cell)
             energy, forces = session.evaluate(fractional)
-            if self.check_convergence and session.frame == self.persistent_steps:
-                self._check_convergence(self.persistent_steps)
+            if (
+                    self.check_convergence
+                    and session.frame == self._evaluation_count
+            ):
+                self._check_convergence(self._evaluation_count)
             if self.embedding:
                 self._check_plugin_fired()
                 # VASP stores the plugin energy in single precision.
@@ -587,16 +627,45 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         path = os.path.join(self.directory, "OUTCAR")
         try:
             with open(path) as stream:
-                count = sum('aborting loop because EDIFF is reached' in line
-                            for line in stream)
+                count = sum(
+                    'aborting loop because EDIFF is reached' in line
+                    for line in stream
+                )
         except OSError as error:
             raise vasp_utils.VaspExecutionError(
                 self.directory, "Cannot read OUTCAR to check SCF convergence",
             ) from error
         if count != expected_steps:
             raise vasp_utils.VaspExecutionError(
-                self.directory, f"Only {count}/{expected_steps} SCFs converged",
+                self.directory,
+                f"Only {count}/{expected_steps} SCFs converged",
             )
+
+    @property
+    def _evaluation_count(self) -> int:
+        return self._run_steps[0] if self._run_steps else self.persistent_steps
+
+    @contextmanager
+    def calculation_run(self, evaluations: int):
+        """Run a complete dynamics segment and release VASP on all exits."""
+        if self._run_steps:
+            raise RuntimeError("A VASP calculation run is already active")
+        if self._session and not self._session[0].closed:
+            raise RuntimeError(
+                "Close the active VASP run before starting dynamics",
+            )
+        self._session.clear()
+        self.frame[0] = 0
+        # Include a fresh starting geometry, even after a previous segment.
+        self._run.cache_clear()
+        self._run_steps.append(evaluations)
+        try:
+            yield
+        finally:
+            try:
+                self.close()
+            finally:
+                self._run_steps.clear()
 
     def close(self):
         """Release the persistent process, including on early termination."""
@@ -608,6 +677,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
 
     def __exit__(self, *exc):
         self.close()
+
 
 class VaspPotential(VaspInterface, AtomicPotential):
     """A potential wrapping VASP functionality.
@@ -662,7 +732,8 @@ class VaspPotential(VaspInterface, AtomicPotential):
                 forces[third, :] = self._read_pme_forces()[third]
         if self.slab_correction:
             slab_forces, _ = vasp_utils.read_mm_forces(
-                os.path.join(self.directory, "SLAB_FORCES"), self.frame[0] - 1)
+                os.path.join(self.directory, "SLAB_FORCES"), self.frame[0] - 1,
+            )
             if slab_forces.shape != forces.shape:
                 raise ValueError("Incorrect slab reaction force shape")
             forces += slab_forces

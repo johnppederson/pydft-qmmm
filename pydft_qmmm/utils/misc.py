@@ -79,8 +79,10 @@ def generate_velocities(
     if not np.isfinite(temperature) or temperature < 0:
         raise ValueError("Temperature must be finite and nonnegative")
     indices = np.asarray(frozen)
-    if indices.size and (indices.dtype.kind not in 'iu' or indices.ndim != 1
-                         or np.any(indices < 0) or np.any(indices >= len(masses))):
+    if indices.size and (
+            indices.dtype.kind not in "iu" or indices.ndim != 1
+            or np.any(indices < 0) or np.any(indices >= len(masses))
+    ):
         raise ValueError("frozen must contain valid atom indices")
     mobile = masses[:, 0] > 0
     mobile[indices.astype(int)] = False
@@ -95,7 +97,9 @@ def generate_velocities(
     velocities[~mobile] = 0.
     if rescale and temperature > 0:
         if not mobile.any():
-            raise ValueError("Cannot set a positive temperature without mobile atoms")
+            raise ValueError(
+                "Cannot set a positive temperature without mobile atoms",
+            )
         kinetic = 0.5e7 * np.sum(masses[mobile] * velocities[mobile]**2)
         target = 0.5 * 3 * mobile.sum() * KB / 1000 * temperature
         velocities *= np.sqrt(target / kinetic)

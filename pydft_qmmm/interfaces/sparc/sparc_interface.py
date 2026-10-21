@@ -19,17 +19,20 @@ from typing import TYPE_CHECKING
 import numpy as np
 from ase import Atoms
 
-from pydft_qmmm.potentials.embedding.grid_potential import build_external_potential
-from pydft_qmmm.potentials.embedding.grid_potential import contract_gaussian_gradient
+from . import sparc_grid
+from . import sparc_utils
 from pydft_qmmm.interfaces import ElectrostaticCouplingMode
 from pydft_qmmm.interfaces import QMInterface
 from pydft_qmmm.interfaces.engine_embedding import EngineEmbeddingMixin
 from pydft_qmmm.potentials import AtomicPotential
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    build_external_potential,
+)
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    contract_gaussian_gradient,
+)
 from pydft_qmmm.utils import KJMOL_PER_EV
 from pydft_qmmm.utils import system_cache
-
-from . import sparc_grid
-from . import sparc_utils
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
@@ -183,7 +186,9 @@ class SPARCInterface(EngineEmbeddingMixin, QMInterface):
             positions, charges, self.fd_grid, cell, self.embedding_sigma,
         )
         if self.potentials:
-            from pydft_qmmm.potentials.embedding.pme_grid import build_pme_potential
+            from pydft_qmmm.potentials.embedding.pme_grid import (
+                build_pme_potential,
+            )
             path = self._write_pme_data()
             v_ext = v_ext + build_pme_potential(
                 path, self.fd_grid, cell, expect_step=self.frame[0],
@@ -262,7 +267,9 @@ class SPARCInterface(EngineEmbeddingMixin, QMInterface):
             (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`), one row
             per system atom, nonzero only for the PME_DATA sources.
         """
-        from pydft_qmmm.potentials.embedding.pme_grid import charge_from_potential
+        from pydft_qmmm.potentials.embedding.pme_grid import (
+            charge_from_potential,
+        )
         from pydft_qmmm.potentials.embedding.pme_grid import pme_source_forces
         cell = self._cell_angstrom()
         charge = charge_from_potential(self._read_phi(), cell)

@@ -63,7 +63,9 @@ class OpenMMInterface(MMInterface):
     aux_forces_group_force_mask: NDArray[np.float64]
     aux_energy_group: set[int] = field(default_factory=set)
     aux_forces_group: set[int] = field(default_factory=set)
-    _excluded_charges: set[int] = field(default_factory=set, init=False, repr=False)
+    _excluded_charges: set[int] = field(
+        default_factory=set, init=False, repr=False,
+    )
 
     slab_correction: bool = False
 
@@ -72,11 +74,20 @@ class OpenMMInterface(MMInterface):
         from pydft_qmmm.utils import KJMOL_PER_EV
         forces = [f for f in self.base_context.getSystem().getForces()
                   if isinstance(f, openmm.NonbondedForce)]
-        if len(forces) != 1 or forces[0].getNonbondedMethod() != openmm.NonbondedForce.PME:
+        if (
+            len(forces) != 1
+            or forces[0].getNonbondedMethod() != openmm.NonbondedForce.PME
+        ):
             raise ValueError("Slab correction requires one PME NonbondedForce")
-        charges = np.array([forces[0].getParticleParameters(i)[0].value_in_unit(
-            openmm.unit.elementary_charge) for i in range(len(self.system))])
-        energy, force = mm_correction(self.system.positions, charges, self.system.box)
+        charges = np.array([
+            forces[0].getParticleParameters(i)[0].value_in_unit(
+                openmm.unit.elementary_charge,
+            )
+            for i in range(len(self.system))
+        ])
+        energy, force = mm_correction(
+            self.system.positions, charges, self.system.box,
+        )
         return energy * KJMOL_PER_EV, force * KJMOL_PER_EV
 
     def __post_init__(self) -> None:
@@ -247,7 +258,7 @@ class OpenMMInterface(MMInterface):
         return pme_alpha/10, pme_gridnumber, 5
 
     def update_charges(self, charges: NDArray[np.float64]) -> None:
-        """Update charges while preserving base-context electrostatic exclusions.
+        """Update charges, keeping the base-context charge exclusions.
 
         Keep the original source charges for QM embedding and auxiliary
         Coulomb terms. Only the base context receives the masked copy.

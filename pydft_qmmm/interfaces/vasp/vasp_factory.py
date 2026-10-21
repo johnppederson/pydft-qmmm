@@ -48,8 +48,7 @@ def vasp_interface_factory(
         incar: dict[str, Any] | None = None,
         embedding: bool = False,
         embedding_sigma: float = 0.3,
-        persistent: bool = False,
-        persistent_steps: int = 1000,
+        persistent_steps: int = 1,
         persistent_timeout: float = 3600.,
         check_convergence: bool = False,
         qm_box=None,
@@ -58,6 +57,9 @@ def vasp_interface_factory(
         **options: Any,
 ) -> VaspPotential:
     r"""Build the interface to VASP.
+
+    One VASP process handles successive geometries through the structure
+    plugin (IBRION=12). A VASP build with Python plugins is required.
 
     Args:
         system: The system which will be tied to the VASP interface.
@@ -95,15 +97,13 @@ def vasp_interface_factory(
             default is ~2x the grid spacing of a typical run; below one
             spacing the deposited charge stops being conserved and
             starts depending on where the atom sits between nodes.
-        persistent: Keep a VASP process alive using the structure plugin
-            (IBRION=12). Requires a VASP binary built with Python plugins.
-            PyDFT-QMMM still owns integration and embedding updates.
-        persistent_steps: Number of force evaluations in the persistent run,
-            including the initial geometry (MD steps + 1). Call close() if
-            stopping early. The cell and QM membership must remain fixed.
+        persistent_steps: Evaluation count for a manually managed run;
+            defaults to one. Simulation.run_dynamics sets its own count,
+            including the starting geometry. The cell and QM membership
+            must remain fixed within each run.
         persistent_timeout: Maximum seconds to wait for each SCF or geometry.
-        check_convergence: Require EDIFF convergence in OUTCAR. For persistent
-            runs, check all evaluations after the final frame and normal exit.
+        check_convergence: Require EDIFF convergence in OUTCAR for all
+            evaluations after the final frame and normal exit.
         qm_box: Optional orthorhombic QM lattice, with vectors as columns.
             The system lattice remains the MM lattice. Only z may differ.
         qm_origin: Fixed Cartesian origin of the QM cell in MM coordinates.
@@ -116,6 +116,9 @@ def vasp_interface_factory(
     Returns:
         The VASP interface.
     """
+    # Older run scripts may still pass the removed mode switch.
+    # All evaluations now use the same persistent transport.
+    options.pop("persistent", None)
     if charge:
         raise NotImplementedError(
             "VASP has no molecular-charge keyword; a charged QM region "
@@ -143,9 +146,13 @@ def vasp_interface_factory(
         raise ValueError("persistent_steps must be a positive integer")
     if not 0 < persistent_timeout < float('inf'):
         raise ValueError("persistent_timeout must be finite and positive")
-    if qm_box is None and (qm_origin is not None or embedding_grid_shape is not None):
+    if qm_box is None and (
+            qm_origin is not None or embedding_grid_shape is not None
+    ):
         raise ValueError("qm_origin and embedding_grid_shape require qm_box")
-    if qm_box is not None and (qm_origin is None or embedding_grid_shape is None):
+    if qm_box is not None and (
+            qm_origin is None or embedding_grid_shape is None
+    ):
         raise ValueError("qm_box requires qm_origin and embedding_grid_shape")
     tags = dict(DEFAULT_INCAR)
     if incar is not None:
@@ -164,7 +171,6 @@ def vasp_interface_factory(
         embedding_sigma,
         qm_box=qm_box, qm_origin=qm_origin,
         embedding_grid_shape=embedding_grid_shape,
-        persistent=persistent,
         persistent_steps=int(persistent_steps),
         persistent_timeout=float(persistent_timeout),
         check_convergence=check_convergence,

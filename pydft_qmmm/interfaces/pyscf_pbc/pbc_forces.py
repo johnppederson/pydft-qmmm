@@ -18,9 +18,13 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from pydft_qmmm.potentials.embedding.grid_potential import contract_gaussian_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    contract_gaussian_gradient,
+)
 from pydft_qmmm.potentials.embedding.grid_potential import poisson_fft
-from pydft_qmmm.potentials.embedding.grid_potential import spectral_value_and_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import (
+    spectral_value_and_gradient,
+)
 from pydft_qmmm.utils import BOHR_PER_ANGSTROM
 from pydft_qmmm.utils import KJMOL_PER_EH
 from pydft_qmmm.utils import KJMOL_PER_EV
@@ -126,7 +130,9 @@ def qm_density_on_grid(
         backend: ModuleType,
         state: Any,
 ) -> NDArray[np.float64]:
-    """Return signed electronic charges (e per FFT point), averaged over k-points.
+    """Return signed electronic charges (e per FFT point).
+
+    The charges are averaged over k-points.
 
     Nuclear charges are added separately in mm_forces.
     """
