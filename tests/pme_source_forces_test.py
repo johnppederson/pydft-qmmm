@@ -8,14 +8,14 @@ import pytest
 
 from pydft_qmmm import Atom
 from pydft_qmmm import System
-from pydft_qmmm.embedding.grid_potential import poisson_fft
-from pydft_qmmm.embedding.grid_potential import spline_value_and_gradient
-from pydft_qmmm.embedding.grid_potential import spread_gaussian
-from pydft_qmmm.embedding.pme_grid import build_pme_potential
-from pydft_qmmm.embedding.pme_grid import charge_from_potential
-from pydft_qmmm.embedding.pme_grid import KJMOL_PER_EV
-from pydft_qmmm.embedding.pme_grid import pme_source_forces
-from pydft_qmmm.embedding.pme_grid import write_pme_data
+from pydft_qmmm.potentials.embedding.grid_potential import poisson_fft
+from pydft_qmmm.potentials.embedding.grid_potential import spline_value_and_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import spread_gaussian
+from pydft_qmmm.potentials.embedding.pme_grid import build_pme_potential
+from pydft_qmmm.potentials.embedding.pme_grid import charge_from_potential
+from pydft_qmmm.potentials.embedding.pme_grid import KJMOL_PER_EV
+from pydft_qmmm.potentials.embedding.pme_grid import pme_source_forces
+from pydft_qmmm.potentials.embedding.pme_grid import write_pme_data
 from pydft_qmmm.utils import Subsystem
 
 CELL = np.diag([10., 11., 12.])
@@ -69,7 +69,7 @@ def test_charge_from_potential_inverts_poisson():
 @pytest.mark.parametrize("count,excluded", [(0, ()), (6, ()), (6, (2,))])
 def test_zero_sources_skip_pme_and_grid_setup(tmp_path, monkeypatch, count, excluded):
     import helpme_py
-    from pydft_qmmm.embedding import pme_grid
+    from pydft_qmmm.potentials.embedding import pme_grid
 
     def unexpected_work(*args, **kwargs):
         raise AssertionError("Zero sources must skip PME and grid setup")

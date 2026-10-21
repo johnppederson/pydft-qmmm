@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from pydft_qmmm.embedding.pme_grid import write_pme_data
+from pydft_qmmm.potentials.embedding.pme_grid import write_pme_data
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping, Sequence

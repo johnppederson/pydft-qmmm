@@ -63,11 +63,12 @@ class OpenMMInterface(MMInterface):
     aux_forces_group_force_mask: NDArray[np.float64]
     aux_energy_group: set[int] = field(default_factory=set)
     aux_forces_group: set[int] = field(default_factory=set)
+    _excluded_charges: set[int] = field(default_factory=set, init=False, repr=False)
 
     slab_correction: bool = False
 
     def _slab_terms(self):
-        from pydft_qmmm.embedding.slab import mm_correction
+        from pydft_qmmm.potentials.embedding.slab import mm_correction
         from pydft_qmmm.utils import KJMOL_PER_EV
         forces = [f for f in self.base_context.getSystem().getForces()
                   if isinstance(f, openmm.NonbondedForce)]
@@ -178,11 +179,12 @@ class OpenMMInterface(MMInterface):
         self.aux_context.setPositions(omm_pos)
 
     def zero_charges(self, atoms: frozenset[int]) -> None:
-        """Remove charges from the specified atoms.
+        """Remove charges from the specified atoms, including future updates.
 
         Args:
             atoms: The indices of atoms from which to remove charges.
         """
+        self._excluded_charges.update(atoms)
         base_system = self.base_context.getSystem()
         openmm_utils._exclude_electrostatic(base_system, atoms)
         base_state = self.base_context.getState(getPositions=True)
@@ -197,6 +199,7 @@ class OpenMMInterface(MMInterface):
             atoms: The indices of atoms from which to remove
                 inter-molecular interactions.
         """
+        self._excluded_charges.update(atoms)
         base_system = self.base_context.getSystem()
         openmm_utils._exclude_intermolecular(base_system, atoms)
         base_state = self.base_context.getState(getPositions=True)
@@ -244,18 +247,23 @@ class OpenMMInterface(MMInterface):
         return pme_alpha/10, pme_gridnumber, 5
 
     def update_charges(self, charges: NDArray[np.float64]) -> None:
-        """Set the atomic partial charges used by OpenMM.
+        """Update charges while preserving base-context electrostatic exclusions.
+
+        Keep the original source charges for QM embedding and auxiliary
+        Coulomb terms. Only the base context receives the masked copy.
 
         Args:
             charges: The partial charges (:math:`e`) of the atoms.
         """
+        base_charges = np.array(charges, dtype=float, copy=True)
+        base_charges[sorted(self._excluded_charges)] = 0.
         nonbonded_forces = [
             force for force in self.base_context.getSystem().getForces()
             if isinstance(force, openmm.NonbondedForce)
         ]
         for force in nonbonded_forces:
-            openmm_utils._update_exceptions(force, charges)
-            for i, charge in enumerate(charges):
+            openmm_utils._update_exceptions(force, base_charges)
+            for i, charge in enumerate(base_charges):
                 _, sigma, epsilon = force.getParticleParameters(i)
                 force.setParticleParameters(i, charge, sigma, epsilon)
             force.updateParametersInContext(self.base_context)

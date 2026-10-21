@@ -223,7 +223,7 @@ class QMMMHamiltonian(CouplingHamiltonian):
             and qm_electrostatics
             and capability in {
                 ElectrostaticCouplingMode.MOLECULAR,
-                ElectrostaticCouplingMode.ENGINE,
+                ElectrostaticCouplingMode.PERIODIC,
             }
         )
         if (
@@ -290,11 +290,11 @@ class QMMMHamiltonian(CouplingHamiltonian):
                     self.pme_gridnumber,
                     self.pme_spline_order,
                     include_forces=(
-                        capability is not ElectrostaticCouplingMode.ENGINE
+                        capability is not ElectrostaticCouplingMode.PERIODIC
                     ),
                     real_space_cutoff=(
                         mm_interface.get_nonbonded_cutoff()
-                        if capability is ElectrostaticCouplingMode.ENGINE
+                        if capability is ElectrostaticCouplingMode.PERIODIC
                         else None
                     ),
                 )

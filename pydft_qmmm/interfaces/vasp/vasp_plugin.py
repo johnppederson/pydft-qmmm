@@ -11,23 +11,23 @@ import warnings
 
 import numpy as np
 
-from pydft_qmmm.embedding.cell_mapping import read_mapping
-from pydft_qmmm.embedding.grid_potential import EPS0
-from pydft_qmmm.embedding.grid_potential import KJMOL_PER_EV
-from pydft_qmmm.embedding.grid_potential import build_external_potential
-from pydft_qmmm.embedding.grid_potential import contract_gaussian_gradient
-from pydft_qmmm.embedding.grid_potential import electron_interaction_energy
-from pydft_qmmm.embedding.grid_potential import electrostatic_potential_from_vasp
-from pydft_qmmm.embedding.grid_potential import erfc_potential
-from pydft_qmmm.embedding.grid_potential import gradient_at
-from pydft_qmmm.embedding.grid_potential import interpolant_gradient_at
-from pydft_qmmm.embedding.grid_potential import interpolate_at
-from pydft_qmmm.embedding.grid_potential import interpolate_onto_grid
-from pydft_qmmm.embedding.grid_potential import nuclear_charge_on_grid
-from pydft_qmmm.embedding.grid_potential import poisson_fft
-from pydft_qmmm.embedding.grid_potential import read_mm_charges
-from pydft_qmmm.embedding.grid_potential import spectral_value_and_gradient
-from pydft_qmmm.embedding.grid_potential import spline_value_and_gradient
+from pydft_qmmm.potentials.embedding.cell_mapping import read_mapping
+from pydft_qmmm.potentials.embedding.grid_potential import EPS0
+from pydft_qmmm.potentials.embedding.grid_potential import KJMOL_PER_EV
+from pydft_qmmm.potentials.embedding.grid_potential import build_external_potential
+from pydft_qmmm.potentials.embedding.grid_potential import contract_gaussian_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import electron_interaction_energy
+from pydft_qmmm.potentials.embedding.grid_potential import electrostatic_potential_from_vasp
+from pydft_qmmm.potentials.embedding.grid_potential import erfc_potential
+from pydft_qmmm.potentials.embedding.grid_potential import gradient_at
+from pydft_qmmm.potentials.embedding.grid_potential import interpolant_gradient_at
+from pydft_qmmm.potentials.embedding.grid_potential import interpolate_at
+from pydft_qmmm.potentials.embedding.grid_potential import interpolate_onto_grid
+from pydft_qmmm.potentials.embedding.grid_potential import nuclear_charge_on_grid
+from pydft_qmmm.potentials.embedding.grid_potential import poisson_fft
+from pydft_qmmm.potentials.embedding.grid_potential import read_mm_charges
+from pydft_qmmm.potentials.embedding.grid_potential import spectral_value_and_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import spline_value_and_gradient
 
 __all__ = [
     "EPS0", "KJMOL_PER_EV", "CHARGE_FILE", "FORCE_FILE",
@@ -150,7 +150,7 @@ def _external_potential(constants):
     if os.path.isfile(PME_FILE):
         # PME path: the driver shipped the whole system and the Ewald
         # parameters, and helPME evaluates on VASP's own grid.
-        from pydft_qmmm.embedding.pme_grid import build_pme_potential
+        from pydft_qmmm.potentials.embedding.pme_grid import build_pme_potential
         kwargs = {} if mapping is None else dict(source_cell=mapping.mm_cell, origin=mapping.origin)
         v_pme = build_pme_potential(PME_FILE, shape, cell, **kwargs)
         # In FFT mode PME contains only III; the near field supplies II
@@ -161,7 +161,7 @@ def _external_potential(constants):
             # alpha must be the one the reciprocal sum used, or the two
             # halves do not add up to 1/r.  Take it from the same file
             # build_pme_potential read rather than from a second source.
-            from pydft_qmmm.embedding.pme_grid import read_pme_data
+            from pydft_qmmm.potentials.embedding.pme_grid import read_pme_data
             alpha = read_pme_data(PME_FILE)[3]
             v_near = erfc_potential(positions, charges, shape, cell, alpha)
         else:
@@ -223,12 +223,12 @@ def local_potential(constants, additions):
         additions.total_potential += _external_potential(constants)
         slab = _slab_data()
         if slab is not None:
-            from pydft_qmmm.embedding.slab import grid_z
+            from pydft_qmmm.potentials.embedding.slab import grid_z
             z = grid_z(tuple(constants.shape_grid), np.asarray(constants.lattice_vectors),
                        slab["origin"])
             additions.total_potential += -2 * slab["coefficient"] * slab["moment"] * z
             if slab.get("qm_self", False):
-                from pydft_qmmm.embedding.slab import qm_dipole
+                from pydft_qmmm.potentials.embedding.slab import qm_dipole
                 cell = np.asarray(constants.lattice_vectors)
                 positions = np.asarray(constants.positions) @ cell
                 valence = np.asarray(constants.ZVAL)[np.asarray(constants.ion_types, dtype=int)]
@@ -288,7 +288,7 @@ def force_and_stress(constants, additions):
                 additions.total_energy += field * np.dot(valence, positions[:, 2] + slab["origin"][2])
                 nuclear[:, 2] -= field * valence
                 if slab.get("qm_self", False):
-                    from pydft_qmmm.embedding.slab import qm_dipole
+                    from pydft_qmmm.potentials.embedding.slab import qm_dipole
                     moment = qm_dipole(constants.charge_density, positions, valence,
                                        cell, slab["origin"])
                     nuclear[:, 2] -= 2 * slab["qm_coefficient"] * moment * valence
@@ -317,7 +317,7 @@ def force_and_stress(constants, additions):
             charge -= density / np.prod(shape)
         slab = _slab_data()
         if slab is not None:
-            from pydft_qmmm.embedding.slab import qm_dipole, QM_NEUTRALITY_TOLERANCE, QM_NEUTRALITY_RELATIVE
+            from pydft_qmmm.potentials.embedding.slab import qm_dipole, QM_NEUTRALITY_TOLERANCE, QM_NEUTRALITY_RELATIVE
             if slab["step"] != step:
                 raise ValueError("Stale slab metadata")
             import json
@@ -355,7 +355,7 @@ def force_and_stress(constants, additions):
         # The reciprocal back-reaction on the PME_DATA sources, from the
         # same grid charge: the transpose of build_pme_potential.
         if use_pme:
-            from pydft_qmmm.embedding.pme_grid import pme_source_forces
+            from pydft_qmmm.potentials.embedding.pme_grid import pme_source_forces
             kwargs = {} if mapping is None else dict(source_cell=mapping.mm_cell, origin=mapping.origin)
             pme_forces = pme_source_forces(PME_FILE, charge, shape, cell, **kwargs)
             with open(PME_FORCE_FILE, "w") as fh:

@@ -41,10 +41,15 @@ if TYPE_CHECKING:
 
 
 class ElectrostaticCouplingMode(Enum):
-    """Identify which layer owns QM/MM electrostatic coupling."""
+    """Identify whether the QM engine is molecular or periodic.
+
+    Molecular engines integrate the external potential built by
+    PyDFT-QMMM. Periodic engines apply the embedding on their own grid
+    and return the MM reaction forces.
+    """
 
     MOLECULAR = "molecular"
-    ENGINE = "engine"
+    PERIODIC = "periodic"
     UNSUPPORTED = "unsupported"
 
 

@@ -14,8 +14,8 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from pydft_qmmm.embedding.grid_potential import poisson_fft
-from pydft_qmmm.embedding.grid_potential import spread_gaussian
+from pydft_qmmm.potentials.embedding.grid_potential import poisson_fft
+from pydft_qmmm.potentials.embedding.grid_potential import spread_gaussian
 from pydft_qmmm.utils import BOHR_PER_ANGSTROM
 from pydft_qmmm.utils import KJMOL_PER_EH
 from pydft_qmmm.utils import KJMOL_PER_EV

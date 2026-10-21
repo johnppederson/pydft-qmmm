@@ -11,7 +11,7 @@ Fortran ravel order; this module handles only units and sign.
 The two directions are deliberately asymmetric:
 
 * ``vext_to_sparc`` does NOT change sign.  The grid physics in
-  ``pydft_qmmm.embedding.grid_potential`` already returns the electron
+  ``pydft_qmmm.potentials.embedding.grid_potential`` already returns the electron
   potential ENERGY, and SPARC's ``Veff = Vxc + elecstPotential`` uses
   the same convention.  Negating here would invert the whole QM/MM
   coupling while still converging.

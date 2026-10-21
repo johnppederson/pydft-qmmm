@@ -7,11 +7,11 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from pydft_qmmm.embedding.grid_potential import KJMOL_PER_EV
-from pydft_qmmm.embedding.slab import coefficient
-from pydft_qmmm.embedding.slab import mm_correction
-from pydft_qmmm.embedding.slab import neutral_dipole
-from pydft_qmmm.embedding.slab import qm_dipole
+from pydft_qmmm.potentials.embedding.grid_potential import KJMOL_PER_EV
+from pydft_qmmm.potentials.embedding.slab import coefficient
+from pydft_qmmm.potentials.embedding.slab import mm_correction
+from pydft_qmmm.potentials.embedding.slab import neutral_dipole
+from pydft_qmmm.potentials.embedding.slab import qm_dipole
 
 
 def test_mm_derivatives_and_translation():

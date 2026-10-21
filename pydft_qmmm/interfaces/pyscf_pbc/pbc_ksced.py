@@ -147,7 +147,7 @@ class KSCEDPBCPotential(PySCFPBCPotential):
             raise ValueError("KSCED requires a fixed box/lattice")
 
     def electrostatic_coupling_mode(self) -> ElectrostaticCouplingMode:
-        return ElectrostaticCouplingMode.ENGINE
+        return ElectrostaticCouplingMode.PERIODIC
 
     def configure_electrostatic_embedding(self, enabled: bool) -> None:
         if self.density_guess[0] is not None and enabled != self.embedding:

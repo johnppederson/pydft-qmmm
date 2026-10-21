@@ -44,8 +44,8 @@ for step in range(int(os.environ[STEPS_ENV])):
         total_energy=float(np.sum(positions**2)), forces=-2*positions,
     )
     if Path('MM_CHARGES').exists():
-        from pydft_qmmm.embedding.grid_potential import read_mm_charges
-        from pydft_qmmm.embedding.pme_grid import read_pme_data
+        from pydft_qmmm.potentials.embedding.grid_potential import read_mm_charges
+        from pydft_qmmm.potentials.embedding.pme_grid import read_pme_data
         points, charges, stamp, sigma = read_mm_charges('MM_CHARGES')
         assert stamp == step
         _, pme_charges, _, _, _, _, pme_step = read_pme_data('PME_DATA')

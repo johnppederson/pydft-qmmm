@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from pydft_qmmm.embedding.grid_potential import spectral_value_and_gradient
+from pydft_qmmm.potentials.embedding.grid_potential import spectral_value_and_gradient
 from pydft_qmmm.interfaces import ElectrostaticCouplingMode
 from pydft_qmmm.interfaces import QMInterface
 from pydft_qmmm.potentials import AtomicPotential
@@ -112,7 +112,7 @@ class PySCFPBCInterface(QMInterface):
 
     def electrostatic_coupling_mode(self) -> ElectrostaticCouplingMode:
         """Own both electronic and nuclear QM/MM coupling."""
-        return ElectrostaticCouplingMode.ENGINE
+        return ElectrostaticCouplingMode.PERIODIC
 
     def applies_nuclear_potential(self) -> bool:
         """Return whether this interface already includes nuclear embedding."""

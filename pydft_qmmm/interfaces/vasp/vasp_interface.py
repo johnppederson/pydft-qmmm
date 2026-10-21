@@ -101,7 +101,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
 
     def electrostatic_coupling_mode(self) -> ElectrostaticCouplingMode:
         """Keep electrostatic coupling inside the VASP plugin."""
-        return ElectrostaticCouplingMode.ENGINE
+        return ElectrostaticCouplingMode.PERIODIC
 
     def applies_nuclear_potential(self) -> bool:
         """The plugin couples V_ext to the QM nuclei itself.
@@ -135,7 +135,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         cell = np.asarray(self.system.box).T
         metadata = os.path.join(self.directory, "QM_CELL.json")
         if self.qm_box is not None:
-            from pydft_qmmm.embedding.cell_mapping import CellMapping
+            from pydft_qmmm.potentials.embedding.cell_mapping import CellMapping
             cell = np.asarray(self.qm_box, dtype=float).T
             origin = np.asarray(self.qm_origin, dtype=float)
             shape = tuple(int(self.incar[k]) for k in ("NGXF", "NGYF", "NGZF"))
@@ -234,7 +234,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         origin = np.zeros(3) if self.qm_origin is None else np.asarray(self.qm_origin)
         slab_path = os.path.join(self.directory, "SLAB_DATA.json")
         if self.slab_correction:
-            from pydft_qmmm.embedding.slab import coefficient, neutral_dipole
+            from pydft_qmmm.potentials.embedding.slab import coefficient, neutral_dipole
             if not self.embedding:
                 raise ValueError("Slab correction requires embedded VASP")
             truncated = self.incar.get("KERNEL_TRUNCATION/LTRUNCATE", False)
@@ -303,7 +303,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         os.makedirs(self.directory, exist_ok=True)
         potential = self.potentials[0]
         from .vasp_plugin import erfc_near_enabled
-        from pydft_qmmm.embedding.pme_grid import write_pme_data
+        from pydft_qmmm.potentials.embedding.pme_grid import write_pme_data
         charges = np.array(self.system.charges, copy=True)
         if erfc_near_enabled():
             excluded = sorted(self.system.select("subsystem I"))
@@ -558,7 +558,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             positions = np.asarray(self.system.positions)[indices][order]
             cell = np.asarray(self.system.box).T
             if self.qm_box is not None:
-                from pydft_qmmm.embedding.cell_mapping import CellMapping
+                from pydft_qmmm.potentials.embedding.cell_mapping import CellMapping
                 cell = np.asarray(self.qm_box).T
                 mapping = CellMapping(np.asarray(self.system.box).T, cell, self.qm_origin,
                                       self.embedding_grid_shape,
