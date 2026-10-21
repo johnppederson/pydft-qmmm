@@ -39,8 +39,8 @@ urls.Issues = "https://github.com/johnppederson/pydft-qmmm/issues"
 urls.Repository = "https://github.com/johnppederson/pydft-qmmm.git"
 scripts.pydft-qmmm = "pydft_qmmm.__main__:main"
 
-[tool.setuptools]
-packages = [ "pydft_qmmm" ]
+[tool.setuptools.packages.find]
+include = [ "pydft_qmmm*" ]
 
 [tool.setuptools_scm]
 

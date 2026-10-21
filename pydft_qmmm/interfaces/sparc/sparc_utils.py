@@ -17,6 +17,7 @@ __all__ = [
     "extended_parameters_path",
 ]
 
+import json
 import os
 from typing import TYPE_CHECKING
 
@@ -45,13 +46,71 @@ class SparcExecutionError(RuntimeError):
         )
 
 
-def extended_parameters_path() -> str:
-    """
+def _qmmm_parameter(
+        symbol: str,
+        kind: str,
+        default: int | str,
+        example: str,
+        description: str,
+        remark: str = "Requires the qmmm-embedding SPARC fork.",
+        category: str = "qmmm",
+) -> dict[str, object]:
+    """Build one SPARC-X-API schema entry."""
+    return {
+        "symbol": symbol,
+        "label": symbol,
+        "type": kind,
+        "default": default,
+        "unit": "No unit",
+        "example": f"{symbol}: {example}",
+        "description": description,
+        "remark": remark,
+        "allow_bool_input": False,
+        "category": category,
+    }
+
+
+# Tags read by the QM/MM SPARC build but absent from the SPARC-X-API schema.
+QMMM_PARAMETERS = {
+    "QMMM_FLAG": _qmmm_parameter(
+        "QMMM_FLAG", "integer", 0, "1",
+        "0 off, 1 electrostatic embedding, 2 echo mode.",
+    ),
+    "QMMM_VEXT_FILE": _qmmm_parameter(
+        "QMMM_VEXT_FILE", "string", "UNDEFINED", "QMMM_VEXT.bin",
+        "External potential to read, in Hartree.",
+    ),
+    "QMMM_PHI_FILE": _qmmm_parameter(
+        "QMMM_PHI_FILE", "string", "UNDEFINED", "QMMM_PHI.bin",
+        "Destination for the electrostatic potential.",
+    ),
+    "NET_CHARGE": _qmmm_parameter(
+        "NET_CHARGE", "integer", 0, "-1",
+        "Net charge of the system, in units of e.",
+        remark="Integer only.", category="system",
+    ),
+}
+
+
+def extended_parameters_path(directory: str) -> str:
+    """Write the SPARC-X-API schema extended with the QM/MM tags.
+
+    Args:
+        directory: The SPARC working directory, where the schema is
+            written.
+
     Returns:
-        The path to the SPARC-X-API schema extended with the QM/MM tags.
+        The path to the extended schema.
     """
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        "parameters.json")
+    from sparc.api import default_json_api
+    with open(default_json_api) as fh:
+        schema = json.load(fh)
+    schema["parameters"].update(QMMM_PARAMETERS)
+    os.makedirs(directory, exist_ok=True)
+    path = os.path.join(directory, "parameters_qmmm.json")
+    with open(path, "w") as fh:
+        json.dump(schema, fh, indent=2)
+    return path
 
 
 def write_grid_file(

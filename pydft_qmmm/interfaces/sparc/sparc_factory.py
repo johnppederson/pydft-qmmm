@@ -83,7 +83,7 @@ def sparc_interface_factory(
         options["NET_CHARGE"] = int(charge)
     calculator = SPARC(
         directory=directory,
-        sparc_json_file=sparc_utils.extended_parameters_path(),
+        sparc_json_file=sparc_utils.extended_parameters_path(directory),
         check_version=False,
         FD_GRID=tuple(fd_grid),
         **options,
