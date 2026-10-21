@@ -16,17 +16,11 @@ from pydft_qmmm.potentials.embedding.grid_potential import EPS0
 from pydft_qmmm.potentials.embedding.grid_potential import KJMOL_PER_EV
 from pydft_qmmm.potentials.embedding.grid_potential import build_external_potential
 from pydft_qmmm.potentials.embedding.grid_potential import contract_gaussian_gradient
-from pydft_qmmm.potentials.embedding.grid_potential import electron_interaction_energy
 from pydft_qmmm.potentials.embedding.grid_potential import electrostatic_potential_from_vasp
-from pydft_qmmm.potentials.embedding.grid_potential import erfc_potential
-from pydft_qmmm.potentials.embedding.grid_potential import gradient_at
-from pydft_qmmm.potentials.embedding.grid_potential import interpolant_gradient_at
 from pydft_qmmm.potentials.embedding.grid_potential import interpolate_at
-from pydft_qmmm.potentials.embedding.grid_potential import interpolate_onto_grid
 from pydft_qmmm.potentials.embedding.grid_potential import nuclear_charge_on_grid
 from pydft_qmmm.potentials.embedding.grid_potential import poisson_fft
 from pydft_qmmm.potentials.embedding.grid_potential import read_mm_charges
-from pydft_qmmm.potentials.embedding.grid_potential import spectral_value_and_gradient
 from pydft_qmmm.potentials.embedding.grid_potential import spline_value_and_gradient
 
 __all__ = [
@@ -34,11 +28,9 @@ __all__ = [
     "NET_FORCE_FILE", "PME_FORCE_FILE", "SENTINEL", "ENERGY_FILE",
     "ERROR_FILE",
     "build_external_potential", "contract_gaussian_gradient",
-    "electron_interaction_energy", "electrostatic_potential_from_vasp",
-    "erfc_potential", "erfc_near_enabled",
-    "gradient_at", "interpolant_gradient_at", "interpolate_at",
-    "interpolate_onto_grid",
-    "read_mm_charges", "spectral_value_and_gradient",
+    "electrostatic_potential_from_vasp",
+    "interpolate_at",
+    "read_mm_charges",
     "reset_cache", "local_potential", "force_and_stress",
 ]
 
@@ -54,64 +46,28 @@ PME_FILE = "PME_DATA"
 # here so that the driver can add back what the rounding removed.
 ENERGY_FILE = "PLUGIN_ENERGY"
 
-# Opt-in: build the analytic near field on an N**3 grid and interpolate
-# it onto VASP's.
+# Retain option names so existing scripts can clear them. Archived modes
+# are rejected rather than silently running a different calculation.
 COARSE_NEAR_ENV = "PYDFT_QMMM_VASP_COARSE_NEAR"
-
-# Opt-in: reinstate the near field as the Ewald real-space correction.
 ERFC_NEAR_ENV = "PYDFT_QMMM_VASP_ERFC_NEAR"
-
-# Keep the exact Fourier evaluation available for convergence comparisons.
 NUCLEAR_FIELD_ENV = "PYDFT_QMMM_VASP_NUCLEAR_FIELD"
 
 _CACHE = {}
 
 
-def _coarse_near_gridnumber():
-    """The coarse grid to build v_near on, or None for the normal path.
-
-    Returns:
-        The requested grid number, or None if the variable is unset or
-        empty.
-
-    Raises:
-        ValueError: If the variable is set to something that is not a
-            positive integer.
-    """
-    raw = os.environ.get(COARSE_NEAR_ENV, "").strip()
-    if not raw:
-        return None
-    try:
-        gridnumber = int(raw)
-    except ValueError:
+def _validate_embedding_options():
+    """Reject archived VASP routes before writing inputs or using a cache."""
+    for name in (ERFC_NEAR_ENV, COARSE_NEAR_ENV):
+        if os.environ.get(name, "").strip():
+            raise ValueError(
+                f"{name} selects an archived VASP mode; unset it to use "
+                "full-grid Gaussian embedding",
+            )
+    if os.environ.get(NUCLEAR_FIELD_ENV, "spline").strip().lower() != "spline":
         raise ValueError(
-            f"{COARSE_NEAR_ENV}={raw!r} is not an integer",
-        ) from None
-    if gridnumber < 1:
-        raise ValueError(f"{COARSE_NEAR_ENV}={raw!r} must be positive")
-    return gridnumber
-
-
-def erfc_near_enabled():
-    """Whether the real-space route is selected.
-
-    Read on every call rather than cached at import, and shared with the
-    driver, so that one variable cannot switch the two halves apart.
-    """
-    return bool(os.environ.get(ERFC_NEAR_ENV, "").strip())
-
-
-def _near_potential(positions, charges, shape, cell, sigma):
-    """Return v_near on VASP's grid by the selected route."""
-    gridnumber = _coarse_near_gridnumber()
-    if gridnumber is None:
-        return build_external_potential(
-            positions, charges, shape, cell, sigma,
+            f"{NUCLEAR_FIELD_ENV} supports only spline; the VASP spectral "
+            "route is archived",
         )
-    coarse = build_external_potential(
-        positions, charges, (gridnumber,) * 3, cell, sigma,
-    )
-    return interpolate_onto_grid(coarse, shape)
 
 
 def reset_cache():
@@ -138,13 +94,12 @@ def _external_potential(constants):
     SCF step.  The cache is keyed on the grid shape so that a changed
     grid rebuilds rather than returning a mismatched array.
     """
+    _validate_embedding_options()
     shape = tuple(int(n) for n in constants.shape_grid)
     cell = np.asarray(constants.lattice_vectors, dtype=np.float64)
     mapping = read_mapping(shape, cell)
     metadata = Path("QM_CELL.json").read_bytes() if mapping is not None else b""
     key = (shape, cell.tobytes(), metadata)
-    if mapping is not None and (erfc_near_enabled() or _coarse_near_gridnumber() is not None):
-        raise ValueError("Separate cells require full-grid Gaussian embedding")
     if _CACHE.get("cell_key") == key and _CACHE.get("v_ext") is not None:
         return _CACHE["v_ext"]
     if os.path.isfile(PME_FILE):
@@ -153,21 +108,11 @@ def _external_potential(constants):
         from pydft_qmmm.potentials.embedding.pme_grid import build_pme_potential
         kwargs = {} if mapping is None else dict(source_cell=mapping.mm_cell, origin=mapping.origin)
         v_pme = build_pme_potential(PME_FILE, shape, cell, **kwargs)
-        # In FFT mode PME contains only III; the near field supplies II
-        # and its periodic images once.  In erfc mode II remains in PME
-        # and the near field supplies its real-space complement.
+        # PME supplies III; the Gaussian field supplies II and its images.
         positions, charges, _, sigma = read_mm_charges(CHARGE_FILE)
-        if erfc_near_enabled():
-            # alpha must be the one the reciprocal sum used, or the two
-            # halves do not add up to 1/r.  Take it from the same file
-            # build_pme_potential read rather than from a second source.
-            from pydft_qmmm.potentials.embedding.pme_grid import read_pme_data
-            alpha = read_pme_data(PME_FILE)[3]
-            v_near = erfc_potential(positions, charges, shape, cell, alpha)
-        else:
-            v_near = (_near_potential(positions, charges, shape, cell, sigma)
-                      if mapping is None else mapping.restrict(build_external_potential(
-                          positions, charges, mapping.mm_shape, mapping.mm_cell, sigma)))
+        v_near = (build_external_potential(positions, charges, shape, cell, sigma)
+                  if mapping is None else mapping.restrict(build_external_potential(
+                      positions, charges, mapping.mm_shape, mapping.mm_cell, sigma)))
         v_ext = v_pme + v_near
         _CACHE["cell_key"] = key
         _CACHE["shape"] = shape
@@ -187,7 +132,7 @@ def _external_potential(constants):
             RuntimeWarning,
             stacklevel=2,
         )
-    v_ext = (_near_potential(positions, charges, shape, cell, sigma)
+    v_ext = (build_external_potential(positions, charges, shape, cell, sigma)
              if mapping is None else mapping.restrict(build_external_potential(
                  positions, charges, mapping.mm_shape, mapping.mm_cell, sigma)))
     _CACHE["cell_key"] = key
@@ -261,6 +206,7 @@ def force_and_stress(constants, additions):
     11 for gold).
     """
     try:
+        _validate_embedding_options()
         cell = np.asarray(constants.lattice_vectors, dtype=np.float64)
         shape = tuple(int(n) for n in constants.shape_grid)
         mapping = read_mapping(shape, cell)
@@ -268,16 +214,10 @@ def force_and_stress(constants, additions):
         valence = np.asarray(constants.ZVAL, dtype=np.float64)[
             np.asarray(constants.ion_types, dtype=int)
         ]
-        route = os.environ.get(NUCLEAR_FIELD_ENV, "spline").strip().lower()
-        if route not in ("spline", "spectral"):
-            raise ValueError(f"{NUCLEAR_FIELD_ENV} must be spline or spectral")
         if len(positions) > 0:
             v_ext = _external_potential(constants)
             # Differentiate the same interpolant used for the energy.
-            # The spectral route remains a reference for grid convergence.
-            evaluate = (spline_value_and_gradient if route == "spline"
-                        else spectral_value_and_gradient)
-            potential, gradient = evaluate(
+            potential, gradient = spline_value_and_gradient(
                 v_ext, cell, positions,
             )
             additions.total_energy += -float(np.sum(valence * potential))
@@ -313,7 +253,7 @@ def force_and_stress(constants, additions):
             density = np.asarray(constants.charge_density, dtype=np.float64)
             if density.shape != shape or not np.isfinite(density).all():
                 raise ValueError("Invalid final VASP charge density")
-            charge = nuclear_charge_on_grid(shape, cell, positions, valence, route)
+            charge = nuclear_charge_on_grid(shape, cell, positions, valence)
             charge -= density / np.prod(shape)
         slab = _slab_data()
         if slab is not None:
@@ -338,8 +278,6 @@ def force_and_stress(constants, additions):
                 np.savetxt(fh, reaction, fmt="%.12e")
         mm_forces = np.zeros((len(mm_charges), 3))
         if len(mm_charges):
-            if erfc_near_enabled() or _coarse_near_gridnumber() is not None:
-                raise ValueError("Consistent MM forces require the full-grid Gaussian near field")
             near_shape = shape if mapping is None else mapping.mm_shape
             near_cell = cell if mapping is None else mapping.mm_cell
             near_charge = charge if mapping is None else mapping.transpose(charge)

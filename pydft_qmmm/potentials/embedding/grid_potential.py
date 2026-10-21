@@ -238,107 +238,6 @@ def interpolate_at(field, cell, points):
     return result
 
 
-def _erfc(x):
-    """Complementary error function, vectorized, numpy only.
-
-    math.erfc is exact but scalar, and this is called on tens of
-    millions of grid points at a time; scipy would do it properly but
-    this module has to stay importable inside VASP's interpreter, where
-    only numpy is available.
-    """
-    t = 1.0 / (1.0 + 0.3275911 * x)
-    poly = t * (
-        0.254829592 + t * (
-            -0.284496736 + t * (
-                1.421413741 + t * (-1.453152027 + t * 1.061405429)
-            )
-        )
-    )
-    return poly * np.exp(-x * x)
-
-
-def erfc_potential(positions, charges, shape, cell, alpha, chunk=1 << 14):
-    """Real-space Ewald correction on the grid: sum q erfc(alpha r) / r.
-
-    This is the OTHER way to reinstate the near field: subsystem II
-    stays in the reciprocal sum and this supplies the erfc complement,
-    rather than being excluded and rebuilt from Gaussians.
-
-    Args:
-        positions: An Nx3 array of charge positions (Angstrom).
-        charges: An N array of charges (e).
-        shape: The grid dimensions.
-        cell: A 3x3 array whose rows are lattice vectors (Angstrom).
-        alpha: The Ewald splitting parameter (1/Angstrom).  MUST be the
-            one the reciprocal sum used, or the two halves will not add
-            up to 1/r.
-        chunk: Grid points evaluated per pass.
-
-    Returns:
-        The correction as electron potential ENERGY (eV), the negative of
-        the electrostatic potential, matching build_external_potential.
-    """
-    shape = tuple(int(n) for n in shape)
-    total = int(np.prod(shape))
-    result = np.zeros(total, dtype=np.float64)
-    if len(charges) == 0:
-        return result.reshape(shape)
-    inverse = np.linalg.inv(cell)
-    fractional_charges = np.asarray(positions, dtype=np.float64) @ inverse
-    fractional_grid = _fractional_grid(shape).reshape(-1, 3)
-    charges = np.asarray(charges, dtype=np.float64)
-    # 1/(4*pi*eps0) = 14.3996 V*Angstrom/e, the same constant poisson_fft
-    # applies through EPS0, so the two routes share one convention.
-    coulomb = 1.0 / (4.0 * np.pi * EPS0)
-    for start in range(0, total, chunk):
-        block = fractional_grid[start:start + chunk]
-        delta = block[:, None, :] - fractional_charges[None, :, :]
-        delta -= np.round(delta)
-        cartesian = delta @ cell
-        distance = np.sqrt(
-            np.einsum("...k,...k->...", cartesian, cartesian),
-        )
-        # A grid point exactly on a charge is a measure-zero accident,
-        # but it would produce inf and take the SCF with it.  Clamping
-        # rather than skipping keeps the failure visible as a large
-        # finite value, which is the honest outcome to report.
-        np.maximum(distance, 1e-10, out=distance)
-        result[start:start + chunk] = (
-            charges * _erfc(alpha * distance) / distance
-        ).sum(axis=1)
-    return (-coulomb * result).reshape(shape)
-
-
-def interpolate_onto_grid(field, shape):
-    """Trilinearly interpolate a periodic grid field onto a COARSER or
-    FINER regular grid spanning the same cell.
-
-    Args:
-        field: A scalar field on the source grid.
-        shape: The number of target points along each axis, either an
-            int for a cubic target or a 3-sequence.
-
-    Returns:
-        The field on the target grid.
-    """
-    if np.isscalar(shape):
-        shape = (int(shape),) * 3
-    out = field
-    for axis in range(3):
-        source = out.shape[axis]
-        target = int(shape[axis])
-        scaled = (np.arange(target) / target) * source
-        lower = np.floor(scaled).astype(int)
-        weight = (scaled - lower).reshape(
-            [target if i == axis else 1 for i in range(3)],
-        )
-        out = (
-            np.take(out, lower % source, axis=axis) * (1.0 - weight)
-            + np.take(out, (lower + 1) % source, axis=axis) * weight
-        )
-    return out
-
-
 def _cardinal_bspline(x, degree):
     """Uniform cardinal B-spline with support [0, degree + 1]."""
     if degree == 0:
@@ -377,16 +276,8 @@ def nuclear_charge_on_grid(shape, cell, points, charges, method="spline"):
     shape = tuple(int(n) for n in shape)
     if len(points) != len(charges):
         raise ValueError("Nuclear positions and charges have different lengths")
-    if method == "spectral":
-        axes = [np.fft.fftfreq(n) * n for n in shape]
-        reciprocal = 2 * np.pi * np.linalg.inv(cell).T
-        coefficients = np.zeros(shape, dtype=complex)
-        for point, charge in zip(points, charges):
-            phase = [np.exp(-1j * n * x) for n, x in zip(axes, reciprocal @ point)]
-            coefficients += charge * np.einsum("i,j,k->ijk", *phase)
-        return np.fft.ifftn(coefficients).real
     if method != "spline":
-        raise ValueError("Nuclear interpolation must be spline or spectral")
+        raise ValueError("Nuclear grid deposition supports only spline; the VASP spectral route is archived")
     dimensions = np.asarray(shape)
     scaled = ((points @ np.linalg.inv(cell)) % 1.) * dimensions
     nodes = np.floor(scaled).astype(int)[..., None] + np.arange(-2, 4)
@@ -474,100 +365,6 @@ def spectral_value_and_gradient(field, cell, points):
                 total += np.einsum("ijk,i,j,k->", coefficients, *weighted)
             gradients[index, component] = (1j * total).real
     return values, gradients
-
-
-def interpolant_gradient_at(field, cell, points):
-    """Analytic gradient OF THE TRILINEAR INTERPOLANT at points.
-
-    Dead in production.
-
-    This is deliberately not the same as gradient_at.  gradient_at
-    differentiates in reciprocal space, which is a better approximation
-    to the true gradient of the underlying field but is NOT the
-    derivative of the value interpolate_at returns -- trilinear
-    interpolation is only C0, so its slope inside a cell differs from
-    the spectral derivative by O(h).
-
-    Args:
-        field: A scalar field on the grid.
-        cell: A 3x3 array whose rows are lattice vectors (Angstrom).
-        points: An Nx3 array of Cartesian positions (Angstrom).
-
-    Returns:
-        An Nx3 array of gradients (field units per Angstrom).
-    """
-    points = np.atleast_2d(points)
-    shape = np.array(field.shape)
-    inverse = np.linalg.inv(cell)
-    fractional = (points @ inverse) % 1.0
-    scaled = fractional * shape
-    lower = np.floor(scaled).astype(int)
-    weight = scaled - lower
-    # d(value)/d(scaled coordinate), one column per axis.
-    d_scaled = np.zeros((len(points), 3))
-    for offset in np.ndindex(2, 2, 2):
-        offset = np.array(offset)
-        index = (lower + offset) % shape
-        values = field[index[:, 0], index[:, 1], index[:, 2]]
-        corner = np.where(offset == 1, weight, 1.0 - weight)
-        for axis in range(3):
-            others = [a for a in range(3) if a != axis]
-            slope = 1.0 if offset[axis] == 1 else -1.0
-            d_scaled[:, axis] += (
-                values * slope * corner[:, others].prod(axis=1)
-            )
-    # Chain rule: scaled = (x @ inverse) * shape.
-    return d_scaled @ (inverse * shape).T
-
-
-def gradient_at(field, cell, points):
-    """Return the gradient of a periodic grid field at points.
-
-    Dead in production.
-
-    The derivative is taken in reciprocal space, which is exact for a
-    band-limited field, and the three components are then interpolated,
-    so the gradient is consistent with interpolate_at.
-
-    Args:
-        field: A scalar field on the grid.
-        cell: A 3x3 array whose rows are lattice vectors (Angstrom).
-        points: An Nx3 array of Cartesian positions (Angstrom).
-
-    Returns:
-        An Nx3 array of gradients (field units per Angstrom).
-    """
-    points = np.atleast_2d(points)
-    reciprocal = 2.0 * np.pi * np.linalg.inv(cell).T
-    axes = [np.fft.fftfreq(n) * n for n in field.shape]
-    miller = np.stack(np.meshgrid(*axes, indexing="ij"), axis=-1)
-    g_vectors = miller @ reciprocal
-    field_g = np.fft.fftn(field)
-    gradient = np.zeros((len(points), 3))
-    for axis in range(3):
-        component = np.fft.ifftn(1j * g_vectors[..., axis] * field_g).real
-        gradient[:, axis] = interpolate_at(component, cell, points)
-    return gradient
-
-
-def electron_interaction_energy(charge_density, v_ext):
-    """Energy of the electrons in the external potential, in eV.
-
-    Dead in production.
-    """
-    if charge_density is None:
-        raise RuntimeError(
-            "charge_density is None, so the electron-V_ext energy term "
-            "cannot be formed.  Set LVHAR = .TRUE. in the INCAR so that "
-            "VASP populates it.",
-        )
-    density = np.asarray(charge_density)
-    if density.shape != v_ext.shape:
-        raise RuntimeError(
-            f"charge_density has shape {density.shape} but V_ext has "
-            f"{v_ext.shape}; they must share VASP's fine grid.",
-        )
-    return float(np.sum(density * v_ext) / density.size)
 
 
 def contract_gaussian_gradient(

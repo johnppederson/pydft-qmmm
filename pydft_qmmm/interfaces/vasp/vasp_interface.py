@@ -123,6 +123,9 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             The permutation mapping POSCAR order onto the sorted QM
             atom indices.
         """
+        if self.embedding:
+            from .vasp_plugin import _validate_embedding_options
+            _validate_embedding_options()
         if self.embedding and int(self.incar.get("ISYM", 0)) > 0:
             raise ValueError(
                 "ISYM must be 0 under electrostatic embedding.",
@@ -294,22 +297,17 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
         source charges rather than subtracting a single-image erf field.
         The physical charges and MM_CHARGES remain unchanged.
 
-        The experimental erfc route retains its reciprocal II field,
-        which is needed to complement the real-space erfc correction.
-
         Returns:
             The number of charges written.
         """
+        from .vasp_plugin import _validate_embedding_options
+        _validate_embedding_options()
         os.makedirs(self.directory, exist_ok=True)
         potential = self.potentials[0]
-        from .vasp_plugin import erfc_near_enabled
         from pydft_qmmm.potentials.embedding.pme_grid import write_pme_data
         charges = np.array(self.system.charges, copy=True)
-        if erfc_near_enabled():
-            excluded = sorted(self.system.select("subsystem I"))
-        else:
-            charges[sorted(self.system.select("not subsystem III"))] = 0.
-            excluded = []
+        charges[sorted(self.system.select("not subsystem III"))] = 0.
+        excluded = []
         path = os.path.join(self.directory, "PME_DATA")
         if os.path.isfile(path):
             os.remove(path)

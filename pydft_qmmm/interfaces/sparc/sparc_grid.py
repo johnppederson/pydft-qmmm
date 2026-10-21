@@ -45,7 +45,7 @@ def vext_to_sparc(v_ext_ev: NDArray[np.float64]) -> NDArray[np.float64]:
     Args:
         v_ext_ev: The external potential as electron potential energy
             (:math:`\mathrm{eV}`), as returned by
-            ``build_external_potential``, ``erfc_potential`` and
+            ``build_external_potential`` and
             ``build_pme_potential``.
 
     Returns:

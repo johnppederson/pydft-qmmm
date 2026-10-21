@@ -6,7 +6,6 @@ __all__ = [
     "finite_embedding_forces",
     "build_quadrature_grid",
     "pme_ao_operator",
-    "pme_qm_forces",
     "pme_qm_forces_and_density",
 ]
 
@@ -232,30 +231,3 @@ def pme_qm_forces_and_density(
         for atom, (_, _, first, last) in enumerate(slices):
             forces[atom] += 2.0 * derivative[:, first:last].sum(axis=1)
     return forces, density
-
-
-def pme_qm_forces(
-        mol: Any,
-        dm: NDArray[np.float64],
-        potential: NDArray[np.float64],
-        coords: NDArray[np.float64],
-        weights: NDArray[np.float64],
-) -> NDArray[np.float64]:
-    r"""Differentiate the embedding operator with respect to the QM atoms.
-
-    Args:
-        mol: The molecular PySCF object for the QM subsystem.
-        dm: The converged density matrix.
-        potential: The potential energy of one electron
-            (:math:`\mathrm{E_h}`) at each quadrature point.
-        coords: The quadrature coordinates
-            (:math:`\mathrm{\mathring{A}}`).
-        weights: The quadrature weights (:math:`\mathrm{a_0^3}`).
-
-    Returns:
-        The forces (:math:`\mathrm{E_h\;a_0^{-1}}`) on the QM atoms, in
-        PySCF atom order.
-    """
-    return pme_qm_forces_and_density(
-        mol, dm, potential, coords, weights,
-    )[0]
