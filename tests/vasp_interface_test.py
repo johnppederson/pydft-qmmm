@@ -1,4 +1,4 @@
-"""Persistent transport, process lifetime, cache refresh, and input guards."""
+"""Static SP, persistent MD, cache refresh, and input guards."""
 from __future__ import annotations
 
 import os
@@ -37,7 +37,8 @@ positions = np.array([[float(x) for x in l.split()] for l in lines[8:]])
 positions = positions @ np.linalg.inv(cell)
 Path('engine.pid').write_text(str(os.getpid()))
 Path('OUTCAR').write_text('')
-for step in range(int(os.environ[STEPS_ENV])):
+persistent = STEPS_ENV in os.environ
+for step in range(int(os.environ.get(STEPS_ENV, '1'))):
     assert not vasp_plugin._CACHE
     vasp_plugin._CACHE['stale'] = step
     constants = SimpleNamespace(
@@ -50,6 +51,8 @@ for step in range(int(os.environ[STEPS_ENV])):
         )
         from pydft_qmmm.potentials.embedding.pme_grid import read_pme_data
         points, charges, stamp, sigma = read_mm_charges('MM_CHARGES')
+        if not persistent:
+            step = stamp
         assert stamp == step
         _, pme_charges, _, _, _, _, pme_step = read_pme_data('PME_DATA')
         assert pme_step == step
@@ -77,14 +80,29 @@ for step in range(int(os.environ[STEPS_ENV])):
             fh.write('local_potential 0.0\\nforce_and_stress 0.0\\n')
     with open('OUTCAR', 'a') as fh:
         fh.write('aborting loop because EDIFF is reached\\n')
-    additions = SimpleNamespace(positions=np.zeros_like(positions))
-    structure(constants, additions)
-    positions = positions + additions.positions
+    if persistent:
+        additions = SimpleNamespace(positions=np.zeros_like(positions))
+        structure(constants, additions)
+        positions = positions + additions.positions
+    else:
+        rows = ''.join('<v>' + ' '.join(map(str, row)) + '</v>'
+                       for row in constants.forces)
+        Path('vasprun.xml').write_text(
+            '<modeling><calculation><energy><i name="e_fr_energy">'
+            + str(constants.total_energy) + '</i></energy>'
+            + '<varray name="forces">' + rows
+            + '</varray></calculation></modeling>',
+        )
 '''
 
 
 @pytest.fixture
-def potential(tmp_path):
+def potential(tmp_path, monkeypatch):
+    # The fake executable imports this checkout even for unembedded SP,
+    # where the real executable needs no Python plugin environment.
+    monkeypatch.setenv('PYTHONPATH', os.pathsep.join(filter(None, (
+        str(Path(__file__).resolve().parents[1]), os.getenv('PYTHONPATH'),
+    ))))
     engine = tmp_path/'fake_engine.py'
     engine.write_text(FAKE_ENGINE)
     pp = tmp_path/'pp'
@@ -302,9 +320,10 @@ def test_structure_refreshes_cache_even_without_geometry_motion(
         assert result['step'] == 0
 
 
-def test_embedding_updates_without_qm_motion(potential):
+@pytest.mark.parametrize('steps', [1, 3])
+def test_embedding_updates_without_qm_motion(potential, steps):
     from dataclasses import replace
-    p = replace(potential, embedding=True)
+    p = replace(potential, embedding=True, persistent_steps=steps)
     p.potentials.append(
         SimpleNamespace(
             pme_alpha=.5, pme_gridnumber=(20, 20, 20), pme_spline_order=5,
@@ -323,7 +342,8 @@ def test_embedding_updates_without_qm_motion(potential):
         assert e2 != e1
         # Subsystem III gets the plugin's reciprocal reaction.
         np.testing.assert_array_equal(p.compute_forces()[1], [4, 5, 6])
-        assert p.frame[0] == 3 and p._session[0].closed
+        assert p.frame[0] == 3
+        assert p._session[0].closed if steps > 1 else not p._session
     finally:
         p.close()
 
@@ -358,10 +378,35 @@ def test_convergence_check_requires_outcar(potential):
         potential._check_convergence(1)
 
 
+@pytest.mark.parametrize('steps', [1, 3])
+@pytest.mark.parametrize('spin', [1, 2])
+def test_electronic_defaults_are_left_to_vasp(potential, steps, spin):
+    p = potential
+    p.incar.update(EDIFF=1e-8, ISPIN=spin)
+    with p.calculation_run(steps):
+        p._write_input()
+        text = (Path(p.directory)/'INCAR').read_text()
+        tags = dict(line.split(' = ') for line in text.splitlines())
+        assert not {'NBANDS', 'WEIMIN', 'EBREAK'} & tags.keys()
+        assert float(tags['EDIFF']) == 1e-8
+        assert f'NSW = {steps}\n' in text
+        assert float(tags['EDIFFG']) == 0.
+
+
+def test_explicit_electronic_options_are_preserved(potential):
+    p = potential
+    p.incar.update(NBANDS=10, WEIMIN=0.002, EBREAK=1e-9)
+    p._write_input()
+    text = (Path(p.directory)/'INCAR').read_text()
+    assert 'NBANDS = 10\n' in text
+    assert 'WEIMIN = 0.002\n' in text
+    assert 'EBREAK = 1e-09\n' in text
+
+
 @pytest.mark.parametrize(
     "old_options", [{}, {"persistent": True}, {"persistent": False}],
 )
-def test_factory_always_reuses_process(potential, old_options):
+def test_factory_manual_run_reuses_process(potential, old_options):
     from pydft_qmmm.interfaces.vasp.vasp_factory import vasp_interface_factory
     p = vasp_interface_factory(
         potential.system, directory=potential.directory,
@@ -458,10 +503,82 @@ def test_single_points_finish_without_vasp_step_setting(automatic_potential):
     from pydft_qmmm.calculators import PotentialCalculator
     p = automatic_potential
     calculator = PotentialCalculator(p.system, p)
-    for _ in range(2):
+    for step in range(2):
         p.system.positions[0, 0] += .1
         result = calculator.calculate()
         assert np.isfinite(result.energy) and np.isfinite(result.forces).all()
+        assert not p._session
+        assert p.frame[0] == step + 1
+        np.testing.assert_allclose(
+            result.forces[[0, 2]],
+            -2*np.asarray(p.system.positions)[[0, 2]]/10*KJMOL_PER_EV,
+        )
+        assert result.energy == pytest.approx(
+            np.sum((np.asarray(p.system.positions)[[0, 2]]/10)**2)
+            * KJMOL_PER_EV,
+        )
+        calculator.calculate()
+        assert p.frame[0] == step + 1
+        text = (Path(p.directory)/'INCAR').read_text()
+        tags = dict(line.split(' = ') for line in text.splitlines())
+        assert tags['IBRION'] == '-1' and tags['NSW'] == '0'
+        assert not {
+            'PLUGINS/STRUCTURE', 'EDIFFG', 'NBANDS', 'WEIMIN', 'EBREAK',
+        } & tags.keys()
+
+
+@pytest.mark.parametrize('embedding', [False, True])
+def test_single_point_dynamics_single_point(automatic_potential, embedding):
+    from dataclasses import replace
+    p = replace(automatic_potential, embedding=embedding)
+    if embedding:
+        p.system.subsystems[1] = Subsystem.II
+        p.system.charges[1] = .4
+        p.potentials.append(SimpleNamespace(
+            pme_alpha=.5, pme_gridnumber=(20, 20, 20), pme_spline_order=5,
+        ))
+    with _simulation(p) as simulation:
+        assert np.isfinite(p.compute_energy())
+        assert not p._session
+        simulation.run_dynamics(2)
         session = p._session[0]
-        assert session.steps == session.frame == 1
-        assert session.closed and session.process.returncode == 0
+        assert session.closed and session.frame == 3
+        # Even unchanged coordinates must switch back to static defaults.
+        assert np.isfinite(p.compute_energy())
+        assert np.isfinite(p.compute_forces()).all()
+        assert 'IBRION = -1' in (Path(p.directory)/'INCAR').read_text()
+        assert session.frame == 3
+        if embedding:
+            assert 'import structure' not in (
+                Path(p.directory)/'vasp_plugin.py'
+            ).read_text()
+        simulation.run_dynamics(1)
+        assert p._session[0] is not session
+        assert p._session[0].closed and p._session[0].frame == 2
+
+
+@pytest.mark.parametrize('failure', ['exit', 'convergence', 'plugin'])
+def test_static_failures_are_reported(automatic_potential, failure):
+    p = automatic_potential
+    engine = Path(p.directory).parent/'fake_engine.py'
+    if failure == 'exit':
+        engine.write_text('raise SystemExit(7)')
+        match = 'code 7'
+    elif failure == 'convergence':
+        engine.write_text(engine.read_text().replace(
+            'aborting loop because EDIFF is reached', 'not converged',
+        ))
+        match = 'Only 0/1 SCFs converged'
+    else:
+        object.__setattr__(p, 'embedding', True)
+        p.potentials.append(SimpleNamespace(
+            pme_alpha=.5, pme_gridnumber=(20, 20, 20), pme_spline_order=5,
+        ))
+        Path(p.directory).mkdir()
+        (Path(p.directory)/vasp_plugin.SENTINEL).write_text('stale')
+        engine.write_text(engine.read_text().replace(
+            "Path('PLUGIN_FIRED.txt').write_text(str(step))", 'pass',
+        ))
+        match = 'sentinel is absent'
+    with pytest.raises(VaspExecutionError, match=match):
+        p.compute_energy()

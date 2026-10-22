@@ -16,6 +16,7 @@ __all__ = [
     "write_pme_data",
     "read_mm_forces",
     "read_vasprun",
+    "run_vasp",
     "plugin_energy_rounding",
     "VaspExecutionError",
 ]
@@ -24,6 +25,7 @@ import gzip
 import os
 import re
 import shutil
+import subprocess
 import xml.etree.ElementTree as ET
 from typing import TYPE_CHECKING
 
@@ -50,6 +52,25 @@ class VaspExecutionError(RuntimeError):
             f"VASP calculation in '{directory}' failed: {message}\n"
             "Inspect the OUTCAR, stdout, and stderr files in that "
             "directory for details.",
+        )
+
+
+def run_vasp(
+        command: str,
+        directory: str,
+        env: dict[str, str] | None = None,
+) -> None:
+    """Run a static VASP calculation and check its exit status."""
+    with open(os.path.join(directory, "vasp.out"), "w") as out, \
+            open(os.path.join(directory, "vasp.err"), "w") as err:
+        process = subprocess.run(
+            command, shell=True, cwd=directory, env=env,
+            stdout=out, stderr=err,
+        )
+    if process.returncode != 0:
+        raise VaspExecutionError(
+            directory,
+            f"the command '{command}' exited with code {process.returncode}.",
         )
 
 

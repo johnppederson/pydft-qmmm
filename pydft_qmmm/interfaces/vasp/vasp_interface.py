@@ -177,18 +177,28 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             self.kpts,
         )
         tags = dict(self.incar)
-        # PyDFT-QMMM owns the dynamics; VASP waits for each new geometry.
-        if self.incar.get("PLUGINS/MODE", "serial").lower() != "serial":
-            raise ValueError("Persistent VASP requires serial plugins")
-        if int(self.incar.get("ISYM", 0)) != 0:
-            raise ValueError("Persistent VASP requires ISYM=0")
-        if int(self.incar.get("IWAVPR", 11)) not in (0, 11, 12, 13):
-            raise ValueError("Persistent VASP requires IWAVPR=0,11,12,13")
-        tags.update({
-            "NSW": self._evaluation_count, "IBRION": 12,
-            "EDIFFG": 0., "PLUGINS/STRUCTURE": True,
-            "IWAVPR": self.incar.get("IWAVPR", 11),
-        })
+        if self._uses_persistent:
+            # PyDFT-QMMM owns the dynamics; VASP waits for each geometry.
+            if self.incar.get("PLUGINS/MODE", "serial").lower() != "serial":
+                raise ValueError("Persistent VASP requires serial plugins")
+            if int(self.incar.get("ISYM", 0)) != 0:
+                raise ValueError("Persistent VASP requires ISYM=0")
+            if int(self.incar.get("IWAVPR", 11)) not in (0, 11, 12, 13):
+                raise ValueError("Persistent VASP requires IWAVPR=0,11,12,13")
+            # Disable VASP's ionic stopping test. Electronic defaults
+            # remain VASP's responsibility in each mode.
+            tags.update({
+                "NSW": self._evaluation_count, "IBRION": 12,
+                "EDIFFG": 0., "PLUGINS/STRUCTURE": True,
+                "IWAVPR": self.incar.get("IWAVPR", 11),
+            })
+        else:
+            tags.update({"NSW": 0, "IBRION": -1})
+            tags.pop("PLUGINS/STRUCTURE", None)
+            if self.frame[0] and os.path.isfile(
+                    os.path.join(self.directory, "WAVECAR"),
+            ):
+                tags.setdefault("ISTART", 1)
         if self.embedding:
             # PLUGINS/MODE is deliberately left unset.  It defaults to
             # "serial", which is what makes this correct under MPI: only
@@ -220,18 +230,19 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             # silently reread.
             for stale in (
                 "MM_FORCES", "PME_FORCES", "QM_NET_FORCE", "SLAB_FORCES",
-                "PLUGIN_ENERGY",
+                "PLUGIN_ENERGY", "PLUGIN_FIRED.txt",
             ):
                 stale_path = os.path.join(self.directory, stale)
                 if os.path.isfile(stale_path):
                     os.remove(stale_path)
-        mode = "a" if self.embedding else "w"
-        plugin = os.path.join(self.directory, "vasp_plugin.py")
-        with open(plugin, mode) as fh:
-            fh.write(
-                "\nfrom pydft_qmmm.interfaces.vasp.vasp_persistent "
-                "import structure\n",
-            )
+        if self._uses_persistent:
+            mode = "a" if self.embedding else "w"
+            plugin = os.path.join(self.directory, "vasp_plugin.py")
+            with open(plugin, mode) as fh:
+                fh.write(
+                    "\nfrom pydft_qmmm.interfaces.vasp.vasp_persistent "
+                    "import structure\n",
+                )
         vasp_utils.write_incar(
             os.path.join(self.directory, "INCAR"),
             tags,
@@ -508,7 +519,38 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             the QM atoms only, ordered to match
             ``sorted(system.select("subsystem I"))``.
         """
-        return self._run_persistent()
+        if self._uses_persistent:
+            return self._run_persistent()
+        return self._run_static()
+
+    def _run_static(self):
+        """Evaluate one geometry with VASP's static calculation mode."""
+        order = self._write_input()
+        if self.embedding:
+            self._write_mm_charges()
+            if self.potentials:
+                self._write_pme_data()
+        vasp_utils.run_vasp(
+            self.command, self.directory,
+            env=self._plugin_env() if self.embedding else None,
+        )
+        if self.embedding:
+            self._check_plugin_fired()
+        if self.check_convergence:
+            self._check_convergence(1)
+        energy, forces = vasp_utils.read_vasprun(
+            os.path.join(self.directory, "vasprun.xml"),
+        )
+        if self.embedding:
+            energy += vasp_utils.plugin_energy_rounding(self.directory)
+        if len(forces) != len(order):
+            raise vasp_utils.VaspExecutionError(
+                self.directory, "VASP force count does not match QM atoms",
+            )
+        qm_forces = np.empty_like(forces)
+        qm_forces[order, :] = forces
+        self.frame[0] += 1
+        return energy * KJMOL_PER_EV, qm_forces * KJMOL_PER_EV
 
     def _persistent_configuration(self):
         """Settings that VASP cannot change while its process is running."""
@@ -534,15 +576,6 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
 
     def _run_persistent(self):
         from .vasp_persistent import PersistentVasp
-        if (
-                self._session and not self._run_steps
-                and self.persistent_steps == 1
-        ):
-            session = self._session[0]
-            if session.closed and session.frame == session.steps:
-                # A completed single point may be followed by another one.
-                self._session.clear()
-                self.frame[0] = 0
         configuration = self._persistent_configuration()
         if self._session:
             session, initial, order = self._session
@@ -642,6 +675,10 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             )
 
     @property
+    def _uses_persistent(self) -> bool:
+        return bool(self._run_steps) or self.persistent_steps > 1
+
+    @property
     def _evaluation_count(self) -> int:
         return self._run_steps[0] if self._run_steps else self.persistent_steps
 
@@ -666,6 +703,9 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
                 self.close()
             finally:
                 self._run_steps.clear()
+                # An SP at the same geometry must use static electronic
+                # defaults instead of returning the last MD result.
+                self._run.cache_clear()
 
     def close(self):
         """Release the persistent process, including on early termination."""

@@ -58,8 +58,9 @@ def vasp_interface_factory(
 ) -> VaspPotential:
     r"""Build the interface to VASP.
 
-    One VASP process handles successive geometries through the structure
-    plugin (IBRION=12). A VASP build with Python plugins is required.
+    Single points use static VASP (IBRION=-1, NSW=0). During dynamics,
+    one process handles successive geometries through the structure
+    plugin (IBRION=12). MD and embedding require Python plugin support.
 
     Args:
         system: The system which will be tied to the VASP interface.
@@ -97,10 +98,11 @@ def vasp_interface_factory(
             default is ~2x the grid spacing of a typical run; below one
             spacing the deposited charge stops being conserved and
             starts depending on where the atom sits between nodes.
-        persistent_steps: Evaluation count for a manually managed run;
-            defaults to one. Simulation.run_dynamics sets its own count,
-            including the starting geometry. The cell and QM membership
-            must remain fixed within each run.
+        persistent_steps: Advanced evaluation count for a manually managed
+            persistent run when greater than one. The default uses static
+            single points. Simulation.run_dynamics automatically selects
+            persistent mode and sets its own count, including the starting
+            geometry. The cell and QM membership must stay fixed during MD.
         persistent_timeout: Maximum seconds to wait for each SCF or geometry.
         check_convergence: Require EDIFF convergence in OUTCAR for all
             evaluations after the final frame and normal exit.
@@ -117,7 +119,7 @@ def vasp_interface_factory(
         The VASP interface.
     """
     # Older run scripts may still pass the removed mode switch.
-    # All evaluations now use the same persistent transport.
+    # Mode is selected automatically from the calculation run.
     options.pop("persistent", None)
     if charge:
         raise NotImplementedError(
