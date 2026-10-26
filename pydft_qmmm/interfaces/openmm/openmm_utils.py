@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
 
 _EXCEPTIONS_CACHE: dict[int, list[tuple[int, list[Any]]]] = {}
+_EXCLUDED_CACHE: list[int] = []
 
 
 def _generate_state(
@@ -402,6 +403,7 @@ def _exclude_electrostatic(
             *p, q, s, e = force.getExceptionParameters(i)
             if set(p) & atoms:
                 force.setExceptionParameters(i, *p, q*0, s, e)
+    _EXCLUDED_CACHE.extend(sorted(atoms))
 
 
 def _exclude_lennard_jones(
@@ -479,6 +481,23 @@ def _get_non_zero_exceptions(
             exceptions.append((i, params))
     _EXCEPTIONS_CACHE[n] = exceptions
     return exceptions
+
+            
+def _update_charges(
+        force: openmm.nonbondedForce,
+        new_charges: NDArray[np.float64],
+) -> None:
+    """Update OpenMM NonbondedForce charges to match new charges.
+
+    Args:
+        force: The OpenMM NonbondedForce to update.
+        new_charges: The new partial charge (:math:`e`) of the atoms.
+    """
+    _update_exceptions(force, new_charges)
+    for i, charge in enumerate(new_charges):
+        _, sigma, epsilon = force.getParticleParameters(i)
+        if i not in _EXCLUDED_CACHE:
+            force.setParticleParameters(i, charge, sigma, epsilon)
 
 
 def _update_exceptions(

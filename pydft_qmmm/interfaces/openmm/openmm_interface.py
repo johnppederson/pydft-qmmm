@@ -225,10 +225,7 @@ class OpenMMInterface(MMInterface):
             if isinstance(force, openmm.NonbondedForce)
         ]
         for force in nonbonded_forces:
-            openmm_utils._update_exceptions(force, charges)
-            for i, charge in enumerate(charges):
-                _, sigma, epsilon = force.getParticleParameters(i)
-                force.setParticleParameters(i, charge, sigma, epsilon)
+            openmm_utils._update_charges(force, charges)
             force.updateParametersInContext(self.base_context)
         custom_nonbonded_forces = [
             force for force in self.aux_context.getSystem().getForces()
