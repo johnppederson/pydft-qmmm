@@ -5,10 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="pydft_qmmm.wrappers.simulation" href="../pydft_qmmm.wrappers.simulation.html"><link rel="prev" title="pydft_qmmm.wrappers.optimization" href="../pydft_qmmm.wrappers.optimization.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
         <title>pydft_qmmm.wrappers.optimization.Optimization - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=506bd67a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -451,19 +452,19 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>query</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A VMD-like selection query describing the atoms to
+<li><p><strong>query</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A VMD-like selection query describing the atoms to
 optimize.</p></li>
 <li><p><strong>system</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.system.system.System.html#pydft_qmmm.system.system.System" title="pydft_qmmm.system.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a></span>) – The system containing the atoms to optimize.</p></li>
-<li><p><strong>hamiltonian</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandaloneHamiltonian</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – The Hamiltonian describing how calculations are
+<li><p><strong>hamiltonian</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian.html#pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian" title="pydft_qmmm.hamiltonians.hamiltonian.StandaloneHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">StandaloneHamiltonian</span></code></a> | <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span>, default: <span class="highlight sphinx_autodoc_typehints-value"><code class="docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></span>) – The Hamiltonian describing how calculations are
 performed.</p></li>
-<li><p><strong>calculator</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Calculator</span></code></a> | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A user-defined energy and force calculator, which
+<li><p><strong>calculator</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="pydft_qmmm.calculators.calculator.Calculator.html#pydft_qmmm.calculators.calculator.Calculator" title="pydft_qmmm.calculators.calculator.Calculator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Calculator</span></code></a> | <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span>, default: <span class="highlight sphinx_autodoc_typehints-value"><code class="docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></span>) – A user-defined energy and force calculator, which
 may be provided in place of a Hamiltonian object.</p></li>
-<li><p><strong>plugins</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pydft_qmmm.calculators.calculator.CalculatorPlugin.html#pydft_qmmm.calculators.calculator.CalculatorPlugin" title="pydft_qmmm.calculators.calculator.CalculatorPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalculatorPlugin</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – A list of plugins to apply to the calculator object
+<li><p><strong>plugins</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="pydft_qmmm.calculators.calculator.CalculatorPlugin.html#pydft_qmmm.calculators.calculator.CalculatorPlugin" title="pydft_qmmm.calculators.calculator.CalculatorPlugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">CalculatorPlugin</span></code></a>] | <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span>, default: <span class="highlight sphinx_autodoc_typehints-value"><code class="docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></span>) – A list of plugins to apply to the calculator object
 before optimization.</p></li>
-<li><p><strong>kwargs</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Additional options to provide to the logging
+<li><p><strong>kwargs</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Additional options to provide to the logging
 functionality, see <a class="reference internal" href="pydft_qmmm.utils.logging.Loggable.html#pydft_qmmm.utils.logging.Loggable" title="pydft_qmmm.utils.logging.Loggable"><code class="xref py py-class docutils literal notranslate"><span class="pre">pydft_qmmm.utils.logging.Loggable</span></code></a>
 for a list of options.</p></li>
-<li><p><strong>constraints</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>constraints</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><em>None</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -472,6 +473,11 @@ for a list of options.</p></li>
 <span class="sig-name descname"><span class="pre">_frame</span></span><a class="headerlink" href="#pydft_qmmm.wrappers.optimization.Optimization._frame" title="Link to this definition">¶</a></dt>
 <dd><p>The current frame of the optimization, defaults to zero
 upon instantiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -493,7 +499,7 @@ upon instantiation.</p>
 <dd><p>Update total system energy and forces on atoms in the system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -504,7 +510,7 @@ upon instantiation.</p>
 <dd><p>Perform the optimization using geomeTRIC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
 </dd>
 </dl>
 </dd></dl>

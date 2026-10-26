@@ -5,10 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="pydft_qmmm.utils" href="../pydft_qmmm.utils.html"><link rel="prev" title="pydft_qmmm.system.variable.ArrayValue" href="pydft_qmmm.system.variable.ArrayValue.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
         <title>pydft_qmmm.system.variable.ObservedArray - PyDFT-QMMM documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=506bd67a" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx_autodoc_typehints.css?v=057ac668" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -446,7 +447,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pydft_qmmm.system.variable.</span></span><span class="sig-name descname"><span class="pre">ObservedArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pydft_qmmm/system/variable.html#ObservedArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">ST</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">DT</span></code>]</p>
+<dd><p>Bases: <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="docutils literal notranslate"><span class="pre">ST</span></code>, <code class="docutils literal notranslate"><span class="pre">DT</span></code>]</p>
 <p>A data container for arrays implementing the observer pattern.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -460,6 +461,11 @@
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.base">
 <span class="sig-name descname"><span class="pre">base</span></span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.base" title="Link to this definition">¶</a></dt>
 <dd><p>The actual array data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="docutils literal notranslate"><span class="pre">ST</span></code>, <code class="docutils literal notranslate"><span class="pre">DT</span></code>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -467,6 +473,11 @@
 <span class="sig-name descname"><span class="pre">_notifiers</span></span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray._notifiers" title="Link to this definition">¶</a></dt>
 <dd><p>Functions that are called when a value of the
 array is changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="docutils literal notranslate"><span class="pre">ST</span></code>, <code class="docutils literal notranslate"><span class="pre">DT</span></code>]], <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span>]]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -643,15 +654,15 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.all" title="Link to this definition">¶</a></dt>
 <dd><p>Returns True if all elements evaluate to True.</p>
 <p>Refer to <cite>numpy.all</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
-</dd>
-</dl>
 <section id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
 <p>numpy.all : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a href="#id96"><span class="problematic" id="id97">bool_</span></a> | NDArray[<a href="#id98"><span class="problematic" id="id99">bool_</span></a>] | ndarray[_ShapeT_co, _dtype[<a href="#id100"><span class="problematic" id="id101">bool_</span></a>]] | ArrayT</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -659,15 +670,15 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">any</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.any" title="Link to this definition">¶</a></dt>
 <dd><p>Returns True if any of the elements of <cite>a</cite> evaluate to True.</p>
 <p>Refer to <cite>numpy.any</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id1">
 <h2>See Also<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>numpy.any : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a href="#id102"><span class="problematic" id="id103">bool_</span></a> | NDArray[<a href="#id104"><span class="problematic" id="id105">bool_</span></a>] | ndarray[_ShapeT_co, _dtype[<a href="#id106"><span class="problematic" id="id107">bool_</span></a>]] | ArrayT</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -675,15 +686,15 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">argmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argmax" title="Link to this definition">¶</a></dt>
 <dd><p>Return indices of the maximum values along the given axis.</p>
 <p>Refer to <cite>numpy.argmax</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id2">
 <h2>See Also<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
 <p>numpy.argmax : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">intp | NDArray[intp] | ndarray[_ShapeT_co, _dtype[intp]] | ArrayT</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -691,15 +702,15 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">argmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argmin" title="Link to this definition">¶</a></dt>
 <dd><p>Return indices of the minimum values along the given axis.</p>
 <p>Refer to <cite>numpy.argmin</cite> for detailed documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id3">
 <h2>See Also<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
 <p>numpy.argmin : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">intp | NDArray[intp] | ndarray[_ShapeT_co, _dtype[intp]] | ArrayT</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -707,15 +718,15 @@ array is changed.</p>
 <span class="sig-name descname"><span class="pre">argpartition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'introselect'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.argpartition" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the indices that would partition this array.</p>
 <p>Refer to <cite>numpy.argpartition</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _dtype[intp]]</span></p>
-</dd>
-</dl>
 <section id="id4">
 <h2>See Also<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
 <p>numpy.argpartition : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _dtype[intp]] | ndarray[_ShapeT_co, _dtype[intp]]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -733,11 +744,6 @@ array is changed.</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.astype">
 <span class="sig-name descname"><span class="pre">astype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'K'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">casting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unsafe'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.astype" title="Link to this definition">¶</a></dt>
 <dd><p>Copy of the array, cast to a specified type.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_ShapeT_co, _dtype[ScalarT]]</span></p>
-</dd>
-</dl>
 <section id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
 <dl>
@@ -820,6 +826,11 @@ overflow</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_ShapeT_co, _dtype[ScalarT]] | ndarray[_ShapeT_co, _dtype]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -830,11 +841,6 @@ overflow</p>
 returning a byteswapped array, optionally swapped in-place.
 Arrays of byte-strings are not swapped. The real and imaginary
 parts of a complex number are swapped individually.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
-</dd>
-</dl>
 <section id="id6">
 <h2>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
 <dl class="simple">
@@ -882,6 +888,11 @@ the same values but different representation in memory</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Self" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Self</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1024,15 +1035,15 @@ use <cite>copy.deepcopy</cite>:</p>
 <span class="sig-name descname"><span class="pre">cumprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.cumprod" title="Link to this definition">¶</a></dt>
 <dd><p>Return the cumulative product of the elements along the given axis.</p>
 <p>Refer to <cite>numpy.cumprod</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="xref py py-type docutils literal notranslate"><span class="pre">_1D</span></code>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">DTypeT</span></code>)]</span></p>
-</dd>
-</dl>
 <section id="id17">
 <h2>See Also<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h2>
 <p>numpy.cumprod : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_1D, DTypeT] | ndarray[_1D, _dtype[<a href="#id108"><span class="problematic" id="id109">int_</span></a>]] | ndarray[_1D, _dtype[ScalarT]] | ndarray[_1D] | ArrayT | ndarray[ShapeT, _dtype[<a href="#id110"><span class="problematic" id="id111">int_</span></a>]] | ndarray[ShapeT, _dtype[ScalarT]] | ndarray[ShapeT]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1040,15 +1051,15 @@ use <cite>copy.deepcopy</cite>:</p>
 <span class="sig-name descname"><span class="pre">cumsum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.cumsum" title="Link to this definition">¶</a></dt>
 <dd><p>Return the cumulative sum of the elements along the given axis.</p>
 <p>Refer to <cite>numpy.cumsum</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="xref py py-type docutils literal notranslate"><span class="pre">_1D</span></code>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">DTypeT</span></code>)]</span></p>
-</dd>
-</dl>
 <section id="id18">
 <h2>See Also<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h2>
 <p>numpy.cumsum : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_1D, DTypeT] | ndarray[_1D, _dtype[<a href="#id112"><span class="problematic" id="id113">int_</span></a>]] | ndarray[_1D, _dtype[ScalarT]] | ndarray[_1D] | ArrayT | ndarray[ShapeT, _dtype[<a href="#id114"><span class="problematic" id="id115">int_</span></a>]] | ndarray[ShapeT, _dtype[ScalarT]] | ndarray[ShapeT]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1058,30 +1069,30 @@ use <cite>copy.deepcopy</cite>:</p>
 read-only view instead of a copy as in previous NumPy versions.  In
 a future version the read-only restriction will be removed.</p>
 <p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html#numpy.diagonal" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diagonal()</span></code></a> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">_AnyShape</span></code>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">DTypeT</span></code>)]</span></p>
-</dd>
-</dl>
 <section id="id19">
 <h2>See Also<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h2>
 <p>numpy.diagonal : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_AnyShape, DTypeT] | ndarray[tuple[int], DTypeT] | ndarray[tuple[int, int], DTypeT] | ndarray[_AnyShape, _DTypeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.dot">
 <span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.dot" title="Link to this definition">¶</a></dt>
 <dd><p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.dot()</span></code></a> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
-</dd>
-</dl>
 <section id="id20">
 <h2>See Also<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h2>
 <p>numpy.dot : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">NDArray[Any] | Any | ArrayT</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1158,11 +1169,6 @@ distinction is important:</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.flatten">
 <span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.flatten" title="Link to this definition">¶</a></dt>
 <dd><p>Return a copy of the array collapsed into one dimension.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
-</dd>
-</dl>
 <section id="id25">
 <h2>Parameters<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h2>
 <dl class="simple">
@@ -1199,6 +1205,11 @@ flat : A 1-D flat iterator over the array.</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1211,11 +1222,6 @@ array in bytes. The offset needs to be such that the view dtype fits in the
 array dtype; for example an array of dtype complex128 has 16-byte elements.
 If taking a view with a 32-bit integer (4 bytes), the offset needs to be
 between 0 and 12 bytes.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ScalarT</span></code>)]</span></p>
-</dd>
-</dl>
 <section id="id29">
 <h2>Parameters<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h2>
 <dl class="simple">
@@ -1247,17 +1253,17 @@ array for our view:</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></a>[<code class="docutils literal notranslate"><span class="pre">ScalarT</span></code>] | <a class="reference external" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.item">
 <span class="sig-name descname"><span class="pre">item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.item" title="Link to this definition">¶</a></dt>
 <dd><p>Copy an element of an array to a standard Python scalar and return it.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">T</span></code>)</span></p>
-</dd>
-</dl>
 <section id="id31">
 <h2>Parameters<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h2>
 <p>*args : Arguments (variable number and type)</p>
@@ -1319,6 +1325,11 @@ array using Python’s optimized math.</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">T</span></code>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1326,15 +1337,15 @@ array using Python’s optimized math.</p>
 <span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.max" title="Link to this definition">¶</a></dt>
 <dd><p>Return the maximum along a given axis.</p>
 <p>Refer to <cite>numpy.amax</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ScalarT</span></code>)</span></p>
-</dd>
-</dl>
 <section id="id35">
 <h2>See Also<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h2>
 <p>numpy.amax : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT | NDArray[ScalarT] | ArrayT | Any</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1342,15 +1353,15 @@ array using Python’s optimized math.</p>
 <span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.mean" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the average of the array elements along given axis.</p>
 <p>Refer to <cite>numpy.mean</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id36">
 <h2>See Also<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h2>
 <p>numpy.mean : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">float64 | NDArray[float64] | ndarray[_ShapeT_co, _dtype[float64]] | ScalarT | NDArray[ScalarT] | ArrayT | ndarray[_ShapeT_co, _dtype[ScalarT]] | Any | ndarray | ndarray[_ShapeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1358,15 +1369,15 @@ array using Python’s optimized math.</p>
 <span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.min" title="Link to this definition">¶</a></dt>
 <dd><p>Return the minimum along a given axis.</p>
 <p>Refer to <cite>numpy.amin</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ScalarT</span></code>)</span></p>
-</dd>
-</dl>
 <section id="id37">
 <h2>See Also<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h2>
 <p>numpy.amin : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT | NDArray[ScalarT] | ArrayT | Any</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1374,15 +1385,15 @@ array using Python’s optimized math.</p>
 <span class="sig-name descname"><span class="pre">nonzero</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.nonzero" title="Link to this definition">¶</a></dt>
 <dd><p>Return the indices of the elements that are non-zero.</p>
 <p>Refer to <cite>numpy.nonzero</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">tuple[ndarray[_1D, _dtype[intp]], …]</span></p>
-</dd>
-</dl>
 <section id="id38">
 <h2>See Also<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h2>
 <p>numpy.nonzero : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">tuple[ndarray[_1D, _dtype[intp]], …] | tuple[ndarray[_1D, _dtype[intp]]] | _2Tuple[ndarray[_1D, _dtype[intp]]] | _3Tuple[ndarray[_1D, _dtype[intp]]]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1394,11 +1405,6 @@ array. In the output array, all elements smaller than the k-th element
 are located to the left of this element and all equal or greater are
 located to its right. The ordering of the elements in the two partitions
 on the either side of the k-th element in the output array is undefined.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id39">
 <h2>Parameters<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h2>
 <dl>
@@ -1450,6 +1456,11 @@ sort : Full sort.</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1457,15 +1468,15 @@ sort : Full sort.</p>
 <span class="sig-name descname"><span class="pre">prod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.prod" title="Link to this definition">¶</a></dt>
 <dd><p>Return the product of the array elements over the given axis</p>
 <p>Refer to <cite>numpy.prod</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ScalarT</span></code>)</span></p>
-</dd>
-</dl>
 <section id="id43">
 <h2>See Also<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h2>
 <p>numpy.prod : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT | NDArray[ScalarT] | ArrayT | <a href="#id116"><span class="problematic" id="id117">int_</span></a> | NDArray[<a href="#id118"><span class="problematic" id="id119">int_</span></a>] | ndarray[_ShapeT_co, _dtype[<a href="#id120"><span class="problematic" id="id121">int_</span></a>]] | Any | ndarray[_ShapeT_co, _dtype[ScalarT]] | ndarray | ndarray[_ShapeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1484,16 +1495,16 @@ sort : Full sort.</p>
 <span class="sig-name descname"><span class="pre">ravel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.ravel" title="Link to this definition">¶</a></dt>
 <dd><p>Return a flattened array.</p>
 <p>Refer to <cite>numpy.ravel</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
-</dd>
-</dl>
 <section id="id45">
 <h2>See Also<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h2>
 <p>numpy.ravel : equivalent function
 ndarray.flat : a flat iterator on the array.</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1502,11 +1513,11 @@ ndarray.flat : a flat iterator on the array.</p>
 <dd><p>Register observers to be notified when array data is edited.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>notifier</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ST</span></code>, bound= <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#Ellipsis" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>]), <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">DT</span></code>, bound= <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a>, covariant=True)]], <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – A function which will be called when array data
+<dd class="field-odd"><p><strong>notifier</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<code class="docutils literal notranslate"><span class="pre">ST</span></code>, <code class="docutils literal notranslate"><span class="pre">DT</span></code>]], <span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span>]</span>) – A function which will be called when array data
 is edited.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1516,15 +1527,15 @@ is edited.</p>
 <span class="sig-name descname"><span class="pre">repeat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repeats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.repeat" title="Link to this definition">¶</a></dt>
 <dd><p>Repeat elements of an array.</p>
 <p>Refer to <cite>numpy.repeat</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co]</span></p>
-</dd>
-</dl>
 <section id="id46">
 <h2>See Also<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h2>
 <p>numpy.repeat : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[tuple[int], _DTypeT_co] | ndarray[_AnyShape, _DTypeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1534,11 +1545,6 @@ is edited.</p>
 <span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Returns an array containing the same data with a new shape.</p>
 <p>Refer to <cite>numpy.reshape</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
-</dd>
-</dl>
 <section id="id47">
 <h2>See Also<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h2>
 <p>numpy.reshape : equivalent function</p>
@@ -1549,6 +1555,11 @@ is edited.</p>
 the elements of the shape parameter to be passed in as separate arguments.
 For example, <code class="docutils literal notranslate"><span class="pre">a.reshape(4,</span> <span class="pre">2)</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">a.reshape((4,</span> <span class="pre">2))</span></code>.</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">Self | ndarray[tuple[()], _DTypeT_co] | ndarray[AnyShapeT, _DTypeT_co] | ndarray[tuple[int], _DTypeT_co] | ndarray[tuple[int, int], _DTypeT_co] | ndarray[tuple[int, int, int], _DTypeT_co] | ndarray[tuple[int, int, int, int], _DTypeT_co] | ndarray[_AnyShape, _DTypeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1557,11 +1568,6 @@ For example, <code class="docutils literal notranslate"><span class="pre">a.resh
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refcheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Change shape and size of array in-place.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id49">
 <h2>Parameters<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h2>
 <dl>
@@ -1663,6 +1669,11 @@ stored in memory), resized, and reshaped:</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1681,15 +1692,15 @@ stored in memory), resized, and reshaped:</p>
 <span class="sig-name descname"><span class="pre">searchsorted</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sorter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.searchsorted" title="Link to this definition">¶</a></dt>
 <dd><p>Find indices where elements of <cite>v</cite> should be inserted in <cite>a</cite> to maintain order.</p>
 <p>For full documentation, see <cite>numpy.searchsorted</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id58">
 <h2>See Also<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h2>
 <p>numpy.searchsorted : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a> | <a class="reference external" href="https://numpy.org/doc/stable/reference/typing.html#numpy.typing.NDArray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArray</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int64</span></code></a>]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1698,11 +1709,6 @@ stored in memory), resized, and reshaped:</p>
 <dd><p>Put a value into a specified place in a field defined by a data-type.</p>
 <p>Place <cite>val</cite> into <cite>a</cite>’s field defined by <cite>dtype</cite> and beginning <cite>offset</cite>
 bytes into the field.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id59">
 <h2>Parameters<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h2>
 <dl class="simple">
@@ -1747,6 +1753,11 @@ bytes into the field.</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1826,11 +1837,6 @@ as the full name.</p>
 <dt class="sig sig-object py" id="pydft_qmmm.system.variable.ObservedArray.sort">
 <span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">stable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.sort" title="Link to this definition">¶</a></dt>
 <dd><p>Sort an array in-place. Refer to <cite>numpy.sort</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id66">
 <h2>Parameters<a class="headerlink" href="#id66" title="Link to this heading">¶</a></h2>
 <dl>
@@ -1894,6 +1900,11 @@ structured array:</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1901,15 +1912,15 @@ structured array:</p>
 <span class="sig-name descname"><span class="pre">squeeze</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.squeeze" title="Link to this definition">¶</a></dt>
 <dd><p>Remove axes of length one from <cite>a</cite>.</p>
 <p>Refer to <cite>numpy.squeeze</cite> for full documentation.</p>
+<section id="id70">
+<h2>See Also<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h2>
+<p>numpy.squeeze : equivalent function</p>
+</section>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ndarray[_AnyShape, _DTypeT_co]</span></p>
 </dd>
 </dl>
-<section id="id70">
-<h2>See Also<a class="headerlink" href="#id70" title="Link to this heading">¶</a></h2>
-<p>numpy.squeeze : equivalent function</p>
-</section>
 </dd></dl>
 
 <dl class="py method">
@@ -1917,15 +1928,15 @@ structured array:</p>
 <span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.std" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the standard deviation of the array elements along given axis.</p>
 <p>Refer to <cite>numpy.std</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id71">
 <h2>See Also<a class="headerlink" href="#id71" title="Link to this heading">¶</a></h2>
 <p>numpy.std : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">float64 | NDArray[float64] | ndarray[_ShapeT_co, _dtype[float64]] | ScalarT | NDArray[ScalarT] | ArrayT | ndarray[_ShapeT_co, _dtype[ScalarT]] | Any | ndarray | ndarray[_ShapeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1933,15 +1944,15 @@ structured array:</p>
 <span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.sum" title="Link to this definition">¶</a></dt>
 <dd><p>Return the sum of the array elements over the given axis.</p>
 <p>Refer to <cite>numpy.sum</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ScalarT</span></code>)</span></p>
-</dd>
-</dl>
 <section id="id72">
 <h2>See Also<a class="headerlink" href="#id72" title="Link to this heading">¶</a></h2>
 <p>numpy.sum : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT | NDArray[ScalarT] | ArrayT | <a href="#id122"><span class="problematic" id="id123">int_</span></a> | NDArray[<a href="#id124"><span class="problematic" id="id125">int_</span></a>] | ndarray[_ShapeT_co, _dtype[<a href="#id126"><span class="problematic" id="id127">int_</span></a>]] | Any | ndarray[_ShapeT_co, _dtype[ScalarT]] | ndarray | ndarray[_ShapeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1949,15 +1960,15 @@ structured array:</p>
 <span class="sig-name descname"><span class="pre">swapaxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis2</span></span></em>, <em class="sig-param"><span class="positional-only-separator o"><abbr title="Positional-only parameter separator (PEP 570)"><span class="pre">/</span></abbr></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.swapaxes" title="Link to this definition">¶</a></dt>
 <dd><p>Return a view of the array with <cite>axis1</cite> and <cite>axis2</cite> interchanged.</p>
 <p>Refer to <cite>numpy.swapaxes</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
-</dd>
-</dl>
 <section id="id73">
 <h2>See Also<a class="headerlink" href="#id73" title="Link to this heading">¶</a></h2>
 <p>numpy.swapaxes : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Self" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Self</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1965,15 +1976,15 @@ structured array:</p>
 <span class="sig-name descname"><span class="pre">take</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raise'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.take" title="Link to this definition">¶</a></dt>
 <dd><p>Return an array formed from the elements of <cite>a</cite> at the given indices.</p>
 <p>Refer to <cite>numpy.take</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">ScalarT</span></code>)</span></p>
-</dd>
-</dl>
 <section id="id74">
 <h2>See Also<a class="headerlink" href="#id74" title="Link to this heading">¶</a></h2>
 <p>numpy.take : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">ScalarT | ndarray[_AnyShape, _DTypeT_co] | ArrayT</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2091,11 +2102,6 @@ Data items are converted to the nearest compatible builtin Python type, via
 the <cite>~numpy.ndarray.item</cite> method.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">a.ndim</span></code> is 0, then since the depth of the nested list is 0, it will
 not be a list at all, but a simple Python scalar.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id83">
 <h2>Parameters<a class="headerlink" href="#id83" title="Link to this heading">¶</a></h2>
 <p>none</p>
@@ -2149,6 +2155,11 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>, <code class="docutils literal notranslate"><span class="pre">T</span></code>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<code class="docutils literal notranslate"><span class="pre">T</span></code>], <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<code class="docutils literal notranslate"><span class="pre">T</span></code>]], <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<code class="docutils literal notranslate"><span class="pre">T</span></code>]]]]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2156,15 +2167,15 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <span class="sig-name descname"><span class="pre">trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.trace" title="Link to this definition">¶</a></dt>
 <dd><p>Return the sum along diagonals of the array.</p>
 <p>Refer to <cite>numpy.trace</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id87">
 <h2>See Also<a class="headerlink" href="#id87" title="Link to this heading">¶</a></h2>
 <p>numpy.trace : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">Any | ArrayT</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2172,11 +2183,6 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <span class="sig-name descname"><span class="pre">transpose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">axes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.transpose" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a view of the array with axes transposed.</p>
 <p>Refer to <cite>numpy.transpose</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
-</dd>
-</dl>
 <section id="id88">
 <h2>Parameters<a class="headerlink" href="#id88" title="Link to this heading">¶</a></h2>
 <p>axes : None, tuple of ints, or <cite>n</cite> ints</p>
@@ -2229,6 +2235,11 @@ ndarray.reshape : Return a reshaped ndarray without changing data.</p>
 </pre></div>
 </div>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Self" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Self</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2236,15 +2247,15 @@ ndarray.reshape : Return a reshaped ndarray without changing data.</p>
 <span class="sig-name descname"><span class="pre">var</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;no</span> <span class="pre">value&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.system.variable.ObservedArray.var" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the variance of the array elements, along given axis.</p>
 <p>Refer to <cite>numpy.var</cite> for full documentation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="(in NumPy v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float64</span></code></a></span></p>
-</dd>
-</dl>
 <section id="id92">
 <h2>See Also<a class="headerlink" href="#id92" title="Link to this heading">¶</a></h2>
 <p>numpy.var : equivalent function</p>
 </section>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">float64 | NDArray[float64] | ndarray[_ShapeT_co, _dtype[float64]] | ScalarT | NDArray[ScalarT] | ArrayT | ndarray[_ShapeT_co, _dtype[ScalarT]] | Any | ndarray | ndarray[_ShapeT_co]</span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -2364,12 +2375,12 @@ contiguous last axis, even if the rest of the axes are not C-contiguous:</p>
 <span class="go">        [5396, 5910]]], dtype=int16)</span>
 </pre></div>
 </div>
+</section>
 <dl class="field-list simple">
-<dt class="field-odd">rtype<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Self</span></code></span></p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type">Self | ndarray[_ShapeT_co, DTypeT] | ndarray[_ShapeT_co, _dtype[ScalarT]] | ArrayT | ndarray[_ShapeT_co, _dtype]</span></p>
 </dd>
 </dl>
-</section>
 </dd></dl>
 
 </dd></dl>
