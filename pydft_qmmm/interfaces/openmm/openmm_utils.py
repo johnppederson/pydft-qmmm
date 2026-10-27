@@ -511,6 +511,22 @@ def _get_non_zero_exceptions(
     return exceptions
 
 
+def _update_charges(
+        force: openmm.nonbondedForce,
+        new_charges: NDArray[np.float64],
+) -> None:
+    """Update charges and exceptions using the interface's masked charges.
+
+    Args:
+        force: The OpenMM NonbondedForce to update.
+        new_charges: The new partial charge (:math:`e`) of the atoms.
+    """
+    _update_exceptions(force, new_charges)
+    for i, charge in enumerate(new_charges):
+        _, sigma, epsilon = force.getParticleParameters(i)
+        force.setParticleParameters(i, charge, sigma, epsilon)
+
+
 def _update_exceptions(
         force: openmm.nonbondedForce,
         new_charges: NDArray[np.float64],
