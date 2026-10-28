@@ -32,7 +32,7 @@ optional-dependencies.dev = [ "pre-commit" ]
 optional-dependencies.docs = [ "furo", "sphinx", "sphinx-autodoc-typehints" ]
 optional-dependencies.enhanced-sampling = [ "plumed" ]
 optional-dependencies.pyscf = [ "pyscf>=2.14" ]
-optional-dependencies.qmmm-pme = [ "helpme-py" ]
+optional-dependencies.qmmm-pme = [ "helpme-py>=0.3.1" ]
 optional-dependencies.tests = [ "pytest", "pytest-cov" ]
 urls.Documentation = "https://johnppederson.com/pydft-qmmm/"
 urls.Issues = "https://github.com/johnppederson/pydft-qmmm/issues"

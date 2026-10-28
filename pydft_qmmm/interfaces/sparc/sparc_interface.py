@@ -98,6 +98,11 @@ class SPARCInterface(EngineEmbeddingMixin, QMInterface):
         default_factory=lambda: [None], init=False,
     )
 
+    @property
+    def pme_target_grid(self) -> tuple[int, int, int]:
+        """Use the pinned SPARC grid for native PME when none is supplied."""
+        return self.fd_grid
+
     def electrostatic_coupling_mode(self) -> ElectrostaticCouplingMode:
         """The SPARC embedding fork owns electronic and nuclear coupling."""
         return ElectrostaticCouplingMode.PERIODIC

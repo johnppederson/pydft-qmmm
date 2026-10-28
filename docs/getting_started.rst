@@ -43,6 +43,45 @@ VASP's static electronic defaults. VASP derives different electronic defaults
 in MD mode, so SP/MD comparisons should check energy and force convergence
 with respect to ``EDIFF``.
 
+VASP PME defaults
+-----------------
+
+With VASP, ``QMMMHamiltonian()`` now uses conservative PME-only embedding:
+MM atoms start in region III, with no region II partition. An omitted PME
+grid follows VASP's runtime grid, with order-6 splines. helPME builds the
+field with ``compute_P_rec_grid()``; matching diagonal cells also use the
+direct-grid force transpose. Install ``pydft_qmmm[qmmm-pme]`` for helpme-py
+0.3.1 or newer.
+
+Explicit PME grids, spline orders, and widths remain unchanged. VASP and
+SPARC default to ``pme_alpha=2.357`` Å⁻¹, giving sigma approximately 0.3 Å.
+``embedding_sigma`` separately sets the Gaussian FFT width. Other engines
+continue to inherit OpenMM's splitting parameter when alpha is omitted:
+
+.. code-block:: python
+
+    coupling = QMMMHamiltonian()  # VASP: PME alpha = 2.357 Å⁻¹
+
+Comparison routes remain available:
+
+.. code-block:: python
+
+    # Region II inside 6 Å, PME region III outside.
+    coupling = QMMMHamiltonian(cutoff=6.)
+
+    # FFT only: assign MM atoms to II and disable long-range coupling.
+    from pydft_qmmm.utils import Subsystem
+    mm = MMHamiltonian(
+        interface="openmm", subsystem=Subsystem.II, forcefield=forcefield,
+    )
+    coupling = QMMMHamiltonian("electrostatic", "none", partition=None)
+
+Explicit unequal-cell mappings and grids that helPME must pad retain
+arbitrary-point evaluation. SPARC also uses the native implementation: when PME is enabled and no PME
+grid is supplied, it uses ``fd_grid`` with order-6 splines. Its coupling and
+partition defaults stay unchanged. PySCF-PBC, KSCED, and molecular engines
+retain their independent arbitrary-point PME paths and existing defaults. The archived implementation is not a runtime dependency.
+
 To use PySCF, install:
 
 .. code-block:: bash

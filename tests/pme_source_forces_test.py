@@ -92,23 +92,145 @@ def test_zero_sources_skip_pme_and_grid_setup(tmp_path, monkeypatch, count, excl
         pme_source_forces(path, np.ones(SHAPE), SHAPE, CELL, expect_step=8)
 
 
+@pytest.mark.parametrize("matched_grid", [False, True])
 @pytest.mark.parametrize("excluded", [(), (2,)])
-def test_grid_source_forces_are_the_energy_gradient(tmp_path, excluded):
+def test_grid_source_forces_are_the_energy_gradient(
+        tmp_path, excluded, matched_grid,
+):
     path = tmp_path / "PME_DATA"
     positions, charges = _sources()
     _, phi = _electrons()
     grid = charge_from_potential(phi, CELL)
+    parameters = (PME[0], SHAPE, 5) if matched_grid else PME
 
     def energy(moved):
-        write_pme_data(path, moved, charges, excluded, *PME, 0)
+        write_pme_data(path, moved, charges, excluded, *parameters, 0)
         return float((grid * _field(path)).sum())
 
-    write_pme_data(path, positions, charges, excluded, *PME, 0)
+    write_pme_data(path, positions, charges, excluded, *parameters, 0)
     forces = pme_source_forces(path, grid, SHAPE, CELL)
     expected = _central_difference(energy, positions, range(2, 6))
     np.testing.assert_allclose(forces, expected, atol=1e-6)
     assert np.abs(forces[:2]).max() == 0.
     assert np.abs(forces).max() > 1.
+
+
+def test_native_grid_matches_point_evaluation(tmp_path, monkeypatch):
+    import helpme_py
+    from pydft_qmmm.potentials.embedding import pme_grid
+    if (
+            not hasattr(helpme_py.PMEInstanceD, "compute_P_rec_grid")
+            or np.lib.NumpyVersion(helpme_py.__version__) < "0.3.1"
+    ):
+        pytest.skip("Native grid evaluation requires helpme-py >= 0.3.1")
+    positions, charges = _sources()
+    path = tmp_path / "PME_DATA"
+    write_pme_data(path, positions, charges, [], PME[0], SHAPE, 5, 0)
+    with monkeypatch.context() as patch:
+        def no_point_grid(*args):
+            raise AssertionError("Matched grids should use compute_P_rec_grid")
+        patch.setattr(pme_grid, "grid_coordinates", no_point_grid)
+        native = _field(path)
+    # 0.3.0 exposed the method but had the convolution bug; use the
+    # established point path for that release and compare its output.
+    monkeypatch.setattr(helpme_py, "__version__", "0.3.0")
+    points = _field(path)
+    np.testing.assert_allclose(native, points, rtol=1e-11, atol=1e-10)
+
+
+@pytest.mark.parametrize("order", [4, 5, 6, 10])
+@pytest.mark.parametrize("shape", [(12, 14, 16), (15, 15, 15)])
+def test_native_grid_force_transpose(tmp_path, monkeypatch, order, shape):
+    """Charged, nonsmooth densities exercise phases and Nyquist modes."""
+    import helpme_py
+    from pydft_qmmm.potentials.embedding import pme_grid
+    if np.lib.NumpyVersion(helpme_py.__version__) < "0.3.1":
+        pytest.skip("Native grid evaluation requires helpme-py >= 0.3.1")
+    rng = np.random.default_rng(13)
+    positions = np.array([[0., 11., -12.], [1.13, 3.72, 6.39], [2., 3., 4.]])
+    charges = np.array([1., -.3, 0.])
+    density = rng.normal(size=shape)
+    path = tmp_path / "PME_DATA"
+    write_pme_data(path, positions, charges, [], 1.2, shape, order, 8)
+    with monkeypatch.context() as patch:
+        def no_particles(*args):
+            raise AssertionError("Native forces must not allocate grid-point particles")
+        patch.setattr(pme_grid, "grid_coordinates", no_particles)
+        actual = pme_source_forces(path, density, shape, CELL, expect_step=8)
+    with monkeypatch.context() as patch:
+        patch.setattr(helpme_py, "__version__", "0.3.0")
+        reference = pme_source_forces(path, density, shape, CELL, expect_step=8)
+    np.testing.assert_allclose(actual, reference, rtol=1e-10, atol=1e-8)
+    np.testing.assert_array_equal(actual[2], 0.)
+
+    def energy(moved):
+        write_pme_data(path, moved, charges, [], 1.2, shape, order, 8)
+        return -KJMOL_PER_EV * np.sum(density * build_pme_potential(path, shape, CELL))
+
+    expected = _central_difference(energy, positions, [1], step=1e-5)
+    np.testing.assert_allclose(actual[1], expected[1], rtol=1e-6, atol=1e-5)
+
+
+@pytest.mark.parametrize("option", [
+    "grid", "cell", "origin", "excluded", "points", "version", "skew", "order",
+])
+def test_native_force_fallback(tmp_path, monkeypatch, option):
+    import helpme_py
+    from pydft_qmmm.potentials.embedding import pme_grid_forces
+
+    def unexpected_fast_path(*args):
+        raise AssertionError("This geometry requires the point evaluator")
+
+    monkeypatch.setattr(pme_grid_forces, "native_grid_source_forces", unexpected_fast_path)
+    positions, charges = _sources()
+    path = tmp_path / "PME_DATA"
+    grid = (24, 24, 24) if option == "grid" else SHAPE
+    write_pme_data(
+        path, positions, charges, [2] if option == "excluded" else [],
+        .5, grid, 3 if option == "order" else 6, 0,
+    )
+    kwargs = {}
+    cell = CELL.copy()
+    if option == "cell":
+        kwargs["source_cell"] = CELL * 1.1
+    elif option == "origin":
+        kwargs["origin"] = np.array([.1, 0., 0.])
+    elif option == "points":
+        kwargs.update(points=NUCLEI, point_charges=VALENCE)
+    elif option == "version":
+        monkeypatch.setattr(helpme_py, "__version__", "0.3.0")
+    elif option == "skew":
+        cell[1, 0] = .5
+    result = pme_source_forces(path, np.ones(SHAPE) / np.prod(SHAPE), SHAPE, cell, **kwargs)
+    assert np.isfinite(result).all()
+
+
+def test_padded_mesh_uses_point_evaluation(tmp_path, monkeypatch):
+    """helPME pads 17 to 18; requested equality does not mean equal meshes."""
+    import helpme_py
+    from pydft_qmmm.potentials.embedding import pme_grid_forces
+
+    def unexpected_grid(*args):
+        raise AssertionError("A padded mesh must use the point evaluator")
+
+    monkeypatch.setattr(
+        helpme_py.PMEInstanceD, "compute_P_rec_grid", unexpected_grid,
+        raising=False,
+    )
+    monkeypatch.setattr(pme_grid_forces, "native_grid_source_forces", unexpected_grid)
+    shape = (17, 18, 20)
+    positions, charges = _sources()
+    density = np.random.default_rng(2).normal(size=shape)
+    path = tmp_path / "PME_DATA"
+
+    def energy(moved):
+        write_pme_data(path, moved, charges, [], .5, shape, 6, 0)
+        return -KJMOL_PER_EV * np.sum(density * build_pme_potential(path, shape, CELL))
+
+    energy(positions)
+    forces = pme_source_forces(path, density, shape, CELL)
+    expected = _central_difference(energy, positions, [2])
+    np.testing.assert_allclose(forces[2], expected[2], rtol=1e-6, atol=1e-5)
 
 
 def test_vasp_plugin_writes_region_iii_reaction(tmp_path, monkeypatch):
@@ -150,7 +272,8 @@ def test_vasp_plugin_writes_region_iii_reaction(tmp_path, monkeypatch):
     assert np.abs(forces).max() > 1.
 
 
-def test_sparc_reads_region_iii_reaction_from_phi(tmp_path):
+@pytest.mark.parametrize("native", [False, True])
+def test_sparc_reads_region_iii_reaction_from_phi(tmp_path, monkeypatch, native):
     pytest.importorskip("sparc")
     from pydft_qmmm.interfaces.sparc import sparc_grid
     from pydft_qmmm.interfaces.sparc import sparc_utils
@@ -168,8 +291,15 @@ def test_sparc_reads_region_iii_reaction_from_phi(tmp_path):
         system=system, charge=0, directory=str(tmp_path), calculator=None,
         fd_grid=SHAPE, embedding=True,
     )
+    parameters = (PME[0], SHAPE, 6) if native else PME
+    if native:
+        from pydft_qmmm.potentials.embedding import pme_grid
+        def unexpected_points(*args, **kwargs):
+            raise AssertionError("SPARC matched grids must use native PME")
+        monkeypatch.setattr(pme_grid, "grid_coordinates", unexpected_points)
     interface.potentials.append(SimpleNamespace(
-        pme_alpha=PME[0], pme_gridnumber=PME[1], pme_spline_order=PME[2],
+        pme_alpha=parameters[0], pme_gridnumber=parameters[1],
+        pme_spline_order=parameters[2],
     ))
     interface.frame[0] = 4
     interface.vext_step[0] = 4
@@ -184,7 +314,7 @@ def test_sparc_reads_region_iii_reaction_from_phi(tmp_path):
     volume = abs(np.linalg.det(CELL)) / rho.size
 
     def energy(moved):
-        write_pme_data(path, moved, system.charges * [0, 0, 1], [], *PME, 4)
+        write_pme_data(path, moved, system.charges * [0, 0, 1], [], *parameters, 4)
         return float((rho * volume * _field(path)).sum())
 
     expected = _central_difference(
@@ -192,3 +322,23 @@ def test_sparc_reads_region_iii_reaction_from_phi(tmp_path):
     )
     np.testing.assert_allclose(forces, expected, atol=1e-6)
     assert np.abs(forces[2]).max() > 0.1
+
+
+def test_runtime_grid_matches_explicit_native_grid(tmp_path, monkeypatch):
+    from pydft_qmmm.potentials.embedding import pme_grid
+    path = tmp_path/'PME_DATA'
+    positions, charges = _sources()
+    q = np.random.default_rng(20).normal(size=SHAPE)
+    def evaluate(grid):
+        write_pme_data(path, positions, charges, [], .5, grid, 6, 0)
+        return (build_pme_potential(path, SHAPE, CELL),
+                pme_source_forces(path, q, SHAPE, CELL))
+    def unexpected_points(*args, **kwargs):
+        raise AssertionError('Default PME must not construct point coordinates')
+    monkeypatch.setattr(pme_grid, 'grid_coordinates', unexpected_points)
+    explicit = evaluate(SHAPE)
+    automatic = evaluate((0, 0, 0))
+    for actual, expected in zip(automatic, explicit):
+        np.testing.assert_array_equal(actual, expected)
+    with pytest.raises(ValueError, match='matching QM/MM cells'):
+        build_pme_potential(path, SHAPE, CELL, source_cell=CELL*2)

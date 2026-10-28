@@ -81,6 +81,7 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
     potcar_map: dict[str, str]
     embedding: bool = False
     embedding_sigma: float = 0.3
+    pme_grid_on_qm_mesh: bool = field(default=False, init=False)
     persistent_steps: int = 1
     persistent_timeout: float = 3600.
     qm_box: Any = None
@@ -363,7 +364,8 @@ class VaspInterface(EngineEmbeddingMixin, QMInterface):
             charges,
             excluded,
             potential.pme_alpha,
-            tuple(potential.pme_gridnumber),
+            ((0, 0, 0) if self.pme_grid_on_qm_mesh
+             else tuple(potential.pme_gridnumber)),
             potential.pme_spline_order,
             self.frame[0],
         )
