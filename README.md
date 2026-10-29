@@ -38,8 +38,29 @@ Requirements
   [(BSD-3-clause license)](https://opensource.org/licenses/BSD-3-Clause).
 * [OpenMM](https://github.com/openmm/openmm)
   [(OpenMM licenses)](https://github.com/openmm/openmm/blob/master/docs-source/licenses/Licenses.txt).
-* [Psi4](https://github.com/psi4/psi4) >= 1.10
+* A QM engine, such as the default [Psi4](https://github.com/psi4/psi4) >= 1.10
   [(LGPL-3.0 license)](https://opensource.org/license/LGPL-3-0).
+
+### Configured environments
+
+| Engine | Engine source |
+| --- | --- |
+| Psi4 |  Psi4 1.11 |
+| PySCF-mol | PySCF 2.14; GPU4PySCF for GPU calculations |
+| PySCF-pbc | PySCF 2.14 periodic solver; GPU4PySCF for GPU calculations |
+| VASP | External VASP 6.6.1 executable plus the Python plugin |
+| SPARC-QMMM | sparc-x-api plus an external SPARC-QMMM executable. **⚠ Under development.** |
+
+The environment needs these important packages:
+
+* Python 3.10.20
+* Psi4 1.11
+* OpenMM 8.5.2
+* NumPy 2.2.6
+* helPME-py 0.2.2
+* QCEngine and QCElemental
+* ASE 3.29.0
+* Pint 0.24.4
 
 #### Required for QM/MM/PME
 * [helPME-py](https://github.com/johnppederson/helpmy-py) required for evaluating

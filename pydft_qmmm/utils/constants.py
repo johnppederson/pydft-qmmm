@@ -4,6 +4,8 @@ Attributes:
     BOHR_PER_ANGSTROM: The number of atomic length units per Angstrom.
     KJMOL_PER_EH: The amount of energy in kilojoules per mole per
         Hartree.
+    KJMOL_PER_EV: The amount of energy in kilojoules per mole per
+        electronvolt.
     KB: The Boltzmann constant in kilojoules per mole per Kelvin.
     ELEMENT_TO_MASS: A dictionary of atomic weights
         (:math:`\mathrm{AMU}`) keyed by the element symbol.
@@ -13,6 +15,7 @@ from __future__ import annotations
 __all__ = [
     "BOHR_PER_ANGSTROM",
     "KJMOL_PER_EH",
+    "KJMOL_PER_EV",
     "KB",
     "ELEMENT_TO_MASS",
     "TheoryLevel",
@@ -24,6 +27,7 @@ from enum import Enum
 
 BOHR_PER_ANGSTROM = 1.8897261254535  # a0 / A
 KJMOL_PER_EH = 2625.499639479162971656          # (kJ / mol) / Eh
+KJMOL_PER_EV = 96.48533212331                   # (kJ / mol) / eV
 KB = 8.31446261815324             # J / (mol * K)
 ELEMENT_TO_MASS = {
     "Null": 0,

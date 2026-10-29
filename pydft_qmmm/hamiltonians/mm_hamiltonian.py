@@ -25,6 +25,7 @@ class MMHamiltonian(PotentialHamiltonian):
     Args:
         interface: The name of the software that implements the desired
             level of theory described by the Hamiltonian.
+        subsystem: Initial MM region (II for direct embedding, III for PME).
         options: Keyword arguments to provide to the interface factory.
     """
     theory_level: TheoryLevel = TheoryLevel.MM
@@ -32,8 +33,14 @@ class MMHamiltonian(PotentialHamiltonian):
     def __init__(
             self,
             interface: str = "openmm",
+            subsystem: Subsystem = Subsystem.III,
             **options: dict[str, Any],
     ) -> None:
+        if subsystem not in (Subsystem.II, Subsystem.III):
+            raise ValueError(
+                "MM subsystem must be Subsystem.II or Subsystem.III",
+            )
+        self.subsystem = subsystem
         self.interface = interface
         self.options = options
 
@@ -48,7 +55,7 @@ class MMHamiltonian(PotentialHamiltonian):
             Hamiltonian.
         """
         mm_atoms = self._parse_atoms(system)
-        system.subsystems[mm_atoms] = Subsystem.III
+        system.subsystems[mm_atoms] = self.subsystem
         try:
             interface_info = interfaces[self.interface]
         except KeyError:

@@ -5,6 +5,7 @@ from __future__ import annotations
 __all__ = ["Simulation"]
 
 import logging
+import operator
 from typing import TYPE_CHECKING
 
 import numpy as np
@@ -32,6 +33,9 @@ logger.setLevel(20)
 class Simulation(Loggable):
     """Organizes and performs simulations.
 
+    Use as a context manager to close engine processes and output files,
+    including when a calculation raises an exception.
+
     Args:
         system: The system to simulate.
         integrator: The integrator describing how the system evolves.
@@ -41,6 +45,9 @@ class Simulation(Loggable):
             may be provided in place of a Hamiltonian object.
         plugins: A list of plugins to apply to the calculator or
             integrator objects before simulation.
+        center: Center the QM region automatically.  Disable for a fixed
+            QM origin.
+        wrap: Wrap residues into the periodic box automatically.
         kwargs: Additional options to provide to the logging
             functionality, see :class:`pydft_qmmm.utils.logging.Loggable`
             for a list of options.
@@ -58,12 +65,16 @@ class Simulation(Loggable):
             hamiltonian: StandaloneHamiltonian | None = None,
             calculator: Calculator | None = None,
             plugins: list[Plugin] | None = None,
+            center: bool = True,
+            wrap: bool = True,
             **kwargs: Any,
     ) -> None:
         # Perform logging setup
         super().__init__(**kwargs)
+        self._logger = logging.Logger(__name__, level=logger.level)
         for handler in self.handlers:
-            logger.addHandler(handler)
+            self._logger.addHandler(handler)
+        self._closed = False
         # Set calculator and build if necessary.
         if calculator is not None:
             self.calculator = calculator
@@ -73,9 +84,9 @@ class Simulation(Loggable):
             raise TypeError
         # Perform additional simulation setup.
         self._offset = np.zeros(system.positions.shape)
-        if system.box.any():
+        if wrap and system.box.any():
             self.calculator.register_plugin(CalculatorWrap(), 0)
-        if system.select("subsystem I"):
+        if center and system.select("subsystem I"):
             self.calculator.register_plugin(CalculatorCenter(), 0)
         if system.masses[system.masses == 0].size > 0:
             query = "atom"
@@ -95,33 +106,49 @@ class Simulation(Loggable):
     def run_dynamics(self, steps: int) -> None:
         """Perform a given number of simulation steps.
 
+        Engine runs include the starting geometry and finish when this
+        call returns. A later call starts another segment.
+
         Args:
             steps: The number of steps to take.
         """
-        self.calculate_energy_forces()
-        for i in range(steps):
-            new_positions, new_velocities = self.integrator.integrate(
-                self.system,
-            )
-            self.system.positions = new_positions
-            self.system.velocities = new_velocities
-            unwrapped_positions = self.system.positions.base + self._offset
-            logger.info(
-                "",
-                extra={
-                    "frame": self._frame,
-                    "positions": unwrapped_positions,
-                    "box": self.system.box.base,
-                },
-            )
-            self._frame += 1
+        if self._closed:
+            raise RuntimeError("Simulation is closed")
+        steps = operator.index(steps)
+        if steps < 0:
+            raise ValueError("steps must be nonnegative")
+        with self.calculator.calculation_run(steps + 1):
             self.calculate_energy_forces()
+            for i in range(steps):
+                new_positions, new_velocities = self.integrator.integrate(
+                    self.system,
+                )
+                self.system.positions = new_positions
+                self.system.velocities = new_velocities
+                unwrapped_positions = self.system.positions.base + self._offset
+                self._logger.info(
+                    "",
+                    extra={
+                        "frame": self._frame,
+                        "positions": unwrapped_positions,
+                        "box": self.system.box.base,
+                    },
+                )
+                self._frame += 1
+                self.calculate_energy_forces()
 
     def calculate_energy_forces(self) -> None:
         """Update total system energy and forces on atoms in the system.
         """
         temp = self.system.positions.base.copy()
         results = self.calculator.calculate()
+        if (
+            not np.isfinite(results.energy)
+            or not np.isfinite(results.forces).all()
+        ):
+            raise RuntimeError(
+                f"Nonfinite energy or forces at step {self._frame}",
+            )
         self.system.forces = results.forces
         kinetic_energy = self.integrator.compute_kinetic_energy(
             self.system,
@@ -136,7 +163,29 @@ class Simulation(Loggable):
         }
         self.energy = energy
         self._offset += temp - self.system.positions.base
-        logger.info("", extra={"frame": self._frame, "energy": self.energy})
+        self._logger.info(
+            "", extra={"frame": self._frame, "energy": self.energy},
+        )
+
+    def close(self) -> None:
+        """Close the calculator and flush output files. Safe to call twice."""
+        if self._closed:
+            return
+        self._closed = True
+        try:
+            self.calculator.close()
+        finally:
+            for handler in self.handlers:
+                self._logger.removeHandler(handler)
+                handler.close()
+
+    def __enter__(self) -> Simulation:
+        if self._closed:
+            raise RuntimeError("Simulation is closed")
+        return self
+
+    def __exit__(self, *exc: Any) -> None:
+        self.close()
 
     def _register_plugins(self, plugins: list[Plugin]) -> None:
         """Dynamically load plugins for calculators and integrators.

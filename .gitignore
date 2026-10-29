@@ -141,5 +141,12 @@ gho4_psi4
 # Run data
 *.dat
 
+# Generated example simulation files
+examples/**/output/
+examples/**/output_*/
+examples/**/sparc_workdir/
+examples/**/vasp_workdir/
+examples/**/slurm-*.out
+
 # Mac directory attributes
 .DS_Store

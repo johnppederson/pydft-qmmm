@@ -20,10 +20,12 @@ from warnings import warn
 import numpy as np
 
 from .hamiltonian import CouplingHamiltonian
+from pydft_qmmm.calculators import PartitionPlugin
 from pydft_qmmm.calculators import PotentialCalculator
 from pydft_qmmm.utils import Subsystem
 from pydft_qmmm.utils import TheoryLevel
 from pydft_qmmm.interfaces import MMInterface
+from pydft_qmmm.interfaces import ElectrostaticCouplingMode
 from pydft_qmmm.interfaces import QMInterface
 from pydft_qmmm.plugins import CentroidPartition
 from pydft_qmmm.utils import compute_lattice_constants
@@ -31,7 +33,6 @@ from pydft_qmmm.utils import compute_lattice_constants
 if TYPE_CHECKING:
     from pydft_qmmm import System
     from pydft_qmmm.calculators import CompositeCalculator
-    from pydft_qmmm.calculators import PartitionPlugin
 
 
 _DEFAULT_FORCE_MATRIX = {
@@ -79,6 +80,8 @@ _SUPPORTED_EMBEDDING = [
     ("electrostatic", "electrostatic"),
 ]
 
+_DEFAULT_PARTITION = object()
+
 
 class QMMMHamiltonian(CouplingHamiltonian):
     r"""A Hamiltonian defining inter-subsystem coupling in QM/MM.
@@ -87,38 +90,98 @@ class QMMMHamiltonian(CouplingHamiltonian):
         close_range: The name of the embedding procedure for
             close-range (I-II) interactions.
         long_range: The name of the embedding procedure for
-            long-range (I-III) interactions.
+            long-range (I-III) interactions. Defaults to electrostatic
+            for VASP and cutoff for molecular engines.
         partition: The partition plugin to use for generating subsystem
-            II, if any.
+            II, if any. VASP PME defaults to no partition; an explicit
+            cutoff or partition enables region II/III comparisons.
         cutoff: The cutoff distance (:math:`\mathrm{\mathring{A}}`) at
             which to partition a system into subsystems II and III.
             This keyword, if specified, will overwrite the cutoff
             distance for a partition plugin object provided to the
             partition keyword.
         pme_alpha: The Ewald-summation Gaussian width parameter
-            (:math:`\mathrm{\mathring{A}^{-1}}`) for QM/MM/PME.
+            (:math:`\mathrm{\mathring{A}^{-1}}`) for QM/MM/PME. Defaults
+            to 2.357 for VASP/SPARC (sigma approximately 0.3 Angstrom);
+            other engines inherit the MM splitting parameter.
         pme_gridnumber: The number of grid points to include along each
-            lattice edge for QM/MM/PME.
+            lattice edge for QM/MM/PME. If omitted for VASP with a shared
+            QM/MM cell, use VASP's runtime grid and order-6 splines.
+            For SPARC, an omitted grid uses fd_grid and order-6 splines.
         pme_spline_order: The order of splines used on the FFT grid for
             QM/MM/PME.
+        coupling_mode: ``"conservative"`` removes retained OpenMM energy
+            terms together with their forces. ``"force"`` preserves the
+            historical directional force-mixing behavior.
     """
 
     def __init__(
             self,
             close_range: str = "electrostatic",
-            long_range: str = "cutoff",
-            partition: PartitionPlugin | None = CentroidPartition("all", 14.),
+            long_range: str | None = None,
+            partition: PartitionPlugin | None | object = _DEFAULT_PARTITION,
             cutoff: int | float | None = None,
             pme_alpha: int | float | None = None,
             pme_gridnumber: int | tuple[int, int, int] | None = None,
             pme_spline_order: int | None = None,
+            coupling_mode: str = "conservative",
+            slab_correction: bool = False,
+            qm_slab_correction: bool = False,
     ) -> None:
+        self._default_long_range = (
+            long_range is None and close_range == "electrostatic"
+        )
+        self._default_partition = partition is _DEFAULT_PARTITION
+        if long_range is None:
+            long_range = "cutoff"
         if (close_range, long_range) not in _SUPPORTED_EMBEDDING:
             raise TypeError  # Todo: Make this informative.
-        self.force_matrix = _DEFAULT_FORCE_MATRIX.copy()
-        self.partition = partition
+        if coupling_mode not in {"conservative", "force"}:
+            raise ValueError(
+                "coupling_mode must be 'conservative' or 'force'",
+            )
+        if coupling_mode == "force":
+            warn(
+                "coupling_mode='force' is nonconservative because retained "
+                "OpenMM energies have selected force components masked",
+                RuntimeWarning,
+            )
+        if slab_correction and (
+                close_range != "electrostatic"
+                or long_range != "electrostatic"
+                or coupling_mode != "conservative"
+                or partition is not None
+        ):
+            raise ValueError(
+                "Slab correction requires electrostatic/electrostatic "
+                "conservative coupling and partition=None",
+            )
+        if qm_slab_correction and not slab_correction:
+            raise ValueError(
+                "QM slab correction requires slab_correction=True",
+            )
+        self.qm_slab_correction = qm_slab_correction
+        self.slab_correction = slab_correction
+        self.coupling_mode = coupling_mode
+        # Every Hamiltonian must own its inner mappings.  A shallow copy
+        # would leave them shared with the module template and with other
+        # instances, so configuring one Hamiltonian would mutate all of
+        # them.
+        self.force_matrix = {
+            subsystem: interactions.copy()
+            for subsystem, interactions in _DEFAULT_FORCE_MATRIX.items()
+        }
+        # Build a fresh default for each Hamiltonian while preserving
+        # partition=None as the public way to disable dynamic partitioning.
+        if partition is _DEFAULT_PARTITION:
+            self.partition: PartitionPlugin | None = CentroidPartition(
+                "all", 14.,
+            )
+        else:
+            self.partition = partition
         self.cutoff = cutoff
         self.pme_alpha = pme_alpha
+        self._default_pme_grid = pme_gridnumber is None
         self.pme_gridnumber = pme_gridnumber
         self.pme_spline_order = pme_spline_order
         # Adjust I-II interaction.
@@ -142,16 +205,68 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 by the system.
             system: The system corresponding to the calculator.
         """
-        if self.partition is not None:
-            if self.cutoff is not None:
-                self.partition.cutoff = self.cutoff
-            calculator.register_plugin(self.partition)
+        qm_interface = None
         for calc in calculator.calculators:
             if isinstance(calc, PotentialCalculator):
                 if isinstance(calc.potential, MMInterface):
                     mm_interface = calc.potential
                 if isinstance(calc.potential, QMInterface):
                     qm_interface = calc.potential
+        from pydft_qmmm.interfaces.vasp.vasp_interface import VaspInterface
+        is_vasp = isinstance(qm_interface, VaspInterface)
+        if is_vasp and self._default_long_range:
+            forward, reverse = _LONG_EMBEDDING["electrostatic"]
+            self.force_matrix[Subsystem.I][Subsystem.III] = forward
+            self.force_matrix[Subsystem.III][Subsystem.I] = reverse
+        if (
+            is_vasp and self._default_partition and self.cutoff is None
+            and self.force_matrix[Subsystem.I][Subsystem.III] == TheoryLevel.QM
+        ):
+            self.partition = None
+        if self.partition is not None:
+            if self.cutoff is not None:
+                self.partition.cutoff = self.cutoff
+            calculator.register_plugin(self.partition)
+        pme_target_grid = getattr(qm_interface, "pme_target_grid", None)
+        native_pme_default = (
+            is_vasp and qm_interface.qm_box is None
+            and self._default_pme_grid
+        )
+        if is_vasp:
+            object.__setattr__(
+                qm_interface, "pme_grid_on_qm_mesh", native_pme_default,
+            )
+        qm_electrostatics = any(
+            self.force_matrix[Subsystem.I][subsystem] == TheoryLevel.QM
+            for subsystem in (Subsystem.II, Subsystem.III)
+        )
+        # Unlike mm_interface, this runs for every embedding scheme, so a
+        # calculator without a QM interface would otherwise raise
+        # UnboundLocalError rather than anything a reader can act on.
+        if qm_interface is not None:
+            capability = qm_interface.electrostatic_coupling_mode()
+            if (
+                qm_electrostatics
+                and capability is ElectrostaticCouplingMode.UNSUPPORTED
+            ):
+                engine = type(qm_interface).__name__
+                engine = engine.removesuffix("Potential").removesuffix(
+                    "Interface",
+                )
+                raise NotImplementedError(
+                    f"{engine} does not support electrostatic QM/MM coupling",
+                )
+            qm_interface.configure_electrostatic_embedding(qm_electrostatics)
+        else:
+            capability = ElectrostaticCouplingMode.UNSUPPORTED
+        conservative_electrostatics = (
+            self.coupling_mode == "conservative"
+            and qm_electrostatics
+            and capability in {
+                ElectrostaticCouplingMode.MOLECULAR,
+                ElectrostaticCouplingMode.PERIODIC,
+            }
+        )
         if (
             self.force_matrix[Subsystem.I][Subsystem.III]
             == TheoryLevel.QM
@@ -170,13 +285,21 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 compute_lattice_constants(system.box)[0:3],
             ).astype(int) * 2
             if self.pme_alpha is None:
-                self.pme_alpha = pme_alpha
+                self.pme_alpha = (
+                    2.357 if is_vasp or pme_target_grid is not None else pme_alpha
+                )
             if self.pme_gridnumber is None:
-                self.pme_gridnumber = tuple(advisable_gridnumber.tolist())
+                self.pme_gridnumber = (
+                    tuple(pme_target_grid) if pme_target_grid is not None
+                    else tuple(advisable_gridnumber.tolist())
+                )
             elif isinstance(self.pme_gridnumber, int):
                 self.pme_gridnumber = (self.pme_gridnumber,)*3
             if self.pme_spline_order is None:
-                self.pme_spline_order = pme_spline_order
+                use_native_grid = native_pme_default or (
+                    self._default_pme_grid and pme_target_grid is not None
+                )
+                self.pme_spline_order = 6 if use_native_grid else pme_spline_order
             if any(self.pme_gridnumber < advisable_gridnumber):
                 warn(
                     (
@@ -187,24 +310,47 @@ class QMMMHamiltonian(CouplingHamiltonian):
                     ),
                     RuntimeWarning,
                 )
-            pme_nuclei = PMENuclearPotential(
-                system,
-                self.pme_alpha,
-                self.pme_gridnumber,
-                self.pme_spline_order,
-            )
-            pme_exclusion = PMEExcludedPotential(
-                system,
-                pme_alpha,
-                pme_gridnumber,
-                pme_spline_order,
-            )
-            calculator.calculators.extend(
-                [
+            pme_calculators = []
+            # The nuclear term is not universal.  An interface that
+            # applies the electronic potential to its own nuclei -- VASP,
+            # whose plugin adds -sum(ZVAL * V_ext) in force_and_stress --
+            # has already accounted for it, and adding this potential on
+            # top counts the QM nuclei in the reciprocal field twice.
+            if qm_interface is None or not (
+                qm_interface.applies_nuclear_potential()
+            ):
+                pme_nuclei = PMENuclearPotential(
+                    system,
+                    self.pme_alpha,
+                    self.pme_gridnumber,
+                    self.pme_spline_order,
+                    # Use effective nuclear charges for ECP methods.
+                    qm_interface,
+                )
+                pme_calculators.append(
                     PotentialCalculator(system, pme_nuclei),
+                )
+            # Zeroing the OpenMM QM charges removes these classical terms
+            # entirely; a PME exclusion would subtract them a second time.
+            if not conservative_electrostatics:
+                pme_exclusion = PMEExcludedPotential(
+                    system,
+                    self.pme_alpha,
+                    self.pme_gridnumber,
+                    self.pme_spline_order,
+                    include_forces=(
+                        capability is not ElectrostaticCouplingMode.PERIODIC
+                    ),
+                    real_space_cutoff=(
+                        mm_interface.get_nonbonded_cutoff()
+                        if capability is ElectrostaticCouplingMode.PERIODIC
+                        else None
+                    ),
+                )
+                pme_calculators.append(
                     PotentialCalculator(system, pme_exclusion),
-                ],
-            )
+                )
+            calculator.calculators.extend(pme_calculators)
             pme_electrons = PMEElectronicPotential(
                 system,
                 self.pme_alpha,
@@ -212,7 +358,49 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 self.pme_spline_order,
             )
             qm_interface.add_electronic_potential(pme_electrons)
-        self.apply_exclusions(mm_interface, system)
+        if self.slab_correction:
+            from pydft_qmmm.interfaces.vasp.vasp_interface import (
+                VaspInterface,
+            )
+            from pydft_qmmm.interfaces.openmm.openmm_interface import (
+                OpenMMInterface,
+            )
+            if (
+                not conservative_electrostatics
+                or self.partition is not None
+                or not isinstance(qm_interface, VaspInterface)
+                or not isinstance(mm_interface, OpenMMInterface)
+                or self.force_matrix[Subsystem.I][Subsystem.III]
+                != TheoryLevel.QM
+            ):
+                raise ValueError(
+                    "Slab correction requires fixed-partition conservative "
+                    "VASP/OpenMM electrostatic/electrostatic coupling",
+                )
+            object.__setattr__(qm_interface, "slab_correction", True)
+            object.__setattr__(
+                qm_interface, "qm_slab_correction", self.qm_slab_correction,
+            )
+            object.__setattr__(mm_interface, "slab_correction", True)
+        if conservative_electrostatics:
+            self.apply_conservative_exclusions(mm_interface, system)
+        else:
+            self.apply_exclusions(mm_interface, system)
+
+    def apply_conservative_exclusions(
+            self,
+            interface: MMInterface,
+            system: System,
+    ) -> None:
+        """Remove QM terms from both OpenMM energy and forces.
+
+        Keep QM/MM non-electrostatic interactions and their forces. Only
+        the OpenMM charges are zeroed; engine embedding still uses the
+        original system charges for its MM sources.
+        """
+        qm_atoms = system.select("subsystem I")
+        interface.zero_intramolecular(qm_atoms)
+        interface.zero_charges(qm_atoms)
 
     def apply_exclusions(
             self,

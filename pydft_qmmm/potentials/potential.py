@@ -78,3 +78,40 @@ class ElectronicPotential(ABC):
             (:math:`\mathrm{kJ\;mol^{-1}\;e^{-1}}`),
             corresponding to the provided coordinates.
         """
+
+    def compute_source_forces(
+            self,
+            coordinates: NDArray[np.float64],
+            weights: NDArray[np.float64],
+    ) -> NDArray[np.float64]:
+        r"""Calculate source forces from a quadrature charge density.
+
+        Differentiate the discrete interaction energy over the atoms
+        that generate the potential,
+
+        .. math::
+            E = \sum_p w_p \phi(\mathbf{r}_p),
+
+        Potentials without analytic source forces need not implement
+        this operation.
+
+        Args:
+            coordinates: An array of quadrature coordinates
+                (:math:`\mathrm{\mathring{A}}`) at which the charge
+                density is represented.
+            weights: An array of signed charges (:math:`e`) at the
+                quadrature coordinates.
+
+        Returns:
+            The forces
+            (:math:`\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}`)
+            exerted on every atom in the system, indexed by the
+            original system indices.
+
+        Raises:
+            NotImplementedError: If the potential cannot differentiate
+                itself with respect to its sources.
+        """
+        raise NotImplementedError(
+            f"{type(self).__name__} does not provide analytic source forces",
+        )

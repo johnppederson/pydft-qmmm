@@ -57,11 +57,7 @@ class TestCutoffEmbeddingSchemes:
         total = mm_spce_no_lj[3:] + qm_water[0:3] + qmmm
         calculator = total.build_calculator(spce_qmmm_system)
         analytical = -calculator.calculate().forces[0]
-        numerical = numerical_gradient(
-            calculator,
-            {0},
-            components=["Psi4", "PMENuclear"],
-        )
+        numerical = numerical_gradient(calculator, {0})
         assert analytical - numerical == pytest.approx(0, abs=0.5)
 
 

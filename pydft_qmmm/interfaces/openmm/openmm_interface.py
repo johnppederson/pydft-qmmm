@@ -63,6 +63,32 @@ class OpenMMInterface(MMInterface):
     aux_forces_group_force_mask: NDArray[np.float64]
     aux_energy_group: set[int] = field(default_factory=set)
     aux_forces_group: set[int] = field(default_factory=set)
+    _excluded_charges: set[int] = field(
+        default_factory=set, init=False, repr=False,
+    )
+
+    slab_correction: bool = False
+
+    def _slab_terms(self):
+        from pydft_qmmm.potentials.embedding.slab import mm_correction
+        from pydft_qmmm.utils import KJMOL_PER_EV
+        forces = [f for f in self.base_context.getSystem().getForces()
+                  if isinstance(f, openmm.NonbondedForce)]
+        if (
+            len(forces) != 1
+            or forces[0].getNonbondedMethod() != openmm.NonbondedForce.PME
+        ):
+            raise ValueError("Slab correction requires one PME NonbondedForce")
+        charges = np.array([
+            forces[0].getParticleParameters(i)[0].value_in_unit(
+                openmm.unit.elementary_charge,
+            )
+            for i in range(len(self.system))
+        ])
+        energy, force = mm_correction(
+            self.system.positions, charges, self.system.box,
+        )
+        return energy * KJMOL_PER_EV, force * KJMOL_PER_EV
 
     def __post_init__(self) -> None:
         """Register update methods with relevant system attributes"""
@@ -164,11 +190,12 @@ class OpenMMInterface(MMInterface):
         self.aux_context.setPositions(omm_pos)
 
     def zero_charges(self, atoms: frozenset[int]) -> None:
-        """Remove charges from the specified atoms.
+        """Remove charges from the specified atoms, including future updates.
 
         Args:
             atoms: The indices of atoms from which to remove charges.
         """
+        self._excluded_charges.update(atoms)
         base_system = self.base_context.getSystem()
         openmm_utils._exclude_electrostatic(base_system, atoms)
         base_state = self.base_context.getState(getPositions=True)
@@ -183,12 +210,22 @@ class OpenMMInterface(MMInterface):
             atoms: The indices of atoms from which to remove
                 inter-molecular interactions.
         """
+        self._excluded_charges.update(atoms)
         base_system = self.base_context.getSystem()
         openmm_utils._exclude_intermolecular(base_system, atoms)
         base_state = self.base_context.getState(getPositions=True)
         omm_pos = base_state.getPositions()
         self.base_context.reinitialize()
         self.base_context.setPositions(omm_pos)
+
+    def get_nonbonded_cutoff(self) -> float:
+        """Return the PME real-space cutoff in Å."""
+        forces = [force for force in self.base_context.getSystem().getForces()
+                  if isinstance(force, openmm.NonbondedForce)
+                  and force.getNonbondedMethod() == openmm.NonbondedForce.PME]
+        if len(forces) != 1:
+            raise TypeError(f"{len(forces)} OpenMM Forces have PME cutoffs")
+        return float(forces[0].getCutoffDistance() / openmm.unit.angstrom)
 
     def get_pme_parameters(self) -> tuple[float, tuple[int, int, int], int]:
         r"""Get the parameters used for PME summation.
@@ -209,23 +246,34 @@ class OpenMMInterface(MMInterface):
         ]
         if len(pme_forces) != 1:
             raise TypeError(f"{len(pme_forces)} OpenMM Forces have PME params")
+        # getPMEParametersInContext reaches the CPU platform's nonbonded
+        # kernel through a dynamic_cast.  On a node where helpme_py is
+        # loaded -- which QM/MM/PME always does, one import above this
+        # call -- that cast throws std::bad_cast if the kernel has never
+        # run.  Evaluating the context once binds it and the cast holds.
+        self.base_context.getState(getEnergy=True)
         pme_alpha, *pme_gridnumber = pme_forces[0].getPMEParametersInContext(
             self.base_context,
         )
         return pme_alpha/10, pme_gridnumber, 5
 
     def update_charges(self, charges: NDArray[np.float64]) -> None:
-        """Set the atomic partial charges used by OpenMM.
+        """Update charges, keeping the base-context charge exclusions.
+
+        Keep the original source charges for QM embedding and auxiliary
+        Coulomb terms. Only the base context receives the masked copy.
 
         Args:
             charges: The partial charges (:math:`e`) of the atoms.
         """
+        base_charges = np.array(charges, dtype=float, copy=True)
+        base_charges[sorted(self._excluded_charges)] = 0.
         nonbonded_forces = [
             force for force in self.base_context.getSystem().getForces()
             if isinstance(force, openmm.NonbondedForce)
         ]
         for force in nonbonded_forces:
-            openmm_utils._update_charges(force, charges)
+            openmm_utils._update_charges(force, base_charges)
             force.updateParametersInContext(self.base_context)
         custom_nonbonded_forces = [
             force for force in self.aux_context.getSystem().getForces()
@@ -340,6 +388,8 @@ class OpenMMPotential(OpenMMInterface, AtomicPotential):
                 aux_state.getPotentialEnergy()
                 / openmm.unit.kilojoule_per_mole
             )
+        if self.slab_correction:
+            energy += self._slab_terms()[0]
         return energy
 
     def compute_forces(self) -> NDArray[np.float64]:
@@ -375,6 +425,8 @@ class OpenMMPotential(OpenMMInterface, AtomicPotential):
                 / openmm.unit.kilojoule_per_mole
                 * openmm.unit.angstrom
             )
+        if self.slab_correction:
+            forces += self._slab_terms()[1]
         return forces
 
     def compute_components(self) -> dict[str, float]:
@@ -405,4 +457,6 @@ class OpenMMPotential(OpenMMInterface, AtomicPotential):
                 {force},
             ).getPotentialEnergy() / openmm.unit.kilojoule_per_mole
             components[key] = value
+        if self.slab_correction:
+            components["Slab MM Energy"] = self._slab_terms()[0]
         return components

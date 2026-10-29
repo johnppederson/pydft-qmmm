@@ -12,6 +12,8 @@ __all__ = [
 ]
 
 from abc import abstractmethod
+from contextlib import ExitStack
+from contextlib import contextmanager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
@@ -81,6 +83,20 @@ class CompositeCalculator(Calculator):
             components["."*(i + 1)] = results.components
         results = Results(energy, forces, components)
         return results
+
+    def close(self) -> None:
+        """Close all child calculators, even if one cleanup fails."""
+        with ExitStack() as stack:
+            for calculator in self.calculators:
+                stack.callback(calculator.close)
+
+    @contextmanager
+    def calculation_run(self, evaluations: int):
+        """Manage all child engines for the same sequence of evaluations."""
+        with ExitStack() as stack:
+            for calculator in self.calculators:
+                stack.enter_context(calculator.calculation_run(evaluations))
+            yield
 
     @property
     def name(self) -> str:
