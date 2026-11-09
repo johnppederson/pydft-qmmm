@@ -256,7 +256,12 @@ class OpenMMInterface(MMInterface):
             box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of
                 the box containing the system.
         """
-        pass
+        vectors = [
+            openmm.Vec3(*vector) * openmm.unit.angstrom
+            for vector in box.T
+        ]
+        self.base_context.setPeriodicBoxVectors(*vectors)
+        self.aux_context.setPeriodicBoxVectors(*vectors)
 
     def update_subsystems(
             self,

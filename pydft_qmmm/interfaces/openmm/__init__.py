@@ -2,7 +2,7 @@
 """
 from __future__ import annotations
 
-__author__ = "John Pederson"
+__author__ = "John Pederson, Gage Bayliss"
 
 from pydft_qmmm.utils import TheoryLevel
 from .openmm_factory import openmm_interface_factory as FACTORY

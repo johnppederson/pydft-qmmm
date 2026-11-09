@@ -166,6 +166,11 @@ class QMInterface(SoftwareInterface):
                 QM calculations.
         """
 
+    @abstractmethod
+    def return_external_ixn_component(self) -> None:
+        """Return the external energy interaction as a component.
+        """
+
 
 class MMPotential(AtomicPotential, MMInterface):
     """A subclass of MM interface and potential for typing purposes.

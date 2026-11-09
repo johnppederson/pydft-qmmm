@@ -101,6 +101,9 @@ class QMMMHamiltonian(CouplingHamiltonian):
             lattice edge for QM/MM/PME.
         pme_spline_order: The order of splines used on the FFT grid for
             QM/MM/PME.
+        return_external_component: Whether or not to return the quantum
+            mechanical contribution to the I-II and I-III interactions
+            as a component of the QM potential.
     """
 
     def __init__(
@@ -112,6 +115,7 @@ class QMMMHamiltonian(CouplingHamiltonian):
             pme_alpha: int | float | None = None,
             pme_gridnumber: int | tuple[int, int, int] | None = None,
             pme_spline_order: int | None = None,
+            return_external_component: bool = False,
     ) -> None:
         if (close_range, long_range) not in _SUPPORTED_EMBEDDING:
             raise TypeError  # Todo: Make this informative.
@@ -121,6 +125,7 @@ class QMMMHamiltonian(CouplingHamiltonian):
         self.pme_alpha = pme_alpha
         self.pme_gridnumber = pme_gridnumber
         self.pme_spline_order = pme_spline_order
+        self.return_external_component = return_external_component
         # Adjust I-II interaction.
         I_II, II_I = _CLOSE_EMBEDDING[close_range]
         self.force_matrix[Subsystem.I][Subsystem.II] = I_II
@@ -212,6 +217,8 @@ class QMMMHamiltonian(CouplingHamiltonian):
                 self.pme_spline_order,
             )
             qm_interface.add_electronic_potential(pme_electrons)
+        if self.return_external_component:
+            qm_interface.return_external_ixn_component()
         self.apply_exclusions(mm_interface, system)
 
     def apply_exclusions(

@@ -482,7 +482,7 @@ def _get_non_zero_exceptions(
     _EXCEPTIONS_CACHE[n] = exceptions
     return exceptions
 
-            
+
 def _update_charges(
         force: openmm.nonbondedForce,
         new_charges: NDArray[np.float64],
