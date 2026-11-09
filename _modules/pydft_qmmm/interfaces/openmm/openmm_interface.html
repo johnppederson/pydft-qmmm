@@ -725,7 +725,12 @@
 <span class="sd">            box: The lattice vectors (:math:`\mathrm{\mathring{A}}`) of</span>
 <span class="sd">                the box containing the system.</span>
 <span class="sd">        """</span>
-        <span class="k">pass</span></div>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">openmm</span><span class="o">.</span><span class="n">Vec3</span><span class="p">(</span><span class="o">*</span><span class="n">vector</span><span class="p">)</span> <span class="o">*</span> <span class="n">openmm</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">angstrom</span>
+            <span class="k">for</span> <span class="n">vector</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">T</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_context</span><span class="o">.</span><span class="n">setPeriodicBoxVectors</span><span class="p">(</span><span class="o">*</span><span class="n">vectors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aux_context</span><span class="o">.</span><span class="n">setPeriodicBoxVectors</span><span class="p">(</span><span class="o">*</span><span class="n">vectors</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="OpenMMInterface.update_subsystems">

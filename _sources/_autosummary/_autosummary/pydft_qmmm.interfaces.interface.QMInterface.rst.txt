@@ -17,6 +17,9 @@ pydft\_qmmm.interfaces.interface.QMInterface
       ~QMInterface.add_electronic_potential
    
    
+      ~QMInterface.return_external_ixn_component
+   
+   
    
 
    
@@ -26,6 +29,10 @@ pydft\_qmmm.interfaces.interface.QMInterface
    
    
    .. automethod:: QMInterface.add_electronic_potential
+   
+   
+   
+   .. automethod:: QMInterface.return_external_ixn_component
    
    
    

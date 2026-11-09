@@ -26,6 +26,9 @@ pydft\_qmmm.interfaces.psi4.psi4\_interface.Psi4Potential
       ~Psi4Potential.compute_forces
    
    
+      ~Psi4Potential.return_external_ixn_component
+   
+   
       ~Psi4Potential.update_options
    
    
@@ -50,6 +53,10 @@ pydft\_qmmm.interfaces.psi4.psi4\_interface.Psi4Potential
    
    
    .. automethod:: Psi4Potential.compute_forces
+   
+   
+   
+   .. automethod:: Psi4Potential.return_external_ixn_component
    
    
    

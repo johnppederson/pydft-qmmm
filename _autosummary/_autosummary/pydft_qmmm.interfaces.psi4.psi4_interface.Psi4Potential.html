@@ -504,7 +504,10 @@ QM calculations.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_forces" title="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_forces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_forces</span></code></a>()</p></td>
 <td><p>Compute the forces on the system using Psi4.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.update_options" title="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.update_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_options</span></code></a>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.return_external_ixn_component" title="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.return_external_ixn_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">return_external_ixn_component</span></code></a>()</p></td>
+<td><p>Return the external energy interaction as a component.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.update_options" title="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.update_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_options</span></code></a>(**kwargs)</p></td>
 <td><p>Set additional options for Psi4.</p></td>
 </tr>
 </tbody>
@@ -565,6 +568,17 @@ of the system.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The forces (<span class="math notranslate nohighlight">\(\mathrm{kJ\;mol^{-1}\;\mathring{A}^{-1}}\)</span>)
 acting on atoms in the system.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.return_external_ixn_component">
+<span class="sig-name descname"><span class="pre">return_external_ixn_component</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.return_external_ixn_component" title="Link to this definition">¶</a></dt>
+<dd><p>Return the external energy interaction as a component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><span class="highlight sphinx_autodoc_typehints-value"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="kc"><span class="pre">None</span></span></code></a></span></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -651,6 +665,7 @@ acting on atoms in the system.</p>
 <li><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_components"><code class="docutils literal notranslate"><span class="pre">Psi4Potential.compute_components()</span></code></a></li>
 <li><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_energy"><code class="docutils literal notranslate"><span class="pre">Psi4Potential.compute_energy()</span></code></a></li>
 <li><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.compute_forces"><code class="docutils literal notranslate"><span class="pre">Psi4Potential.compute_forces()</span></code></a></li>
+<li><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.return_external_ixn_component"><code class="docutils literal notranslate"><span class="pre">Psi4Potential.return_external_ixn_component()</span></code></a></li>
 <li><a class="reference internal" href="#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Potential.update_options"><code class="docutils literal notranslate"><span class="pre">Psi4Potential.update_options()</span></code></a></li>
 </ul>
 </li>

@@ -26,6 +26,9 @@ pydft\_qmmm.interfaces.interface.QMPotential
       ~QMPotential.compute_forces
    
    
+      ~QMPotential.return_external_ixn_component
+   
+   
    
 
    
@@ -47,6 +50,10 @@ pydft\_qmmm.interfaces.interface.QMPotential
    
    
    .. automethod:: QMPotential.compute_forces
+   
+   
+   
+   .. automethod:: QMPotential.return_external_ixn_component
    
    
    

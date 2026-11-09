@@ -541,6 +541,9 @@
 <span class="sd">            lattice edge for QM/MM/PME.</span>
 <span class="sd">        pme_spline_order: The order of splines used on the FFT grid for</span>
 <span class="sd">            QM/MM/PME.</span>
+<span class="sd">        return_external_component: Whether or not to return the quantum</span>
+<span class="sd">            mechanical contribution to the I-II and I-III interactions</span>
+<span class="sd">            as a component of the QM potential.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -552,6 +555,7 @@
             <span class="n">pme_alpha</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">pme_gridnumber</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">pme_spline_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">return_external_component</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">close_range</span><span class="p">,</span> <span class="n">long_range</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_SUPPORTED_EMBEDDING</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span>  <span class="c1"># Todo: Make this informative.</span>
@@ -561,6 +565,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">pme_alpha</span> <span class="o">=</span> <span class="n">pme_alpha</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pme_gridnumber</span> <span class="o">=</span> <span class="n">pme_gridnumber</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pme_spline_order</span> <span class="o">=</span> <span class="n">pme_spline_order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_external_component</span> <span class="o">=</span> <span class="n">return_external_component</span>
         <span class="c1"># Adjust I-II interaction.</span>
         <span class="n">I_II</span><span class="p">,</span> <span class="n">II_I</span> <span class="o">=</span> <span class="n">_CLOSE_EMBEDDING</span><span class="p">[</span><span class="n">close_range</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_matrix</span><span class="p">[</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">I</span><span class="p">][</span><span class="n">Subsystem</span><span class="o">.</span><span class="n">II</span><span class="p">]</span> <span class="o">=</span> <span class="n">I_II</span>
@@ -654,6 +659,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">pme_spline_order</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">qm_interface</span><span class="o">.</span><span class="n">add_electronic_potential</span><span class="p">(</span><span class="n">pme_electrons</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_external_component</span><span class="p">:</span>
+            <span class="n">qm_interface</span><span class="o">.</span><span class="n">return_external_ixn_component</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">apply_exclusions</span><span class="p">(</span><span class="n">mm_interface</span><span class="p">,</span> <span class="n">system</span><span class="p">)</span></div>
 
 

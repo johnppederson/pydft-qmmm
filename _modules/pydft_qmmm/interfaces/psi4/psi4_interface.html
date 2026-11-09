@@ -444,10 +444,10 @@
 <span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -501,6 +501,10 @@
         <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span>
         <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">components</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span>
+        <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">frame</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
         <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -522,6 +526,15 @@
 <span class="sd">                QM calculations.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">potential</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Psi4Interface.return_external_ixn_component">
+<a class="viewcode-back" href="../../../../_autosummary/_autosummary/pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.html#pydft_qmmm.interfaces.psi4.psi4_interface.Psi4Interface.return_external_ixn_component">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">return_external_ixn_component</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the external energy interaction as a component.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="s2">"External Interaction Energy"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"External Interaction Energy"</span><span class="p">)</span></div>
 
 
     <span class="nd">@system_cache</span><span class="p">(</span><span class="s2">"positions"</span><span class="p">,</span> <span class="s2">"charges"</span><span class="p">,</span> <span class="s2">"elements"</span><span class="p">,</span> <span class="s2">"subsystems"</span><span class="p">)</span>
@@ -595,10 +608,12 @@
         <span class="n">point_charges</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">embedding</span><span class="p">:</span>
             <span class="n">point_charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">],</span>
+                <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">charges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span><span class="p">,</span>
+                <span class="p">],</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">embedding</span><span class="p">:</span>
             <span class="n">external_potentials</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point_charges</span><span class="p">))</span>
@@ -790,6 +805,35 @@
 <span class="sd">            of the system.</span>
 <span class="sd">        """</span>
         <span class="n">components</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">wfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="p">()</span>
+        <span class="n">energy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_wavefunction</span><span class="p">()</span><span class="o">.</span><span class="n">energy</span><span class="p">()</span> <span class="o">*</span> <span class="n">KJMOL_PER_EH</span>
+        <span class="n">components</span><span class="p">[</span><span class="s2">"Nuclear Energy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">wfn</span><span class="o">.</span><span class="n">molecule</span><span class="p">()</span><span class="o">.</span><span class="n">nuclear_repulsion_energy</span><span class="p">()</span> <span class="o">*</span> <span class="n">KJMOL_PER_EH</span>
+        <span class="p">)</span>
+        <span class="n">components</span><span class="p">[</span><span class="s2">"Electronic Energy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">energy</span>
+            <span class="o">-</span> <span class="n">components</span><span class="p">[</span><span class="s2">"Nuclear Energy"</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="s2">"External Interaction Energy"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">extern</span> <span class="o">:=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">())</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span>
+            <span class="n">D</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
+            <span class="n">V_extern</span> <span class="o">=</span> <span class="n">extern</span><span class="o">.</span><span class="n">computePotentialMatrix</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="p">:</span>
+                <span class="n">numint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_numinthelper</span><span class="p">()</span>
+                <span class="n">v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_potential</span><span class="p">()</span>
+                <span class="n">V_extern</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">numint</span><span class="o">.</span><span class="n">potential_integral</span><span class="p">(</span><span class="n">v_grid</span><span class="p">))</span>
+            <span class="n">components</span><span class="p">[</span><span class="s2">"External Interaction Energy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">np</span><span class="p">,</span> <span class="n">V_extern</span><span class="o">.</span><span class="n">np</span><span class="p">)</span>
+                <span class="o">+</span> <span class="n">extern</span><span class="o">.</span><span class="n">computeNuclearEnergy</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">molecule</span><span class="p">())</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="n">KJMOL_PER_EH</span>
+            <span class="n">components</span><span class="p">[</span><span class="s2">"Electronic Energy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">energy</span>
+                <span class="o">-</span> <span class="n">components</span><span class="p">[</span><span class="s2">"Nuclear Energy"</span><span class="p">]</span>
+                <span class="o">-</span> <span class="n">components</span><span class="p">[</span><span class="s2">"External Interaction Energy"</span><span class="p">]</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">components</span></div>
 </div>
 
