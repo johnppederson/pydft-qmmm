@@ -316,7 +316,7 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
                             "currently installed).",
                         ),
                     )
-                D = wfn.Da()
+                D = wfn.Da().clone()
                 D.add(wfn.Db())
                 grads = wfn.external_pot().computePotentialGradients(
                     wfn.basisset(),
@@ -330,7 +330,7 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
         if self._generate_external_potentials()[2] is not None:
             numint = self._generate_numinthelper()
             v_grid = self._generate_potential()
-            D = wfn.Da()
+            D = wfn.Da().clone()
             D.add(wfn.Db())
             grads = numint.potential_gradient(v_grid, D)
             forces = grads.np * -KJMOL_PER_EH * BOHR_PER_ANGSTROM
@@ -358,15 +358,11 @@ class Psi4Potential(Psi4Interface, AtomicPotential):
             "External Interaction Energy" in self.components
             and (extern := wfn.external_pot()) is not None
         ):
-            D = wfn.Da()
+            D = wfn.Da().clone()
             D.add(wfn.Db())
             V_extern = extern.computePotentialMatrix(wfn.basisset())
-            if self.potentials:
-                numint = self._generate_numinthelper()
-                v_grid = self._generate_potential()
-                V_extern.add(numint.potential_integral(v_grid))
             components["External Interaction Energy"] = (
-                np.vdot(D.np, V_extern.np)
+                psi4.core.doublet(D, V_extern).trace()
                 + extern.computeNuclearEnergy(wfn.molecule())
             ) * KJMOL_PER_EH
             components["Electronic Energy"] = (
