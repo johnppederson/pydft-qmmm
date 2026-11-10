@@ -773,7 +773,7 @@
                             <span class="s2">"currently installed)."</span><span class="p">,</span>
                         <span class="p">),</span>
                     <span class="p">)</span>
-                <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span>
+                <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
                 <span class="n">D</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
                 <span class="n">grads</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">()</span><span class="o">.</span><span class="n">computePotentialGradients</span><span class="p">(</span>
                     <span class="n">wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">(),</span>
@@ -787,7 +787,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_external_potentials</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">numint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_numinthelper</span><span class="p">()</span>
             <span class="n">v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_potential</span><span class="p">()</span>
-            <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
             <span class="n">D</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
             <span class="n">grads</span> <span class="o">=</span> <span class="n">numint</span><span class="o">.</span><span class="n">potential_gradient</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
             <span class="n">forces</span> <span class="o">=</span> <span class="n">grads</span><span class="o">.</span><span class="n">np</span> <span class="o">*</span> <span class="o">-</span><span class="n">KJMOL_PER_EH</span> <span class="o">*</span> <span class="n">BOHR_PER_ANGSTROM</span>
@@ -818,15 +818,11 @@
             <span class="s2">"External Interaction Energy"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
             <span class="ow">and</span> <span class="p">(</span><span class="n">extern</span> <span class="o">:=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">external_pot</span><span class="p">())</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">):</span>
-            <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Da</span><span class="p">()</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
             <span class="n">D</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">Db</span><span class="p">())</span>
             <span class="n">V_extern</span> <span class="o">=</span> <span class="n">extern</span><span class="o">.</span><span class="n">computePotentialMatrix</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">potentials</span><span class="p">:</span>
-                <span class="n">numint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_numinthelper</span><span class="p">()</span>
-                <span class="n">v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_potential</span><span class="p">()</span>
-                <span class="n">V_extern</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">numint</span><span class="o">.</span><span class="n">potential_integral</span><span class="p">(</span><span class="n">v_grid</span><span class="p">))</span>
             <span class="n">components</span><span class="p">[</span><span class="s2">"External Interaction Energy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">vdot</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">np</span><span class="p">,</span> <span class="n">V_extern</span><span class="o">.</span><span class="n">np</span><span class="p">)</span>
+                <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">doublet</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">V_extern</span><span class="p">)</span><span class="o">.</span><span class="n">trace</span><span class="p">()</span>
                 <span class="o">+</span> <span class="n">extern</span><span class="o">.</span><span class="n">computeNuclearEnergy</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">molecule</span><span class="p">())</span>
             <span class="p">)</span> <span class="o">*</span> <span class="n">KJMOL_PER_EH</span>
             <span class="n">components</span><span class="p">[</span><span class="s2">"Electronic Energy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
