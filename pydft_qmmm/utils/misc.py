@@ -121,7 +121,7 @@ def center_positions(
     Returns:
         The new centered positions of the system.
     """
-    center = 0.5*box.sum(axis=0)
+    center = 0.5*box.sum(axis=1)
     centroid = np.average(positions[list(atoms), :], axis=0)
     differential = center - centroid
     new_positions = positions + differential

@@ -36,10 +36,10 @@ def compute_least_mirror(
     """
     r_vector = (i_vector - j_vector).reshape(-1, 3)
     inv_box = np.linalg.inv(box)
-    inv_r_vector = r_vector @ inv_box
-    r_vector -= box[2] * np.floor(inv_r_vector[:, 2] + 0.5)[:, np.newaxis]
-    r_vector -= box[1] * np.floor(inv_r_vector[:, 1] + 0.5)[:, np.newaxis]
-    r_vector -= box[0] * np.floor(inv_r_vector[:, 0] + 0.5)[:, np.newaxis]
+    inv_r_vector = r_vector @ inv_box.T
+    r_vector -= box[:, 2] * np.floor(inv_r_vector[:, 2] + 0.5)[:, np.newaxis]
+    r_vector -= box[:, 1] * np.floor(inv_r_vector[:, 1] + 0.5)[:, np.newaxis]
+    r_vector -= box[:, 0] * np.floor(inv_r_vector[:, 0] + 0.5)[:, np.newaxis]
     return r_vector
 
 
