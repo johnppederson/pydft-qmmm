@@ -448,6 +448,8 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"openmm_interface_factory"</span><span class="p">]</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -456,6 +458,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">openmm.unit</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">DependencyImportError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydft_qmmm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyDFTQMMMException</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">openmm_interface</span>
 
@@ -564,6 +567,25 @@
     <span class="n">aux_system</span> <span class="o">=</span> <span class="n">_empty_omm_system</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
     <span class="n">base_context</span> <span class="o">=</span> <span class="n">_build_omm_context</span><span class="p">(</span><span class="n">base_system</span><span class="p">,</span> <span class="n">omm_modeller</span><span class="p">)</span>
     <span class="n">aux_context</span> <span class="o">=</span> <span class="n">_build_omm_context</span><span class="p">(</span><span class="n">aux_system</span><span class="p">,</span> <span class="n">omm_modeller</span><span class="p">)</span>
+    <span class="c1"># Sanity check the PME settings.</span>
+    <span class="k">if</span> <span class="n">nonbonded_method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"PME"</span><span class="p">:</span>
+        <span class="n">threads</span> <span class="o">=</span> <span class="n">base_context</span><span class="o">.</span><span class="n">getPlatform</span><span class="p">()</span><span class="o">.</span><span class="n">getPropertyValue</span><span class="p">(</span>
+            <span class="n">base_context</span><span class="p">,</span>
+            <span class="s2">"Threads"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">grid_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">pme_gridnumber</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span> <span class="o">//</span> <span class="mi">4</span>
+        <span class="n">grid_end</span> <span class="o">=</span> <span class="n">grid_size</span> <span class="o">*</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">threads</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">grid_end</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyDFTQMMMException</span><span class="p">(</span>
+                <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">A PME grid size of </span><span class="si">{</span><span class="n">pme_gridnumber</span><span class="si">}</span><span class="s2"> with a "</span>
+                    <span class="sa">f</span><span class="s2">"thread count of </span><span class="si">{</span><span class="n">threads</span><span class="si">}</span><span class="s2"> causes an integer "</span>
+                    <span class="s2">"overflow error in the CPU platform of OpenMM, "</span>
+                    <span class="s2">"which uses single precision.  Please reduce "</span>
+                    <span class="s2">"either the thread count or the fineness of the "</span>
+                    <span class="s2">"PME grid."</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
     <span class="n">wrapper</span> <span class="o">=</span> <span class="n">openmm_interface</span><span class="o">.</span><span class="n">OpenMMPotential</span><span class="p">(</span>
         <span class="n">system</span><span class="p">,</span>
         <span class="n">base_context</span><span class="o">=</span><span class="n">base_context</span><span class="p">,</span>
